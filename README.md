@@ -1,61 +1,89 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+My Dashboard App
+A professional, scalable dashboard built with Laravel 12 and Blade, powered by Jetstream for authentication. This project provides a robust foundation for web applications, offering features like image and file management, dynamic page visit statistics, user and role-based access control, service management, and site settings. It is designed to be reusable as a template for future projects, adhering to Clean Code, SOLID principles, and Git Flow for efficient development workflows.
+Features
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Dynamic Statistics: Track page visits with insights into visitor count, device type, and geolocation.
+User Management: Manage users and admins with a role-based access control (RBAC) system.
+Service Management: Administer services and pages offered by the website.
+Site Settings: Configure site details such as name, logo, and profile.
+Image and File Management: Upload, view, and manage files with support for local or cloud storage (e.g., AWS S3).
 
-## About Laravel
+Technologies
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Laravel 12, Blade, Jetstream
+Spatie Laravel Permission for role-based access control
+Intervention Image for image processing
+Tailwind CSS for responsive styling
+Git Flow for branch management
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Installation
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Clone the repository:git clone https://github.com/<your-username>/my-dashboard-app.git
 
-## Learning Laravel
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Navigate to the project directory:cd my-dashboard-app
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Install PHP dependencies:composer install
 
-## Laravel Sponsors
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Install JavaScript dependencies:npm install
 
-### Premium Partners
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Copy the environment file and configure it:cp .env.example .env
 
-## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Update .env with your database and other configurations (e.g., DB_DATABASE, APP_URL).
 
-## Code of Conduct
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Generate an application key:php artisan key:generate
 
-## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Run database migrations:php artisan migrate
 
-## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Build front-end assets:npm run build
+
+
+Start the development server:php artisan serve
+
+
+
+Git Flow Workflow
+This project follows the Git Flow branching model:
+
+Feature branches: feature/<feature-name> (e.g., feature/add-media-management)
+Bugfix branches: bugfix/<bug-description> (e.g., bugfix/fix-report-chart)
+Release branches: release/<version> (e.g., release/1.0.0)
+Hotfix branches: hotfix/<version> (e.g., hotfix/1.0.1)
+Support branches: support/<version> (e.g., support/1.x)
+Version tags: v<version> (e.g., v1.0.0)
+
+Example Commands
+
+Start a new feature:git flow feature start add-reports
+
+
+Finish a feature:git flow feature finish add-reports
+
+
+Start a release:git flow release start 1.0.0
+git flow release finish 1.0.0
+
+
+
+Contributing
+Contributions are welcome! Please follow these guidelines:
+
+Fork the repository and create a feature branch (feature/<your-feature>).
+Write clear, maintainable code following Clean Code and SOLID principles.
+Use Conventional Commits for commit messages (e.g., feat: add user management).
+Submit a pull request to the develop branch for review.
+
+See CONTRIBUTING.md for more details.
+Changelog
+See CHANGELOG.md for a detailed history of changes.
+License
+This project is licensed under the MIT License - see the LICENSE file for details.
+Contact
+For questions or feedback, please contact [] or open an issue on GitHub.
