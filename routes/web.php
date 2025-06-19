@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Abilities\PermissionController;
 use App\Http\Controllers\Abilities\RoleController;
+use App\Http\Controllers\Abilities\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -22,4 +23,7 @@ Route::middleware(['auth', 'role:super-admin'])->group(function () {
     Route::resource('roles', RoleController::class);
     Route::post('roles/{id}/permissions', [RoleController::class, 'assignPermissions'])->name('roles.assign-permissions');
     Route::resource('permissions', PermissionController::class);
+    Route::resource('users', UserController::class);
+    Route::get('users/{user}/roles', [UserController::class, 'editRoles'])->name('users.editRoles');
+    Route::post('users/{user}/roles', [UserController::class, 'assignRoles'])->name('users.assign-roles');
 });
