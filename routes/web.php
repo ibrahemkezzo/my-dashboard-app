@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Abilities\PermissionController;
+use App\Http\Controllers\Abilities\RoleController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -12,6 +14,12 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {
-        return view('dashboard/index');
+        return view('dashboard');
     })->name('dashboard');
+});
+
+Route::middleware(['auth', 'role:super-admin'])->group(function () {
+    Route::resource('roles', RoleController::class);
+    Route::post('roles/{id}/permissions', [RoleController::class, 'assignPermissions'])->name('roles.assign-permissions');
+    Route::resource('permissions', PermissionController::class);
 });
