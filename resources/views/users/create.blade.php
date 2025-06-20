@@ -1,9 +1,9 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+<html>
+    <header>
+
+    </header>
+    <body>
+
     <div class="container">
         <h1>إنشاء مستخدم جديد</h1>
         <form action="{{ route('users.store') }}" method="POST">
@@ -50,4 +50,5 @@
         </form>
     </div>
 
-</x-app-layout>
+    </body>
+</html>

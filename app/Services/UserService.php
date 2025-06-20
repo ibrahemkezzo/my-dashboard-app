@@ -35,6 +35,19 @@ class UserService
     }
 
     /**
+     * Search users by name or email with optional role filtering.
+     *
+     * @param string|null $search
+     * @param array|null $roleNames
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function searchUsers(?string $search = null, ?array $roleNames = null)
+    {
+        return $this->userRepository->searchUsers($search, $roleNames);
+    }
+
+
+    /**
      * Retrieve users filtered by roles.
      *
      * @param array|null $roleNames
@@ -142,6 +155,20 @@ class UserService
     {
         return DB::transaction(function () use ($id, $roles) {
             $this->userRepository->syncRoles($id, $roles);
+        });
+    }
+
+    /**
+     * Toggle user active status.
+     *
+     * @param int $id
+     * @param bool $isActive
+     * @throws \Exception
+     */
+    public function toggleUserStatus($id, bool $isActive)
+    {
+        return DB::transaction(function () use ($id, $isActive) {
+            $this->userRepository->toggleUserStatus($id, $isActive);
         });
     }
 }

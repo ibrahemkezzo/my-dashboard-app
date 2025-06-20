@@ -21,6 +21,33 @@ class UserRepository
     }
 
     /**
+     * Search users by name or email with optional role filtering.
+     *
+     * @param string|null $search
+     * @param array|null $roleNames
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function searchUsers(?string $search = null, ?array $roleNames = null)
+    {
+        $query = User::query()->with('roles');
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        if ($roleNames) {
+            $query->whereHas('roles', function ($q) use ($roleNames) {
+                $q->whereIn('name', $roleNames);
+            });
+        }
+
+        return $query->get();
+    }
+
+    /**
      * Retrieve users filtered by roles.
      *
      * @param array $roleNames
@@ -90,5 +117,18 @@ class UserRepository
     {
         $user = User::findOrFail($id);
         $user->syncRoles($roles);
+    }
+
+    /**
+     * Toggle user active status.
+     *
+     * @param int $id
+     * @param bool $isActive
+     */
+    public function toggleUserStatus($id, bool $isActive)
+    {
+        $user = User::findOrFail($id);
+        $user->update(['is_active' => $isActive]);
+        
     }
 }

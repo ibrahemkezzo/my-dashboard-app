@@ -1,9 +1,9 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+<html>
+    <header>
+
+    </header>
+    <body>
+
 
     <div class="container">
         <h1>إدارة الأدوار للمستخدم: {{ $user->name }}</h1>
@@ -25,4 +25,6 @@
             <a href="{{ route('users.show', $user) }}" class="btn btn-secondary">رجوع</a>
         </form>
     </div>
-</x-app-layout>
+
+    </body>
+</html>
