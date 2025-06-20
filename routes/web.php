@@ -20,10 +20,12 @@ Route::middleware([
 });
 
 Route::middleware(['auth', 'role:super-admin'])->group(function () {
+    Route::get('users/export', [UserController::class, 'export'])->name('users.export');
     Route::resource('roles', RoleController::class);
     Route::post('roles/{id}/permissions', [RoleController::class, 'assignPermissions'])->name('roles.assign-permissions');
     Route::resource('permissions', PermissionController::class);
     Route::resource('users', UserController::class);
     Route::get('users/{user}/roles', [UserController::class, 'editRoles'])->name('users.editRoles');
     Route::post('users/{user}/roles', [UserController::class, 'assignRoles'])->name('users.assign-roles');
+    Route::patch('users/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggleStatus');
 });

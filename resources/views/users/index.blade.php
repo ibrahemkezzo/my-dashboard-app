@@ -1,15 +1,21 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+<html>
+    <header>
+
+    </header>
+    <body>
+
+
+
 
     <div class="container">
         <h1>إدارة المستخدمين</h1>
         <a href="{{ route('users.create') }}" class="btn btn-primary mb-3">إنشاء مستخدم جديد</a>
 
         <form method="GET" action="{{ route('users.index') }}" class="mb-3">
+            <div class="form-group mb-3">
+                <label for="search">البحث</label>
+                <input type="text" name="search" id="search" class="form-control" value="{{ $search ?? '' }}" placeholder="ابحث بالاسم أو البريد الإلكتروني">
+            </div>
             <div class="form-group">
                 <label for="roles">تصفية حسب الأدوار</label>
                 <select name="roles[]" id="roles" class="form-control" multiple>
@@ -40,6 +46,13 @@
                             <a href="{{ route('users.show', $user) }}" class="btn btn-info btn-sm">عرض</a>
                             <a href="{{ route('users.edit', $user) }}" class="btn btn-warning btn-sm">تعديل</a>
                             <a href="{{ route('users.editRoles', $user) }}" class="btn btn-primary btn-sm">إدارة الأدوار</a>
+                            <form action="{{ route('users.toggleStatus', $user) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" class="btn btn-{{ $user->is_active ? 'warning' : 'success' }} btn-sm" onclick="return confirm('هل أنت متأكد من {{ $user->is_active ? 'تعطيل' : 'تفعيل' }} المستخدم؟')">
+                                    {{ $user->is_active ? 'تعطيل' : 'تفعيل' }}
+                                </button>
+                            </form>
                             <form action="{{ route('users.destroy', $user) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
@@ -54,6 +67,8 @@
                 @endforelse
             </tbody>
         </table>
+        <a href="{{ route('users.export') }}" class="btn btn-success mb-3">تصدير إلى Excel</a>
     </div>
 
-</x-app-layout>
+    </body>
+</html>

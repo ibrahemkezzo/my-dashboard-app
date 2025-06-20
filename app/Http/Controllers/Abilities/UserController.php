@@ -8,6 +8,8 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Services\UserService;
 use Illuminate\Routing\Controller;
 use Spatie\Permission\Models\Role;
+use App\Exports\UsersExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 /**
  * Controller for managing users and their roles.
@@ -29,19 +31,21 @@ class UserController extends Controller
         $this->middleware('permission:edit-users')->only(['edit', 'update']);
         $this->middleware('permission:delete-users')->only(['destroy']);
         $this->middleware('permission:assign-roles')->only(['editRoles', 'assignRoles']);
+        // $this->middleware('permission:export-users')->only(['export']);
     }
 
     /**
-     * Display a listing of users with role filtering.
+     * Display a listing of users with search and role filtering.
      *
      * @return \Illuminate\View\View
      */
     public function index()
     {
         $roles = Role::query()->pluck('name', 'id');
+        $search = request()->input('search');
         $selectedRoles = request()->input('roles', []);
-        $users = $this->userService->getUsersByRoles($selectedRoles);
-        return view('users.index', compact('users', 'roles', 'selectedRoles'));
+        $users = $this->userService->searchUsers($search, $selectedRoles);
+        return view('users.index', compact('users', 'roles', 'selectedRoles', 'search'));
     }
 
     /**
@@ -150,5 +154,30 @@ class UserController extends Controller
     {
         $this->userService->assignRoles($id, $request->input('roles'));
         return redirect()->route('users.show', $id)->with('success', 'تم تعيين الأدوار بنجاح.');
+    }
+
+    /**
+     * Toggle user active status.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function toggleStatus($id)
+    {
+        $user = $this->userService->findUser($id);
+        $this->userService->toggleUserStatus($id, !$user->is_active);
+        $status = $user->is_active ? 'تعطيل' : 'تفعيل';
+        return redirect()->route('users.index')->with('success', "تم $status المستخدم بنجاح.");
+    }
+
+
+    /**
+     * Export users to Excel.
+     *
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function export()
+    {
+        return Excel::download(new UsersExport(), 'users.xlsx');
     }
 }
