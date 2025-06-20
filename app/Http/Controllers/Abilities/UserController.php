@@ -178,7 +178,7 @@ class UserController extends Controller
      */
     public function export()
     {
-        $search = request()->inputaba('search');
+        $search = request()->input('search');
         $roleNames = request()->input('roles', []);
         $export = new UsersExport($search, $roleNames);
         if ($export->collection()->isEmpty()) {

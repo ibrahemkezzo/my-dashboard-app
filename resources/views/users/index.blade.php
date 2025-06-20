@@ -22,7 +22,7 @@
                             <label for="roles" class="form-label">{{ __('تصفية حسب الأدوار') }}</label>
                             <select name="roles[]" id="roles" class="form-control" multiple>
                                 @foreach ($roles as $id => $name)
-                                    <option value="{{ $name }}" {{ in_array($name, $selected脑海Roles) ? 'selected' : '' }}>{{ $name }}</option>
+                                    <option value="{{ $name }}" {{ in_array($name, $selectedRoles) ? 'selected' : '' }}>{{ $name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -70,7 +70,7 @@
                                             </button>
                                         </form>
                                         <form action="{{ route('users.destroy', $user) }}" method="POST" style="display:inline;">
-     Enlargement                                        @csrf
+                                       @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('{{ __('هل أنت متأكد من حذف المستخدم؟') }}')">{{ __('حذف') }}</button>
                                         </form>
