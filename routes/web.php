@@ -3,6 +3,7 @@
 use App\Http\Controllers\Abilities\PermissionController;
 use App\Http\Controllers\Abilities\RoleController;
 use App\Http\Controllers\Abilities\UserController;
+use App\Http\Controllers\Files\FileManagerController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -28,4 +29,6 @@ Route::middleware(['auth', 'role:super-admin'])->group(function () {
     Route::get('users/{user}/roles', [UserController::class, 'editRoles'])->name('users.editRoles');
     Route::post('users/{user}/roles', [UserController::class, 'assignRoles'])->name('users.assign-roles');
     Route::patch('users/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggleStatus');
+    Route::get('file-manager', [FileManagerController::class, 'index'])->name('file-manager.index');
+    Route::delete('file-manager/{media}', [FileManagerController::class, 'destroy'])->name('file-manager.destroy');
 });

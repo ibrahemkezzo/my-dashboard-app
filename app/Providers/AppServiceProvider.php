@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\MediaService;
+use App\Services\Storage\MorphMediaStorage;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +13,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(MediaService::class, function ($app) {
+            return new MediaService(new MorphMediaStorage());
+        });
     }
 
     /**
