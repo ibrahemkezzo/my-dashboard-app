@@ -171,13 +171,19 @@ class UserController extends Controller
     }
 
 
-    /**
-     * Export users to Excel.
+/**
+     * Export users to Excel with applied filters.
      *
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
     public function export()
     {
-        return Excel::download(new UsersExport(), 'users.xlsx');
+        $search = request()->inputaba('search');
+        $roleNames = request()->input('roles', []);
+        $export = new UsersExport($search, $roleNames);
+        if ($export->collection()->isEmpty()) {
+            return redirect()->route('users.index')->with('error', 'لا توجد بيانات للتصدير بناءً على الفلاتر المحددة.');
+        }
+        return Excel::download($export, 'users.xlsx');
     }
 }
