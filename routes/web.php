@@ -4,6 +4,7 @@ use App\Http\Controllers\Abilities\PermissionController;
 use App\Http\Controllers\Abilities\RoleController;
 use App\Http\Controllers\Abilities\UserController;
 use App\Http\Controllers\Files\FileManagerController;
+use App\Http\Controllers\Files\MediaController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -18,6 +19,13 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::post('media/single', [MediaController::class, 'storeSingle'])->name('media.storeSingle');
+    Route::post('media/multiple', [MediaController::class, 'storeMultiple'])->name('media.storeMultiple');
+    Route::put('media/{mediaId}', [MediaController::class, 'update'])->name('media.update');
+    Route::delete('media/{mediaId}', [MediaController::class, 'destroy'])->name('media.destroy');
 });
 
 Route::middleware(['auth', 'role:super-admin'])->group(function () {
