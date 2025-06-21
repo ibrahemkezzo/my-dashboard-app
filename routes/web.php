@@ -3,6 +3,7 @@
 use App\Http\Controllers\Abilities\PermissionController;
 use App\Http\Controllers\Abilities\RoleController;
 use App\Http\Controllers\Abilities\UserController;
+use App\Http\Controllers\Dashboard\SettingsController;
 use App\Http\Controllers\Files\FileManagerController;
 use App\Http\Controllers\Files\MediaController;
 use Illuminate\Support\Facades\Route;
@@ -39,4 +40,11 @@ Route::middleware(['auth', 'role:super-admin'])->group(function () {
     Route::patch('users/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggleStatus');
     Route::get('file-manager', [FileManagerController::class, 'index'])->name('file-manager.index');
     Route::delete('file-manager/{media}', [FileManagerController::class, 'destroy'])->name('file-manager.destroy');
+    Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
+    Route::post('settings/general', [SettingsController::class, 'updateGeneral'])->name('settings.updateGeneral');
+    Route::post('settings/about-us', [SettingsController::class, 'updateAboutUs'])->name('settings.updateAboutUs');
+    Route::post('settings/contact-us', [SettingsController::class, 'updateContactUs'])->name('settings.updateContactUs');
+    Route::post('settings/services', [SettingsController::class, 'storeService'])->name('settings.storeService');
+    Route::put('settings/services/{service}', [SettingsController::class, 'updateService'])->name('settings.updateService');
+    Route::delete('settings/services/{service}', [SettingsController::class, 'destroyService'])->name('settings.destroyService');
 });
