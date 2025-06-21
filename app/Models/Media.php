@@ -35,6 +35,10 @@ class Media extends Model
      */
     public function getUrlAttribute(): string
     {
-        return Storage::disk($this->disk)->url($this->path);
+        if ($this->disk === 'public') {
+            return asset('/storage/' . ltrim($this->path, '/'));
+        }
+
+        return asset(Storage::disk($this->disk)->url($this->path));
     }
 }

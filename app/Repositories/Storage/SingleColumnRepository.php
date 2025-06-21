@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Services\Storage;
+namespace App\Repositories\Storage;
 
 use App\Contracts\FileStorage;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
-class SingleColumnStorage implements FileStorage
+class SingleColumnRepository implements FileStorage
 {
     protected string $column;
 

@@ -454,13 +454,14 @@
                         </div>
                         <div class="flex space-x-2">
                             <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">{{ __('تحديث الخدمة') }}</button>
-                            <form action="{{ route('settings.destroyService', $service) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="return confirm('{{ __('هل أنت متأكد؟') }}')">{{ __('حذف') }}</button>
-                            </form>
-                        </div>
+
                     </form>
+                    <form action="{{ route('settings.destroyService', $service) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="return confirm('{{ __('هل أنت متأكد؟') }}')">{{ __('حذف') }}</button>
+                    </form>
+                </div>
                 @endforeach
 
                 <!-- Add New Service -->

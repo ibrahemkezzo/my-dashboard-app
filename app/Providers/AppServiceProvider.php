@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Factories\StorageStrategyFactory;
 use App\Repositories\DatabaseSettingsRepository;
+use App\Repositories\Storage\MorphMediaRepository;
 use App\Services\MediaService;
 use App\Services\SettingsService;
 use App\Services\Storage\MorphMediaStorage;
@@ -15,8 +17,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->app->singleton(StorageStrategyFactory::class, function ($app) {
+            return new StorageStrategyFactory();
+        });
+
         $this->app->bind(MediaService::class, function ($app) {
-            return new MediaService(new MorphMediaStorage());
+            return new MediaService($app->make(StorageStrategyFactory::class));
         });
 
         $this->app->bind(SettingsService::class, function ($app) {

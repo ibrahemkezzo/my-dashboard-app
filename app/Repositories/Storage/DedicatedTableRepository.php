@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Services\Storage;
+namespace App\Repositories\Storage;
 
 use App\Contracts\FileStorage;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
-class DedicatedTableStorage implements FileStorage
+class DedicatedTableRepository implements FileStorage
 {
     protected string $table;
     protected string $column;

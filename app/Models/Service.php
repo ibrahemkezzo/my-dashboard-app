@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Service extends Model
 {
@@ -15,4 +16,9 @@ class Service extends Model
         'seo_meta' => 'array',
         'status' => 'boolean',
     ];
+
+    public function media(): MorphMany
+    {
+        return $this->morphMany(Media::class, 'mediable');
+    }
 }

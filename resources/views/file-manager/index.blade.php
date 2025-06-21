@@ -42,10 +42,12 @@
                             </tr>
                         </thead>
                         <tbody>
+
                             @foreach ($media as $item)
+                            {{-- @dd($item->url) --}}
                                 <tr>
                                     <td>
-                                        <img src="{{ $item->url }}" alt="{{ $item->type }}" style="max-width: 100px;">
+                                        <img src="{{$item->url }}" alt="{{ $item->type }}" style="max-width: 100px;">
                                     </td>
                                     <td>{{ $item->type }}</td>
                                     <td>{{ $item->mediable ? class_basename($item->mediable) . ' #' . $item->mediable->id : 'غير مرتبط' }}</td>

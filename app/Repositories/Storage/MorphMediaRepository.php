@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Services\Storage;
+namespace App\Repositories\Storage;
 
 use App\Contracts\FileStorage;
 use App\Models\Media;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
-class MorphMediaStorage implements FileStorage
+class MorphMediaRepository implements FileStorage
 {
     public function store(UploadedFile $file, $model, string $type, string $path): void
     {
