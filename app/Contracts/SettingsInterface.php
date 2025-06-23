@@ -11,7 +11,8 @@ interface SettingsInterface
      * @param mixed $default
      * @return mixed
      */
-    public function get(string $key, $default = null);
+    public function get(string $key);
+    public function getModel(string $key);
 
     /**
      * Retrieve all settings by type.

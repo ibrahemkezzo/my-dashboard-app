@@ -3,6 +3,7 @@
 namespace App\Repositories\Storage;
 
 use App\Contracts\FileStorage;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
@@ -15,13 +16,19 @@ class SingleColumnRepository implements FileStorage
         $this->column = $column;
     }
 
-    public function store(UploadedFile $file, $model, string $type, string $path): void
+    public function store(UploadedFile $file, Model $model, string $type, string $path): void
     {
         $filePath = $file->store($path, 'public');
-        $model->update([$this->column => $filePath]);
+
+        if ($model instanceof Model) {
+            $model->update([$this->column => $filePath]);
+        } else {
+            $model->{$this->column} = $filePath;
+        }
+
     }
 
-    public function update(UploadedFile $file, $model, string $type, string $path): void
+    public function update(UploadedFile $file,Model $model, string $type, string $path): void
     {
         if ($model->{$this->column}) {
             Storage::disk('public')->delete($model->{$this->column});

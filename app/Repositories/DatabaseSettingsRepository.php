@@ -14,10 +14,16 @@ class DatabaseSettingsRepository implements SettingsInterface
      * @param mixed $default
      * @return mixed
      */
-    public function get(string $key, $default = null)
+    public function get(string $key)
     {
         $setting = Setting::where('key', $key)->first();
-        return $setting ? $setting->value : $default;
+        return $setting ? $setting->value : null;
+    }
+
+    public function getModel(string $key)
+    {
+        $setting = Setting::where('key', $key)->first();
+        return $setting ? $setting : null;
     }
 
     /**
