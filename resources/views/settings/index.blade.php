@@ -146,6 +146,7 @@
                     </div>
                     <div>
                         <label class="block text-gray-700">{{ __('شعار الموقع') }}</label>
+                        <img src="{{asset('storage/'.$generalSettings['site_logo'])}}" width="200px" height="200px" />
                         <input type="file" name="site_logo" accept="image/*" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                         @error('site_logo')
                             <p class="error-message">{{ $message }}</p>
@@ -153,6 +154,7 @@
                     </div>
                     <div>
                         <label class="block text-gray-700">{{ __('صورة الغلاف') }}</label>
+                        <img src="{{asset('storage/'.$generalSettings['cover_image'])}}" width="200px" height="200px" />
                         <input type="file" name="cover_image" accept="image/*" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                         @error('cover_image')
                             <p class="error-message">{{ $message }}</p>
@@ -160,6 +162,7 @@
                     </div>
                     <div>
                         <label class="block text-gray-700">{{ __('أيقونة الموقع (Favicon)') }}</label>
+                        <img src="{{asset('storage/'.$generalSettings['favicon'])}}" width="200px" height="200px" />
                         <input type="file" name="favicon" accept="image/ico,image/png" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                         @error('favicon')
                             <p class="error-message">{{ $message }}</p>
@@ -265,6 +268,7 @@
                     </div>
                     <div>
                         <label class="block text-gray-700">{{ __('صورة تعريفية') }}</label>
+                        <img src="{{asset('storage/'.$aboutUsSettings['about_us_image'])}}" width="200px" height="200px" />
                         <input type="file" name="image" accept="image/*" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                         @error('image')
                             <p class="error-message">{{ $message }}</p>
@@ -447,6 +451,12 @@
                         </div>
                         <div>
                             <label class="block text-gray-700">{{ __('صورة الخدمة') }}</label>
+                            @foreach ( $service->media as $image )
+
+                            <img src="{{asset($image->url)}}" width="200px" height="200px" />
+                            @endforeach
+
+
                             <input type="file" name="image" accept="image/*" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                             @error('image')
                                 <p class="error-message">{{ $message }}</p>
