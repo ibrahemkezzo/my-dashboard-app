@@ -27,15 +27,15 @@ class UpdateAboutUsSettingsRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'vision' => 'required|string',
-            'mission' => 'required|string',
-            'values' => 'required|array',
-            'values.*' => 'string|max:255',
+            'vision' => 'nullable|string',
+            'mission' => 'nullable|string',
+            'values' => 'nullable|array',
+            'values.*' => 'nullable|string|max:255',
             'video_url' => 'nullable|url',
             'founded_at' => 'nullable|date',
             'employees_count' => 'nullable|integer|min:0',
             'statistics' => 'nullable|array',
-            'statistics.*' => 'string|max:255',
+            'statistics.*' => 'nullable|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }

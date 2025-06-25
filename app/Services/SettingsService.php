@@ -51,6 +51,7 @@ class SettingsService
             'about_us_founded_at' => '',
             'about_us_employees_count' => 0,
             'about_us_statistics' => [],
+            'about_us_image' => '',
         ];
         $this->defaultContactUsSettings = [
             'contact_us_title' => '',
@@ -66,17 +67,6 @@ class SettingsService
         ];
     }
 
-    /**
-     * Retrieve a setting by key.
-     *
-     * @param string $key
-     * @param mixed $default
-     * @return mixed
-     */
-    public function get(string $key, $default = null)
-    {
-        return $this->repository->get($key, $default);
-    }
 
     /**
      * Retrieve all general settings with default values.
@@ -121,27 +111,32 @@ class SettingsService
     public function updateGeneralSettings(array $data, array $files = []): array
     {
 
-
-        $data = array_merge($this->defaultGeneralSettings, $data);
+        $settings = $this->repository->all('general');
+        if($settings == null){
+            $data = array_merge($this->defaultGeneralSettings, $data);
+        }
         $updatedSettings = [];
+        $imageKeys = ['site_logo', 'cover_image', 'favicon'];
 
         foreach ($data as $key => $value) {
-            if (array_key_exists($key, $this->defaultGeneralSettings)) {
+            if (array_key_exists($key, $this->defaultGeneralSettings) && !in_array($key, $imageKeys)) {
                 $updatedSettings[$key] = $this->repository->set($key, $value, 'general');
+                // dump($updatedSettings);
+            }
+        }
+        foreach ($imageKeys as $key) {
+
+            if (isset($files[$key]) && $files[$key] instanceof UploadedFile) {
+                $setting = $this->repository->getModel($key);
+
+                if ($setting->value) {
+                    Media::delete($setting, $key, 'single_column', ['column' => 'value']);
+                }
+                Media::storeSingle($files[$key], $setting, $key, 'settings', 'single_column', ['column' => 'value']);
+                $updatedSettings[$key] = $setting->value;
             }
         }
 
-        if (isset($files['site_logo'])) {
-            $logo = Setting::where('key','site_logo')->first();
-            $save = new SingleColumnStorage('value');
-            $save->store($files['site_logo'], $logo, 'site_logo', 'settings');
-        }
-        if (isset($files['cover_image'])) {
-            Media::storeSingle($files['cover_image'], new \stdClass(), 'cover_image', 'settings');
-        }
-        if (isset($files['favicon'])) {
-            Media::storeSingle($files['favicon'], new \stdClass(), 'favicon_icon', 'settings');
-        }
 
         return [
             'data' => $updatedSettings,
@@ -160,18 +155,31 @@ class SettingsService
     {
 
 
-        $data = array_merge($this->defaultAboutUsSettings, $data);
+        $settings = $this->repository->all('about_us');
+        if($settings == null){
+            $data = array_merge($this->defaultAboutUsSettings, $data);
+        }
         $updatedSettings = [];
+        $imageKey = 'about_us_image';
 
         foreach ($data as $key => $value) {
             $mappedKey = 'about_us_' . $key;
-            if (array_key_exists($key, $this->defaultAboutUsSettings)) {
+            if (array_key_exists($key, $this->defaultAboutUsSettings)&& !in_array($key, [$imageKey])) {
                 $updatedSettings[$mappedKey] = $this->repository->set($mappedKey, $value, 'about_us');
             }
         }
+        // dd($image);
 
         if ($image) {
-            Media::storeSingle($image, new \stdClass(), 'about_us_image', 'settings');
+           $old =  $this->repository->getModel($imageKey);
+           if($old == null){
+             $old = $this->repository->set($imageKey, null, 'about_us');
+           }
+
+            if($old->value){
+                Media::delete($old,'about_us_image','single_column',['column'=>'value']);
+            }
+            Media::storeSingle($image,$old,'about_us_image','settings','single_column',['column'=>'value']);
         }
 
         return [
@@ -189,7 +197,10 @@ class SettingsService
     public function updateContactUsSettings(array $data): array
     {
 
-        $data = array_merge($this->defaultContactUsSettings, $data);
+        $settings = $this->repository->all('contact_us');
+        if($settings == null){
+            $data = array_merge($this->defaultContactUsSettings, $data);
+        }
         $updatedSettings = [];
 
         foreach ($data as $key => $value) {
@@ -231,12 +242,13 @@ class SettingsService
         if ($service) {
             $service->update($serviceData);
             if ($image) {
-                Media::updateMedia($image, $service->id, 'services');
+                // dd($service->media);
+                Media::updateSingle($image,$service,'service_image','service_image','morph',[]);
             }
         } else {
             $service = Service::create($serviceData);
             if ($image) {
-                Media::storeSingle($image, $service, 'service_image', 'services');
+                Media::storeSingle($image,$service,'service image','service_image','morph',[]);
             }
         }
 

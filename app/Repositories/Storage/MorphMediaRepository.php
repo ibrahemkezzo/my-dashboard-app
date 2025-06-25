@@ -35,12 +35,13 @@ class MorphMediaRepository implements FileStorage
             'mediable_id' => $model->id,
             'mediable_type' => get_class($model),
             'type' => $type,
-        ])->get();
+            ])->get();
 
-        foreach ($media as $item) {
-            Storage::disk($item->disk)->delete($item->path);
-            $item->delete();
-        }
+            foreach ($media as $item) {
+                Storage::disk($item->disk)->delete($item->path);
+                $item->delete();
+            }
+            // dd($model,$media);
     }
 
     public function deleteSingle(int $mediaId): void

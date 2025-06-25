@@ -39,7 +39,7 @@ class SettingsController extends Controller
         $aboutUsSettings = $this->settingsService->getAboutUsSettings();
         $contactUsSettings = $this->settingsService->getContactUsSettings();
         $services = Service::orderBy('order')->get();
-// dd($aboutUsSettings);
+
         return view('settings.index', compact(
             'generalSettings',
             'aboutUsSettings',
