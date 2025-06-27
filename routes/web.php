@@ -3,7 +3,9 @@
 use App\Http\Controllers\Abilities\PermissionController;
 use App\Http\Controllers\Abilities\RoleController;
 use App\Http\Controllers\Abilities\UserController;
+use App\Http\Controllers\Dashboard\ReportsController;
 use App\Http\Controllers\Dashboard\SettingsController;
+use App\Http\Controllers\Dashboard\VisitTimeController;
 use App\Http\Controllers\Files\FileManagerController;
 use App\Http\Controllers\Files\MediaController;
 use Illuminate\Support\Facades\Route;
@@ -47,4 +49,11 @@ Route::middleware(['auth', 'role:super-admin'])->group(function () {
     Route::post('settings/services', [SettingsController::class, 'storeService'])->name('settings.storeService');
     Route::put('settings/services/{service}', [SettingsController::class, 'updateService'])->name('settings.updateService');
     Route::delete('settings/services/{service}', [SettingsController::class, 'destroyService'])->name('settings.destroyService');
+    Route::post('/visits/time', [VisitTimeController::class, 'updateTime'])->name('visits.time');
+    Route::get('/reports', [ReportsController::class, 'index'])->name('reports');
+    Route::get('/user-activity-report', [ReportsController::class, 'userActivityReport'])->name('user-activity-report');
+// Register Livewire route for /reports
+// Route::get('/reports', Reports::class)
+//     ->name('reports');
+
 });
