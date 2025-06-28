@@ -5,7 +5,7 @@
     <body>
         <div class="container">
             <h1>إنشاء صلاحية جديدة</h1>
-            <form action="{{ route('permissions.store') }}" method="POST">
+            <form action="{{ route('dashboard.permissions.store') }}" method="POST">
                 @csrf
                 <div class="form-group mb-3">
                     <label for="name">اسم الصلاحية</label>

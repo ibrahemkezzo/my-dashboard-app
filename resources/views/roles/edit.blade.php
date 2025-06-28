@@ -1,13 +1,18 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+
 
     <div class="container">
         <h1>تعديل الدور: {{ $role->name }}</h1>
-        <form action="{{ route('roles.update', $role) }}" method="POST">
+        <form action="{{ route('dashboard.roles.update', $role) }}" method="POST">
             @csrf
             @method('PUT')
             <div class="form-group mb-3">
@@ -34,4 +39,5 @@
             <button type="submit" class="btn btn-primary">تحديث الدور</button>
         </form>
     </div>
-</x-app-layout>
+</body>
+</html>
