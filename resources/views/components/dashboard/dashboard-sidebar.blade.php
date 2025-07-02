@@ -11,7 +11,7 @@
         <a href="javascript:void(0)" class="sidebar-back d-lg-none d-block"><i class="fa fa-times"
                 aria-hidden="true"></i></a>
         <div class="sidebar-user">
-            <img class="img-60" src="{{asset('storage/'.$user->profile_photo_path)}}" alt="#">
+            <img class="img-60" src="{{$user->url}}" alt="#">
             <div>
                 <h6 class="f-14">{{ $user->name }}</h6>
                 @foreach ($user->getRoleNames() as $role)

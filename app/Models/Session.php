@@ -42,7 +42,7 @@ class Session extends Model
      */
     public function visits(): HasMany
     {
-        return $this->hasMany(Visit::class);
+        return $this->hasMany(Visit::class, 'session_id', 'session_id');
     }
 
     /**

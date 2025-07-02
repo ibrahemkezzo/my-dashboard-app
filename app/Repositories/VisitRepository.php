@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Contracts\VisitRepositoryInterface;
 use App\Models\Session;
 use App\Models\Visit;
 use Carbon\Carbon;
@@ -10,7 +11,7 @@ use Illuminate\Support\Collection;
 /**
  * Repository for managing website visit data.
  */
-class VisitRepository
+class VisitRepository implements VisitRepositoryInterface
 {
     /**
      * Record a new session.
@@ -174,6 +175,137 @@ class VisitRepository
     public function getCountries(): Collection
     {
         return Session::select('country')->distinct()->whereNotNull('country')->pluck('country');
+    }
+
+    /**
+     * Get user sessions with visits.
+     *
+     * @param int $userId
+     * @param int $perPage
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function getUserSessions(int $userId, int $perPage = 10): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    {
+        return Session::where('user_id', $userId)
+            ->with(['visits' => function($query) {
+                $query->orderBy('visited_at', 'desc');
+            }])
+            ->orderBy('updated_at', 'desc')
+            ->paginate($perPage);
+    }
+
+    /**
+     * Get user sessions count.
+     *
+     * @param int $userId
+     * @return int
+     */
+    public function getUserSessionsCount(int $userId): int
+    {
+        return Session::where('user_id', $userId)->count();
+    }
+
+    /**
+     * Get user visits count.
+     *
+     * @param int $userId
+     * @return int
+     */
+    public function getUserVisitsCount(int $userId): int
+    {
+        return Visit::whereHas('session', function($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })->count();
+    }
+
+    /**
+     * Get user last session.
+     *
+     * @param int $userId
+     * @return \App\Models\Session|null
+     */
+    public function getUserLastSession(int $userId): ?\App\Models\Session
+    {
+        return Session::where('user_id', $userId)->latest()->first();
+    }
+
+    /**
+     * Get user device types count.
+     *
+     * @param int $userId
+     * @return int
+     */
+    public function getUserDeviceTypesCount(int $userId): int
+    {
+        return Session::where('user_id', $userId)->distinct('device_type')->count();
+    }
+
+    /**
+     * Get visits by session ID.
+     *
+     * @param string $sessionId
+     * @return Collection
+     */
+    public function getVisitsBySession(string $sessionId): Collection
+    {
+        return Visit::where('session_id', $sessionId)
+            ->orderBy('visited_at', 'desc')
+            ->get();
+    }
+
+    /**
+     * Get all visits for a specific user.
+     *
+     * @param int $userId
+     * @param int $perPage
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function getUserVisits(int $userId, int $perPage = 10): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    {
+        return Visit::whereHas('session', function($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })
+        ->with(['session' => function($query) {
+            $query->select('session_id', 'user_id', 'device_type', 'country', 'started_at', 'updated_at');
+        }])
+        ->orderBy('visited_at', 'desc')
+        ->paginate($perPage);
+    }
+
+    /**
+     * Get user visits grouped by page with visit count.
+     *
+     * @param int $userId
+     * @return Collection
+     */
+    public function getUserVisitsByPage(int $userId): Collection
+    {
+        return Visit::whereHas('session', function($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })
+        ->selectRaw('page_url, COUNT(*) as visit_count, MAX(visited_at) as last_visited')
+        ->groupBy('page_url')
+        ->orderByDesc('visit_count')
+        ->get();
+    }
+    /**
+     * Get user visits with session details.
+     *
+     * @param int $userId
+     * @param int $perPage
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function getUserVisitsWithSessions(int $userId, int $perPage = 10): \Illuminate\Contracts\Pagination\LengthAwarePaginator
+    {
+        // $sessionsId[] = 
+        return Visit::whereHas('session', function($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })
+        ->with(['session' => function($query) {
+            $query->select('session_id', 'user_id', 'device_type', 'country', 'started_at', 'updated_at');
+        }])
+        ->orderBy('visited_at', 'desc')
+        ->paginate($perPage);
     }
 
     /**

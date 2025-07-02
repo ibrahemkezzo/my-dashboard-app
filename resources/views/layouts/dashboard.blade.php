@@ -66,6 +66,8 @@
             text-align: left;
         }
     </style>
+
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/new.css')}}">
     <script src="chrome-extension://mooikfkahbdckldjjndioackbalphokd/assets/prompt.js"></script>
     @stack('styles')
 </head>

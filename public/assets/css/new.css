@@ -1,0 +1,97 @@
+:root {
+    --primary-color: #E43F6F;
+    --secondary-color: #F56476;
+    --primary-background: #680d48;
+}
+
+.page-wrapper .page-body-wrapper .page-sidebar .sidebar-user,
+.page-wrapper .page-body-wrapper .page-sidebar .main-header-left,
+.page-wrapper .page-body-wrapper .sidebar{
+    box-shadow: 0 0;
+}
+
+.page-wrapper .page-body-wrapper .page-sidebar .main-header-left,
+.page-wrapper .page-body-wrapper .sidebar,
+.badge-primary,
+.page-main-header .main-header-right .nav-right ul li .dot,
+.page-main-header .main-header-right .nav-right ul li .media .dotted-animation .main-circle {
+    background-color: var(--primary-background) !important;
+}
+
+.page-main-header .main-header-right svg line, .page-main-header .main-header-right svg polyline,
+.page-main-header .main-header-right .nav-right>ul>li h6,
+.page-main-header .main-header-right .nav-right ul li svg path,
+.breadcrumb-item a {
+    color: var(--primary-background) !important;
+}
+
+.page-main-header .main-header-right .nav-right ul li .media .dotted-animation .animate-circle {
+    border: 5px solid var(--primary-background);
+}
+
+@media only screen and (max-width: 991px) {
+    .page-wrapper .page-main-header .main-header-right {
+        padding: 15px !important;
+        justify-content: space-between;
+    }
+
+    .switch-sm .switch {
+        margin-top: 0;
+        margin-bottom: 4px;
+    }
+
+    body.rtl .page-main-header .main-header-right .nav-right {
+        display: none;
+    }
+
+    .page-wrapper .page-main-header .main-header-left .logo-wrapper img {
+        height: 36px;
+    }
+}
+
+body,
+.page-wrapper .page-body-wrapper .page-header .row h3,
+.page-wrapper .page-body-wrapper .page-header .breadcrumb .breadcrumb-item {
+    font-family: "IBM Plex Sans Arabic", sans-serif !important;
+}
+
+.nav-menus li .form-inline {
+    margin-bottom: 0;
+}
+
+.switch-sm .switch {
+    margin-top: 0;
+}
+
+.page-wrapper .page-body-wrapper .page-header .breadcrumb.pull-right {
+    align-items: center;
+}
+
+.static-top-widget .icons-widgets .text-center {
+    background-color: var(--primary-color) !important;
+}
+
+.static-top-widget .icons-widgets .text-center .feather {
+    fill: var(--primary-color) !important;
+}
+
+.static-top-widget .media-body h3 ,
+.warning-box .static-top-widget .media-body,
+.secondary-box .static-top-widget .media-body,
+.primary-box .static-top-widget .media-body,
+.danger-box .static-top-widget .media-body,
+.page-main-header .main-header-right .nav-right .profile-dropdown li:hover a,
+.page-main-header .main-header-right .nav-right .profile-dropdown li:hover a svg,
+.page-main-header .main-header-right .nav-right .profile-dropdown li:hover a svg {
+    color: var(--primary-color) !important;
+}
+
+.btn-primary {
+    background-color: var(--secondary-color) !important;
+    border-color: var(--secondary-color) !important;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}

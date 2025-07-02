@@ -40,7 +40,7 @@ class SettingsController extends Controller
         $contactUsSettings = $this->settingsService->getContactUsSettings();
         $services = Service::orderBy('order')->get();
 
-        return view('settings.index', compact(
+        return view('dashboard.settings.web-site', compact(
             'generalSettings',
             'aboutUsSettings',
             'contactUsSettings',
@@ -66,7 +66,7 @@ class SettingsController extends Controller
 
         $response = $this->settingsService->updateGeneralSettings($data, $files);
 
-        return Redirect::route('settings.index')
+        return Redirect::route('dashboard.settings.index')
             ->with('success', $response['message']);
     }
 
@@ -81,7 +81,7 @@ class SettingsController extends Controller
         $data = $request->validated();
         $response = $this->settingsService->updateAboutUsSettings($data, $request->file('image'));
 
-        return Redirect::route('settings.index')
+        return Redirect::route('dashboard.settings.index')
             ->with('success', $response['message']);
     }
 
@@ -96,7 +96,7 @@ class SettingsController extends Controller
         $data = $request->validated();
         $response = $this->settingsService->updateContactUsSettings($data);
 
-        return Redirect::route('settings.index')
+        return Redirect::route('dashboard.settings.index')
             ->with('success', $response['message']);
     }
 
@@ -111,7 +111,7 @@ class SettingsController extends Controller
         $data = $request->validated();
         $response = $this->settingsService->updateService($data, $request->file('image'));
 
-        return Redirect::route('settings.index')
+        return Redirect::route('dashboard.settings.index')
             ->with('success', $response['message']);
     }
 
@@ -127,7 +127,7 @@ class SettingsController extends Controller
         $data = $request->validated();
         $response = $this->settingsService->updateService($data, $request->file('image'), $service);
 
-        return Redirect::route('settings.index')
+        return Redirect::route('dashboard.settings.index')
             ->with('success', $response['message']);
     }
 
@@ -141,7 +141,7 @@ class SettingsController extends Controller
     {
         $response = $this->settingsService->deleteService($service);
 
-        return Redirect::route('settings.index')
+        return Redirect::route('dashboard.settings.index')
             ->with('success', $response['message']);
     }
 }

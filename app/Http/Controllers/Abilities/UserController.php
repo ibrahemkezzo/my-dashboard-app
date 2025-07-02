@@ -6,6 +6,7 @@ use App\Http\Requests\AssignRolesRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Services\UserService;
+use App\Contracts\UserActivityInterface;
 use Illuminate\Routing\Controller;
 use Spatie\Permission\Models\Role;
 use App\Exports\UsersExport;
@@ -17,15 +18,18 @@ use Maatwebsite\Excel\Facades\Excel;
 class UserController extends Controller
 {
     protected $userService;
+    protected $userActivityService;
 
     /**
      * UserController constructor.
      *
      * @param UserService $userService
+     * @param UserActivityInterface $userActivityService
      */
-    public function __construct(UserService $userService)
+    public function __construct(UserService $userService, UserActivityInterface $userActivityService)
     {
         $this->userService = $userService;
+        $this->userActivityService = $userActivityService;
         $this->middleware('permission:view-users')->only(['index', 'show']);
         $this->middleware('permission:create-users')->only(['create', 'store']);
         $this->middleware('permission:edit-users')->only(['edit', 'update']);
@@ -42,10 +46,13 @@ class UserController extends Controller
     public function index()
     {
         $roles = Role::query()->pluck('name', 'id');
-        $search = request()->input('search');
-        $selectedRoles = request()->input('roles', []);
-        $users = $this->userService->searchUsers($search, $selectedRoles);
-        return view('dashboard.users.index', compact('users', 'roles', 'selectedRoles', 'search'));
+        $filters = [
+            'search' => request()->input('search'),
+            'roles' => request()->input('roles', []),
+            'status' => request()->input('status'),
+        ];
+        $users = $this->userService->getFilteredUsers($filters);
+        return view('dashboard.users.index', compact('users', 'roles', 'filters'));
     }
 
     /**
@@ -82,8 +89,12 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = $this->userService->findUser($id);
-        return view('dashboard.users.show', compact('user'));
+        // Get user activity data using the service
+        $activityData = $this->userActivityService->getUserActivityData($id);
+
+        // dd($activityData);
+
+        return view('dashboard.users.show', $activityData);
     }
 
     /**
@@ -97,7 +108,8 @@ class UserController extends Controller
         $user = $this->userService->findUser($id);
         $roles = Role::query()->pluck('name', 'id');
         $userRoles = $user->roles->pluck('name')->toArray();
-        return view('dashboard.users.edit', compact('user', 'roles', 'userRoles'));
+        $activeTab = 'info'; // Default tab
+        return view('dashboard.users.edit', compact('user', 'roles', 'userRoles', 'activeTab'));
     }
 
     /**
@@ -140,7 +152,8 @@ class UserController extends Controller
         $user = $this->userService->findUser($id);
         $roles = Role::query()->pluck('name', 'id');
         $userRoles = $user->roles->pluck('name')->toArray();
-        return view('dashboard.users.roles', compact('user', 'roles', 'userRoles'));
+        $activeTab = 'roles'; // Roles tab
+        return view('dashboard.users.edit', compact('user', 'roles', 'userRoles', 'activeTab'));
     }
 
     /**

@@ -64,7 +64,7 @@ class ReportsController extends Controller
 
         $days = $timeRange === 'custom' ? 30 : (int)$timeRange;
 
-        return view('dashboard.reports', [
+        return view('dashboard.reports.reports', [
             'totalVisits' => $this->analytics->getTotalVisits($filters),
             'visitsByPage' => $this->analytics->getVisitsByPage($filters),
             'visitsByDevice' => $this->analytics->getVisitsByDevice($filters),

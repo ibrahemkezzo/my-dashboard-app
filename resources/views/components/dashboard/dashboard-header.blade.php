@@ -173,7 +173,7 @@
                 <li class="onhover-dropdown">
                     <div class="media align-items-center">
                         <img class="align-self-center pull-right img-50 blur-up lazyloaded"
-                            src="{{asset('storage/'.$user->profile_photo_path)}}" alt="header-user">
+                            src="{{$user->url}}" alt="header-user">
                         <div class="dotted-animation">
                             <span class="animate-circle"></span>
                             <span class="main-circle"></span>

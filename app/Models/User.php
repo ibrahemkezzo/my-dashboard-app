@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Traits\HasDynamicMediaUrl;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -20,7 +22,7 @@ class User extends Authenticatable
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
-
+    use HasDynamicMediaUrl;
     /**
      * The attributes that are mass assignable.
      *
@@ -73,5 +75,11 @@ class User extends Authenticatable
     public function sessions()
     {
         return $this->hasMany(Session::class);
+    }
+
+    // Optional: Override getMediaData to customize logic
+    protected function getMediaData()
+    {
+        return $this->profile_photo_path ?? null; // Use image_path column
     }
 }

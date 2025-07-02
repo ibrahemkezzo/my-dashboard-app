@@ -27,7 +27,7 @@ class FileManagerController extends Controller
             return ['path' => $dir, 'files' => Storage::disk('public')->files($dir)];
         });
 
-        return view('file-manager.index', compact('media', 'directories'));
+        return view('dashboard.file-manager.media', compact('media', 'directories'));
     }
 
     /**
@@ -41,6 +41,6 @@ class FileManagerController extends Controller
     {
         Media::deleteSingle($mediaId);
 
-        return redirect()->route('file-manager.index')->with('success', __('File deleted successfully.'));
+        return redirect()->route('dashboard.file-manager.media')->with('success', __('File deleted successfully.'));
     }
 }

@@ -35,17 +35,16 @@ class UserService
     }
 
     /**
-     * Search users by name or email with optional role filtering.
+     * Get filtered and paginated users.
      *
-     * @param string|null $search
-     * @param array|null $roleNames
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @param array $filters
+     * @param int $perPage
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function searchUsers(?string $search = null, ?array $roleNames = null)
+    public function getFilteredUsers(array $filters = [], int $perPage = 15)
     {
-        return $this->userRepository->searchUsers($search, $roleNames);
+        return $this->userRepository->getFilteredUsers($filters, $perPage);
     }
-
 
     /**
      * Retrieve users filtered by roles.

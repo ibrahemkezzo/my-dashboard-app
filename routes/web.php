@@ -16,13 +16,13 @@ Route::get('/', function () {
 });
 
 Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
+    // 'auth:sanctum',
+    // config('jetstream.auth_session'),
+    // 'verified',
 ])->group(function () {
     Route::get('/jetstream/dashboard', function () {
         return view('dashboard');
-    })->name('jetstream.dashboard');
+    })->name('dashboard');
 });
 
 
@@ -66,7 +66,7 @@ Route::group([
     Route::post('media/multiple', [MediaController::class, 'storeMultiple'])->name('media.storeMultiple');
     Route::put('media/{mediaId}', [MediaController::class, 'update'])->name('media.update');
     Route::delete('media/{mediaId}', [MediaController::class, 'destroy'])->name('media.destroy');
-    Route::get('file-manager', [FileManagerController::class, 'index'])->name('file-manager.index');
+    Route::get('file-manager', [FileManagerController::class, 'index'])->name('file-manager.media');
     Route::delete('file-manager/{media}', [FileManagerController::class, 'destroy'])->name('file-manager.destroy');
 
     //route for settings website

@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Contracts\AnalyticsInterface;
 use App\Factories\StorageStrategyFactory;
 use App\Repositories\DatabaseSettingsRepository;
+use App\Repositories\UserRepository;
 use App\Repositories\VisitRepository;
 use App\Services\MediaService;
 use App\Services\SettingsService;
@@ -34,7 +35,19 @@ class AppServiceProvider extends ServiceProvider
             return new VisitRepository();
         });
 
+        // Bind VisitRepository interface
+        $this->app->bind(\App\Contracts\VisitRepositoryInterface::class, VisitRepository::class);
+
         $this->app->bind(AnalyticsInterface::class, VisitAnalyticsService::class);
+
+        // Register UserActivityService
+        $this->app->bind(\App\Contracts\UserActivityInterface::class, \App\Services\UserActivityService::class);
+        $this->app->bind(\App\Services\UserActivityService::class, function ($app) {
+            return new \App\Services\UserActivityService(
+                $app->make(\App\Contracts\VisitRepositoryInterface::class),
+                $app->make(UserRepository::class)
+            );
+        });
     }
 
     /**

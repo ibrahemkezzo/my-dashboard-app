@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Contracts\AnalyticsInterface;
-use App\Repositories\VisitRepository;
+use App\Contracts\VisitRepositoryInterface;
 use Illuminate\Support\Collection;
 
 /**
@@ -14,16 +14,16 @@ class VisitAnalyticsService implements AnalyticsInterface
     /**
      * The visit repository instance.
      *
-     * @var VisitRepository
+     * @var VisitRepositoryInterface
      */
-    protected VisitRepository $visitRepository;
+    protected VisitRepositoryInterface $visitRepository;
 
     /**
      * Create a new service instance.
      *
-     * @param VisitRepository $visitRepository
+     * @param VisitRepositoryInterface $visitRepository
      */
-    public function __construct(VisitRepository $visitRepository)
+    public function __construct(VisitRepositoryInterface $visitRepository)
     {
         $this->visitRepository = $visitRepository;
     }

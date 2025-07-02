@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Traits\HasDynamicMediaUrl;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Facades\Storage;
 
 class Media extends Model
 {
+    use HasDynamicMediaUrl;
+    
     protected $fillable = [
         'path',
         'type',
@@ -28,17 +31,20 @@ class Media extends Model
         return $this->morphTo();
     }
 
-    /**
-     * Get the full URL of the media.
+   /**
+     * Define how to retrieve media data for the Media model.
      *
-     * @return string
+     * @return array|null
      */
-    public function getUrlAttribute(): string
+    protected function getMediaData()
     {
-        if ($this->disk === 'public') {
-            return asset('/storage/' . ltrim($this->path, '/'));
+        if ($this->path && $this->disk) {
+            return [
+                'path' => $this->path,
+                'disk' => $this->disk,
+            ];
         }
 
-        return asset(Storage::disk($this->disk)->url($this->path));
+        return null;
     }
 }

@@ -21,30 +21,35 @@ class UserRepository
     }
 
     /**
-     * Search users by name or email with optional role filtering.
+     * Get filtered and paginated users.
      *
-     * @param string|null $search
-     * @param array|null $roleNames
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @param array $filters
+     * @param int $perPage
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function searchUsers(?string $search = null, ?array $roleNames = null)
+    public function getFilteredUsers(array $filters = [], int $perPage = 15)
     {
-        $query = User::query()->with('roles');
+        $query = User::query()->with('roles')->withMax('sessions', 'updated_at');
 
-        if ($search) {
+        if (!empty($filters['search'])) {
+            $search = $filters['search'];
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%");
             });
         }
 
-        if ($roleNames) {
-            $query->whereHas('roles', function ($q) use ($roleNames) {
-                $q->whereIn('name', $roleNames);
+        if (!empty($filters['roles']) && $filters['roles'][0] != null) {
+            $query->whereHas('roles', function ($q) use ($filters) {
+                $q->whereIn('name', $filters['roles']);
             });
         }
 
-        return $query->get();
+        if (isset($filters['status']) && $filters['status'] !== '') {
+            $query->where('is_active', $filters['status']);
+        }
+
+        return $query->paginate($perPage);
     }
 
     /**
@@ -129,6 +134,6 @@ class UserRepository
     {
         $user = User::findOrFail($id);
         $user->update(['is_active' => $isActive]);
-        
+
     }
 }
