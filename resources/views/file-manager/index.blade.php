@@ -53,13 +53,13 @@
                                     <td>{{ $item->mediable ? class_basename($item->mediable) . ' #' . $item->mediable->id : 'غير مرتبط' }}</td>
                                     <td>
                                         <!-- Update Form -->
-                                        <form action="{{ route('media.update', $item->id) }}" method="POST" enctype="multipart/form-data" style="display:inline;">
+                                        <form action="{{ route('dashboard.media.update', $item->id) }}" method="POST" enctype="multipart/form-data" style="display:inline;">
                                             @csrf
                                             @method('PUT')
                                             <input type="file" name="file" accept="image/*" onchange="this.form.submit()">
                                         </form>
                                         <!-- Delete Form -->
-                                        <form action="{{ route('file-manager.destroy', $item->id) }}" method="POST" style="display:inline;">
+                                        <form action="{{ route('dashboard.file-manager.destroy', $item->id) }}" method="POST" style="display:inline;">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('{{ __('هل أنت متأكد من حذف الملف؟') }}')">

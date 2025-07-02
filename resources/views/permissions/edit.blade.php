@@ -5,7 +5,7 @@
     <body>
         <div class="container">
             <h1>تعديل الصلاحية: {{ $permission->name }}</h1>
-            <form action="{{ route('permissions.update', $permission) }}" method="POST">
+            <form action="{{ route('dashboard.permissions.update', $permission) }}" method="POST">
                 @csrf
                 @method('PUT')
                 <div class="form-group mb-3">

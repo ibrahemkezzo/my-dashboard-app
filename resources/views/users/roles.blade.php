@@ -7,7 +7,7 @@
 
     <div class="container">
         <h1>إدارة الأدوار للمستخدم: {{ $user->name }}</h1>
-        <form action="{{ route('users.assign-roles', $user) }}" method="POST">
+        <form action="{{ route('dashboard.users.assign-roles', $user) }}" method="POST">
             @csrf
             <div class="form-group mb-3">
                 <label>الأدوار</label>
@@ -22,7 +22,7 @@
                 @enderror
             </div>
             <button type="submit" class="btn btn-primary">تعيين الأدوار</button>
-            <a href="{{ route('users.show', $user) }}" class="btn btn-secondary">رجوع</a>
+            <a href="{{ route('dashboard.users.show', $user) }}" class="btn btn-secondary">رجوع</a>
         </form>
     </div>
 

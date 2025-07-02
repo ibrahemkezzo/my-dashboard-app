@@ -59,20 +59,28 @@
                                     <td>{{ $user->roles->pluck('name')->implode(', ') ?: __('لا توجد أدوار') }}</td>
                                     <td>{{ $user->is_active ? __('مفعل') : __('معطل') }}</td>
                                     <td>
-                                        <a href="{{ route('users.show', $user) }}" class="btn btn-info btn-sm">{{ __('عرض') }}</a>
-                                        <a href="{{ route('users.edit', $user) }}" class="btn btn-warning btn-sm">{{ __('تعديل') }}</a>
-                                        <a href="{{ route('users.editRoles', $user) }}" class="btn btn-primary btn-sm">{{ __('إدارة الأدوار') }}</a>
+                                        <a href="{{ route('users.show', $user) }}" class="text-blue-500 hover:text-blue-700 mr-2" title="{{ __('عرض') }}">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+                                        <a href="{{ route('users.edit', $user) }}" class="text-yellow-500 hover:text-yellow-700 mr-2" title="{{ __('تعديل') }}">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        <a href="{{ route('users.editRoles', $user) }}" class="text-purple-500 hover:text-purple-700 mr-2" title="{{ __('إدارة الأدوار') }}">
+                                            <i class="fa fa-users-cog"></i>
+                                        </a>
                                         <form action="{{ route('users.toggleStatus', $user) }}" method="POST" style="display:inline;">
                                             @csrf
                                             @method('PATCH')
-                                            <button type="submit" class="btn btn-{{ $user->is_active ? 'warning' : 'success' }} btn-sm" onclick="return confirm('{{ __('هل أنت متأكد من') }} {{ $user->is_active ? __('تعطيل') : __('تفعيل') }} {{ __('المستخدم؟') }}')">
-                                                {{ $user->is_active ? __('تعطيل') : __('تفعيل') }}
+                                            <button type="submit" class="text-{{ $user->is_active ? 'orange-500' : 'green-500' }} hover:text-{{ $user->is_active ? 'orange-700' : 'green-700' }} mr-2" title="{{ $user->is_active ? __('تعطيل') : __('تفعيل') }}" onclick="return confirm('{{ __('هل أنت متأكد من') }} {{ $user->is_active ? __('تعطيل') : __('تفعيل') }} {{ __('المستخدم؟') }}')">
+                                                <i class="fa fa-{{ $user->is_active ? 'ban' : 'check' }}"></i>
                                             </button>
                                         </form>
                                         <form action="{{ route('users.destroy', $user) }}" method="POST" style="display:inline;">
-                                       @csrf
+                                            @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('{{ __('هل أنت متأكد من حذف المستخدم؟') }}')">{{ __('حذف') }}</button>
+                                            <button type="submit" class="text-red-500 hover:text-red-700" title="{{ __('حذف') }}" onclick="return confirm('{{ __('هل أنت متأكد من حذف المستخدم؟') }}')">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
                                         </form>
                                     </td>
                                 </tr>

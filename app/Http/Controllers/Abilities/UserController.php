@@ -6,6 +6,7 @@ use App\Http\Requests\AssignRolesRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Services\UserService;
+use App\Contracts\UserActivityInterface;
 use Illuminate\Routing\Controller;
 use Spatie\Permission\Models\Role;
 use App\Exports\UsersExport;
@@ -17,15 +18,18 @@ use Maatwebsite\Excel\Facades\Excel;
 class UserController extends Controller
 {
     protected $userService;
+    protected $userActivityService;
 
     /**
      * UserController constructor.
      *
      * @param UserService $userService
+     * @param UserActivityInterface $userActivityService
      */
-    public function __construct(UserService $userService)
+    public function __construct(UserService $userService, UserActivityInterface $userActivityService)
     {
         $this->userService = $userService;
+        $this->userActivityService = $userActivityService;
         $this->middleware('permission:view-users')->only(['index', 'show']);
         $this->middleware('permission:create-users')->only(['create', 'store']);
         $this->middleware('permission:edit-users')->only(['edit', 'update']);
@@ -42,10 +46,13 @@ class UserController extends Controller
     public function index()
     {
         $roles = Role::query()->pluck('name', 'id');
-        $search = request()->input('search');
-        $selectedRoles = request()->input('roles', []);
-        $users = $this->userService->searchUsers($search, $selectedRoles);
-        return view('users.index', compact('users', 'roles', 'selectedRoles', 'search'));
+        $filters = [
+            'search' => request()->input('search'),
+            'roles' => request()->input('roles', []),
+            'status' => request()->input('status'),
+        ];
+        $users = $this->userService->getFilteredUsers($filters);
+        return view('dashboard.users.index', compact('users', 'roles', 'filters'));
     }
 
     /**
@@ -56,7 +63,7 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::query()->pluck('name', 'id');
-        return view('users.create', compact('roles'));
+        return view('dashboard.users.create', compact('roles'));
     }
 
     /**
@@ -71,7 +78,7 @@ class UserController extends Controller
             $request->only('name', 'email', 'password'),
             $request->input('roles', [])
         );
-        return redirect()->route('users.index')->with('success', 'تم إنشاء المستخدم بنجاح.');
+        return redirect()->route('dashboard.users.index')->with('success', 'تم إنشاء المستخدم بنجاح.');
     }
 
     /**
@@ -82,8 +89,12 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = $this->userService->findUser($id);
-        return view('users.show', compact('user'));
+        // Get user activity data using the service
+        $activityData = $this->userActivityService->getUserActivityData($id);
+
+        // dd($activityData);
+
+        return view('dashboard.users.show', $activityData);
     }
 
     /**
@@ -97,7 +108,8 @@ class UserController extends Controller
         $user = $this->userService->findUser($id);
         $roles = Role::query()->pluck('name', 'id');
         $userRoles = $user->roles->pluck('name')->toArray();
-        return view('users.edit', compact('user', 'roles', 'userRoles'));
+        $activeTab = 'info'; // Default tab
+        return view('dashboard.users.edit', compact('user', 'roles', 'userRoles', 'activeTab'));
     }
 
     /**
@@ -114,7 +126,7 @@ class UserController extends Controller
             $request->only('name', 'email', 'password'),
             $request->input('roles', [])
         );
-        return redirect()->route('users.index')->with('success', 'تم تحديث المستخدم بنجاح.');
+        return redirect()->route('dashboard.users.index')->with('success', 'تم تحديث المستخدم بنجاح.');
     }
 
     /**
@@ -126,7 +138,7 @@ class UserController extends Controller
     public function destroy($id)
     {
         $this->userService->deleteUser($id);
-        return redirect()->route('users.index')->with('success', 'تم حذف المستخدم بنجاح.');
+        return redirect()->route('dashboard.users.index')->with('success', 'تم حذف المستخدم بنجاح.');
     }
 
     /**
@@ -140,7 +152,8 @@ class UserController extends Controller
         $user = $this->userService->findUser($id);
         $roles = Role::query()->pluck('name', 'id');
         $userRoles = $user->roles->pluck('name')->toArray();
-        return view('users.roles', compact('user', 'roles', 'userRoles'));
+        $activeTab = 'roles'; // Roles tab
+        return view('dashboard.users.edit', compact('user', 'roles', 'userRoles', 'activeTab'));
     }
 
     /**
@@ -153,7 +166,7 @@ class UserController extends Controller
     public function assignRoles(AssignRolesRequest $request, $id)
     {
         $this->userService->assignRoles($id, $request->input('roles'));
-        return redirect()->route('users.show', $id)->with('success', 'تم تعيين الأدوار بنجاح.');
+        return redirect()->route('dashboard.users.show', $id)->with('success', 'تم تعيين الأدوار بنجاح.');
     }
 
     /**
@@ -167,7 +180,7 @@ class UserController extends Controller
         $user = $this->userService->findUser($id);
         $this->userService->toggleUserStatus($id, !$user->is_active);
         $status = $user->is_active ? 'تعطيل' : 'تفعيل';
-        return redirect()->route('users.index')->with('success', "تم $status المستخدم بنجاح.");
+        return redirect()->route('dashboard.users.index')->with('success', "تم $status المستخدم بنجاح.");
     }
 
 
@@ -182,8 +195,8 @@ class UserController extends Controller
         $roleNames = request()->input('roles', []);
         $export = new UsersExport($search, $roleNames);
         if ($export->collection()->isEmpty()) {
-            return redirect()->route('users.index')->with('error', 'لا توجد بيانات للتصدير بناءً على الفلاتر المحددة.');
+            return redirect()->route('dashboard.users.index')->with('error', 'لا توجد بيانات للتصدير بناءً على الفلاتر المحددة.');
         }
-        return Excel::download($export, 'users.xlsx');
+        return Excel::download($export, 'dashboard.users.xlsx');
     }
 }

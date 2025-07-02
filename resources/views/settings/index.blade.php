@@ -51,7 +51,7 @@
                 <h3 class="text-lg font-semibold">{{ __('إعدادات الموقع العامة') }}</h3>
             </div>
             <div class="accordion-content active">
-                <form action="{{ route('settings.updateGeneral') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+                <form action="{{ route('dashboard.settings.updateGeneral') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
                     @csrf
                     <div>
                         <label class="block text-gray-700">{{ __('اسم الموقع') }}</label>
@@ -177,7 +177,7 @@
                 <h3 class="text-lg font-semibold">{{ __('إعدادات من نحن') }}</h3>
             </div>
             <div class="accordion-content">
-                <form action="{{ route('settings.updateAboutUs') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+                <form action="{{ route('dashboard.settings.updateAboutUs') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
                     @csrf
                     <div>
                         <label class="block text-gray-700">{{ __('العنوان') }}</label>
@@ -283,7 +283,7 @@
                 <h3 class="text-lg font-semibold">{{ __('إعدادات اتصل بنا') }}</h3>
             </div>
             <div class="accordion-content">
-                <form action="{{ route('settings.updateContactUs') }}" method="POST" class="space-y-4">
+                <form action="{{ route('dashboard.settings.updateContactUs') }}" method="POST" class="space-y-4">
                     @csrf
                     <div>
                         <label class="block text-gray-700">{{ __('العنوان') }}</label>
@@ -392,7 +392,7 @@
             </div>
             <div class="accordion-content">
                 @foreach ($services as $service)
-                    <form action="{{ route('settings.updateService', $service) }}" method="POST" enctype="multipart/form-data" class="space-y-4 mb-6 border-b pb-6">
+                    <form action="{{ route('dashboard.settings.updateService', $service) }}" method="POST" enctype="multipart/form-data" class="space-y-4 mb-6 border-b pb-6">
                         @csrf
                         @method('PUT')
                         <div>
@@ -466,7 +466,7 @@
                             <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">{{ __('تحديث الخدمة') }}</button>
 
                     </form>
-                    <form action="{{ route('settings.destroyService', $service) }}" method="POST">
+                    <form action="{{ route('dashboard.settings.destroyService', $service) }}" method="POST">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="return confirm('{{ __('هل أنت متأكد؟') }}')">{{ __('حذف') }}</button>
@@ -476,7 +476,7 @@
 
                 <!-- Add New Service -->
                 <h4 class="text-md font-semibold mt-6 mb-4">{{ __('إضافة خدمة جديدة') }}</h4>
-                <form action="{{ route('settings.storeService') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+                <form action="{{ route('dashboard.settings.storeService') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
                     @csrf
                     <div>
                         <label class="block text-gray-700">{{ __('اسم الخدمة') }}</label>

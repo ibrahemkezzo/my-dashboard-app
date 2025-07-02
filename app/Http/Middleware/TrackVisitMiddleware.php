@@ -71,7 +71,7 @@ class TrackVisitMiddleware
             Cache::put("session_tracked_{$sessionId}", true, now()->addHours(24));
         }
         else{
-            if($user_id && ModelsSession::where('session_id', $sessionId)->first()->user_id == null){   
+            if(($user_id != null) && (ModelsSession::where('session_id', $sessionId)->first()->user_id == null)){
                 ModelsSession::where('session_id', $sessionId)->update(['user_id' => $user_id]);
             }
             else{

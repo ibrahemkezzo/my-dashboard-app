@@ -10,7 +10,7 @@
                     {{ session('success') }}
                 </div>
             @endif
-            <a href="{{ route('permissions.create') }}" class="btn btn-primary mb-3">إنشاء صلاحية جديدة</a>
+            <a href="{{ route('dashboard.permissions.create') }}" class="btn btn-primary mb-3">إنشاء صلاحية جديدة</a>
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -27,9 +27,9 @@
                             <td>{{ $permission->name }}</td>
                             <td>{{ $permission->description ?? 'لا يوجد' }}</td>
                             <td>
-                                <a href="{{ route('permissions.show', $permission) }}" class="btn btn-info btn-sm">عرض</a>
-                                <a href="{{ route('permissions.edit', $permission) }}" class="btn btn-warning btn-sm">تعديل</a>
-                                <form action="{{ route('permissions.destroy', $permission) }}" method="POST" style="display:inline;">
+                                <a href="{{ route('dashboard.permissions.show', $permission) }}" class="btn btn-info btn-sm">عرض</a>
+                                <a href="{{ route('dashboard.permissions.edit', $permission) }}" class="btn btn-warning btn-sm">تعديل</a>
+                                <form action="{{ route('dashboard.permissions.destroy', $permission) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('هل أنت متأكد؟')">حذف</button>
