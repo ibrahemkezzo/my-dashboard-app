@@ -32,7 +32,9 @@ class MediaController extends Controller
             $request->path ?? 'media'
         );
 
-        return response()->json(['message' => __('File uploaded successfully')]);
+        return redirect()->back()->with('message', [
+                    'type' => 'success',
+                    'content' => 'Operation completed successfully!']);
     }
 
     /**
@@ -51,7 +53,9 @@ class MediaController extends Controller
             $request->path ?? 'media'
         );
 
-        return response()->json(['message' => __('Files uploaded successfully')]);
+        return redirect()->back()->with('message', [
+                    'type' => 'success',
+                    'content' => 'Operation completed successfully!']);
     }
 
     /**
@@ -69,7 +73,9 @@ class MediaController extends Controller
             $request->path ?? 'media'
         );
 
-        return response()->json(['message' => __('File updated successfully')]);
+        return redirect()->back()->with('message', [
+                    'type' => 'success',
+                    'content' => 'Operation completed successfully!']);
     }
 
     /**
@@ -83,7 +89,10 @@ class MediaController extends Controller
     {
         Media::deleteSingle($mediaId);
 
-        return response()->json(['message' => __('File deleted successfully')]);
+        return redirect()->back()->with('message', [
+                    'type' => 'success',
+                    'content' => 'Operation completed successfully!']
+                );
     }
 
     /**

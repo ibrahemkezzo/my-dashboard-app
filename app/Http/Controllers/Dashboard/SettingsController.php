@@ -67,7 +67,9 @@ class SettingsController extends Controller
         $response = $this->settingsService->updateGeneralSettings($data, $files);
 
         return Redirect::route('dashboard.settings.index')
-            ->with('success', $response['message']);
+            ->with('message', [
+                    'type' => 'success',
+                    'content' => __('updated completed successfully!')]);
     }
 
     /**
@@ -82,7 +84,9 @@ class SettingsController extends Controller
         $response = $this->settingsService->updateAboutUsSettings($data, $request->file('image'));
 
         return Redirect::route('dashboard.settings.index')
-            ->with('success', $response['message']);
+            ->with('message', [
+                    'type' => 'success',
+                    'content' => __('updated completed successfully!')]);
     }
 
     /**
@@ -97,7 +101,9 @@ class SettingsController extends Controller
         $response = $this->settingsService->updateContactUsSettings($data);
 
         return Redirect::route('dashboard.settings.index')
-            ->with('success', $response['message']);
+            ->with('message', [
+                    'type' => 'success',
+                    'content' => __('updated completed successfully!')]);
     }
 
     /**
@@ -112,7 +118,9 @@ class SettingsController extends Controller
         $response = $this->settingsService->updateService($data, $request->file('image'));
 
         return Redirect::route('dashboard.settings.index')
-            ->with('success', $response['message']);
+            ->with('message', [
+                    'type' => 'success',
+                    'content' => __('saved service successfully!')]);
     }
 
     /**
@@ -128,7 +136,9 @@ class SettingsController extends Controller
         $response = $this->settingsService->updateService($data, $request->file('image'), $service);
 
         return Redirect::route('dashboard.settings.index')
-            ->with('success', $response['message']);
+            ->with('message', [
+                    'type' => 'success',
+                    'content' => __('updated service successfully!')]);
     }
 
     /**
@@ -142,6 +152,8 @@ class SettingsController extends Controller
         $response = $this->settingsService->deleteService($service);
 
         return Redirect::route('dashboard.settings.index')
-            ->with('success', $response['message']);
+            ->with('message', [
+                    'error' => 'success',
+                    'content' => __('dleted sevice successfully!')]);
     }
 }

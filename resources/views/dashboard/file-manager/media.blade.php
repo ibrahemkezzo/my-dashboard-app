@@ -8,18 +8,8 @@
 
 @section('content')
 <div class="container-fluid bulk-cate">
-    <!-- Dropzone Upload Card -->
-    <div class="card mb-4">
-        <div class="card-body">
-            <form class="dropzone digits dz-clickable" id="singleFileUpload" action="#" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="dz-message needsclick">
-                    <i class="fa fa-cloud-upload-alt"></i>
-                    <h4 class="mb-0 f-w-600">{{ __('Drop files here or click to upload.') }}</h4>
-                </div>
-            </form>
-        </div>
-    </div>
+    <x-alert-message />
+   
 
     <!-- Folders Section -->
     <div class="card mb-4">
@@ -36,7 +26,7 @@
                                     <h5 class="card-title"><i class="fa fa-folder font-primary"></i> {{ $dir['path'] }}</h5>
                                     <p class="card-text">{{ count($dir['files']) }} {{ __('Files') }}</p>
                                 </div>
-                                <a href="#" class="btn btn-outline-primary mt-2">{{ __('View') }}</a>
+                                <a href="{{ route('dashboard.file-manager.folder', ['folder' => $dir['path']]) }}" class="btn btn-outline-primary mt-2">{{ __('View') }}</a>
                             </div>
                         </div>
                     </div>

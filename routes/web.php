@@ -68,6 +68,7 @@ Route::group([
     Route::delete('media/{mediaId}', [MediaController::class, 'destroy'])->name('media.destroy');
     Route::get('file-manager', [FileManagerController::class, 'index'])->name('file-manager.media');
     Route::delete('file-manager/{media}', [FileManagerController::class, 'destroy'])->name('file-manager.destroy');
+    Route::get('file-manager/folder/{folder}', [FileManagerController::class, 'showFolder'])->name('file-manager.folder');
 
     //route for settings website
 

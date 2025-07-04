@@ -80,6 +80,10 @@
             <x-dashboard.dashboard-header/>
         <!-- Page Header Ends -->
 
+        <!-- Alert Message Start -->
+            <x-alert-message />
+        <!-- Alert Message End -->
+
         <!-- Page Body Start-->
         <div class="page-body-wrapper">
             <!-- Page Sidebar Start-->

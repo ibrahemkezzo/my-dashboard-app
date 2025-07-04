@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Files;
 
-
+use App\Facades\Media as FacadesMedia;
 use App\Http\Requests\DeleteMediaRequest;
 use App\Models\Media;
 use Illuminate\Routing\Controller;
@@ -39,8 +39,18 @@ class FileManagerController extends Controller
      */
     public function destroy(DeleteMediaRequest $request, int $mediaId)
     {
-        Media::deleteSingle($mediaId);
+        FacadesMedia::deleteSingle($mediaId);
 
-        return redirect()->route('dashboard.file-manager.media')->with('success', __('File deleted successfully.'));
+        return redirect()->route('dashboard.file-manager.media')->with('message', [
+            'type' => 'error',
+            'content' =>  __('File deleted successfully.')]);
+    }
+
+    public function showFolder($folder)
+    {
+        $folder = str_replace(['..', '/'], '', $folder); // basic sanitization
+        $files = collect(\Storage::disk('public')->files($folder));
+        $directories = collect(\Storage::disk('public')->directories($folder));
+        return view('dashboard.file-manager.folder', compact('folder', 'files', 'directories'));
     }
 }
