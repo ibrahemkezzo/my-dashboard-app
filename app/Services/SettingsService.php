@@ -15,6 +15,7 @@ class SettingsService
     protected $defaultGeneralSettings;
     protected $defaultAboutUsSettings;
     protected $defaultContactUsSettings;
+    protected $defaultLegalSettings;
 
     /**
      * SettingsService constructor.
@@ -65,6 +66,14 @@ class SettingsService
             'contact_us_working_hours' => '',
             'contact_us_success_message' => '',
         ];
+        $this->defaultLegalSettings = [
+            'terms_description' => '',
+            'terms_content' => '',
+            'privacy_description' => '',
+            'privacy_sections' => [],
+            'faq_description' => '',
+            'faq_questions' => [],
+        ];
     }
 
 
@@ -99,6 +108,16 @@ class SettingsService
     {
 
         return array_merge($this->defaultContactUsSettings, $this->repository->all('contact_us'));
+    }
+
+    /**
+     * Retrieve all legal/info settings with default values.
+     *
+     * @return array
+     */
+    public function getLegalSettings(): array
+    {
+        return array_merge($this->defaultLegalSettings, $this->repository->all('legal'));
     }
 
     /**
@@ -217,6 +236,31 @@ class SettingsService
     }
 
     /**
+     * Update legal/info settings.
+     *
+     * @param array $data
+     * @return array
+     */
+    public function updateLegalSettings(array $data): array
+    {
+        $settings = $this->repository->all('legal');
+        if ($settings == null) {
+            $data = array_merge($this->defaultLegalSettings, $data);
+        }
+        $updatedSettings = [];
+        foreach ($data as $key => $value) {
+            if (array_key_exists($key, $this->defaultLegalSettings)) {
+                // Store arrays as JSON
+                $updatedSettings[$key] = $this->repository->set($key, is_array($value) ? $value : $value, 'legal');
+            }
+        }
+        return [
+            'data' => $updatedSettings,
+            'message' => __('Legal settings updated successfully.'),
+        ];
+    }
+
+    /**
      * Create or update a service.
      *
      * @param array $data
@@ -276,6 +320,84 @@ class SettingsService
         return [
             'data' => null,
             'message' => __('Service deleted successfully.'),
+        ];
+    }
+
+    public function updateFaqSettings(array $data): array
+    {
+
+        // dd($data);
+        $updatedSettings = [];
+        if(isset($data['faq_description'])) {
+            $updatedSettings['faq_description'] = $this->repository->set('faq_description', $data['faq_description'] ?? '', 'legal');
+        }
+
+        if(isset($data['faq_questions'])) {
+            $old_questions = $this->repository->get('faq_questions');
+            foreach($data['faq_questions'] as $i => $updateNewQuestion ){
+                // dd($updateNewQuestion['question'] == null);
+                if($updateNewQuestion['question'] == null){
+                    unset($old_questions[$i]);
+                }elseif($i == 0){
+                    $lastIndex = array_key_last($old_questions);
+                    $old_questions[$lastIndex+1]['question'] =  $updateNewQuestion['question'];
+                    $old_questions[$lastIndex+1]['answer'] =  $updateNewQuestion['answer'];
+                    $old_questions[$lastIndex+1]['category'] =  $updateNewQuestion['category'];
+                }else{
+                    $old_questions[$i]['question'] =  $updateNewQuestion['question'];
+                    $old_questions[$i]['answer'] =  $updateNewQuestion['answer'];
+                    $old_questions[$i]['category'] =  $updateNewQuestion['category'];
+                }
+            }
+            // dd($old_questions);
+            $updatedSettings['faq_questions'] = $this->repository->set('faq_questions', $old_questions , 'legal');
+        }
+        return [
+            'data' => $updatedSettings,
+            'message' => __('FAQ updated successfully.'),
+        ];
+    }
+
+    public function updatePrivacySettings(array $data): array
+    {
+        $updatedSettings = [];
+        if(isset($data['privacy_description'])){
+            $updatedSettings['privacy_description'] = $this->repository->set('privacy_description', $data['privacy_description'] ?? '', 'legal');
+        }
+        if(isset($data['privacy_sections'])){
+            $oldPrivacy = $this->repository->get('privacy_sections');
+            foreach($data['privacy_sections'] as $i => $updateNewPravcy ){
+                if($updateNewPravcy['title'] == null){
+                    unset($oldPrivacy[$i]);
+                }elseif($i == 0){
+                    $lastIndex = array_key_last($oldPrivacy);
+                    $oldPrivacy[$lastIndex+1]['title'] = $updateNewPravcy['title'];
+                    $oldPrivacy[$lastIndex+1]['content'] = $updateNewPravcy['content'];
+                }else{
+                    $oldPrivacy[$i]['title'] = $updateNewPravcy['title'];
+                    $oldPrivacy[$i]['content'] = $updateNewPravcy['content'];
+                }
+            $oldPrivacy['privacy_sections'] = $this->repository->set('privacy_sections', $oldPrivacy ?? [], 'legal');
+            }
+        }
+        return [
+            'data' => $updatedSettings,
+            'message' => __('Privacy Policy updated successfully.'),
+        ];
+    }
+
+    public function updateTermsSettings(array $data): array
+    {
+        $updatedSettings = [];
+        if(isset($data['terms_description'])){
+            $updatedSettings['terms_description'] = $this->repository->set('terms_description', $data['terms_description'] ?? '', 'legal');
+        }
+        if(isset($data['terms_content'])){
+            $updatedSettings['terms_content'] = $this->repository->set('terms_content', $data['terms_content'] ?? '', 'legal');
+        }
+        return [
+            'data' => $updatedSettings,
+            'message' => __('Terms updated successfully.'),
         ];
     }
 }

@@ -12,6 +12,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Http\Requests\UpdateFaqSettingsRequest;
+use App\Http\Requests\UpdatePrivacySettingsRequest;
+use App\Http\Requests\UpdateTermsSettingsRequest;
 
 class SettingsController extends Controller
 {
@@ -38,12 +41,14 @@ class SettingsController extends Controller
         $generalSettings = $this->settingsService->getGeneralSettings();
         $aboutUsSettings = $this->settingsService->getAboutUsSettings();
         $contactUsSettings = $this->settingsService->getContactUsSettings();
+        $legalSettings = $this->settingsService->getLegalSettings();
         $services = Service::orderBy('order')->get();
 
         return view('dashboard.settings.web-site', compact(
             'generalSettings',
             'aboutUsSettings',
             'contactUsSettings',
+            'legalSettings',
             'services'
         ));
     }
@@ -155,5 +160,49 @@ class SettingsController extends Controller
             ->with('message', [
                     'error' => 'success',
                     'content' => __('dleted sevice successfully!')]);
+    }
+
+    /**
+     * Update FAQ settings.
+     */
+    public function updateFaqSettings(UpdateFaqSettingsRequest $request): RedirectResponse
+    {
+        $data = $request->validated();
+        $this->settingsService->updateFaqSettings($data);
+        return Redirect::route('dashboard.settings.index', ['#' => 'faq'])
+            ->with('message', [
+                'type' => 'success',
+                'content' => __('FAQ updated successfully!')
+            ]);
+    }
+
+    /**
+     * Update Privacy Policy settings.
+     */
+    public function updatePrivacySettings(UpdatePrivacySettingsRequest $request): RedirectResponse
+    {
+        // $data = $request->validated();
+        $data = $request->all();
+        // dd($data);
+        $this->settingsService->updatePrivacySettings($data);
+        return Redirect::route('dashboard.settings.index', ['#' => 'privacy'])
+            ->with('message', [
+                'type' => 'success',
+                'content' => __('Privacy Policy updated successfully!')
+            ]);
+    }
+
+    /**
+     * Update Terms settings.
+     */
+    public function updateTermsSettings(UpdateTermsSettingsRequest $request): RedirectResponse
+    {
+        $data = $request->validated();
+        $this->settingsService->updateTermsSettings($data);
+        return Redirect::route('dashboard.settings.index', ['#' => 'terms'])
+            ->with('message', [
+                'type' => 'success',
+                'content' => __('Terms updated successfully!')
+            ]);
     }
 }

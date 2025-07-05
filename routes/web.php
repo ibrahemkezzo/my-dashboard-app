@@ -79,6 +79,9 @@ Route::group([
     Route::post('settings/services', [SettingsController::class, 'storeService'])->name('settings.storeService');
     Route::put('settings/services/{service}', [SettingsController::class, 'updateService'])->name('settings.updateService');
     Route::delete('settings/services/{service}', [SettingsController::class, 'destroyService'])->name('settings.destroyService');
+    Route::post('settings/faq', [SettingsController::class, 'updateFaqSettings'])->name('settings.updateFaq');
+    Route::post('settings/privacy', [SettingsController::class, 'updatePrivacySettings'])->name('settings.updatePrivacy');
+    Route::post('settings/terms', [SettingsController::class, 'updateTermsSettings'])->name('settings.updateTerms');
 
     //route for reportes and analystic
 

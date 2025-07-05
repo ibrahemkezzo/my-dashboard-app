@@ -8,7 +8,7 @@
 
 @section('content')
     <x-alert-message />
-    <div class="container-fluid custom-container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-xl-12 col-lg-12 mx-auto">
                 <div class="card">
@@ -29,6 +29,18 @@
                             <li class="nav-item">
                                 <a class="nav-link" id="services-tab" data-bs-toggle="tab" href="#services" role="tab">{{ __('Services') }}</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="terms-tab" data-bs-toggle="tab" href="#terms" role="tab">{{ __('Terms & Conditions') }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="privacy-tab" data-bs-toggle="tab" href="#privacy" role="tab">{{ __('Privacy Policy') }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="faq-tab" data-bs-toggle="tab" href="#faq" role="tab">{{ __('FAQ') }}</a>
+                            </li>
+                            {{-- <li class="nav-item">
+                                <a class="nav-link" id="legal-tab" data-bs-toggle="tab" href="#legal" role="tab">{{ __('Legal & Info') }}</a>
+                            </li> --}}
                         </ul>
                         <div class="tab-content" id="settingsTabContent">
                             {{-- General Settings --}}
@@ -388,62 +400,196 @@
                                         </div>
                                     </form>
 
-                                    @endforeach
-                                    <h4 class="mt-4 mb-3">{{ __('Add New Service') }}</h4>
-                                    <form action="{{ route('dashboard.settings.storeService') }}" method="POST" enctype="multipart/form-data" class="row g-3">
-                                        @csrf
-                                        <div class="col-md-6">
-                                            <label class="form-label">{{ __('Service Name') }}</label>
-                                            <input type="text" name="name" value="{{ old('name') }}" class="form-control" required>
-                                            @error('name')<div class="text-danger small">{{ $message }}</div>@enderror
+                                @endforeach
+                                <h4 class="mt-4 mb-3">{{ __('Add New Service') }}</h4>
+                                <form action="{{ route('dashboard.settings.storeService') }}" method="POST" enctype="multipart/form-data" class="row g-3">
+                                    @csrf
+                                    <div class="col-md-6">
+                                        <label class="form-label">{{ __('Service Name') }}</label>
+                                        <input type="text" name="name" value="{{ old('name') }}" class="form-control" required>
+                                        @error('name')<div class="text-danger small">{{ $message }}</div>@enderror
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">{{ __('Short Description') }}</label>
+                                        <textarea name="short_description" class="form-control">{{ old('short_description') }}</textarea>
+                                        @error('short_description')<div class="text-danger small">{{ $message }}</div>@enderror
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">{{ __('Long Description') }}</label>
+                                        <textarea name="long_description" class="form-control">{{ old('long_description') }}</textarea>
+                                        @error('long_description')<div class="text-danger small">{{ $message }}</div>@enderror
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">{{ __('Custom URL') }}</label>
+                                        <input type="url" name="custom_url" value="{{ old('custom_url') }}" class="form-control">
+                                        @error('custom_url')<div class="text-danger small">{{ $message }}</div>@enderror
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">{{ __('Order') }}</label>
+                                        <input type="number" name="order" value="{{ old('order', 0) }}" class="form-control" min="0">
+                                        @error('order')<div class="text-danger small">{{ $message }}</div>@enderror
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">{{ __('Status') }}</label>
+                                        <div class="form-check">
+                                            <input type="checkbox" name="status" class="form-check-input" id="status-new" {{ old('status', true) ? 'checked' : '' }} value="1">
+                                            <label class="form-check-label" for="status-new">{{ __('Active') }}</label>
                                         </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">{{ __('Short Description') }}</label>
-                                            <textarea name="short_description" class="form-control">{{ old('short_description') }}</textarea>
-                                            @error('short_description')<div class="text-danger small">{{ $message }}</div>@enderror
+                                        @error('status')<div class="text-danger small">{{ $message }}</div>@enderror
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">{{ __('SEO Meta') }}</label>
+                                        <input type="text" name="seo_meta[title]" value="{{ old('seo_meta.title') }}" class="form-control mb-2" placeholder="SEO Title">
+                                        <textarea name="seo_meta[description]" class="form-control" placeholder="SEO Description">{{ old('seo_meta.description') }}</textarea>
+                                        @error('seo_meta.title')<div class="text-danger small">{{ $message }}</div>@enderror
+                                        @error('seo_meta.description')<div class="text-danger small">{{ $message }}</div>@enderror
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">{{ __('Service Image') }}</label>
+                                        <div class="d-flex justify-content-center align-items-center mb-2" style="height:120px;">
+                                            <!-- No preview for new service -->
                                         </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">{{ __('Long Description') }}</label>
-                                            <textarea name="long_description" class="form-control">{{ old('long_description') }}</textarea>
-                                            @error('long_description')<div class="text-danger small">{{ $message }}</div>@enderror
+                                        <input type="file" name="image" accept="image/*" class="form-control">
+                                        @error('image')<div class="text-danger small">{{ $message }}</div>@enderror
+                                    </div>
+                                    <div class="col-12 mt-3">
+                                        <button type="submit" class="btn btn-primary btn-air-primary px-5">{{ __('Add Service') }}</button>
+                                    </div>
+                                </form>
+                            </div>
+                            {{-- Terms & Conditions Settings --}}
+                            <div class="tab-pane fade" id="terms" role="tabpanel">
+                                <form action="{{ route('dashboard.settings.updateTerms') }}" method="POST" class="row g-3">
+                                    @csrf
+                                    <div class="col-md-12">
+                                        <label class="form-label">{{ __('Description') }}</label>
+                                        <textarea name="terms_description" class="form-control" rows="3">{{ old('terms_description', $legalSettings['terms_description'] ?? '') }}</textarea>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="form-label">{{ __('Terms Content') }}</label>
+                                        <textarea name="terms_content" class="form-control" rows="10">{{ old('terms_content', $legalSettings['terms_content'] ?? '') }}</textarea>
+                                    </div>
+                                    <div class="col-12 mt-3">
+                                        <button type="submit" class="btn btn-primary btn-air-primary px-5">{{ __('Save Terms & Conditions') }}</button>
+                                    </div>
+                                </form>
+                            </div>
+                            {{-- Privacy Policy Settings --}}
+                            <div class="tab-pane fade" id="privacy" role="tabpanel">
+                                <form action="{{ route('dashboard.settings.updatePrivacy') }}" method="POST" class="row g-3">
+                                    @csrf
+                                    <div class="col-md-12">
+                                        <label class="form-label">{{ __('Description') }}</label>
+                                        <textarea name="privacy_description" class="form-control" rows="3">{{ old('privacy_description', $legalSettings['privacy_description'] ?? '') }}</textarea>
+                                    </div>
+                                    <div class="col-4 mt-3">
+                                        <button type="submit" class="btn btn-primary btn-air-primary px-5">{{ __('Save Privacy Policy') }}</button>
+                                    </div>
+                                </form>
+
+                                <div class="col-md-12">
+                                    <label class="form-label">{{ __('Sections') }}</label>
+                                    <div id="privacy-sections-container">
+                                        @php
+                                            $privacySections = old('privacy_sections', $legalSettings['privacy_sections'] ?? []);
+                                        @endphp
+                                        @foreach ($privacySections as $i => $section)
+                                        <div class="row">
+                                            <form action="{{ route('dashboard.settings.updatePrivacy') }}" method="POST" class="row g-3 col-md-11">
+                                                @csrf
+                                                <div class="input-group mb-2">
+                                                    <input type="text" name="privacy_sections[{{ $i }}][title]" value="{{ $section['title'] ?? '' }}" class="form-control col-md-5 me-2" placeholder="{{ __('Section Title') }}">
+                                                    <textarea name="privacy_sections[{{ $i }}][content]" class="form-control col-md-5" placeholder="{{ __('Section Content') }}">{{ $section['content'] ?? '' }}</textarea>
+                                                    <button type="submit" style="margin-left: 2%" class="btn btn-primary btn-air-primary col-md-1"><i class="fa fa-check"></i></button>
+
+                                                </div>
+                                            </form>
+                                            <form action="{{ route('dashboard.settings.updatePrivacy') }}" method="POST" class="row g-3 col-md-1">
+                                                @csrf
+                                                <input type="hidden" name="privacy_sections[{{ $i }}][title]" value="{{null}}" >
+                                                <button type="submit" class="btn btn-outline-danger mb-2">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </form>
                                         </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">{{ __('Custom URL') }}</label>
-                                            <input type="url" name="custom_url" value="{{ old('custom_url') }}" class="form-control">
-                                            @error('custom_url')<div class="text-danger small">{{ $message }}</div>@enderror
+                                        @endforeach
+                                        <div class="row">
+                                            <form action="{{ route('dashboard.settings.updatePrivacy') }}" method="POST" class="row g-3">
+                                                @csrf
+                                                <div class="input-group mb-2">
+                                                    <input type="text" name="privacy_sections[0][title]" class="col-md-5 form-control me-2" placeholder="{{ __('Section Title') }}">
+                                                    <textarea name="privacy_sections[0][content]" class="col-md-5 form-control" style="margin-right: 1%" placeholder="{{ __('Section Content') }}"></textarea>
+                                                    <button type="submit" class="col-md-2 btn btn-outline-primary btn-sm" style="margin-left: 1%; margin-right: 0.5%"><i class="fa fa-plus"></i> {{ __('Add Section') }}</button>
+                                                </div>
+                                            </form>
                                         </div>
-                                        <div class="col-md-3">
-                                            <label class="form-label">{{ __('Order') }}</label>
-                                            <input type="number" name="order" value="{{ old('order', 0) }}" class="form-control" min="0">
-                                            @error('order')<div class="text-danger small">{{ $message }}</div>@enderror
+                                    </div>
+                                </div>
+                            </div>
+                            {{-- FAQ Settings --}}
+                            <div class="tab-pane fade" id="faq" role="tabpanel">
+                                <form action="{{ route('dashboard.settings.updateFaq') }}" method="POST" class="row g-3">
+
+                                    @csrf
+                                    <div class="col-md-12">
+                                        <label class="form-label">{{ __('Description') }}</label>
+                                        <textarea name="faq_description" class="form-control" rows="3">{{ old('faq_description', $legalSettings['faq_description'] ?? '') }}</textarea>
+                                    </div>
+                                    <div class="col-12 mt-3">
+                                        <button type="submit" class="btn btn-primary btn-air-primary px-5">{{ __('Save FAQ') }}</button>
+                                    </div>
+                                </form>
+                                <div class="col-md-12">
+                                    <label class="col-md-3 ms-3 form-label">{{ __('Questions') }}</label>
+                                    <label class="col-md-3 ms-3 form-label">{{ __('Answer') }}</label>
+                                    <label class="col-md-3 ms-3 form-label">{{ __('Category') }}</label>
+                                    <div id="faq-questions-container">
+                                        @php
+                                            $faqQuestions =  $legalSettings['faq_questions'] ;
+                                        @endphp
+                                        @foreach ($faqQuestions as $i => $q)
+                                        <div class="row">
+                                            <form action="{{ route('dashboard.settings.updateFaq') }}" method="POST" class="row g-3 col-md-11 ">
+                                                @csrf
+                                                <div class="input-group">
+                                                    <input type="text" name="faq_questions[{{ $i }}][question]" value="{{ $q['question'] ?? '' }}" class="col-md-3 form-control me-2" placeholder="{{ __('Question') }}">
+                                                    <textarea name="faq_questions[{{ $i }}][answer]" class="col-md-5 form-control" placeholder="{{ __('Answer') }}">{{ $q['answer'] ?? '' }}</textarea>
+                                                    <input type="text" name="faq_questions[{{ $i }}][category]" value="{{ $q['category'] ?? '' }}" class="col-md-2 form-control ms-2" placeholder="{{ __('Category (optional)') }}">
+                                                    <button type="submit" class="col-md-1 btn btn-primary update-btn " style="margin-left: 2%">
+                                                        <i class="fa fa-check"></i>
+                                                    </button>
+                                                </div>
+                                            </form>
+
+                                            <form action="{{ route('dashboard.settings.updateFaq') }}" method="POST" class="row g-3 col-md-1" >
+                                                @csrf
+                                                <input type="hidden" name="faq_questions[{{ $i }}][question]" value="{{null}}">
+                                                <button type="submit" class="btn btn-outline-danger">
+                                                <i class="fa fa-trash"></i>
+                                                </button>
+                                            </form>
                                         </div>
-                                        <div class="col-md-3">
-                                            <label class="form-label">{{ __('Status') }}</label>
-                                            <div class="form-check">
-                                                <input type="checkbox" name="status" class="form-check-input" id="status-new" {{ old('status', true) ? 'checked' : '' }} value="1">
-                                                <label class="form-check-label" for="status-new">{{ __('Active') }}</label>
+                                        @endforeach
+                                        <form action="{{ route('dashboard.settings.updateFaq') }}" method="POST" class="row g-3 mt-5">
+                                            @csrf
+                                            <div class="input-group">
+                                                    <input type="text" name="faq_questions[0][question]" class="form-control" placeholder="{{ __('Question') }}">
+
+
+                                                    <textarea name="faq_questions[0][answer]" class="form-control ms-2" placeholder="{{ __('Answer') }}"></textarea>
+
+
+                                                    <input type="text" name="faq_questions[0][category]" class="col-md-5 form-control ms-2" placeholder="{{ __('Category (optional)') }}">
+
+
+                                                    {{-- <button type="submit" class="btn btn-outline-danger" onclick="removeField(this)"><i class="fa fa-trash"></i></button> --}}
+                                                    <button type="submit" class="col-md-2 btn btn-outline-primary btn-sm me-3 ms-2" >
+                                                        <i class="fa fa-plus"></i> {{ __('Add Question') }}
+                                                    </button>
+
                                             </div>
-                                            @error('status')<div class="text-danger small">{{ $message }}</div>@enderror
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">{{ __('SEO Meta') }}</label>
-                                            <input type="text" name="seo_meta[title]" value="{{ old('seo_meta.title') }}" class="form-control mb-2" placeholder="SEO Title">
-                                            <textarea name="seo_meta[description]" class="form-control" placeholder="SEO Description">{{ old('seo_meta.description') }}</textarea>
-                                            @error('seo_meta.title')<div class="text-danger small">{{ $message }}</div>@enderror
-                                            @error('seo_meta.description')<div class="text-danger small">{{ $message }}</div>@enderror
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">{{ __('Service Image') }}</label>
-                                            <div class="d-flex justify-content-center align-items-center mb-2" style="height:120px;">
-                                                <!-- No preview for new service -->
-                                            </div>
-                                            <input type="file" name="image" accept="image/*" class="form-control">
-                                            @error('image')<div class="text-danger small">{{ $message }}</div>@enderror
-                                        </div>
-                                        <div class="col-12 mt-3">
-                                            <button type="submit" class="btn btn-primary btn-air-primary px-5">{{ __('Add Service') }}</button>
-                                        </div>
-                                    </form>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -476,6 +622,37 @@
         }
         function removeField(button) {
             button.parentElement.remove();
+        }
+        function addPrivacySection() {
+            const container = document.getElementById('privacy-sections-container');
+            const div = document.createElement('div');
+            div.className = 'input-group mb-2';
+            div.innerHTML = `
+                <input type="text" name="privacy_sections[][title]" class="form-control me-2" placeholder="{{ __('Section Title') }}">
+                <textarea name="privacy_sections[][content]" class="form-control" placeholder="{{ __('Section Content') }}"></textarea>
+                <button type="button" class="btn btn-outline-danger" onclick="removeField(this)"><i class="fa fa-trash"></i></button>
+            `;
+            container.appendChild(div);
+        }
+        function addFaqQuestion() {
+            const container = document.getElementById('faq-questions-container');
+            const row = document.createElement('div');
+            row.className = 'row mb-2 align-items-end faq-question-row';
+            row.innerHTML = `
+                <div class="col-md-4">
+                    <input type="text" name="faq_questions[][question]" class="form-control" placeholder="{{ __('Question') }}">
+                </div>
+                <div class="col-md-4">
+                    <textarea name="faq_questions[][answer]" class="form-control" placeholder="{{ __('Answer') }}"></textarea>
+                </div>
+                <div class="col-md-3">
+                    <input type="text" name="faq_questions[][category]" class="form-control" placeholder="{{ __('Category (optional)') }}">
+                </div>
+                <div class="col-md-1">
+                    <button type="button" class="btn btn-outline-danger" onclick="removeField(this)"><i class="fa fa-trash"></i></button>
+                </div>
+            `;
+            container.appendChild(row);
         }
     </script>
     @endpush
