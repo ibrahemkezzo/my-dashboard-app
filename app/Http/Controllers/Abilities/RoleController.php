@@ -42,7 +42,7 @@ class RoleController extends Controller
     public function index()
     {
         $roles = $this->roleService->getAllRoles();
-        return view('roles.index', compact('roles'));
+        return view('dashboard.roles.index', compact('roles'));
     }
 
     /**
@@ -53,7 +53,7 @@ class RoleController extends Controller
     public function create()
     {
         $permissions = $this->permissionService->getAllPermissions();
-        return view('roles.create', compact('permissions'));
+        return view('dashboard.roles.create', compact('permissions'));
     }
 
     /**
@@ -69,7 +69,10 @@ class RoleController extends Controller
             $request->input('permissions', [])
         );
 
-        return redirect()->route('roles.index')->with('success', 'تم إنشاء الدور بنجاح.');
+        return redirect()->route('dashboard.roles.index')->with('message',[
+            'type' => 'success',
+            'content' => __('role created successfully!')
+        ]);
     }
 
     /**
@@ -81,7 +84,7 @@ class RoleController extends Controller
     public function show($id)
     {
         $role = $this->roleService->findRole($id)->load('permissions');
-        return view('roles.show', compact('role'));
+        return view('dashboard.roles.show', compact('role'));
     }
 
     /**
@@ -95,7 +98,7 @@ class RoleController extends Controller
         $role = $this->roleService->findRole($id);
         $permissions = $this->permissionService->getAllPermissions();
         $rolePermissions = $role->permissions->pluck('name')->toArray();
-        return view('roles.edit', compact('role', 'permissions', 'rolePermissions'));
+        return view('dashboard.roles.edit', compact('role', 'permissions', 'rolePermissions'));
     }
 
     /**
@@ -110,7 +113,10 @@ class RoleController extends Controller
         $this->roleService->updateRole($id, $request->only('name', 'description'));
         $this->roleService->assignPermissions($id, $request->input('permissions', []));
 
-        return redirect()->route('roles.index')->with('success', 'تم تحديث الدور بنجاح.');
+        return redirect()->route('dashboard.roles.index')->with('message',[
+            'type' => 'success',
+            'content' => __('role updated successfully!')
+        ]);
     }
 
     /**
@@ -122,7 +128,10 @@ class RoleController extends Controller
     public function destroy($id)
     {
         $this->roleService->deleteRole($id);
-        return redirect()->route('roles.index')->with('success', 'تم حذف الدور بنجاح.');
+        return redirect()->route('dashboard.roles.index')->with('message',[
+            'type' => 'error',
+            'content' => __('role deleted successfully!')
+        ]);;
     }
 
     /**
@@ -137,6 +146,9 @@ class RoleController extends Controller
 
         $this->roleService->assignPermissions($id, $request->input('permissions'));
 
-        return redirect()->route('roles.show', $id)->with('success', 'تم تعيين الصلاحيات بنجاح.');
+        return redirect()->route('dashboard.roles.show', $id)->with('message',[
+            'type' => 'success',
+            'content' => __('Permission granted successfully!')
+        ]);;
     }
 }

@@ -36,7 +36,7 @@ class PermissionController extends Controller
     public function index()
     {
         $permissions = $this->permissionService->getAllPermissions();
-        return view('permissions.index', compact('permissions'));
+        return view('dashboard.permissions.index', compact('permissions'));
     }
 
     /**
@@ -46,7 +46,7 @@ class PermissionController extends Controller
      */
     public function create()
     {
-        return view('permissions.create');
+        return view('dashboard.permissions.create');
     }
 
     /**
@@ -58,7 +58,10 @@ class PermissionController extends Controller
     public function store(StorePermissionRequest $request)
     {
         $this->permissionService->createPermission($request->only('name', 'description'));
-        return redirect()->route('permissions.index')->with('success', 'تم إنشاء الصلاحية بنجاح.');
+        return redirect()->route('dashboard.permissions.index')->with('message',[
+            'type' => 'success',
+            'content' => __('permissions created successfully!')
+        ]);
     }
 
     /**
@@ -70,7 +73,7 @@ class PermissionController extends Controller
     public function show($id)
     {
         $permission = $this->permissionService->findPermission($id);
-        return view('permissions.show', compact('permission'));
+        return view('dashboard.permissions.show', compact('permission'));
     }
 
     /**
@@ -82,7 +85,7 @@ class PermissionController extends Controller
     public function edit($id)
     {
         $permission = $this->permissionService->findPermission($id);
-        return view('permissions.edit', compact('permission'));
+        return view('dashboard.permissions.edit', compact('permission'));
     }
 
     /**
@@ -95,7 +98,10 @@ class PermissionController extends Controller
     public function update(UpdatePermissionRequest $request, $id)
     {
         $this->permissionService->updatePermission($id, $request->only('name', 'description'));
-        return redirect()->route('permissions.index')->with('success', 'تم تحديث الصلاحية بنجاح.');
+        return redirect()->route('dashboard.permissions.index')->with('message',[
+            'type' => 'success',
+            'content' => __('permissions updated successfully!')
+        ]);;
     }
 
     /**
@@ -107,6 +113,9 @@ class PermissionController extends Controller
     public function destroy($id)
     {
         $this->permissionService->deletePermission($id);
-        return redirect()->route('permissions.index')->with('success', 'تم حذف الصلاحية بنجاح.');
+        return redirect()->route('dashboard.permissions.index')->with('message',[
+            'type' => 'error',
+            'content' => __('permissions deleted successfully!')
+        ]);;
     }
 }
