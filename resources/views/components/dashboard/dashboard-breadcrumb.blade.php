@@ -6,7 +6,7 @@
                 <div class="page-header-left">
                     <h3>{{ $pageName }}
                         {{-- هنا يجب تمرير اس الصفحة --}}
-                        <small>Multikart Admin panel</small>
+                        <small>{{ __('dashboard.admin_panel') }}</small>
                     </h3>
                 </div>
             </div>

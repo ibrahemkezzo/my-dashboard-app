@@ -2,9 +2,9 @@
 
 @section('breadcrumbs')
     <x-dashboard.dashboard-breadcrumb :breadcrumbs="[
-        ['label' => __('Dashboard'), 'url' => route('dashboard.index')],
-        ['label' => __('Roles'), 'url' => route('dashboard.roles.index')],
-    ]" :pageName="__('ROLES LIST')" />
+        ['label' => __('dashboard.dashboard'), 'url' => route('dashboard.index')],
+        ['label' => __('dashboard.roles'), 'url' => route('dashboard.roles.index')],
+    ]" :pageName="__('dashboard.roles_list')" />
 @endsection
 
 @section('content')
@@ -13,7 +13,7 @@
     <div class="container-fluid">
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
-                <a href="{{ route('dashboard.roles.create') }}" class="btn" style="background-color: #f56476; border-color: #f56476;">{{ __('Create Role') }}</a>
+                <a href="{{ route('dashboard.roles.create') }}" class="btn" style="background-color: #f56476; border-color: #f56476;">{{ __('dashboard.create_role') }}</a>
             </div>
 
             <div class="card-body">
@@ -21,12 +21,12 @@
                     <table class="all-package coupon-table table table-striped">
                         <thead>
                             <tr>
-                                <th>{{ __('ID') }}</th>
-                                <th>{{ __('Role Name') }}</th>
-                                <th>{{ __('Description') }}</th>
-                                <th>{{ __('Permissions') }}</th>
-                                <th>{{ __('Created') }}</th>
-                                <th>{{ __('Procedures') }}</th>
+                                <th>{{ __('dashboard.id') }}</th>
+                                <th>{{ __('dashboard.role_name') }}</th>
+                                <th>{{ __('dashboard.description') }}</th>
+                                <th>{{ __('dashboard.permissions') }}</th>
+                                <th>{{ __('dashboard.created') }}</th>
+                                <th>{{ __('dashboard.procedures') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -41,7 +41,7 @@
                                         <span class="fw-semibold">{{ $role->name }}</span>
                                     </div>
                                 </td>
-                                <td>{{ $role->description ?? __('No description') }}</td>
+                                <td>{{ $role->description ?? __('dashboard.no_description') }}</td>
                                 <td>
                                     <div class="d-flex flex-wrap gap-1">
                                         @if($role->permissions->count() > 0)
@@ -49,33 +49,33 @@
                                                 <span class="badge badge-sm" style="background-color: #f56476;" >{{ $permission->name }}</span>
                                             @endforeach
                                             @if($role->permissions->count() > 3)
-                                                <span class="badge bg-light badge-sm text-dark">+{{ $role->permissions->count() - 3 }} more</span>
+                                                <span class="badge bg-light badge-sm text-dark">+{{ $role->permissions->count() - 3 }} {{ __('dashboard.more') }}</span>
                                             @endif
                                         @else
-                                            <span class="badge bg-light badge-sm text-dark">{{ __('No permissions') }}</span>
+                                            <span class="badge bg-light badge-sm text-dark">{{ __('dashboard.no_permissions') }}</span>
                                         @endif
                                     </div>
                                 </td>
                                 <td>{{ $role->created_at->format('M d, Y') }}</td>
                                 <td>
-                                    <a href="{{ route('dashboard.roles.show', $role) }}" class="mr-2" style="color: #f56476;" title="{{ __('Show') }}">
+                                    <a href="{{ route('dashboard.roles.show', $role) }}" class="mr-2" style="color: #f56476;" title="{{ __('dashboard.show') }}">
                                         <i class="fa fa-eye"></i>
                                     </a>
-                                    <a href="{{ route('dashboard.roles.edit', $role) }}" class="text-yellow-500 hover:text-yellow-700 mr-2" title="{{ __('Edit') }}">
+                                    <a href="{{ route('dashboard.roles.edit', $role) }}" class="text-yellow-500 hover:text-yellow-700 mr-2" title="{{ __('dashboard.edit') }}">
                                         <i class="fa fa-edit"></i>
                                     </a>
                                     <form action="{{ route('dashboard.roles.destroy', $role) }}" method="POST" id="destroy-form-{{ $role->id }}" style="display:none;">
                                         @csrf
                                         @method('DELETE')
                                     </form>
-                                    <a href="#" class="text-red-500 hover:text-red-700" title="{{ __('Delete') }}" onclick="event.preventDefault(); return confirm('{{ __('Are you sure you want to delete this role?') }}') && document.getElementById('destroy-form-{{ $role->id }}').submit();">
+                                    <a href="#" class="text-red-500 hover:text-red-700" title="{{ __('dashboard.delete') }}" onclick="event.preventDefault(); return confirm('{{ __('dashboard.confirm_delete_role') }}') && document.getElementById('destroy-form-{{ $role->id }}').submit();">
                                         <i class="fa fa-trash"></i>
                                     </a>
                                 </td>
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="6" class="text-center">{{ __('No roles found') }}</td>
+                                <td colspan="6" class="text-center">{{ __('dashboard.no_roles_found') }}</td>
                             </tr>
                             @endforelse
                         </tbody>

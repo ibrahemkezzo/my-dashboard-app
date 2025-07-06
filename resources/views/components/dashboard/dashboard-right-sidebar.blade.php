@@ -3,7 +3,7 @@
         <div class="container p-0">
             <div class="modal-header p-l-20 p-r-20">
                 <div class="col-sm-8 p-0">
-                    <h6 class="modal-title font-weight-bold">FRIEND LIST</h6>
+                    <h6 class="modal-title font-weight-bold">{{ __('dashboard.friend_list') }}</h6>
                 </div>
                 <div class="col-sm-4 text-end p-0">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="friend-list-search mt-0">
-            <input type="text" placeholder="search friend">
+            <input type="text" placeholder="{{ __('dashboard.search_placeholder') }}">
             <i class="fa fa-search"></i>
         </div>
         <div class="p-l-30 p-r-30 friend-list-name">
@@ -32,7 +32,7 @@
                             <div class="status-circle online"></div>
                             <div class="about">
                                 <div class="name">Vincent Porter</div>
-                                <div class="status">Online</div>
+                                <div class="status">{{ __('dashboard.online') }}</div>
                             </div>
                         </li>
                         <li class="clearfix">
@@ -41,7 +41,7 @@
                             <div class="status-circle away"></div>
                             <div class="about">
                                 <div class="name">Ain Chavez</div>
-                                <div class="status">28 minutes ago</div>
+                                <div class="status">28 {{ __('dashboard.minutes_ago') }}</div>
                             </div>
                         </li>
                         <li class="clearfix">
@@ -50,7 +50,7 @@
                             <div class="status-circle online"></div>
                             <div class="about">
                                 <div class="name">Kori Thomas</div>
-                                <div class="status">Online</div>
+                                <div class="status">{{ __('dashboard.online') }}</div>
                             </div>
                         </li>
                         <li class="clearfix">
@@ -59,7 +59,7 @@
                             <div class="status-circle online"></div>
                             <div class="about">
                                 <div class="name">Erica Hughes</div>
-                                <div class="status">Online</div>
+                                <div class="status">{{ __('dashboard.online') }}</div>
                             </div>
                         </li>
                         <li class="clearfix">
@@ -68,7 +68,7 @@
                             <div class="status-circle offline"></div>
                             <div class="about">
                                 <div class="name">Ginger Johnston</div>
-                                <div class="status">2 minutes ago</div>
+                                <div class="status">2 {{ __('dashboard.minutes_ago') }}</div>
                             </div>
                         </li>
                         <li class="clearfix">
@@ -77,7 +77,7 @@
                             <div class="status-circle away"></div>
                             <div class="about">
                                 <div class="name">Prasanth Anand</div>
-                                <div class="status">2 hour ago</div>
+                                <div class="status">2 {{ __('dashboard.hour_ago') }}</div>
                             </div>
                         </li>
                         <li class="clearfix">
@@ -86,7 +86,7 @@
                             <div class="status-circle online"></div>
                             <div class="about">
                                 <div class="name">Hileri Jecno</div>
-                                <div class="status">Online</div>
+                                <div class="status">{{ __('dashboard.online') }}</div>
                             </div>
                         </li>
                     </ul>

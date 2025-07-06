@@ -30,7 +30,7 @@ class StoreUserRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email|max:255',
             'password' => 'required|string|min:8|confirmed',
-            'roles' => 'nullable|array',
+            'roles' => 'required|array|min:1',
             'roles.*' => 'exists:roles,name',
         ];
     }
@@ -52,6 +52,8 @@ class StoreUserRequest extends FormRequest
             'password.required' => 'كلمة المرور مطلوبة.',
             'password.min' => 'كلمة المرور يجب أن تكون 8 أحرف على الأقل.',
             'password.confirmed' => 'تأكيد كلمة المرور غير متطابق.',
+            'roles.required' => 'يجب اختيار دور واحد على الأقل.',
+            'roles.min' => 'يجب اختيار دور واحد على الأقل.',
             'roles.*.exists' => 'الدور :value غير موجود.',
         ];
     }

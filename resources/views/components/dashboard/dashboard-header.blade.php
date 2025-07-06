@@ -30,7 +30,7 @@
                 <li>
                     <form class="form-inline search-form">
                         <div class="form-group">
-                            <input class="form-control-plaintext" type="search" placeholder="Search..">
+                            <input class="form-control-plaintext" type="search" placeholder="{{ __('dashboard.search_placeholder') }}">
                             <span class="d-sm-none mobile-search">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -45,7 +45,7 @@
                     </form>
                 </li>
                 <li>
-                    <a class="text-dark" href="#!" onclick="javascript:toggleFullScreen()">
+                    <a class="text-dark" href="#!" onclick="javascript:toggleFullScreen()" title="{{ __('dashboard.fullscreen') }}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round"
@@ -59,24 +59,16 @@
                 </li>
                 <li class="onhover-dropdown">
                     <a class="txt-dark" href="javascript:void(0)">
-                        <h6>EN</h6>
+                        <h6>{{ __('dashboard.language') }}</h6>
                     </a>
                     <ul class="language-dropdown onhover-show-div p-20">
                         <li>
                             <a href="javascript:void(0)" data-lng="en">
-                                <i class="flag-icon flag-icon-is"></i>English</a>
+                                <i class="flag-icon flag-icon-is"></i>{{ __('dashboard.english') }}</a>
                         </li>
                         <li>
-                            <a href="javascript:void(0)" data-lng="es">
-                                <i class="flag-icon flag-icon-um"></i>Spanish</a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0)" data-lng="pt">
-                                <i class="flag-icon flag-icon-uy"></i>Portuguese</a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0)" data-lng="fr">
-                                <i class="flag-icon flag-icon-nz"></i>French</a>
+                            <a href="javascript:void(0)" data-lng="ar">
+                                <i class="flag-icon flag-icon-sa"></i>{{ __('dashboard.arabic') }}</a>
                         </li>
                     </ul>
                 </li>
@@ -90,7 +82,7 @@
                     <span class="badge badge-pill badge-primary pull-right notification-badge">3</span>
                     <span class="dot"></span>
                     <ul class="notification-dropdown onhover-show-div p-0">
-                        <li>Notification <span class="badge badge-pill badge-primary pull-right">3</span></li>
+                        <li>{{ __('dashboard.notification') }} <span class="badge badge-pill badge-primary pull-right">3</span></li>
                         <li>
                             <div class="media">
                                 <div class="media-body">
@@ -107,9 +99,9 @@
                                                     y2="6"></line>
                                                 <path d="M16 10a4 4 0 0 1-8 0"></path>
                                             </svg>
-                                        </span>Your order ready for Ship..!
+                                        </span>{{ __('dashboard.your_order_ready') }}
                                     </h6>
-                                    <p class="mb-0">Lorem ipsum dolor sit amet, consectetuer.</p>
+                                    <p class="mb-0">{{ __('dashboard.lorem_ipsum') }}</p>
                                 </div>
                             </div>
                         </li>
@@ -128,9 +120,9 @@
                                                 <line x1="12" y1="15" x2="12"
                                                     y2="3"></line>
                                             </svg>
-                                        </span>Download Complete
+                                        </span>{{ __('dashboard.download_complete') }}
                                     </h6>
-                                    <p class="mb-0">Lorem ipsum dolor sit amet, consectetuer.</p>
+                                    <p class="mb-0">{{ __('dashboard.lorem_ipsum') }}</p>
                                 </div>
                             </div>
                         </li>
@@ -150,13 +142,13 @@
                                                 <line x1="12" y1="16" x2="12.01"
                                                     y2="16"></line>
                                             </svg>
-                                        </span>250 MB trash files
+                                        </span>{{ __('dashboard.trash_files') }}
                                     </h6>
-                                    <p class="mb-0">Lorem ipsum dolor sit amet, consectetuer.</p>
+                                    <p class="mb-0">{{ __('dashboard.lorem_ipsum') }}</p>
                                 </div>
                             </div>
                         </li>
-                        <li class="txt-dark"><a href="javascript:void(0)">All</a> notification</li>
+                        <li class="txt-dark"><a href="javascript:void(0)">{{ __('dashboard.all_notifications') }}</a></li>
                     </ul>
                 </li>
                 <li>
@@ -188,7 +180,7 @@
                                     class="feather feather-user">
                                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                     <circle cx="12" cy="7" r="4"></circle>
-                                </svg>Edit Profile
+                                </svg>{{ __('dashboard.edit_profile') }}
                             </a>
                         </li>
                         <li>
@@ -201,7 +193,7 @@
                                         d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
                                     </path>
                                     <polyline points="22,6 12,13 2,6"></polyline>
-                                </svg>Inbox
+                                </svg>{{ __('dashboard.inbox') }}
                             </a>
                         </li>
                         <li>
@@ -213,7 +205,7 @@
                                     <rect x="3" y="11" width="18" height="11" rx="2"
                                         ry="2"></rect>
                                     <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                                </svg>Lock Screen
+                                </svg>{{ __('dashboard.lock_screen') }}
                             </a>
                         </li>
                         <li>
@@ -226,7 +218,7 @@
                                     <path
                                         d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
                                     </path>
-                                </svg>Settings
+                                </svg>{{ __('dashboard.settings') }}
                             </a>
                         </li>
                         <li>
@@ -237,7 +229,7 @@
                                     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
                                     <polyline points="16 17 21 12 16 7"></polyline>
                                     <line x1="21" y1="12" x2="9" y2="12"></line>
-                                </svg>{{ __('Logout') }}
+                                </svg>{{ __('dashboard.logout') }}
                             </a>
                              <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
                                 @csrf

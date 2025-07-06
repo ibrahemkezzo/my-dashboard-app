@@ -2,8 +2,8 @@
 
 @section('breadcrumbs')
     <x-dashboard.dashboard-breadcrumb :breadcrumbs="[
-        ['label' => __('Reports'), 'url' => route('dashboard.reports')],
-    ]" :pageName="__('VISIT REPORTS')" />
+        ['label' => __('dashboard.reports'), 'url' => route('dashboard.reports')],
+    ]" :pageName="__('dashboard.visit_reports')" />
 @endsection
 
 @section('content')
@@ -12,49 +12,49 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h5>{{ __('Filters') }}</h5>
+                    <h5>{{ __('dashboard.filters') }}</h5>
                 </div>
                 <div class="card-body">
                     <form method="GET" action="{{ route('dashboard.reports') }}">
                         <div class="row g-3">
                             <div class="col-md-3">
-                                <label for="time_range" class="form-label">{{ __('Time Range') }}</label>
+                                <label for="time_range" class="form-label">{{ __('dashboard.time_range') }}</label>
                                 <select name="time_range" id="time_range" class="form-select">
-                                    <option value="7" {{ $timeRange == '7' ? 'selected' : '' }}>{{ __('Last 7 Days') }}</option>
-                                    <option value="30" {{ $timeRange == '30' ? 'selected' : '' }}>{{ __('Last 30 Days') }}</option>
-                                    <option value="90" {{ $timeRange == '90' ? 'selected' : '' }}>{{ __('Last 90 Days') }}</option>
-                                    <option value="custom" {{ $timeRange == 'custom' ? 'selected' : '' }}>{{ __('Custom Range') }}</option>
+                                    <option value="7" {{ $timeRange == '7' ? 'selected' : '' }}>{{ __('dashboard.last_7_days') }}</option>
+                                    <option value="30" {{ $timeRange == '30' ? 'selected' : '' }}>{{ __('dashboard.last_30_days') }}</option>
+                                    <option value="90" {{ $timeRange == '90' ? 'selected' : '' }}>{{ __('dashboard.last_90_days') }}</option>
+                                    <option value="custom" {{ $timeRange == 'custom' ? 'selected' : '' }}>{{ __('dashboard.custom_range') }}</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
-                                <label for="start_date" class="form-label">{{ __('Start Date') }}</label>
+                                <label for="start_date" class="form-label">{{ __('dashboard.start_date') }}</label>
                                 <input type="date" name="start_date" id="start_date" value="{{ $startDate }}" class="form-control" {{ $timeRange != 'custom' ? 'disabled' : '' }}>
                             </div>
                             <div class="col-md-3">
-                                <label for="end_date" class="form-label">{{ __('End Date') }}</label>
+                                <label for="end_date" class="form-label">{{ __('dashboard.end_date') }}</label>
                                 <input type="date" name="end_date" id="end_date" value="{{ $endDate }}" class="form-control" {{ $timeRange != 'custom' ? 'disabled' : '' }}>
                             </div>
                             <div class="col-md-3">
-                                <label for="device_type" class="form-label">{{ __('Device Type') }}</label>
+                                <label for="device_type" class="form-label">{{ __('dashboard.device_type') }}</label>
                                 <select name="device_type" id="device_type" class="form-select">
-                                    <option value="">{{ __('All Devices') }}</option>
-                                    <option value="mobile" {{ $deviceType == 'mobile' ? 'selected' : '' }}>{{ __('Mobile') }}</option>
-                                    <option value="desktop" {{ $deviceType == 'desktop' ? 'selected' : '' }}>{{ __('Desktop') }}</option>
-                                    <option value="tablet" {{ $deviceType == 'tablet' ? 'selected' : '' }}>{{ __('Tablet') }}</option>
-                                    <option value="other" {{ $deviceType == 'other' ? 'selected' : '' }}>{{ __('Other') }}</option>
+                                    <option value="">{{ __('dashboard.all_devices') }}</option>
+                                    <option value="mobile" {{ $deviceType == 'mobile' ? 'selected' : '' }}>{{ __('dashboard.mobile') }}</option>
+                                    <option value="desktop" {{ $deviceType == 'desktop' ? 'selected' : '' }}>{{ __('dashboard.desktop') }}</option>
+                                    <option value="tablet" {{ $deviceType == 'tablet' ? 'selected' : '' }}>{{ __('dashboard.tablet') }}</option>
+                                    <option value="other" {{ $deviceType == 'other' ? 'selected' : '' }}>{{ __('dashboard.other') }}</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
-                                <label for="country" class="form-label">{{ __('Country') }}</label>
+                                <label for="country" class="form-label">{{ __('dashboard.country') }}</label>
                                 <select name="country" id="country" class="form-select">
-                                    <option value="">{{ __('All Countries') }}</option>
+                                    <option value="">{{ __('dashboard.all_countries') }}</option>
                                     @foreach ($countries as $countryItem)
                                         <option value="{{ $countryItem }}" {{ $country == $countryItem ? 'selected' : '' }}>{{ $countryItem }}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary mt-3">{{ __('Apply Filters') }}</button>
+                        <button type="submit" class="btn btn-primary mt-3">{{ __('dashboard.apply_filters') }}</button>
                     </form>
                 </div>
             </div>
@@ -73,7 +73,7 @@
                             </div>
                         </div>
                         <div class="media-body media-doller">
-                            <span class="m-0">{{ __('Total Visits') }}</span>
+                            <span class="m-0">{{ __('dashboard.total_visits') }}</span>
                             <h3 class="mb-0">{{ $totalVisits }}</h3>
                         </div>
                     </div>
@@ -90,7 +90,7 @@
                             </div>
                         </div>
                         <div class="media-body media-doller">
-                            <span class="m-0">{{ __('Avg. Time/Page (s)') }}</span>
+                            <span class="m-0">{{ __('dashboard.avg_time_per_page') }}</span>
                             <h3 class="mb-0">
                                 @php $avg = collect($averageTimeSpent)->avg('avg_time_spent'); @endphp
                                 {{ number_format($avg, 2) }}
@@ -110,7 +110,7 @@
                             </div>
                         </div>
                         <div class="media-body media-doller">
-                            <span class="m-0">{{ __('Countries') }}</span>
+                            <span class="m-0">{{ __('dashboard.countries') }}</span>
                             <h3 class="mb-0">{{ count($visitsByCountry) }}</h3>
                         </div>
                     </div>
@@ -127,7 +127,7 @@
                             </div>
                         </div>
                         <div class="media-body media-doller">
-                            <span class="m-0">{{ __('Device Types') }}</span>
+                            <span class="m-0">{{ __('dashboard.device_types') }}</span>
                             <h3 class="mb-0">{{ count($visitsByDevice) }}</h3>
                         </div>
                     </div>
@@ -141,7 +141,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h5>{{ __('Visit Trend (Last Period)') }}</h5>
+                    <h5>{{ __('dashboard.visit_trend_last_period') }}</h5>
                 </div>
                 <div class="card-body">
                     <div style="height: 300px;">
@@ -158,15 +158,15 @@
         <div class="col-xl-6">
             <div class="card">
                 <div class="card-header">
-                    <h5>{{ __('Visits by Page') }}</h5>
+                    <h5>{{ __('dashboard.visits_by_page') }}</h5>
                 </div>
                 <div class="card-body table-responsive" style="max-height: 300px; overflow-y: auto;">
                     <table class="table table-bordered table-hover mb-0">
                         <thead class="bg-primary">
                             <tr>
-                                <th>{{ __('Page URL') }}</th>
-                                <th>{{ __('Visits') }}</th>
-                                <th>{{ __('Avg. Time (s)') }}</th>
+                                <th>{{ __('dashboard.page_url') }}</th>
+                                <th>{{ __('dashboard.visits') }}</th>
+                                <th>{{ __('dashboard.avg_time_seconds') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -190,14 +190,14 @@
         <div class="col-xl-6">
             <div class="card">
                 <div class="card-header">
-                    <h5>{{ __('Visits by Device') }}</h5>
+                    <h5>{{ __('dashboard.visits_by_device') }}</h5>
                 </div>
                 <div class="card-body table-responsive" style="max-height: 300px; overflow-y: auto;">
                     <table class="table table-bordered table-hover mb-0">
                         <thead class="bg-secondary">
                             <tr>
-                                <th>{{ __('Device Type') }}</th>
-                                <th>{{ __('Visits') }}</th>
+                                <th>{{ __('dashboard.device_type') }}</th>
+                                <th>{{ __('dashboard.visits') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -217,20 +217,20 @@
         <div class="col-xl-6">
             <div class="card">
                 <div class="card-header">
-                    <h5>{{ __('Visits by Country') }}</h5>
+                    <h5>{{ __('dashboard.visits_by_country') }}</h5>
                 </div>
                 <div class="card-body table-responsive" style="max-height: 300px; overflow-y: auto;">
                     <table class="table table-bordered table-hover mb-0">
                         <thead class="bg-success">
                             <tr>
-                                <th>{{ __('Country') }}</th>
-                                <th>{{ __('Visits') }}</th>
+                                <th>{{ __('dashboard.country') }}</th>
+                                <th>{{ __('dashboard.visits') }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($visitsByCountry as $item)
                                 <tr>
-                                    <td>{{ $item['country'] ?? 'Unknown' }}</td>
+                                    <td>{{ $item['country'] ?? __('dashboard.unknown') }}</td>
                                     <td>{{ $item['visit_count'] }}</td>
                                 </tr>
                             @endforeach
@@ -242,20 +242,20 @@
         <div class="col-xl-6">
             <div class="card">
                 <div class="card-header">
-                    <h5>{{ __('Visits by Referrer') }}</h5>
+                    <h5>{{ __('dashboard.visits_by_referrer') }}</h5>
                 </div>
                 <div class="card-body table-responsive" style="max-height: 300px; overflow-y: auto;">
                     <table class="table table-bordered table-hover mb-0">
                         <thead class="bg-info">
                             <tr>
-                                <th>{{ __('Referrer') }}</th>
-                                <th>{{ __('Visits') }}</th>
+                                <th>{{ __('dashboard.referrer') }}</th>
+                                <th>{{ __('dashboard.visits') }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($visitsByReferrer as $item)
                                 <tr>
-                                    <td>{{ $item['referrer'] ?? 'Direct' }}</td>
+                                    <td>{{ $item['referrer'] ?? __('dashboard.direct') }}</td>
                                     <td>{{ $item['visit_count'] }}</td>
                                 </tr>
                             @endforeach
@@ -281,7 +281,7 @@
             data: {
                 labels: trendData.map(item => item.date),
                 datasets: [{
-                    label: 'Visits',
+                    label: '{{ __('dashboard.visits') }}',
                     data: trendData.map(item => item.visit_count),
                     borderColor: '#007bff',
                     backgroundColor: 'rgba(0,123,255,0.1)',

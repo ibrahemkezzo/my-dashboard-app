@@ -30,7 +30,7 @@ class UpdateUserRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($this->route('user'))],
             'password' => 'nullable|string|min:8|confirmed',
-            'roles' => 'nullable|array',
+            'roles' => 'required|array|min:1',
             'roles.*' => 'exists:roles,name',
         ];
     }
@@ -51,6 +51,8 @@ class UpdateUserRequest extends FormRequest
             'email.max' => 'البريد الإلكتروني لا يمكن أن يتجاوز 255 حرفًا.',
             'password.min' => 'كلمة المرور يجب أن تكون 8 أحرف على الأقل.',
             'password.confirmed' => 'تأكيد كلمة المرور غير متطابق.',
+            'roles.required' => 'يجب اختيار دور واحد على الأقل.',
+            'roles.min' => 'يجب اختيار دور واحد على الأقل.',
             'roles.*.exists' => 'الدور :value غير موجود.',
         ];
     }

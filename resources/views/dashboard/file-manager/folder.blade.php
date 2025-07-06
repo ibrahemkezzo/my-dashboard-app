@@ -2,19 +2,19 @@
 
 @section('breadcrumbs')
     <x-dashboard.dashboard-breadcrumb :breadcrumbs="[
-        ['label' => __('Media'), 'url' => route('dashboard.file-manager.media')],
+        ['label' => __('dashboard.media'), 'url' => route('dashboard.file-manager.media')],
         ['label' => $folder, 'url' => '']
-    ]" :pageName="__('Folder: ') . $folder" />
+    ]" :pageName="__('dashboard.folder') . ': ' . $folder" />
 @endsection
 
 @section('content')
 <div class="container-fluid bulk-cate">
     <div class="mb-3">
-        <a href="{{ route('dashboard.file-manager.media') }}" class="btn btn-secondary">{{ __('Back to Folders') }}</a>
+        <a href="{{ route('dashboard.file-manager.media') }}" class="btn btn-secondary">{{ __('dashboard.back_to_folders') }}</a>
     </div>
     <div class="card mb-4">
         <div class="card-header">
-            <h6 class="mb-0 text-primary"><i class="fa fa-folder-open"></i> {{ __('Folder: ') . $folder }}</h6>
+            <h6 class="mb-0 text-primary"><i class="fa fa-folder-open"></i> {{ __('dashboard.folder') }}: {{ $folder }}</h6>
         </div>
         <div class="card-body">
             <x-alert-message />
@@ -25,7 +25,7 @@
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column justify-content-between">
                                     <h5 class="card-title"><i class="fa fa-folder font-primary"></i> {{ basename($subdir) }}</h5>
-                                    <a href="{{ route('dashboard.file-manager.folder', ['folder' => $folder . '/' . basename($subdir)]) }}" class="btn btn-outline-primary mt-2">{{ __('View') }}</a>
+                                    <a href="{{ route('dashboard.file-manager.folder', ['folder' => $folder . '/' . basename($subdir)]) }}" class="btn btn-outline-primary mt-2">{{ __('dashboard.view') }}</a>
                                 </div>
                             </div>
                         </div>
@@ -51,7 +51,7 @@
                         </div>
                     </div>
                 @empty
-                    <div class="col-12 text-center text-muted">{{ __('No files found in this folder.') }}</div>
+                    <div class="col-12 text-center text-muted">{{ __('dashboard.no_files_found_in_folder') }}</div>
                 @endforelse
             </div>
         </div>

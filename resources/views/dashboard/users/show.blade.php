@@ -11,9 +11,9 @@
 
 @section('breadcrumbs')
     <x-dashboard.dashboard-breadcrumb :breadcrumbs="[
-        ['label' => __('User'), 'url' => route('dashboard.users.index')],
-        ['label' => __('Show'), 'url' => route('dashboard.users.show',$user->id)],
-    ]" :pageName="__('SHOW USER')" />
+        ['label' => __('dashboard.user'), 'url' => route('dashboard.users.index')],
+        ['label' => __('dashboard.show'), 'url' => route('dashboard.users.show',$user->id)],
+    ]" :pageName="__('dashboard.show_user')" />
 @endsection
 
 @section('content')
@@ -22,18 +22,18 @@
         <div class="col-sm-12">
             <div class="card tab2-card">
                 <div class="card-body">
-                    <h4>{{ __('User Details') }}</h4>
+                    <h4>{{ __('dashboard.user_details') }}</h4>
 
                     <!-- Tab Navigation -->
                     <ul class="nav nav-tabs mb-3" id="userDetailTab" role="tablist">
                         <li class="nav-item" role="presentation">
                             <a class="nav-link active" id="info-tab" data-bs-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="true">
-                                <i class="fa fa-user me-2"></i>{{ __('User Information') }}
+                                <i class="fa fa-user me-2"></i>{{ __('dashboard.user_information') }}
                             </a>
                         </li>
                         <li class="nav-item" role="presentation">
                             <a class="nav-link" id="activity-tab" data-bs-toggle="tab" href="#activity" role="tab" aria-controls="activity" aria-selected="false">
-                                <i class="fa fa-chart-line me-2"></i>{{ __('User Activity') }}
+                                <i class="fa fa-chart-line me-2"></i>{{ __('dashboard.user_activity') }}
                             </a>
                         </li>
                     </ul>
@@ -51,7 +51,7 @@
                                     <p class="text-muted">{{ $user->email }}</p>
                                     <div class="user-status">
                                         <span class="badge bg-{{ $user->is_active ? 'success' : 'danger' }}">
-                                            {{ $user->is_active ? __('Active') : __('Inactive') }}
+                                            {{ $user->is_active ? __('dashboard.active') : __('dashboard.inactive') }}
                                         </span>
                                     </div>
                                 </div>
@@ -61,13 +61,13 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="detail-item mb-3">
-                                                    <label class="fw-bold text-muted">{{ __('Full Name') }}:</label>
+                                                    <label class="fw-bold text-muted">{{ __('dashboard.full_name') }}:</label>
                                                     <p>{{ $user->name }}</p>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="detail-item mb-3">
-                                                    <label class="fw-bold text-muted">{{ __('Email Address') }}:</label>
+                                                    <label class="fw-bold text-muted">{{ __('dashboard.email_address') }}:</label>
                                                     <p>{{ $user->email }}</p>
                                                 </div>
                                             </div>
@@ -76,20 +76,20 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="detail-item mb-3">
-                                                    <label class="fw-bold text-muted">{{ __('Account Status') }}:</label>
+                                                    <label class="fw-bold text-muted">{{ __('dashboard.account_status') }}:</label>
                                                     <p>
                                                         <span class="badge bg-{{ $user->is_active ? 'success' : 'danger' }}">
-                                                            {{ $user->is_active ? __('Active') : __('Inactive') }}
+                                                            {{ $user->is_active ? __('dashboard.active') : __('dashboard.inactive') }}
                                                         </span>
                                                     </p>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="detail-item mb-3">
-                                                    <label class="fw-bold text-muted">{{ __('Email Verified') }}:</label>
+                                                    <label class="fw-bold text-muted">{{ __('dashboard.email_verified') }}:</label>
                                                     <p>
                                                         <span class="badge bg-{{ $user->email_verified_at ? 'success' : 'warning' }}">
-                                                            {{ $user->email_verified_at ? __('Verified') : __('Not Verified') }}
+                                                            {{ $user->email_verified_at ? __('dashboard.verified') : __('dashboard.not_verified') }}
                                                         </span>
                                                     </p>
                                                 </div>
@@ -99,25 +99,25 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="detail-item mb-3">
-                                                    <label class="fw-bold text-muted">{{ __('Account Created') }}:</label>
+                                                    <label class="fw-bold text-muted">{{ __('dashboard.account_created') }}:</label>
                                                     <p>{{ $user->created_at->format('F j, Y \a\t g:i A') }}</p>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="detail-item mb-3">
-                                                    <label class="fw-bold text-muted">{{ __('Last Updated') }}:</label>
+                                                    <label class="fw-bold text-muted">{{ __('dashboard.last_updated') }}:</label>
                                                     <p>{{ $user->updated_at->format('F j, Y \a\t g:i A') }}</p>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="detail-item mb-3">
-                                            <label class="fw-bold text-muted">{{ __('User Roles') }}:</label>
+                                            <label class="fw-bold text-muted">{{ __('dashboard.user_roles') }}:</label>
                                             <div class="mt-2">
                                                 @forelse($user->roles as $role)
                                                     <span class="badge bg-primary me-2">{{ $role->name }}</span>
                                                 @empty
-                                                    <span class="text-muted">{{ __('No roles assigned') }}</span>
+                                                    <span class="text-muted">{{ __('dashboard.no_roles_assigned') }}</span>
                                                 @endforelse
                                             </div>
                                         </div>
@@ -131,29 +131,29 @@
                                     <div class="d-flex gap-2">
                                         <a href="{{ route('dashboard.users.edit', $user->id) }}" >
                                             <button class="btn btn-primary">
-                                                <i class="fa fa-edit me-2"></i>{{ __('Edit User') }}
+                                                <i class="fa fa-edit me-2"></i>{{ __('dashboard.edit_user') }}
                                             </button>
                                         </a>
                                         <a href="{{ route('dashboard.users.editRoles', $user->id)}}"  >
                                             <button class="btn btn-info">
-                                                <i class="fa fa-users-cog me-2"></i>{{ __('Manage Roles') }}
+                                                <i class="fa fa-users-cog me-2"></i>{{ __('dashboard.manage_roles') }}
                                             </button>
                                         </a>
                                         <form action="{{ route('dashboard.users.toggleStatus', $user) }}" method="POST" style="display: inline;">
                                             @csrf
                                             @method('PATCH')
                                             <button type="submit" class="btn btn-{{ $user->is_active ? 'warning' : 'success' }}"
-                                                    onclick="return confirm('{{ __('Are you sure you want to') }} {{ $user->is_active ? __('deactivate') : __('activate') }} {{ __('this user?') }}')">
+                                                    onclick="return confirm('{{ __('dashboard.are_you_sure_toggle_status') }} {{ $user->is_active ? __('dashboard.deactivate') : __('dashboard.activate') }} {{ __('dashboard.this_user') }}')">
                                                 <i class="fa fa-{{ $user->is_active ? 'ban' : 'check' }} me-2"></i>
-                                                {{ $user->is_active ? __('Deactivate') : __('Activate') }}
+                                                {{ $user->is_active ? __('dashboard.deactivate') : __('dashboard.activate') }}
                                             </button>
                                         </form>
                                         <form action="{{ route('dashboard.users.destroy', $user) }}" method="POST" style="display: inline;">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger"
-                                                    onclick="return confirm('{{ __('Are you sure you want to delete this user?') }}')">
-                                                <i class="fa fa-trash me-2"></i>{{ __('Delete User') }}
+                                                    onclick="return confirm('{{ __('dashboard.are_you_sure_delete_user') }}')">
+                                                <i class="fa fa-trash me-2"></i>{{ __('dashboard.delete_user') }}
                                             </button>
                                         </form>
                                     </div>
@@ -169,7 +169,7 @@
                                         <div class="card bg-primary text-white">
                                             <div class="card-body text-center">
                                                 <h4>{{ $statistics['total_sessions'] }}</h4>
-                                                <p class="mb-0">{{ __('Total Sessions') }}</p>
+                                                <p class="mb-0">{{ __('dashboard.total_sessions') }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -177,15 +177,15 @@
                                         <div class="card bg-success text-white">
                                             <div class="card-body text-center">
                                                 <h4>{{ $statistics['total_visits'] }}</h4>
-                                                <p class="mb-0">{{ __('Total Page Visits') }}</p>
+                                                <p class="mb-0">{{ __('dashboard.total_page_visits') }}</p>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="card bg-info text-white">
                                             <div class="card-body text-center">
-                                                <h4>{{ $statistics['last_session'] ? $statistics['last_session']->started_at->diffForHumans() : __('Never') }}</h4>
-                                                <p class="mb-0">{{ __('Last Session') }}</p>
+                                                <h4>{{ $statistics['last_session'] ? $statistics['last_session']->started_at->diffForHumans() : __('dashboard.never') }}</h4>
+                                                <p class="mb-0">{{ __('dashboard.last_session') }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -193,7 +193,7 @@
                                         <div class="card bg-warning text-white">
                                             <div class="card-body text-center">
                                                 <h4>{{ $statistics['device_types_count'] }}</h4>
-                                                <p class="mb-0">{{ __('Device Types') }}</p>
+                                                <p class="mb-0">{{ __('dashboard.device_types') }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -286,31 +286,31 @@
                             </div> --}}
 
                             <div class="sessions-list">
-                                <h5 class="mb-3">{{ __('Recent Sessions') }}</h5>
+                                <h5 class="mb-3">{{ __('dashboard.recent_sessions') }}</h5>
 
                                 @forelse($sessions as $session)
                                     <div class="card mb-3">
                                         <div class="card-header">
                                             <div class="row align-items-center">
                                                 <div class="col-md-3">
-                                                    <strong>{{ __('Session ID') }}:</strong>
+                                                    <strong>{{ __('dashboard.session_id') }}:</strong>
                                                     <span class="text-muted">{{ Str::limit($session->session_id, 20) }}</span>
                                                 </div>
                                                 <div class="col-md-2">
-                                                    <strong>{{ __('Device') }}:</strong>
+                                                    <strong>{{ __('dashboard.device') }}:</strong>
                                                     <span class="badge bg-secondary">{{ ucfirst($session->device_type) }}</span>
                                                 </div>
                                                 <div class="col-md-2">
-                                                    <strong>{{ __('Country') }}:</strong>
-                                                    <span class="text-muted">{{ $session->country ?? __('Unknown') }}</span>
+                                                    <strong>{{ __('dashboard.country') }}:</strong>
+                                                    <span class="text-muted">{{ $session->country ?? __('dashboard.unknown') }}</span>
                                                 </div>
                                                 <div class="col-md-2">
-                                                    <strong>{{ __('Started') }}:</strong>
+                                                    <strong>{{ __('dashboard.started') }}:</strong>
                                                     <span class="text-muted">{{ $session->started_at->diffForHumans() }}</span>
                                                 </div>
                                                 <div class="col-md-2">
-                                                    <strong>{{ __('Duration') }}:</strong>
-                                                    <span class="text-muted">{{ $session->started_at->diffInMinutes($session->updated_at) }} {{ __('min') }}</span>
+                                                    <strong>{{ __('dashboard.duration') }}:</strong>
+                                                    <span class="text-muted">{{ $session->started_at->diffInMinutes($session->updated_at) }} {{ __('dashboard.min') }}</span>
                                                 </div>
                                                 <div class="col-md-1">
                                                     <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#visits-{{ $session->id }}">
@@ -322,16 +322,16 @@
 
                                         <div class="collapse" id="visits-{{ $session->id }}">
                                             <div class="card-body">
-                                                <h6 class="mb-3">{{ __('Page Visits in This Session') }} ({{ $session->visits->count() }})</h6>
+                                                <h6 class="mb-3">{{ __('dashboard.page_visits_in_session') }} ({{ $session->visits->count() }})</h6>
                                                 @if($session->visits->count() > 0)
                                                     <div class="table-responsive">
                                                         <table class="table table-sm">
                                                             <thead>
                                                                 <tr>
-                                                                    <th>{{ __('Page URL') }}</th>
-                                                                    <th>{{ __('Visited At') }}</th>
-                                                                    <th>{{ __('Time Spent') }}</th>
-                                                                    <th>{{ __('Last Visited') }}</th>
+                                                                    <th>{{ __('dashboard.page_url') }}</th>
+                                                                    <th>{{ __('dashboard.visited_at') }}</th>
+                                                                    <th>{{ __('dashboard.time_spent') }}</th>
+                                                                    <th>{{ __('dashboard.last_visited') }}</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -345,7 +345,7 @@
                                                                             @if($visit->time_spent)
                                                                                 {{ gmdate('H:i:s', $visit->time_spent) }}
                                                                             @else
-                                                                                <span class="text-muted">{{ __('Not recorded') }}</span>
+                                                                                <span class="text-muted">{{ __('dashboard.not_recorded') }}</span>
                                                                             @endif
                                                                         </td>
                                                                         <td>{{ \Carbon\Carbon::parse($visit->visited_at)->diffForHumans() }}</td>
@@ -355,7 +355,7 @@
                                                         </table>
                                                     </div>
                                                 @else
-                                                    <p class="text-muted">{{ __('No page visits recorded for this session.') }}</p>
+                                                    <p class="text-muted">{{ __('dashboard.no_page_visits_session') }}</p>
                                                 @endif
                                             </div>
                                         </div>
@@ -363,8 +363,8 @@
                                 @empty
                                     <div class="text-center py-5">
                                         <i class="fa fa-chart-line fa-3x text-muted mb-3"></i>
-                                        <h5 class="text-muted">{{ __('No Activity Found') }}</h5>
-                                        <p class="text-muted">{{ __('This user has no recorded sessions or page visits.') }}</p>
+                                        <h5 class="text-muted">{{ __('dashboard.no_activity_found') }}</h5>
+                                        <p class="text-muted">{{ __('dashboard.no_activity_description') }}</p>
                                     </div>
                                 @endforelse
 

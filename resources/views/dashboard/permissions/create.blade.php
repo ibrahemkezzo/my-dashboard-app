@@ -2,10 +2,10 @@
 
 @section('breadcrumbs')
     <x-dashboard.dashboard-breadcrumb :breadcrumbs="[
-        ['label' => __('Dashboard'), 'url' => route('dashboard.index')],
-        ['label' => __('Permissions'), 'url' => route('dashboard.permissions.index')],
-        ['label' => __('Create Permission'), 'url' => '#'],
-    ]" :pageName="__('CREATE PERMISSION')" />
+        ['label' => __('dashboard.dashboard'), 'url' => route('dashboard.index')],
+        ['label' => __('dashboard.permissions'), 'url' => route('dashboard.permissions.index')],
+        ['label' => __('dashboard.create_permission'), 'url' => '#'],
+    ]" :pageName="__('dashboard.create_permission')" />
 @endsection
 
 @section('content')
@@ -15,8 +15,8 @@
     <div class="container-fluid">
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
-                <h5 class="mb-0">{{ __('Create New Permission') }}</h5>
-                                                <a href="{{ route('dashboard.permissions.index') }}" class="btn" style="border-color: #f56476; color: #f56476;">{{ __('Back to Permissions') }}</a>
+                <h5 class="mb-0">{{ __('dashboard.create_new_permission') }}</h5>
+                                                <a href="{{ route('dashboard.permissions.index') }}" class="btn" style="border-color: #f56476; color: #f56476;">{{ __('dashboard.back_to_permissions') }}</a>
             </div>
             <div class="card-body">
                 <form action="{{ route('dashboard.permissions.store') }}" method="POST" class="needs-validation" novalidate>
@@ -26,35 +26,35 @@
                         <div class="col-md-8">
                             <div class="form-group mb-3">
                                 <label for="name" class="form-label fw-semibold">
-                                    {{ __('Permission Name') }} <span class="text-danger">*</span>
+                                    {{ __('dashboard.permission_name') }} <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" 
                                        name="name" 
                                        id="name" 
                                        class="form-control @error('name') is-invalid @enderror" 
-                                       placeholder="{{ __('Enter permission name (e.g., create-users)') }}"
+                                       placeholder="{{ __('dashboard.enter_permission_name') }}"
                                        value="{{ old('name') }}"
                                        required>
                                 @error('name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                                 <small class="form-text text-muted">
-                                    {{ __('Use lowercase letters and hyphens (e.g., manage-users, view-reports)') }}
+                                    {{ __('dashboard.permission_name_tip') }}
                                 </small>
                             </div>
 
                             <div class="form-group mb-3">
-                                <label for="description" class="form-label fw-semibold">{{ __('Description') }}</label>
+                                <label for="description" class="form-label fw-semibold">{{ __('dashboard.description') }}</label>
                                 <textarea name="description" 
                                           id="description" 
                                           class="form-control @error('description') is-invalid @enderror" 
                                           rows="4"
-                                          placeholder="{{ __('Enter a brief description of this permission...') }}">{{ old('description') }}</textarea>
+                                          placeholder="{{ __('dashboard.enter_permission_description') }}">{{ old('description') }}</textarea>
                                 @error('description')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                                 <small class="form-text text-muted">
-                                    {{ __('Optional: Provide a clear description of what this permission allows') }}
+                                    {{ __('dashboard.permission_description_tip') }}
                                 </small>
                             </div>
                         </div>
@@ -62,23 +62,23 @@
                         <div class="col-md-4">
                             <div class="card bg-light">
                                 <div class="card-body">
-                                    <h6 class="card-title fw-semibold">{{ __('Tips') }}</h6>
+                                    <h6 class="card-title fw-semibold">{{ __('dashboard.tips') }}</h6>
                                     <ul class="list-unstyled mb-0">
                                         <li class="mb-2">
                                             <i class="fa fa-check-circle text-success me-2"></i>
-                                            {{ __('Use descriptive names') }}
+                                            {{ __('dashboard.use_descriptive_names') }}
                                         </li>
                                         <li class="mb-2">
                                             <i class="fa fa-check-circle text-success me-2"></i>
-                                            {{ __('Follow naming conventions') }}
+                                            {{ __('dashboard.follow_naming_conventions') }}
                                         </li>
                                         <li class="mb-2">
                                             <i class="fa fa-check-circle text-success me-2"></i>
-                                            {{ __('Be specific about actions') }}
+                                            {{ __('dashboard.be_specific_about_actions') }}
                                         </li>
                                         <li class="mb-2">
                                             <i class="fa fa-check-circle text-success me-2"></i>
-                                            {{ __('Consider security implications') }}
+                                            {{ __('dashboard.consider_security_implications') }}
                                         </li>
                                     </ul>
                                 </div>
@@ -91,10 +91,10 @@
                             <hr class="my-3">
                             <div class="d-flex justify-content-end gap-2">
                                                                         <a href="{{ route('dashboard.permissions.index') }}" class="btn" style="border-color: #f56476; color: #f56476;">
-                                            {{ __('Cancel') }}
+                                            {{ __('dashboard.cancel') }}
                                         </a>
                                         <button type="submit" class="btn" style="background-color: #f56476; border-color: #f56476;">
-                                            {{ __('Create Permission') }}
+                                            {{ __('dashboard.create_permission') }}
                                         </button>
                             </div>
                         </div>

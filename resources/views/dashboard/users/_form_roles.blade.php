@@ -11,12 +11,12 @@
     <ul class="nav nav-tabs">
         <li class="nav-item">
             <a class="nav-link {{ ($activeTab ?? 'info') === 'info' ? 'active' : '' }}" href="#info" data-bs-toggle="tab">
-                {{ __('Personal Info') }}
+                {{ __('dashboard.personal_info') }}
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link {{ ($activeTab ?? 'info') === 'roles' ? 'active' : '' }}" href="#roles" data-bs-toggle="tab">
-                {{ __('Roles') }}
+                {{ __('dashboard.roles') }}
             </a>
         </li>
     </ul>
@@ -24,25 +24,25 @@
         <div class="tab-pane {{ ($activeTab ?? 'info') === 'info' ? 'active show' : '' }}" id="info">
             {{-- Account fields --}}
             <div class="form-group mb-3">
-                <label for="name">{{ __('Name') }}</label>
+                <label for="name">{{ __('dashboard.name') }}</label>
                 <input type="text" name="name" id="name" class="form-control" value="{{ old('name', $user->name ?? '') }}" required>
                 @error('name') <span class="text-danger">{{ $message }}</span> @enderror
             </div>
             <div class="form-group mb-3">
-                <label for="email">{{ __('Email') }}</label>
+                <label for="email">{{ __('dashboard.email') }}</label>
                 <input type="email" name="email" id="email" class="form-control" value="{{ old('email', $user->email ?? '') }}" required>
                 @error('email') <span class="text-danger">{{ $message }}</span> @enderror
             </div>
             <div class="form-group mb-3">
-                <label for="password">{{ __('Password') }}</label>
+                <label for="password">{{ __('dashboard.password') }}</label>
                 <input type="password" name="password" id="password" class="form-control" {{ $isEdit ? '' : 'required' }}>
                 @if($isEdit)
-                    <small class="form-text text-muted">{{ __('Leave blank to keep current password') }}</small>
+                    <small class="form-text text-muted">{{ __('dashboard.leave_blank_keep_password') }}</small>
                 @endif
                 @error('password') <span class="text-danger">{{ $message }}</span> @enderror
             </div>
             <div class="form-group mb-3">
-                <label for="password_confirmation">{{ __('Confirm Password') }}</label>
+                <label for="password_confirmation">{{ __('dashboard.confirm_password') }}</label>
                 <input type="password" name="password_confirmation" id="password_confirmation" class="form-control" {{ $isEdit ? '' : 'required' }}>
                 @error('password_confirmation') <span class="text-danger">{{ $message }}</span> @enderror
             </div>
@@ -50,7 +50,7 @@
         <div class="tab-pane {{ ($activeTab ?? 'info') === 'roles' ? 'active show' : '' }}" id="roles">
             {{-- Roles selection --}}
             <div class="form-group mb-3">
-                <label for="roles">{{ __('Roles') }}</label>
+                <label for="roles">{{ __('dashboard.roles') }}</label>
                 <select name="roles[]" id="roles" class="form-control" multiple required>
                     @foreach($roles as $id => $role)
                         <option value="{{ $role }}"
@@ -64,6 +64,6 @@
         </div>
     </div>
     <button type="submit" class="btn btn-primary mt-3">
-        {{ $isEdit ? __('Update User') : __('Create User') }}
+        {{ $isEdit ? __('dashboard.update_user') : __('dashboard.create_user') }}
     </button>
 </form>

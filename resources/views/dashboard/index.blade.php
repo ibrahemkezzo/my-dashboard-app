@@ -3,8 +3,8 @@
 
 @section('breadcrumbs')
     <x-dashboard.dashboard-breadcrumb :breadcrumbs="[
-        ['label' => __('Dashboard'), 'url' => route('dashboard.index')],
-    ]" :pageName="__('DASHBOARD')" />
+        ['label' => __('dashboard.dashboard'), 'url' => route('dashboard.index')],
+    ]" :pageName="__('dashboard.dashboard')" />
 @endsection
 @section('content')
 
@@ -28,9 +28,8 @@
                                             </div>
                                         </div>
                                         <div class="media-body media-doller">
-                                            <span class="m-0">Earnings</span>
-                                            <h3 class="mb-0">$ <span class="counter">6659</span><small> This
-                                                    Month</small>
+                                            <span class="m-0">{{ __('dashboard.earnings') }}</span>
+                                            <h3 class="mb-0">$ <span class="counter">6659</span><small> {{ __('dashboard.this_month') }}</small>
                                             </h3>
                                         </div>
                                     </div>
@@ -57,9 +56,8 @@
                                             </div>
                                         </div>
                                         <div class="media-body media-doller">
-                                            <span class="m-0">Products</span>
-                                            <h3 class="mb-0">$ <span class="counter">9856</span><small> This
-                                                    Month</small>
+                                            <span class="m-0">{{ __('dashboard.products') }}</span>
+                                            <h3 class="mb-0">$ <span class="counter">9856</span><small> {{ __('dashboard.this_month') }}</small>
                                             </h3>
                                         </div>
                                     </div>
@@ -81,9 +79,8 @@
                                                     </path>
                                                 </svg></div>
                                         </div>
-                                        <div class="media-body media-doller"><span class="m-0">Messages</span>
-                                            <h3 class="mb-0">$ <span class="counter">893</span><small> This
-                                                    Month</small></h3>
+                                        <div class="media-body media-doller"><span class="m-0">{{ __('dashboard.messages') }}</span>
+                                            <h3 class="mb-0">$ <span class="counter">893</span><small> {{ __('dashboard.this_month') }}</small></h3>
                                         </div>
                                     </div>
                                 </div>
@@ -105,9 +102,8 @@
                                                     <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                                                 </svg></div>
                                         </div>
-                                        <div class="media-body media-doller"><span class="m-0">New Vendors</span>
-                                            <h3 class="mb-0">$ <span class="counter">5631</span><small> This
-                                                    Month</small></h3>
+                                        <div class="media-body media-doller"><span class="m-0">{{ __('dashboard.new_vendors') }}</span>
+                                            <h3 class="mb-0">$ <span class="counter">5631</span><small> {{ __('dashboard.this_month') }}</small></h3>
                                         </div>
                                     </div>
                                 </div>
@@ -116,7 +112,7 @@
                         <div class="col-xl-6 xl-100">
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>Market Value</h5>
+                                    <h5>{{ __('dashboard.market_value') }}</h5>
                                     <div class="card-header-right">
                                         <ul class="list-unstyled card-option">
                                             <li><i class="icofont icofont-simple-left"></i></li>

@@ -2,9 +2,9 @@
 
 @section('breadcrumbs')
     <x-dashboard.dashboard-breadcrumb :breadcrumbs="[
-        ['label' => __('Dashboard'), 'url' => route('dashboard.index')],
-        ['label' => __('Permissions'), 'url' => route('dashboard.permissions.index')],
-    ]" :pageName="__('PERMISSIONS LIST')" />
+        ['label' => __('dashboard.dashboard'), 'url' => route('dashboard.index')],
+        ['label' => __('dashboard.permissions'), 'url' => route('dashboard.permissions.index')],
+    ]" :pageName="__('dashboard.permissions_list')" />
 @endsection
 
 @section('content')
@@ -13,7 +13,7 @@
     <div class="container-fluid">
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
-                <a href="{{ route('dashboard.permissions.create') }}" class="btn btn-primary">{{ __('Create Permission') }}</a>
+                <a href="{{ route('dashboard.permissions.create') }}" class="btn btn-primary">{{ __('dashboard.create_permission') }}</a>
             </div>
 
             <div class="card-body">
@@ -21,11 +21,11 @@
                     <table class="all-package coupon-table table table-striped">
                         <thead>
                             <tr>
-                                <th>{{ __('ID') }}</th>
-                                <th>{{ __('Name') }}</th>
-                                <th>{{ __('Description') }}</th>
-                                <th>{{ __('Created') }}</th>
-                                <th>{{ __('Procedures') }}</th>
+                                <th>{{ __('dashboard.id') }}</th>
+                                <th>{{ __('dashboard.name') }}</th>
+                                <th>{{ __('dashboard.description') }}</th>
+                                <th>{{ __('dashboard.created') }}</th>
+                                <th>{{ __('dashboard.procedures') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -40,27 +40,27 @@
                                     <span class="fw-semibold">{{ $permission->name }}</span>
                                 </div>
                                 </td>
-                                <td>{{ $permission->description ?? __('No description') }}</td>
+                                <td>{{ $permission->description ?? __('dashboard.no_description') }}</td>
                                 <td>{{ $permission->created_at->format('M d, Y') }}</td>
                                 <td>
-                                    <a href="{{ route('dashboard.permissions.show', $permission) }}" class="mr-2" style="color: #f56476;" title="{{ __('Show') }}">
+                                    <a href="{{ route('dashboard.permissions.show', $permission) }}" class="mr-2" style="color: #f56476;" title="{{ __('dashboard.show') }}">
                                         <i class="fa fa-eye"></i>
                                     </a>
-                                    <a href="{{ route('dashboard.permissions.edit', $permission) }}" class="text-yellow-500 hover:text-yellow-700 mr-2" title="{{ __('Edit') }}">
+                                    <a href="{{ route('dashboard.permissions.edit', $permission) }}" class="text-yellow-500 hover:text-yellow-700 mr-2" title="{{ __('dashboard.edit') }}">
                                         <i class="fa fa-edit"></i>
                                     </a>
                                     <form action="{{ route('dashboard.permissions.destroy', $permission) }}" method="POST" id="destroy-form-{{ $permission->id }}" style="display:none;">
                                         @csrf
                                         @method('DELETE')
                                     </form>
-                                    <a href="#" class="text-red-500 hover:text-red-700" title="{{ __('Delete') }}" onclick="event.preventDefault(); return confirm('{{ __('Are you sure you want to delete this permission?') }}') && document.getElementById('destroy-form-{{ $permission->id }}').submit();">
+                                    <a href="#" class="text-red-500 hover:text-red-700" title="{{ __('dashboard.delete') }}" onclick="event.preventDefault(); return confirm('{{ __('dashboard.confirm_delete_permission') }}') && document.getElementById('destroy-form-{{ $permission->id }}').submit();">
                                         <i class="fa fa-trash"></i>
                                     </a>
                                 </td>
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="5" class="text-center">{{ __('No permissions found') }}</td>
+                                <td colspan="5" class="text-center">{{ __('dashboard.no_permissions_found') }}</td>
                             </tr>
                             @endforelse
                         </tbody>

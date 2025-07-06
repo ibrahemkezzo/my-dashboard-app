@@ -26,7 +26,7 @@
                     <a class="sidebar-header {{ isset($item['active']) && $item['active'] ? 'active' : '' }}"
                        href="{{ $item['url'] }}">
                         {!! $item['icon'] !!}
-                        <span>{{ $item['label'] }}</span>
+                        <span>{{ __($item['label']) }}</span>
                             <i class="fa fa-angle-right pull-right"></i>
                         </a>
                         <ul class="sidebar-submenu">
@@ -34,7 +34,7 @@
                                 <li>
                                     <a href="{{ route($subItem['url'] )}}">
                                         <i class="fa fa-circle"></i>
-                                        <span>{{ $subItem['label'] }}</span>
+                                        <span>{{ __($subItem['label']) }}</span>
                                         @if (isset($subItem['submenu']))
                                             <i class="fa fa-angle-right pull-right"></i>
                                         @endif
@@ -45,7 +45,7 @@
                                                 <li>
                                                     <a href="{{ $subSubItem['url'] }}">
                                                         <i class="fa fa-circle"></i>
-                                                        {{ $subSubItem['label'] }}
+                                                        {{ __($subSubItem['label']) }}
                                                     </a>
                                                 </li>
                                             @endforeach
@@ -58,7 +58,7 @@
                     <a class="sidebar-header {{ isset($item['active']) && $item['active'] ? 'active' : '' }}"
                        href="{{ route($item['url']) }}">
                         {!! $item['icon'] !!}
-                        <span>{{ $item['label'] }}</span>
+                        <span>{{ __($item['label'])}}</span>
                         </a>
                     @endif
                 </li>

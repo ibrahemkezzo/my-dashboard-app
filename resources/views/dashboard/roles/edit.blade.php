@@ -2,10 +2,10 @@
 
 @section('breadcrumbs')
     <x-dashboard.dashboard-breadcrumb :breadcrumbs="[
-        ['label' => __('Dashboard'), 'url' => route('dashboard.index')],
-        ['label' => __('Roles'), 'url' => route('dashboard.roles.index')],
-        ['label' => __('Edit Role'), 'url' => '#'],
-    ]" :pageName="__('EDIT ROLE')" />
+        ['label' => __('dashboard.dashboard'), 'url' => route('dashboard.index')],
+        ['label' => __('dashboard.roles'), 'url' => route('dashboard.roles.index')],
+        ['label' => __('dashboard.edit_role'), 'url' => '#'],
+    ]" :pageName="__('dashboard.edit_role')" />
 @endsection
 
 @section('content')
@@ -15,9 +15,9 @@
     <div class="container-fluid">
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
-                <h5 class="mb-0">{{ __('Edit Role') }}</h5>
+                <h5 class="mb-0">{{ __('dashboard.edit_role') }}</h5>
                 <a href="{{ route('dashboard.roles.index') }}" class="btn"
-                    style="border-color: #f56476; color: #f56476;">{{ __('Back to Roles') }}</a>
+                    style="border-color: #f56476; color: #f56476;">{{ __('dashboard.back_to_roles') }}</a>
             </div>
             <div class="card-body">
                 <form action="{{ route('dashboard.roles.update', $role) }}" method="POST" class="needs-validation"
@@ -29,34 +29,34 @@
                         <div class="col-md-8">
                             <div class="form-group mb-3">
                                 <label for="name" class="form-label fw-semibold">
-                                    {{ __('Role Name') }} <span class="text-danger">*</span>
+                                    {{ __('dashboard.role_name') }} <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" name="name" id="name"
                                     class="form-control @error('name') is-invalid @enderror"
-                                    placeholder="{{ __('Enter role name (e.g., admin, moderator)') }}"
+                                    placeholder="{{ __('dashboard.enter_role_name') }}"
                                     value="{{ old('name', $role->name) }}" required>
                                 @error('name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                                 <small class="form-text text-muted">
-                                    {{ __('Use descriptive names that clearly indicate the role\'s purpose') }}
+                                    {{ __('dashboard.role_name_tip') }}
                                 </small>
                             </div>
 
                             <div class="form-group mb-3">
-                                <label for="description" class="form-label fw-semibold">{{ __('Description') }}</label>
+                                <label for="description" class="form-label fw-semibold">{{ __('dashboard.description') }}</label>
                                 <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror"
-                                    rows="4" placeholder="{{ __('Enter a brief description of this role...') }}">{{ old('description', $role->description) }}</textarea>
+                                    rows="4" placeholder="{{ __('dashboard.enter_role_description') }}">{{ old('description', $role->description) }}</textarea>
                                 @error('description')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                                 <small class="form-text text-muted">
-                                    {{ __('Optional: Provide a clear description of what this role allows users to do') }}
+                                    {{ __('dashboard.role_description_tip') }}
                                 </small>
                             </div>
 
                             <div class="form-group mb-3">
-                                <label class="form-label fw-semibold">{{ __('Permissions') }}</label>
+                                <label class="form-label fw-semibold">{{ __('dashboard.permissions') }}</label>
                                 <div class="permissions-container bg-light p-3 rounded">
                                     @if (isset($permissions) && $permissions->count() > 0)
                                         <div class="row">
@@ -84,10 +84,10 @@
                                             <i class="fa fa-shield-alt text-muted"
                                                 style="font-size: 2rem; opacity: 0.5;"></i>
                                             <p class="text-muted mb-0">
-                                                {{ __('No permissions available. Please create permissions first.') }}</p>
+                                                {{ __('dashboard.no_permissions_available') }}</p>
                                             <a href="{{ route('dashboard.permissions.create') }}" class="btn btn-sm mt-2"
                                                 style="border-color: #f56476; color: #f56476;">
-                                                {{ __('Create Permission') }}
+                                                {{ __('dashboard.create_permission') }}
                                             </a>
                                         </div>
                                     @endif
@@ -96,7 +96,7 @@
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
                                 <small class="form-text text-muted">
-                                    {{ __('Select the permissions that should be granted to users with this role') }}
+                                    {{ __('dashboard.select_permissions_for_role') }}
                                 </small>
                             </div>
                         </div>
@@ -104,26 +104,26 @@
                         <div class="col-md-4">
                             <div class="card bg-light">
                                 <div class="card-body">
-                                    <h6 class="card-title fw-semibold">{{ __('Role Info') }}</h6>
+                                    <h6 class="card-title fw-semibold">{{ __('dashboard.role_info') }}</h6>
                                     <div class="mb-3">
-                                        <small class="text-muted d-block">{{ __('Created') }}</small>
+                                        <small class="text-muted d-block">{{ __('dashboard.created') }}</small>
                                         <strong>{{ $role->created_at->format('M d, Y H:i') }}</strong>
                                     </div>
                                     <div class="mb-3">
-                                        <small class="text-muted d-block">{{ __('Last Updated') }}</small>
+                                        <small class="text-muted d-block">{{ __('dashboard.last_updated') }}</small>
                                         <strong>{{ $role->updated_at->format('M d, Y H:i') }}</strong>
                                     </div>
                                     <div class="mb-3">
-                                        <small class="text-muted d-block">{{ __('Role ID') }}</small>
+                                        <small class="text-muted d-block">{{ __('dashboard.role_id') }}</small>
                                         <span class="badge" style="background-color: #f56476;">{{ $role->id }}</span>
                                     </div>
                                     <div class="mb-3">
-                                        <small class="text-muted d-block">{{ __('Current Permissions') }}</small>
+                                        <small class="text-muted d-block">{{ __('dashboard.current_permissions') }}</small>
                                         <span class="badge"
                                             style="background-color: #f56476;">{{ $role->permissions->count() }}</span>
                                     </div>
                                     <div class="mb-3">
-                                        <small class="text-muted d-block">{{ __('Users with this role') }}</small>
+                                        <small class="text-muted d-block">{{ __('dashboard.users_with_this_role') }}</small>
                                         <span class="badge"
                                             style="background-color: #f56476;">{{ $role->users->count() }}</span>
                                     </div>
@@ -132,9 +132,9 @@
 
                             <div class="card bg-warning mt-3">
                                 <div class="card-body">
-                                    <h6 class="card-title fw-semibold">{{ __('Warning') }}</h6>
+                                    <h6 class="card-title fw-semibold">{{ __('dashboard.warning') }}</h6>
                                     <p class="card-text small mb-0">
-                                        {{ __('Changing role permissions may affect user access. Please review all affected users after making changes.') }}
+                                        {{ __('dashboard.role_permissions_change_warning') }}
                                     </p>
                                 </div>
                             </div>
@@ -147,11 +147,11 @@
                             <div class="d-flex justify-content-end gap-2">
                                 <a href="{{ route('dashboard.roles.index') }}" class="btn btn-outline-primary "
                                     style="border-color: #f56476;">
-                                    {{ __('Cancel') }}
+                                    {{ __('dashboard.cancel') }}
                                 </a>
                                 <button type="submit" class="btn"
                                     style="background-color: #f56476; border-color: #f56476;">
-                                    {{ __('Update Role') }}
+                                    {{ __('dashboard.update_role') }}
                                 </button>
                             </div>
                         </div>
