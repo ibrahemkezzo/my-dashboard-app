@@ -9,16 +9,17 @@ use App\Http\Controllers\Dashboard\SettingsController;
 use App\Http\Controllers\Dashboard\VisitTimeController;
 use App\Http\Controllers\Files\FileManagerController;
 use App\Http\Controllers\Files\MediaController;
+use App\Http\Controllers\Frontend\FrontController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
+Route::get('/laravel', function () {
     return view('welcome');
 });
 
 Route::middleware([
-    // 'auth:sanctum',
-    // config('jetstream.auth_session'),
-    // 'verified',
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
 ])->group(function () {
     Route::get('/jetstream/dashboard', function () {
         return view('dashboard');
@@ -92,3 +93,37 @@ Route::group([
 
 
 });
+
+
+
+// route for front website
+
+Route::group([
+    'middleware' => [],
+    'as'=>'front.',  //pefor(pre) each name route
+],function () {
+    Route::get('/',[FrontController::class,'index']);
+});
+
+
+// الصفحات الرئيسية
+Route::view('/home', 'frontend.index')->name('home'); // الصفحة الرئيسية
+Route::view('/list', 'frontend.list')->name('list'); // صفحة تصفح الكوافيرات
+Route::view('/about', 'frontend.about')->name('about'); // عن المنصة
+Route::view('/faq', 'frontend.faq')->name('faq'); // صفحة الأسئلة الشائعة
+
+// الصفحات القانونية
+Route::view('/privacy-policy', 'frontend.legal.privacy')->name('privacy.policy'); // سياسة الخصوصية
+Route::view('/terms-and-conditions', 'frontend.legal.terms')->name('terms.conditions'); // الشروط والأحكام
+
+Route::view('/list/show', 'frontend.salon-show')->name('show'); // صفحة عرض الصالون
+
+// صفحات بروفايل المستخدم
+Route::view('/account', 'user.account')->name('account'); //  تعديل حساب المستخدم
+Route::view('/bookings', 'user.bookings')->name('bookings'); // صفحة حجوزات المستخدم
+Route::view('/favorits', 'user.favorits')->name('favorits'); // صفحة الكوافيرات المفضلة لدى المستخدم
+
+
+// صفحات التسجيل / تسجيل الدخول
+Route::view('/user-auth', 'auth.user-auth')->name('user-auth'); // التسجيل/تسجيل الدخول للمستخدم
+Route::view('/hairdresser-auth', 'hairdresser-auth')->name('hairdresser-auth'); // التسجيل/تسجيل الدخول للكوافيرة

@@ -1,0 +1,477 @@
+
+/* Hairdressers Page Specific Styles */
+
+.hairdressers-page {
+    min-height: 100vh;
+    background-color: #fff;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+/* Page Header */
+.page-header {
+    background: linear-gradient(135deg, #F56476 0%, #E43F6F 100%);
+    color: white;
+    padding: 60px 0 40px;
+    text-align: center;
+}
+
+.page-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.page-header p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Filters and Controls Section */
+.filters-controls-section {
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+}
+
+/* No Hover Effects for Form Elements */
+.no-hover-effects {
+    transition: none !important;
+}
+
+.no-hover-effects:hover,
+.no-hover-effects:focus,
+.no-hover-effects:active,
+.no-hover-effects.active {
+    background-color: white !important;
+    border-color: #e9ecef !important;
+    box-shadow: none !important;
+    color: #333 !important;
+    outline: none !important;
+}
+
+.accordion-button.no-hover-effects {
+    background-color: white !important;
+    color: #333 !important;
+    font-weight: 600;
+    border: 2px solid #e9ecef !important;
+    border-radius: 8px !important;
+}
+
+.accordion-button.no-hover-effects:not(.collapsed) {
+    background-color: white !important;
+    color: #333 !important;
+    box-shadow: none !important;
+}
+
+.accordion-button.no-hover-effects:hover,
+.accordion-button.no-hover-effects:focus,
+.accordion-button.no-hover-effects:active {
+    background-color: white !important;
+    color: #333 !important;
+    box-shadow: none !important;
+    border-color: #e9ecef !important;
+}
+
+.accordion-item {
+    border: none;
+    margin-bottom: 0;
+}
+
+.accordion-body {
+    background-color: white;
+    border: 1px solid #e9ecef;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+}
+
+.form-select.no-hover-effects {
+    border: 2px solid #e9ecef !important;
+    border-radius: 8px !important;
+    font-family: 'IBM Plex Sans Arabic', sans-serif !important;
+    background-color: white !important;
+    color: #333 !important;
+}
+
+.form-select.no-hover-effects:hover,
+.form-select.no-hover-effects:focus,
+.form-select.no-hover-effects:active {
+    border-color: #e9ecef !important;
+    box-shadow: none !important;
+    background-color: white !important;
+    color: #333 !important;
+}
+
+.form-control.no-hover-effects {
+    border: 2px solid #e9ecef !important;
+    border-radius: 8px !important;
+    font-family: 'IBM Plex Sans Arabic', sans-serif !important;
+    background-color: white !important;
+    color: #333 !important;
+}
+
+.form-control.no-hover-effects:hover,
+.form-control.no-hover-effects:focus,
+.form-control.no-hover-effects:active {
+    border-color: #e9ecef !important;
+    box-shadow: none !important;
+    background-color: white !important;
+    color: #333 !important;
+}
+
+/* Results Section */
+.results-section {
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.results-info {
+    color: #666;
+    font-size: 0.95rem;
+}
+
+/* Sidebar */
+.sidebar {
+    position: sticky;
+    top: 18px;
+}
+
+.sidebar-section {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    border: 1px solid #f0f0f0;
+}
+
+.sidebar-section h5 {
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+/* Map */
+.map-container {
+    border-radius: 8px;
+    overflow: hidden;
+    height: 180px;
+}
+
+.map-placeholder {
+    width: 100%;
+    height: 100%;
+    background: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #dee2e6;
+    border-radius: 8px;
+}
+
+/* Special Offers */
+.form-check-input:checked {
+    background-color: #F56476;
+    border-color: #F56476;
+}
+
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.25rem rgba(245, 100, 118, 0.25);
+}
+
+/* Salons Grid */
+.salons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 24px;
+}
+
+.salon-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    border: 1px solid #f0f0f0;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.salon-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+.salon-image {
+    width: 100%;
+    height: 200px;
+    position: relative;
+    overflow: hidden;
+}
+
+.salon-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.favorite-btn {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 2;
+}
+
+.favorite-btn:hover {
+    background: white;
+    transform: scale(1.1);
+}
+
+.favorite-btn.active {
+    background: #F56476;
+    color: white;
+}
+
+.salon-card-content {
+    padding: 20px;
+}
+
+.salon-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.salon-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+.offer-badge {
+    background: #F56476;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.salon-description {
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 16px;
+}
+
+.salon-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+}
+
+.detail-icon {
+    font-size: 1rem;
+}
+
+.price-category {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.price-category.cheap {
+    background: #d4edda;
+    color: #155724;
+}
+
+.price-category.moderate {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.price-category.expensive {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.stars {
+    color: #ffc107;
+}
+
+.rating-text {
+    color: #666;
+    font-size: 0.8rem;
+}
+
+.salon-working-hours {
+    color: #666;
+    font-size: 0.8rem;
+}
+
+.salon-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.btn-availability {
+    flex: 1;
+    padding: 10px 16px;
+    background: #F56476;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-family: 'IBM Plex Sans Arabic', sans-serif;
+}
+
+.btn-availability:hover {
+    background: #E43F6F;
+}
+
+.btn-map {
+    padding: 10px 16px;
+    background: transparent;
+    color: #F56476;
+    border: 2px solid #F56476;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'IBM Plex Sans Arabic', sans-serif;
+}
+
+.btn-map:hover {
+    background: #F56476;
+    color: white;
+}
+
+.no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+}
+
+.no-results p:first-child {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .salons-grid {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+    }
+    
+    .salon-details {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+}
+
+@media (max-width: 768px) {
+    .page-header h1 {
+        font-size: 2rem;
+    }
+    
+    .salons-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .salon-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .results-info {
+        text-align: start !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .page-header {
+        padding: 40px 0 30px;
+    }
+    
+    .page-header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .sidebar-section {
+        padding: 16px;
+        margin-bottom: 16px;
+    }
+    
+    .salon-card-content {
+        padding: 16px;
+    }
+    
+    .main-layout {
+        padding: 20px 0;
+    }
+}
+
+.filters-controls-section #sortBy, .filters-controls-section #priceFilter {
+    padding-top: 14px;
+    padding-bottom: 14px;
+}
+
+.accordion-button::after {
+    margin-right: auto;
+    margin-left: 0;
+}
+
+.form-check .form-check-input {
+    float: right !important;
+    margin-left: 12px !important;
+}
+
+.form-check, .form-check .form-check-input, .form-check label{
+    cursor: pointer;
+}
+
+.input-group>:not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
+    border-radius: 0.75rem !important;
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+.input-group:not(.has-validation)>.dropdown-toggle:nth-last-child(n+3), .input-group:not(.has-validation)>.form-floating:not(:last-child)>.form-control, .input-group:not(.has-validation)>.form-floating:not(:last-child)>.form-select, .input-group:not(.has-validation)>:not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating) {
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}

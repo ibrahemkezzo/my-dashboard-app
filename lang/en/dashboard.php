@@ -362,6 +362,9 @@ return [
     'no_page_visits_recorded' => 'No page visits recorded for this user.',
     'no_recent_visits_found' => 'No recent visits found for this user.',
     'no_page_visits_session' => 'No page visits recorded for this session.',
+    'phone_number' => 'Phone Number',
+    'city' => 'City',
+    'cities' => 'Cities',
 
     // Dashboard Index
     'earnings' => 'Earnings',
@@ -427,7 +430,7 @@ return [
     'download_complete' => 'Download Complete',
     'trash_files' => '250 MB trash files',
     'lorem_ipsum' => 'Lorem ipsum dolor sit amet, consectetuer.',
-    
+
     // Additional keys for complete translation
     'web_site_setting' => 'Website Settings',
     'meta_description_seo' => 'Meta Description (SEO)',

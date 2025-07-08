@@ -35,6 +35,31 @@
                 @error('email') <span class="text-danger">{{ $message }}</span> @enderror
             </div>
             <div class="form-group mb-3">
+                <label for="phone_number">{{ __('dashboard.phone_number') }}</label>
+                <input type="phone_number" name="phone_number" id="phone_number" class="form-control" value="{{ old('phone_number', $user->phone_number ?? '') }}" required>
+                @error('phone_number') <span class="text-danger">{{ $message }}</span> @enderror
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="city">{{ __('dashboard.city') }}</label>
+                <select name="city_id" class="form-select @error('city_id') is-invalid @enderror" id="city" required>
+                  <option value="">اختر المدينة</option>
+                    <option value="1">الرياض</option>
+                    <option value="jeddah">جدة</option>
+                    <option value="dammam">الدمام</option>
+                    <option value="mecca">مكة المكرمة</option>
+                    <option value="medina">المدينة المنورة</option>
+                    <option value="taif">الطائف</option>
+                    <option value="abha">أبها</option>
+                    <option value="tabuk">تبوك</option>
+                    {{-- @foreach ($cities as $city)
+                        <option value="{{ $city->id }}" {{ old('city_id') == $city->id ? 'selected' : '' }}>{{ $city->name }}</option>
+                    @endforeach --}}
+                </select>
+                @error('city') <span class="text-danger">{{ $message }}</span> @enderror
+            </div>
+
+            <div class="form-group mb-3">
                 <label for="password">{{ __('dashboard.password') }}</label>
                 <input type="password" name="password" id="password" class="form-control" {{ $isEdit ? '' : 'required' }}>
                 @if($isEdit)

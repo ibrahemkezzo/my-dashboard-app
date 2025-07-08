@@ -74,6 +74,8 @@ class UserService
             $userData = [
                 'name' => trim($data['name']),
                 'email' => trim($data['email']),
+                'phone_number' => trim($data['phone_number']),
+                'city_id' => trim($data['city_id']),
                 'password' => Hash::make($data['password']),
             ];
 
@@ -114,6 +116,8 @@ class UserService
             $userData = [
                 'name' => trim($data['name']),
                 'email' => trim($data['email']),
+                'phone_number' => trim($data['phone_number']),
+                'city_id' => trim($data['city_id']),
             ];
 
             if (!empty($data['password'])) {

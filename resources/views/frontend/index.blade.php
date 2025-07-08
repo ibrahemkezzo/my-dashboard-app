@@ -1,0 +1,677 @@
+@extends('layouts.frontend')
+
+@section('title', 'منصة حجز خدمات التجميل | كوافيري | My Kawafir')
+
+@section('main')
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-bg-pattern">
+                <div class="hero-pattern-circle hero-pattern-1"></div>
+                <div class="hero-pattern-circle hero-pattern-2"></div>
+                <div class="hero-pattern-circle hero-pattern-3"></div>
+            </div>
+
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        اكتشفي جمالك مع
+                        <br>
+                        <span class="hero-title-highlight">أفضل خبيرات التجميل</span>
+                    </h1>
+                    <p class="hero-description">
+                        احجزي موعدك مع أفضل صالونات التجميل ومراكز العناية في مدينتك بضغطة واحدة
+                    </p>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="search-bar">
+                    <div class="search-grid">
+                        <div class="search-field">
+                            <label class="search-label">نوع الخدمة</label>
+                            <select class="search-select" id="serviceSelect">
+                                <option value="">اختاري الخدمة</option>
+                                <option value="skincare">العناية بالبشرة</option>
+                                <option value="hair">الشعر والصالون</option>
+                                <option value="nails">الأظافر</option>
+                                <option value="makeup">المكياج</option>
+                                <option value="bridal">باقات العروس</option>
+                                <option value="laser">إزالة الشعر</option>
+                                <option value="eyebrows">الحواجب والرموش</option>
+                                <option value="massage">التدليك والاسترخاء</option>
+                            </select>
+                        </div>
+
+                        <div class="search-field">
+                            <label class="search-label">المدينة</label>
+                            <select class="search-select" id="citySelect">
+                                <option value="">اختاري المدينة</option>
+                                <option value="riyadh">الرياض</option>
+                                <option value="jeddah">جدة</option>
+                                <option value="dammam">الدمام</option>
+                                <option value="mecca">مكة المكرمة</option>
+                                <option value="medina">المدينة المنورة</option>
+                                <option value="taif">الطائف</option>
+                                <option value="tabuk">تبوك</option>
+                                <option value="khobar">الخبر</option>
+                            </select>
+                        </div>
+
+                        <div class="search-field">
+                            <label class="search-label">تاريخ الحجز</label>
+                            <input type="date" class="search-select" id="dateSelect">
+                        </div>
+                    </div>
+
+                    <button class="search-btn">
+                        <i data-lucide="search"></i>
+                        ابحثي عن أفضل الخيارات
+                    </button>
+                </div>
+
+                <!-- Stats -->
+                <div class="hero-stats">
+                    <div class="stat-card">
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label">خبيرة تجميل</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">1,000+</div>
+                        <div class="stat-label">عميلة راضية</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">10+</div>
+                        <div class="stat-label">مدينة</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">4.9</div>
+                        <div class="stat-label">
+                            <i data-lucide="star" class="star-icon"></i>
+                            تقييم المنصة
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories Section -->
+        <section class="categories-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">خدماتنا المتنوعة</h2>
+                    <p class="section-description">
+                        اكتشفي مجموعة واسعة من خدمات التجميل والعناية المتوفرة على منصتنا
+                    </p>
+                </div>
+
+                <div class="categories-grid">
+                    <div class="category-card">
+                        <div class="category-icon sparkles-icon">
+                            <i data-lucide="sparkles"></i>
+                        </div>
+                        <h3 class="category-title">العناية بالبشرة</h3>
+                        <p class="category-description">تنظيف وترطيب وعلاجات متخصصة</p>
+                        <div class="category-services">
+                            <span class="service-tag">تنظيف بشرة</span>
+                            <span class="service-tag">تقشير</span>
+                            <span class="service-tag">علاج حب الشباب</span>
+                            <span class="service-more">+1 المزيد</span>
+                        </div>
+                    </div>
+
+                    <div class="category-card">
+                        <div class="category-icon scissors-icon">
+                            <i data-lucide="scissors"></i>
+                        </div>
+                        <h3 class="category-title">الشعر والصالون</h3>
+                        <p class="category-description">قص وصبغ وعلاجات الشعر</p>
+                        <div class="category-services">
+                            <span class="service-tag">قص الشعر</span>
+                            <span class="service-tag">صبغ</span>
+                            <span class="service-tag">بروتين</span>
+                            <span class="service-more">+1 المزيد</span>
+                        </div>
+                    </div>
+
+                    <div class="category-card">
+                        <div class="category-icon palette-icon">
+                            <i data-lucide="palette"></i>
+                        </div>
+                        <h3 class="category-title">الأظافر</h3>
+                        <p class="category-description">مانيكير وباديكير وفن الأظافر</p>
+                        <div class="category-services">
+                            <span class="service-tag">مانيكير</span>
+                            <span class="service-tag">باديكير</span>
+                            <span class="service-tag">أكريليك</span>
+                            <span class="service-more">+1 المزيد</span>
+                        </div>
+                    </div>
+
+                    <div class="category-card">
+                        <div class="category-icon eye-icon">
+                            <i data-lucide="eye"></i>
+                        </div>
+                        <h3 class="category-title">المكياج</h3>
+                        <p class="category-description">مكياج المناسبات والعروس</p>
+                        <div class="category-services">
+                            <span class="service-tag">مكياج عروس</span>
+                            <span class="service-tag">مكياج سهرة</span>
+                            <span class="service-tag">جلسة تصوير</span>
+                        </div>
+                    </div>
+
+                    <div class="category-card">
+                        <div class="category-icon crown-icon">
+                            <i data-lucide="crown"></i>
+                        </div>
+                        <h3 class="category-title">باقات العروس</h3>
+                        <p class="category-description">تحضير شامل ليوم العرس</p>
+                        <div class="category-services">
+                            <span class="service-tag">تجربة مكياج</span>
+                            <span class="service-tag">يوم العرس</span>
+                            <span class="service-tag">تزيين الغرفة</span>
+                        </div>
+                    </div>
+
+                    <div class="category-card">
+                        <div class="category-icon zap-icon">
+                            <i data-lucide="zap"></i>
+                        </div>
+                        <h3 class="category-title">إزالة الشعر</h3>
+                        <p class="category-description">ليزر وشمع وطرق حديثة</p>
+                        <div class="category-services">
+                            <span class="service-tag">ليزر</span>
+                            <span class="service-tag">شمع</span>
+                            <span class="service-tag">سكر</span>
+                            <span class="service-more">+1 المزيد</span>
+                        </div>
+                    </div>
+
+                    <div class="category-card">
+                        <div class="category-icon eyebrow-icon">
+                            <i data-lucide="eye"></i>
+                        </div>
+                        <h3 class="category-title">الحواجب والرموش</h3>
+                        <p class="category-description">تشكيل وتلوين ومايكروبليدنغ</p>
+                        <div class="category-services">
+                            <span class="service-tag">مايكروبليدنغ</span>
+                            <span class="service-tag">رفع الرموش</span>
+                            <span class="service-tag">تلوين</span>
+                        </div>
+                    </div>
+
+                    <div class="category-card">
+                        <div class="category-icon flower-icon">
+                            <i data-lucide="flower"></i>
+                        </div>
+                        <h3 class="category-title">التدليك والاسترخاء</h3>
+                        <p class="category-description">جلسات استرخاء وتدليك علاجي</p>
+                        <div class="category-services">
+                            <span class="service-tag">تدليك سويدي</span>
+                            <span class="service-tag">تدليك الوجه</span>
+                            <span class="service-tag">أحجار ساخنة</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Suggested Salons Section -->
+        <section class="salons-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">صالونات مختارة لكِ</h2>
+                    <p class="section-description">
+                        اكتشفي أفضل صالونات التجميل المُقيمة من قبل عميلاتنا
+                    </p>
+                </div>
+
+                <div class="salons-grid">
+                    <div class="salon-card">
+                        <div class="salon-image-container">
+                            <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400" alt="صالون النجمة الذهبية" class="salon-image">
+                            <div class="salon-badge featured">
+                                <i data-lucide="award"></i>
+                                مركز معتمد
+                            </div>
+                            <button class="salon-favorite">
+                                <i data-lucide="heart"></i>
+                            </button>
+                            <div class="salon-status open">
+                                <div class="status-dot"></div>
+                                مفتوح
+                            </div>
+                        </div>
+                        <div class="salon-content">
+                            <h3 class="salon-name">صالون النجمة الذهبية</h3>
+                            <div class="salon-rating">
+                                <div class="rating-stars">
+                                    <i data-lucide="star" class="star filled"></i>
+                                    <span class="rating-number">4.9</span>
+                                </div>
+                                <span class="reviews-count">(24 تقييم)</span>
+                            </div>
+                            <div class="salon-location">
+                                <i data-lucide="map-pin"></i>
+                                <span>الرياض، حي الملز</span>
+                            </div>
+                            <div class="salon-services">
+                                <span class="service-tag">العناية بالبشرة</span>
+                                <span class="service-tag">الشعر</span>
+                                <span class="service-more">+1</span>
+                            </div>
+                            <div class="salon-price">150-400 ريال</div>
+                            <div class="salon-offer">خصم 20% على الجلسة الأولى</div>
+                            <button class="btn btn-primary salon-book-btn">احجزي موعدك</button>
+                        </div>
+                    </div>
+
+                    <div class="salon-card">
+                        <div class="salon-image-container">
+                            <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400" alt="مركز أناقة العروس" class="salon-image">
+                            <div class="salon-badge featured">
+                                <i data-lucide="award"></i>
+                                مركز معتمد
+                            </div>
+                            <button class="salon-favorite">
+                                <i data-lucide="heart"></i>
+                            </button>
+                            <div class="salon-status open">
+                                <div class="status-dot"></div>
+                                مفتوح
+                            </div>
+                        </div>
+                        <div class="salon-content">
+                            <h3 class="salon-name">مركز أناقة العروس</h3>
+                            <div class="salon-rating">
+                                <div class="rating-stars">
+                                    <i data-lucide="star" class="star filled"></i>
+                                    <span class="rating-number">4.8</span>
+                                </div>
+                                <span class="reviews-count">(18 تقييم)</span>
+                            </div>
+                            <div class="salon-location">
+                                <i data-lucide="map-pin"></i>
+                                <span>جدة، حي الروضة</span>
+                            </div>
+                            <div class="salon-services">
+                                <span class="service-tag">باقات العروس</span>
+                                <span class="service-tag">المكياج</span>
+                                <span class="service-more">+1</span>
+                            </div>
+                            <div class="salon-price">200-600 ريال</div>
+                            <br>
+                            <br>
+                            <button class="btn btn-primary salon-book-btn">احجزي موعدك</button>
+                        </div>
+                    </div>
+
+                    <div class="salon-card">
+                        <div class="salon-image-container">
+                            <img src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=400" alt="استوديو الجمال المتطور" class="salon-image">
+                            <button class="salon-favorite">
+                                <i data-lucide="heart"></i>
+                            </button>
+                            <div class="salon-status closed">
+                                <div class="status-dot"></div>
+                                مغلق
+                            </div>
+                        </div>
+                        <div class="salon-content">
+                            <h3 class="salon-name">استوديو الجمال المتطور</h3>
+                            <div class="salon-rating">
+                                <div class="rating-stars">
+                                    <i data-lucide="star" class="star filled"></i>
+                                    <span class="rating-number">4.7</span>
+                                </div>
+                                <span class="reviews-count">(15 تقييم)</span>
+                            </div>
+                            <div class="salon-location">
+                                <i data-lucide="map-pin"></i>
+                                <span>الدمام، كورنيش الدمام</span>
+                            </div>
+                            <div class="salon-services">
+                                <span class="service-tag">ليزر</span>
+                                <span class="service-tag">العناية بالبشرة</span>
+                                <span class="service-more">+1</span>
+                            </div>
+                            <div class="salon-price">100-350 ريال</div>
+                            <br>
+                            <br>
+                            <button class="btn btn-primary salon-book-btn">احجزي موعدك</button>
+                        </div>
+                    </div>
+
+                    <div class="salon-card">
+                        <div class="salon-image-container">
+                            <img src="https://images.unsplash.com/photo-1562322140-8baeececf3df?w=400" alt="بيوتي لاونج الفاخر" class="salon-image">
+                            <div class="salon-badge featured">
+                                <i data-lucide="award"></i>
+                                مركز معتمد
+                            </div>
+                            <button class="salon-favorite">
+                                <i data-lucide="heart"></i>
+                            </button>
+                            <div class="salon-status open">
+                                <div class="status-dot"></div>
+                                مفتوح
+                            </div>
+                        </div>
+                        <div class="salon-content">
+                            <h3 class="salon-name">بيوتي لاونج الفاخر</h3>
+                            <div class="salon-rating">
+                                <div class="rating-stars">
+                                    <i data-lucide="star" class="star filled"></i>
+                                    <span class="rating-number">5.0</span>
+                                </div>
+                                <span class="reviews-count">(9 تقييم)</span>
+                            </div>
+                            <div class="salon-location">
+                                <i data-lucide="map-pin"></i>
+                                <span>نجران، الفيصلية</span>
+                            </div>
+                            <div class="salon-services">
+                                <span class="service-tag">الشعر</span>
+                                <span class="service-tag">الحواجب والرموش</span>
+                                <span class="service-more">+1</span>
+                            </div>
+                            <div class="salon-price">120-300 ريال</div>
+                            <div class="salon-offer">عرض خاص: 3 جلسات بسعر جلستين</div>
+                            <button class="btn btn-primary salon-book-btn">احجزي موعدك</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-footer">
+                    <button class="btn btn-outline btn-lg">عرض جميع الصالونات</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section id="how-it-works" class="how-it-works-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">كيف تعمل منصتنا؟</h2>
+                    <p class="section-description">
+                        ثلاث خطوات بسيطة للحصول على أفضل خدمات التجميل
+                    </p>
+                </div>
+
+                <div class="steps-grid">
+                    <div class="step-card">
+                        <div class="step-icon search-step">
+                            <i data-lucide="search"></i>
+                            <div class="step-number">1</div>
+                        </div>
+                        <h3 class="step-title">ابحثي واستكشفي</h3>
+                        <p class="step-description">تصفحي عشرات الصالونات والخبيرات المُعتمدات في مدينتك واختاري الأنسب لكِ</p>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-icon calendar-step">
+                            <i data-lucide="calendar"></i>
+                            <div class="step-number">2</div>
+                        </div>
+                        <h3 class="step-title">احجزي موعدك</h3>
+                        <p class="step-description">اختاري التاريخ والوقت المناسب واحجزي موعدك بضغطة واحدة</p>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-icon star-step">
+                            <i data-lucide="star"></i>
+                            <div class="step-number">3</div>
+                        </div>
+                        <h3 class="step-title">استمتعي وقيّمي</h3>
+                        <p class="step-description">استمتعي بتجربة مميزة وشاركي تقييمك لمساعدة العميلات الأخريات</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Customer Reviews Section -->
+        <section class="reviews-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">ماذا تقول عميلاتنا؟</h2>
+                    <p class="section-description">
+                        آراء حقيقية من عميلات استخدمن منصتنا وحصلن على تجربة مميزة
+                    </p>
+
+                    <div class="overall-rating">
+                        <div class="rating-stars">
+                            <i data-lucide="star" class="star filled"></i>
+                            <i data-lucide="star" class="star filled"></i>
+                            <i data-lucide="star" class="star filled"></i>
+                            <i data-lucide="star" class="star filled"></i>
+                            <i data-lucide="star" class="star filled"></i>
+                        </div>
+                        <span class="rating-score">4.9</span>
+                        <span class="rating-text">من أصل 5 (أكثر من 1,000 تقييم)</span>
+                    </div>
+                </div>
+
+                <div class="reviews-grid">
+                    <div class="review-card">
+                        <div class="quote-icon">
+                            <i data-lucide="quote"></i>
+                        </div>
+                        <div class="review-rating">
+                            <i data-lucide="star" class="star filled"></i>
+                            <i data-lucide="star" class="star filled"></i>
+                            <i data-lucide="star" class="star filled"></i>
+                            <i data-lucide="star" class="star filled"></i>
+                            <i data-lucide="star" class="star filled"></i>
+                        </div>
+                        <p class="review-text">
+                            "منصة موثوقة وآمنة. حجزت عدة جلسات مختلفة وكانت كلها ممتازة. أنصح جميع صديقاتي باستخدامها."
+                        </p>
+                        <div class="review-service">باقة عناية شاملة</div>
+                        <div class="reviewer-info">
+                            <img src="{{ asset('assets/img/clients/profile.png') }}" alt="مريم العتيبي" class="reviewer-avatar">
+                            <div class="reviewer-details">
+                                <h4 class="reviewer-name">مريم العتيبي</h4>
+                                <div class="reviewer-meta">
+                                    <span>الرياض</span>
+                                    <span>•</span>
+                                    <span>منذ 5 أيام</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="quote-icon">
+                            <i data-lucide="quote"></i>
+                        </div>
+                        <div class="review-rating">
+                            <i data-lucide="star" class="star filled"></i>
+                            <i data-lucide="star" class="star filled"></i>
+                            <i data-lucide="star" class="star filled"></i>
+                            <i data-lucide="star" class="star filled"></i>
+                            <i data-lucide="star" class="star filled"></i>
+                        </div>
+                        <p class="review-text">
+                            "المنصة سهلة الاستخدام والعروض مغرية. حصلت على خصم رائع في أول حجز. الصالون كان نظيف والموظفات محترفات."
+                        </p>
+                        <div class="review-service">مانيكير وباديكير</div>
+                        <div class="reviewer-info">
+                            <img src="{{ asset('assets/img/clients/profile.png') }}" alt="هيا السعد" class="reviewer-avatar">
+                            <div class="reviewer-details">
+                                <h4 class="reviewer-name">رهف الشهري</h4>
+                                <div class="reviewer-meta">
+                                    <span>أبها</span>
+                                    <span>•</span>
+                                    <span>منذ أسبوعين</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="review-card">
+                        <div class="quote-icon">
+                            <i data-lucide="quote"></i>
+                        </div>
+                        <div class="review-rating">
+                            <i data-lucide="star" class="star filled"></i>
+                            <i data-lucide="star" class="star filled"></i>
+                            <i data-lucide="star" class="star filled"></i>
+                            <i data-lucide="star" class="star filled"></i>
+                            <i data-lucide="star" class="star filled"></i>
+                        </div>
+                        <p class="review-text">
+                            "خدمة ممتازة من البداية للنهاية. سهولة في الحجز، تأكيد سريع، وجودة عالية في الخدمة. هذا المكان الأفضل لحجز مواعيد التجميل."
+                        </p>
+                        <div class="review-service">قص وصبغ الشعر</div>
+                        <div class="reviewer-info">
+                            <img src="{{ asset('assets/img/clients/profile.png') }}" alt="ريما الحربي" class="reviewer-avatar">
+                            <div class="reviewer-details">
+                                <h4 class="reviewer-name">ريما الحربي</h4>
+                                <div class="reviewer-meta">
+                                    <span>تبوك</span>
+                                    <span>•</span>
+                                    <span>منذ 4 أيام</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trust Indicators -->
+                <div class="trust-indicators">
+                    <div class="trust-item">
+                        <div class="trust-number">95%</div>
+                        <div class="trust-label">معدل الرضا</div>
+                    </div>
+                    <div class="trust-item">
+                        <div class="trust-number">24/7</div>
+                        <div class="trust-label">دعم العملاء</div>
+                    </div>
+                    <div class="trust-item">
+                        <div class="trust-number">آمن 100%</div>
+                        <div class="trust-label">الخصوصية</div>
+                    </div>
+                    <div class="trust-item">
+                        <div class="trust-number">مجاني</div>
+                        <div class="trust-label">إلغاء الحجز</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Join Beautician Section -->
+        <section class="join-beautician-section">
+            <div class="join-bg-pattern">
+                <div class="join-pattern-circle join-pattern-1"></div>
+                <div class="join-pattern-circle join-pattern-2"></div>
+                <div class="join-pattern-circle join-pattern-3"></div>
+            </div>
+
+            <div class="container">
+                <div class="join-grid">
+                    <!-- Left Side - Content -->
+                    <div class="join-content">
+                        <h2 class="join-title">
+                            انضمي كخبيرة تجميل
+                            <br>
+                            <span class="join-title-sub">وابدئي النجاح معنا</span>
+                        </h2>
+
+                        <p class="join-description">
+                            هل أنتِ خبيرة تجميل محترفة؟ انضمي إلى منصتنا الرائدة واحصلي على فرص لا محدودة للنمو وزيادة عملائك
+                        </p>
+
+                        <div class="benefits-list">
+                            <div class="benefit-item">
+                                <div class="benefit-icon">
+                                    <i data-lucide="users"></i>
+                                </div>
+                                <div class="benefit-content">
+                                    <h3 class="benefit-title">وصول لمئات العميلات</h3>
+                                    <p class="benefit-description">اعرضي خدماتك أمام مئات العميلات الباحثات عن خبيرات التجميل</p>
+                                </div>
+                            </div>
+
+                            <div class="benefit-item">
+                                <div class="benefit-icon">
+                                    <i data-lucide="trending-up"></i>
+                                </div>
+                                <div class="benefit-content">
+                                    <h3 class="benefit-title">زيادة في الدخل</h3>
+                                    <p class="benefit-description">احصلي على المزيد من الحجوزات وزيدي دخلك الشهري بشكل ملحوظ</p>
+                                </div>
+                            </div>
+
+                            <div class="benefit-item">
+                                <div class="benefit-icon">
+                                    <i data-lucide="calendar"></i>
+                                </div>
+                                <div class="benefit-content">
+                                    <h3 class="benefit-title">إدارة سهلة للمواعيد</h3>
+                                    <p class="benefit-description">نظام متطور لإدارة مواعيدك وتنظيم جدولك اليومي بسهولة تامة</p>
+                                </div>
+                            </div>
+
+                            <div class="benefit-item">
+                                <div class="benefit-icon">
+                                    <i data-lucide="award"></i>
+                                </div>
+                                <div class="benefit-content">
+                                    <h3 class="benefit-title">بناء سمعة مهنية</h3>
+                                    <p class="benefit-description">احصلي على تقييمات من العميلات وابني سمعة مهنية قوية</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="join-buttons">
+                            <button class="btn btn-white">
+                                ابدئي الآن مجاناً
+                                <i data-lucide="arrow-left"></i>
+                            </button>
+
+                        </div>
+                    </div>
+
+                    <!-- Right Side - Stats & Image -->
+                    <div class="join-stats">
+                        <!-- Stats Cards -->
+                        <div class="stats-grid">
+                            <div class="stat-card-glass">
+                                <div class="stat-number">50+</div>
+                                <div class="stat-label">خبيرة مسجلة</div>
+                            </div>
+                            <div class="stat-card-glass">
+                                <div class="stat-number">10K+</div>
+                                <div class="stat-label">حجز شهرياً</div>
+                            </div>
+                            <div class="stat-card-glass">
+                                <div class="stat-number">4.9</div>
+                                <div class="stat-label">تقييم المنصة</div>
+                            </div>
+                            <div class="stat-card-glass">
+                                <div class="stat-number">95%</div>
+                                <div class="stat-label">رضا الخبيرات</div>
+                            </div>
+                        </div>
+
+                        <!-- Success Story -->
+                        <div class="success-story">
+                            <h3 class="success-title">قصة نجاح</h3>
+                            <div class="success-profile">
+                                <img src="{{ asset('assets/img/clients/profile.png') }}" alt="أمل محمد" class="success-avatar">
+                                <div class="success-info">
+                                    <div class="success-name">أمل محمد</div>
+                                    <div class="success-role">خبيرة مكياج</div>
+                                </div>
+                            </div>
+                            <p class="success-quote">
+                                "من يوم سجلت في المنصة قبل 6 شهور، عدد عميلاتي تضاعف 3 مرات، وصار جدول مواعيدي دايم فل! المنصة غيرت مجرى شغلي تمامًا!"
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+@endsection

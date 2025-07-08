@@ -17,7 +17,7 @@ class UserRepository
      */
     public function getAllUsers()
     {
-        return User::query()->with('roles')->get();
+        return User::query()->with(['roles','city'])->get();
     }
 
     /**
@@ -35,10 +35,11 @@ class UserRepository
             $search = $filters['search'];
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%");
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('phone_number', 'like', "%{$search}%");
             });
         }
-
+        
         if (!empty($filters['roles']) && $filters['roles'][0] != null) {
             $query->whereHas('roles', function ($q) use ($filters) {
                 $q->whereIn('name', $filters['roles']);
@@ -47,6 +48,10 @@ class UserRepository
 
         if (isset($filters['status']) && $filters['status'] !== '') {
             $query->where('is_active', $filters['status']);
+        }
+
+        if (isset($filters['city_id']) && $filters['city_id'] !== '') {
+            $query->where('city_id', $filters['city_id']);
         }
 
         return $query->paginate($perPage);

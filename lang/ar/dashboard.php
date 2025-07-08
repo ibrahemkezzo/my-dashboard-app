@@ -362,6 +362,9 @@ return [
     'no_page_visits_recorded' => 'لا توجد زيارات صفحات مسجلة لهذا المستخدم.',
     'no_recent_visits_found' => 'لم يتم العثور على زيارات حديثة لهذا المستخدم.',
     'no_page_visits_session' => 'لا توجد زيارات صفحات مسجلة لهذه الجلسة.',
+    'phone_number' => 'رقم الموبايل',
+    'city' => 'المدينة',
+    'cities' => 'المدن',
 
     // Dashboard Index
     'earnings' => 'الأرباح',
@@ -427,7 +430,7 @@ return [
     'download_complete' => 'اكتمل التحميل',
     'trash_files' => '250 ميجابايت ملفات مهملة',
     'lorem_ipsum' => 'نص لوريم إيبسوم للعرض.',
-    
+
     // Additional keys for complete translation
     'web_site_setting' => 'إعدادات الموقع',
     'meta_description_seo' => 'الوصف التعريفي (تحسين محركات البحث)',

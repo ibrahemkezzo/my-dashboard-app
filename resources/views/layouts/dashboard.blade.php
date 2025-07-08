@@ -1,4 +1,4 @@
-<html lang="en">
+<html lang="en" dir="rtl">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -72,7 +72,7 @@
     @stack('styles')
 </head>
 
-<body>
+<body class="rtl">
      <!-- page-wrapper Start-->
     <div class="page-wrapper">
 
@@ -160,11 +160,11 @@
 
     <!--Customizer admin-->
     <script src="{{asset('assets/js/admin-customizer.js')}}"></script>
-    <ul class="custom-theme">
+    {{-- <ul class="custom-theme">
         <li class="demo-li"><a href="{{asset('../front-end/index.html')}}" target="_blank">Front end</a></li>
         <li class="btn-rtl">RTL</li>
         <li class="btn-dark-setting">Dark</li>
-    </ul>
+    </ul> --}}
 
     <!--dashboard custom js-->
     <script src="{{asset('assets/js/dashboard/default.js')}}"></script>

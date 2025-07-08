@@ -50,6 +50,7 @@ class UserController extends Controller
             'search' => request()->input('search'),
             'roles' => request()->input('roles', []),
             'status' => request()->input('status'),
+            'city_id' => request()->input('city_id'),
         ];
         $users = $this->userService->getFilteredUsers($filters);
         return view('dashboard.users.index', compact('users', 'roles', 'filters'));
@@ -75,10 +76,13 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         $this->userService->createUser(
-            $request->only('name', 'email', 'password'),
+            $request->only('name', 'email', 'phone_number','city_id','password'),
             $request->input('roles', [])
         );
-        return redirect()->route('dashboard.users.index')->with('success', 'تم إنشاء المستخدم بنجاح.');
+        return redirect()->route('dashboard.users.index')->with('message',[
+            'type' => 'success',
+            'content' => __('user create successfully!')
+        ]);
     }
 
     /**
@@ -123,10 +127,13 @@ class UserController extends Controller
     {
         $this->userService->updateUser(
             $id,
-            $request->only('name', 'email', 'password'),
+            $request->only('name', 'email','phone_number','city_id', 'password'),
             $request->input('roles', [])
         );
-        return redirect()->route('dashboard.users.index')->with('success', 'تم تحديث المستخدم بنجاح.');
+        return redirect()->route('dashboard.users.index')->with('message',[
+            'type' => 'success',
+            'content' => __('user update successfully!')
+        ]);
     }
 
     /**
@@ -138,7 +145,10 @@ class UserController extends Controller
     public function destroy($id)
     {
         $this->userService->deleteUser($id);
-        return redirect()->route('dashboard.users.index')->with('success', 'تم حذف المستخدم بنجاح.');
+        return redirect()->route('dashboard.users.index')->with('message',[
+            'type' => 'error',
+            'content' => __('user delteted successfully!')
+        ]);
     }
 
     /**
@@ -166,7 +176,10 @@ class UserController extends Controller
     public function assignRoles(AssignRolesRequest $request, $id)
     {
         $this->userService->assignRoles($id, $request->input('roles'));
-        return redirect()->route('dashboard.users.show', $id)->with('success', 'تم تعيين الأدوار بنجاح.');
+        return redirect()->route('dashboard.users.show', $id)->with('message',[
+            'type' => 'success',
+            'content' => __('Roles assigned successfully!')
+        ]);
     }
 
     /**
@@ -180,7 +193,10 @@ class UserController extends Controller
         $user = $this->userService->findUser($id);
         $this->userService->toggleUserStatus($id, !$user->is_active);
         $status = $user->is_active ? 'تعطيل' : 'تفعيل';
-        return redirect()->route('dashboard.users.index')->with('success', "تم $status المستخدم بنجاح.");
+        return redirect()->route('dashboard.users.index')->with('message',[
+            'type' => 'success',
+            'content' => __("User $status successfully")
+        ]);
     }
 
 

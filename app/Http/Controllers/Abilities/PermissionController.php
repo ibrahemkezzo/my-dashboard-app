@@ -101,7 +101,7 @@ class PermissionController extends Controller
         return redirect()->route('dashboard.permissions.index')->with('message',[
             'type' => 'success',
             'content' => __('permissions updated successfully!')
-        ]);;
+        ]);
     }
 
     /**
@@ -116,6 +116,6 @@ class PermissionController extends Controller
         return redirect()->route('dashboard.permissions.index')->with('message',[
             'type' => 'error',
             'content' => __('permissions deleted successfully!')
-        ]);;
+        ]);
     }
 }

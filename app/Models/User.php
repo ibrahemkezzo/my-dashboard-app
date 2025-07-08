@@ -32,7 +32,16 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'is_active'
+        'is_active',
+        'first_name',
+        'last_name',
+        'username',
+        'phone_number',
+        'role',
+        'status',
+        'gender',
+        'social_media_links',
+        'city_id',
     ];
 
     /**
@@ -81,5 +90,10 @@ class User extends Authenticatable
     protected function getMediaData()
     {
         return $this->profile_photo_path ?? null; // Use image_path column
+    }
+
+    public function city()
+    {
+        return $this->belongsTo(City::class, 'city_id', 'id');
     }
 }

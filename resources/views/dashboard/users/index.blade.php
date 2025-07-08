@@ -95,6 +95,24 @@
                         </select>
                     </div>
                     <div class="form-group mb-0">
+                        <select name="city_id" class="form-control" style="min-width: 150px;">
+                            <option value="">{{ __('dashboard.view_all') }} {{ __('dashboard.cities') }}</option>
+                            <option value="">اختر المدينة</option>
+                            <option value="1">الرياض</option>
+                            <option value="jeddah">جدة</option>
+                            <option value="dammam">الدمام</option>
+                            <option value="mecca">مكة المكرمة</option>
+                            <option value="medina">المدينة المنورة</option>
+                            <option value="taif">الطائف</option>
+                            <option value="abha">أبها</option>
+                            <option value="tabuk">تبوك</option>
+
+                            {{-- @foreach($cites as $id => $name)
+                                <option value="{{ $id }}" {{ in_array($name, $filters['city_id'] ?? []) ? 'selected' : '' }} >{{ $name }}</option>
+                            @endforeach --}}
+                        </select>
+                    </div>
+                    <div class="form-group mb-0">
                         <button type="submit" class="btn btn-primary">{{ __('dashboard.apply_filters') }}</button>
                     </div>
                 </form>
@@ -113,6 +131,8 @@
                             <th>{{__('dashboard.avatar')}}</th>
                             <th>{{__('dashboard.first_name')}}</th>
                             <th>{{__('dashboard.email')}}</th>
+                            <th>{{__('dashboard.phone_number')}}</th>
+                            <th>{{__('dashboard.city')}}</th>
                             <th>{{__('dashboard.status')}}</th>
                             <th>{{__('dashboard.last_login')}}</th>
                             <th>{{__('dashboard.role')}}</th>
@@ -122,11 +142,14 @@
                     <tbody>
                         @forelse ($users as $user)
                         <tr>
+                            {{-- @dump($user,$user->city->name) --}}
                             <td>
                                 <img src="{{$user->url}}" alt="{{$user->name}}" style="width: 40px; height: 40px; border-radius: 50%;">
                             </td>
                             <td>{{$user->name}}</td>
                             <td>{{$user->email}}</td>
+                            <td>{{$user->phone_number}}</td>
+                            <td>{{$user->city->name ?? 'غير محدد'}}</td>
                             <td>{{ $user->is_active ? __('dashboard.active') : __('dashboard.inactive') }}</td>
                             <td>{{ $user->sessions_max_updated_at ? \Carbon\Carbon::parse($user->sessions_max_updated_at)->diffForHumans() : __('dashboard.never') }}</td>
                             <td>{{ $user->roles->pluck('name')->implode(', ') ?: __('dashboard.customer') }} </td>
