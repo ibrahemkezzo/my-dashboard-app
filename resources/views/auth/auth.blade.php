@@ -123,7 +123,7 @@
                                     <span class="input-group-text">
                                         <i class="fas fa-map-marker-alt"></i>
                                     </span>
-                                    <select name="city_id" class="form-select @error('city_id') is-invalid @enderror" id="city" required>
+                                    {{-- <select name="city_id" class="form-select @error('city_id') is-invalid @enderror" id="city" required>
                                         <option value="">اختر المدينة</option>
                                         <option value="1">الرياض</option>
                                         <option value="jeddah">جدة</option>
@@ -135,8 +135,9 @@
                                         <option value="tabuk">تبوك</option>
                                         {{-- @foreach ($cities as $city)
                                             <option value="{{ $city->id }}" {{ old('city_id') == $city->id ? 'selected' : '' }}>{{ $city->name }}</option>
-                                        @endforeach --}}
-                                    </select>
+                                        @endforeach
+                                    </select> --}}
+                                    <x-form.city-select name="city_id" class="form-select" />
                                     @error('city_id')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror

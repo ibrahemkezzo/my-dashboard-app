@@ -365,6 +365,8 @@ return [
     'phone_number' => 'Phone Number',
     'city' => 'City',
     'cities' => 'Cities',
+    'show_city' => 'Show City',
+    'select_city' => 'Select City',
 
     // Dashboard Index
     'earnings' => 'Earnings',
@@ -449,4 +451,18 @@ return [
     'create_new_role' => 'Create New Role',
     'roles_list' => 'Roles List',
     'permissions_list' => 'Permissions List',
+    'create_city' => 'Create City',
+    'edit_city' => 'Edit City',
+    'city_details' => 'City Details',
+    'google_place_id' => 'Google Place ID',
+    'google_maps_integration_coming_soon' => 'Google Maps integration coming soon',
+    'confirm_delete_city' => 'Are you sure you want to delete this city?',
+    'no_cities_found' => 'No cities found.',
+    'city_created_successfully' => 'City created successfully!',
+    'city_updated_successfully' => 'City updated successfully!',
+    'city_deleted_successfully' => 'City deleted successfully!',
+    'latitude' => 'Latitude',
+    'longitude' => 'Longitude',
+    'timezone' => 'Timezone',
+    'is_active' => 'Active',
 ];

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Abilities\PermissionController;
 use App\Http\Controllers\Abilities\RoleController;
 use App\Http\Controllers\Abilities\UserController;
+use App\Http\Controllers\Dashboard\CityController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\ReportsController;
 use App\Http\Controllers\Dashboard\SettingsController;
@@ -90,10 +91,11 @@ Route::group([
     Route::get('/reports', [ReportsController::class, 'index'])->name('reports');
     Route::get('/user-activity-report', [ReportsController::class, 'userActivityReport'])->name('user-activity-report');
 
+    // Cities CRUD
+    Route::resource('cities', CityController::class);
 
 
 });
-
 
 
 // route for front website
