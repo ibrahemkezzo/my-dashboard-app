@@ -2,6 +2,7 @@
 
 namespace App\View\Components\Frontend;
 
+use App\Repositories\CityRepository;
 use App\Repositories\DatabaseSettingsRepository;
 use App\Services\SettingsService;
 use Closure;
@@ -11,14 +12,20 @@ use Illuminate\View\Component;
 class FrontFooter extends Component
 {
     public $settings;
+    public $cities;
     protected DatabaseSettingsRepository $settingsRepository;
+    protected CityRepository $cityRepository;
+
     /**
      * Create a new component instance.
      */
-    public function __construct(DatabaseSettingsRepository $settingsRepository)
+    public function __construct(DatabaseSettingsRepository $settingsRepository,CityRepository $cityRepository)
     {
         $this->settingsRepository = $settingsRepository;
+        $this->cityRepository = $cityRepository;
+        
         $this->settings = $this->settingsRepository->all('general');
+        $this->cities = $this->cityRepository->all();
         // dd($this->settings);
     }
 

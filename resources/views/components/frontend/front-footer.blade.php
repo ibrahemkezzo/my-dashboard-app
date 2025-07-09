@@ -72,12 +72,9 @@
             <div class="footer-section">
                 <h3 class="footer-section-title">المدن المتاحة</h3>
                 <ul class="footer-links">
-                    <li><a href="#" class="footer-link">نجران</a></li>
-                    <li><a href="#" class="footer-link">الرياض</a></li>
-                    <li><a href="#" class="footer-link">جدة</a></li>
-                    <li><a href="#" class="footer-link">الدمام</a></li>
-                    <li><a href="#" class="footer-link">أبها</a></li>
-                    <li><a href="#" class="footer-link">الطائف</a></li>
+                    @foreach ($cities as $city)
+                        <li><a href="#" class="footer-link">{{$city->name}}</a></li>
+                    @endforeach
                 </ul>
 
                 <!-- Social Media -->

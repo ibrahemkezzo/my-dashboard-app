@@ -366,6 +366,7 @@ return [
     'city' => 'City',
     'cities' => 'Cities',
     'show_city' => 'Show City',
+    'select_city' => 'Select City',
 
     // Dashboard Index
     'earnings' => 'Earnings',

@@ -380,6 +380,7 @@ return [
     'timezone' => 'المنطقة الزمنية',
     'is_active' => 'نشطة',
     'show_city' => 'عرض المدينة',
+    'select_city' => 'حدد المدينة',
 
     // Dashboard Index
     'earnings' => 'الأرباح',
