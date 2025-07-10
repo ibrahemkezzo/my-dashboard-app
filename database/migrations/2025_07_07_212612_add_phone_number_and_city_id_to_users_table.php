@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('last_name')->nullable()->after('first_name');
             $table->string('username')->unique()->nullable()->after('last_name');
             $table->string('phone_number', 15)->nullable()->after('email');
-            $table->enum('role', ['admin', 'user', 'salon_owner'])->default('user')->after('phone_number');
-            $table->enum('status', ['certified', 'not_certified', 'pending'])->default('not_certified')->after('role');
+            $table->enum('type', ['admin', 'user', 'salon_owner'])->default('user')->after('phone_number');
+            $table->enum('status', ['certified', 'not_certified', 'pending'])->default('not_certified')->after('type');
             $table->enum('gender', ['male', 'female', 'other'])->nullable()->after('status');
             $table->json('social_media_links')->nullable()->after('gender');
             $table->foreignId('city_id')->nullable()->constrained('cities')->onDelete('set null')->after('social_media_links');

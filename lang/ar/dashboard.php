@@ -110,6 +110,7 @@ return [
     'role_description' => 'وصف الدور',
     'permissions' => 'الصلاحيات',
     'assign_permissions' => 'تعيين الصلاحيات',
+    'all_roles' => 'كل الادوار',
 
     // Permissions
     'permissions_list' => 'قائمة الصلاحيات',
@@ -262,6 +263,7 @@ return [
     'update_service' => 'تحديث الخدمة',
     'delete_service' => 'حذف الخدمة',
     'are_you_sure' => 'هل أنت متأكد؟',
+    'add_service' => 'اضافة خدمة',
 
     // Legal
     'terms_description' => 'الوصف',
@@ -365,6 +367,7 @@ return [
     'phone_number' => 'رقم الموبايل',
     'city' => 'المدينة',
     'cities' => 'المدن',
+    'all_cities' => 'كل المدن',
     'create_city' => 'إنشاء مدينة',
     'edit_city' => 'تعديل المدينة',
     'city_details' => 'تفاصيل المدينة',
@@ -381,6 +384,7 @@ return [
     'is_active' => 'نشطة',
     'show_city' => 'عرض المدينة',
     'select_city' => 'حدد المدينة',
+    'sub_services'=>'خدمات الصالون',
 
     // Dashboard Index
     'earnings' => 'الأرباح',
@@ -465,4 +469,23 @@ return [
     'create_new_role' => 'إنشاء دور جديد',
     'roles_list' => 'قائمة الأدوار',
     'permissions_list' => 'قائمة الصلاحيات',
+    // Sub Services
+    'sub_services' => 'الخدمات الفرعية',
+    'sub_service' => 'خدمة فرعية',
+    'create_sub_service' => 'إضافة خدمة فرعية',
+    'edit_sub_service' => 'تعديل خدمة فرعية',
+    'update_sub_service' => 'تحديث الخدمة الفرعية',
+    'delete_sub_service' => 'حذف الخدمة الفرعية',
+    'choose_service' => 'اختر الخدمة الأساسية',
+    'all_services' => 'كل الخدمات',
+    'all_statuses' => 'كل الحالات',
+    'icon_or_image' => 'أيقونة أو صورة',
+    'seo_meta' => 'بيانات السيو',
+    'seo_title' => 'عنوان السيو',
+    'seo_description' => 'وصف السيو',
+    'confirm_delete_sub_service' => 'هل أنت متأكد أنك تريد حذف هذه الخدمة الفرعية؟',
+    'no_sub_services_found' => 'لا توجد خدمات فرعية',
+    'saved_successfully' => 'تم الحفظ بنجاح!',
+    'updated_successfully' => 'تم التحديث بنجاح!',
+    'deleted_successfully' => 'تم الحذف بنجاح!',
 ];

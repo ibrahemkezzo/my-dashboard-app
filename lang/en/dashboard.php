@@ -110,6 +110,7 @@ return [
     'role_description' => 'Role Description',
     'permissions' => 'Permissions',
     'assign_permissions' => 'Assign Permissions',
+    'all_roles' => 'All Roles',
 
     // Permissions
     'permissions_list' => 'Permissions List',
@@ -262,6 +263,8 @@ return [
     'update_service' => 'Update Service',
     'delete_service' => 'Delete Service',
     'are_you_sure' => 'Are you sure?',
+    'add_service' =>'Add Service',
+
 
     // Legal
     'terms_description' => 'Description',
@@ -367,6 +370,27 @@ return [
     'cities' => 'Cities',
     'show_city' => 'Show City',
     'select_city' => 'Select City',
+    'all_cities' => 'All Cities',
+
+    // Sub Services
+    'sub_services' => 'Sub Services',
+    'sub_service' => 'Sub Service',
+    'create_sub_service' => 'Create Sub Service',
+    'edit_sub_service' => 'Edit Sub Service',
+    'update_sub_service' => 'Update Sub Service',
+    'delete_sub_service' => 'Delete Sub Service',
+    'choose_service' => 'Choose Service',
+    'all_services' => 'All Services',
+    'all_statuses' => 'All Statuses',
+    'icon_or_image' => 'Icon or Image',
+    'seo_meta' => 'SEO Meta',
+    'seo_title' => 'SEO Title',
+    'seo_description' => 'SEO Description',
+    'confirm_delete_sub_service' => 'Are you sure you want to delete this sub service?',
+    'no_sub_services_found' => 'No sub services found',
+    'saved_successfully' => 'Saved successfully!',
+    'updated_successfully' => 'Updated successfully!',
+    'deleted_successfully' => 'Deleted successfully!',
 
     // Dashboard Index
     'earnings' => 'Earnings',

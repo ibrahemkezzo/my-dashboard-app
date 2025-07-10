@@ -105,114 +105,47 @@
                 </div>
 
                 <div class="categories-grid">
-                    <div class="category-card">
-                        <div class="category-icon sparkles-icon">
-                            <i data-lucide="sparkles"></i>
-                        </div>
-                        <h3 class="category-title">العناية بالبشرة</h3>
-                        <p class="category-description">تنظيف وترطيب وعلاجات متخصصة</p>
-                        <div class="category-services">
-                            <span class="service-tag">تنظيف بشرة</span>
-                            <span class="service-tag">تقشير</span>
-                            <span class="service-tag">علاج حب الشباب</span>
-                            <span class="service-more">+1 المزيد</span>
-                        </div>
-                    </div>
+                    @php
+                        $icons = [
+                            'flower-icon',
+                            'eyebrow-icon',
+                            'zap-icon',
+                            'crown-icon',
+                            'eye-icon',
+                            'palette-icon',
+                            'scissors-icon',
+                            'sparkles-icon',
+                        ];
+                        $servicesToShow = $services->take(8);
+                    @endphp
 
-                    <div class="category-card">
-                        <div class="category-icon scissors-icon">
-                            <i data-lucide="scissors"></i>
+                    @foreach ($servicesToShow as $index => $service)
+                        <div class="category-card">
+                            <div class="category-icon {{ $icons[$index % count($icons)] }}">
+                                <img src="{{ asset($service->media[0]->url) }}" style="height: 50px; width: 50px"
+                                    alt="Service Image" />
+                            </div>
+                            <h3 class="category-title">{{ $service->name }}</h3>
+                            <p class="category-description">{{ $service->short_description }}</p>
+                            <div class="category-services">
+                                @foreach ($service->sub_services->take(3) as $sub_service)
+                                    <span class="service-tag">{{ $sub_service->name }}</span>
+                                @endforeach
+                                @if ($service->sub_services->count() > 3)
+                                    <span class="service-more">+{{$service->sub_services->count() - 3}} المزيد</span>
+                                @endif
+                            </div>
                         </div>
-                        <h3 class="category-title">الشعر والصالون</h3>
-                        <p class="category-description">قص وصبغ وعلاجات الشعر</p>
-                        <div class="category-services">
-                            <span class="service-tag">قص الشعر</span>
-                            <span class="service-tag">صبغ</span>
-                            <span class="service-tag">بروتين</span>
-                            <span class="service-more">+1 المزيد</span>
-                        </div>
-                    </div>
-
-                    <div class="category-card">
-                        <div class="category-icon palette-icon">
-                            <i data-lucide="palette"></i>
-                        </div>
-                        <h3 class="category-title">الأظافر</h3>
-                        <p class="category-description">مانيكير وباديكير وفن الأظافر</p>
-                        <div class="category-services">
-                            <span class="service-tag">مانيكير</span>
-                            <span class="service-tag">باديكير</span>
-                            <span class="service-tag">أكريليك</span>
-                            <span class="service-more">+1 المزيد</span>
-                        </div>
-                    </div>
-
-                    <div class="category-card">
-                        <div class="category-icon eye-icon">
-                            <i data-lucide="eye"></i>
-                        </div>
-                        <h3 class="category-title">المكياج</h3>
-                        <p class="category-description">مكياج المناسبات والعروس</p>
-                        <div class="category-services">
-                            <span class="service-tag">مكياج عروس</span>
-                            <span class="service-tag">مكياج سهرة</span>
-                            <span class="service-tag">جلسة تصوير</span>
-                        </div>
-                    </div>
-
-                    <div class="category-card">
-                        <div class="category-icon crown-icon">
-                            <i data-lucide="crown"></i>
-                        </div>
-                        <h3 class="category-title">باقات العروس</h3>
-                        <p class="category-description">تحضير شامل ليوم العرس</p>
-                        <div class="category-services">
-                            <span class="service-tag">تجربة مكياج</span>
-                            <span class="service-tag">يوم العرس</span>
-                            <span class="service-tag">تزيين الغرفة</span>
-                        </div>
-                    </div>
-
-                    <div class="category-card">
-                        <div class="category-icon zap-icon">
-                            <i data-lucide="zap"></i>
-                        </div>
-                        <h3 class="category-title">إزالة الشعر</h3>
-                        <p class="category-description">ليزر وشمع وطرق حديثة</p>
-                        <div class="category-services">
-                            <span class="service-tag">ليزر</span>
-                            <span class="service-tag">شمع</span>
-                            <span class="service-tag">سكر</span>
-                            <span class="service-more">+1 المزيد</span>
-                        </div>
-                    </div>
-
-                    <div class="category-card">
-                        <div class="category-icon eyebrow-icon">
-                            <i data-lucide="eye"></i>
-                        </div>
-                        <h3 class="category-title">الحواجب والرموش</h3>
-                        <p class="category-description">تشكيل وتلوين ومايكروبليدنغ</p>
-                        <div class="category-services">
-                            <span class="service-tag">مايكروبليدنغ</span>
-                            <span class="service-tag">رفع الرموش</span>
-                            <span class="service-tag">تلوين</span>
-                        </div>
-                    </div>
-
-                    <div class="category-card">
-                        <div class="category-icon flower-icon">
-                            <i data-lucide="flower"></i>
-                        </div>
-                        <h3 class="category-title">التدليك والاسترخاء</h3>
-                        <p class="category-description">جلسات استرخاء وتدليك علاجي</p>
-                        <div class="category-services">
-                            <span class="service-tag">تدليك سويدي</span>
-                            <span class="service-tag">تدليك الوجه</span>
-                            <span class="service-tag">أحجار ساخنة</span>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
+                @if ($services->count() > 8)
+                    <div class="section-footer">
+                        <p class="section-description">
+                            <a href="#" style="color: #f56476" class="view-more">عرض المزيد</a>
+                        </p>
+                    </div>
+                @endif
+
             </div>
         </section>
 
@@ -229,7 +162,8 @@
                 <div class="salons-grid">
                     <div class="salon-card">
                         <div class="salon-image-container">
-                            <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400" alt="صالون النجمة الذهبية" class="salon-image">
+                            <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400"
+                                alt="صالون النجمة الذهبية" class="salon-image">
                             <div class="salon-badge featured">
                                 <i data-lucide="award"></i>
                                 مركز معتمد
@@ -268,7 +202,8 @@
 
                     <div class="salon-card">
                         <div class="salon-image-container">
-                            <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400" alt="مركز أناقة العروس" class="salon-image">
+                            <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400"
+                                alt="مركز أناقة العروس" class="salon-image">
                             <div class="salon-badge featured">
                                 <i data-lucide="award"></i>
                                 مركز معتمد
@@ -308,7 +243,8 @@
 
                     <div class="salon-card">
                         <div class="salon-image-container">
-                            <img src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=400" alt="استوديو الجمال المتطور" class="salon-image">
+                            <img src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=400"
+                                alt="استوديو الجمال المتطور" class="salon-image">
                             <button class="salon-favorite">
                                 <i data-lucide="heart"></i>
                             </button>
@@ -344,7 +280,8 @@
 
                     <div class="salon-card">
                         <div class="salon-image-container">
-                            <img src="https://images.unsplash.com/photo-1562322140-8baeececf3df?w=400" alt="بيوتي لاونج الفاخر" class="salon-image">
+                            <img src="https://images.unsplash.com/photo-1562322140-8baeececf3df?w=400"
+                                alt="بيوتي لاونج الفاخر" class="salon-image">
                             <div class="salon-badge featured">
                                 <i data-lucide="award"></i>
                                 مركز معتمد
@@ -405,7 +342,8 @@
                             <div class="step-number">1</div>
                         </div>
                         <h3 class="step-title">ابحثي واستكشفي</h3>
-                        <p class="step-description">تصفحي عشرات الصالونات والخبيرات المُعتمدات في مدينتك واختاري الأنسب لكِ</p>
+                        <p class="step-description">تصفحي عشرات الصالونات والخبيرات المُعتمدات في مدينتك واختاري الأنسب لكِ
+                        </p>
                     </div>
 
                     <div class="step-card">
@@ -469,7 +407,8 @@
                         </p>
                         <div class="review-service">باقة عناية شاملة</div>
                         <div class="reviewer-info">
-                            <img src="{{ asset('assets/img/clients/profile.png') }}" alt="مريم العتيبي" class="reviewer-avatar">
+                            <img src="{{ asset('assets/img/clients/profile.png') }}" alt="مريم العتيبي"
+                                class="reviewer-avatar">
                             <div class="reviewer-details">
                                 <h4 class="reviewer-name">مريم العتيبي</h4>
                                 <div class="reviewer-meta">
@@ -493,11 +432,13 @@
                             <i data-lucide="star" class="star filled"></i>
                         </div>
                         <p class="review-text">
-                            "المنصة سهلة الاستخدام والعروض مغرية. حصلت على خصم رائع في أول حجز. الصالون كان نظيف والموظفات محترفات."
+                            "المنصة سهلة الاستخدام والعروض مغرية. حصلت على خصم رائع في أول حجز. الصالون كان نظيف والموظفات
+                            محترفات."
                         </p>
                         <div class="review-service">مانيكير وباديكير</div>
                         <div class="reviewer-info">
-                            <img src="{{ asset('assets/img/clients/profile.png') }}" alt="هيا السعد" class="reviewer-avatar">
+                            <img src="{{ asset('assets/img/clients/profile.png') }}" alt="هيا السعد"
+                                class="reviewer-avatar">
                             <div class="reviewer-details">
                                 <h4 class="reviewer-name">رهف الشهري</h4>
                                 <div class="reviewer-meta">
@@ -521,11 +462,13 @@
                             <i data-lucide="star" class="star filled"></i>
                         </div>
                         <p class="review-text">
-                            "خدمة ممتازة من البداية للنهاية. سهولة في الحجز، تأكيد سريع، وجودة عالية في الخدمة. هذا المكان الأفضل لحجز مواعيد التجميل."
+                            "خدمة ممتازة من البداية للنهاية. سهولة في الحجز، تأكيد سريع، وجودة عالية في الخدمة. هذا المكان
+                            الأفضل لحجز مواعيد التجميل."
                         </p>
                         <div class="review-service">قص وصبغ الشعر</div>
                         <div class="reviewer-info">
-                            <img src="{{ asset('assets/img/clients/profile.png') }}" alt="ريما الحربي" class="reviewer-avatar">
+                            <img src="{{ asset('assets/img/clients/profile.png') }}" alt="ريما الحربي"
+                                class="reviewer-avatar">
                             <div class="reviewer-details">
                                 <h4 class="reviewer-name">ريما الحربي</h4>
                                 <div class="reviewer-meta">
@@ -579,7 +522,8 @@
                         </h2>
 
                         <p class="join-description">
-                            هل أنتِ خبيرة تجميل محترفة؟ انضمي إلى منصتنا الرائدة واحصلي على فرص لا محدودة للنمو وزيادة عملائك
+                            هل أنتِ خبيرة تجميل محترفة؟ انضمي إلى منصتنا الرائدة واحصلي على فرص لا محدودة للنمو وزيادة
+                            عملائك
                         </p>
 
                         <div class="benefits-list">
@@ -589,7 +533,8 @@
                                 </div>
                                 <div class="benefit-content">
                                     <h3 class="benefit-title">وصول لمئات العميلات</h3>
-                                    <p class="benefit-description">اعرضي خدماتك أمام مئات العميلات الباحثات عن خبيرات التجميل</p>
+                                    <p class="benefit-description">اعرضي خدماتك أمام مئات العميلات الباحثات عن خبيرات
+                                        التجميل</p>
                                 </div>
                             </div>
 
@@ -599,7 +544,8 @@
                                 </div>
                                 <div class="benefit-content">
                                     <h3 class="benefit-title">زيادة في الدخل</h3>
-                                    <p class="benefit-description">احصلي على المزيد من الحجوزات وزيدي دخلك الشهري بشكل ملحوظ</p>
+                                    <p class="benefit-description">احصلي على المزيد من الحجوزات وزيدي دخلك الشهري بشكل
+                                        ملحوظ</p>
                                 </div>
                             </div>
 
@@ -609,7 +555,8 @@
                                 </div>
                                 <div class="benefit-content">
                                     <h3 class="benefit-title">إدارة سهلة للمواعيد</h3>
-                                    <p class="benefit-description">نظام متطور لإدارة مواعيدك وتنظيم جدولك اليومي بسهولة تامة</p>
+                                    <p class="benefit-description">نظام متطور لإدارة مواعيدك وتنظيم جدولك اليومي بسهولة
+                                        تامة</p>
                                 </div>
                             </div>
 
@@ -659,14 +606,16 @@
                         <div class="success-story">
                             <h3 class="success-title">قصة نجاح</h3>
                             <div class="success-profile">
-                                <img src="{{ asset('assets/img/clients/profile.png') }}" alt="أمل محمد" class="success-avatar">
+                                <img src="{{ asset('assets/img/clients/profile.png') }}" alt="أمل محمد"
+                                    class="success-avatar">
                                 <div class="success-info">
                                     <div class="success-name">أمل محمد</div>
                                     <div class="success-role">خبيرة مكياج</div>
                                 </div>
                             </div>
                             <p class="success-quote">
-                                "من يوم سجلت في المنصة قبل 6 شهور، عدد عميلاتي تضاعف 3 مرات، وصار جدول مواعيدي دايم فل! المنصة غيرت مجرى شغلي تمامًا!"
+                                "من يوم سجلت في المنصة قبل 6 شهور، عدد عميلاتي تضاعف 3 مرات، وصار جدول مواعيدي دايم فل!
+                                المنصة غيرت مجرى شغلي تمامًا!"
                             </p>
                         </div>
                     </div>

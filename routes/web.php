@@ -8,6 +8,7 @@ use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\ReportsController;
 use App\Http\Controllers\Dashboard\SettingsController;
 use App\Http\Controllers\Dashboard\VisitTimeController;
+use App\Http\Controllers\Dashboard\SubServiceController;
 use App\Http\Controllers\Files\FileManagerController;
 use App\Http\Controllers\Files\MediaController;
 use App\Http\Controllers\Frontend\FrontController;
@@ -93,6 +94,9 @@ Route::group([
 
     // Cities CRUD
     Route::resource('cities', CityController::class);
+
+    // Sub Services CRUD
+    Route::resource('sub_services', SubServiceController::class);
 
 
 });

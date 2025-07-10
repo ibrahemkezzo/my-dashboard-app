@@ -287,7 +287,7 @@ class SettingsService
             $service->update($serviceData);
             if ($image) {
                 // dd($service->media);
-                Media::updateSingle($image,$service,'service_image','service_image','morph',[]);
+                Media::updateMedia($image,$service->media[0]->id,'service_image','morph',[]);
             }
         } else {
             $service = Service::create($serviceData);
