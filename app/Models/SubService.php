@@ -20,9 +20,11 @@ class SubService extends Model
         return $this->belongsTo(Service::class);
     }
 
-    // Future: salons many-to-many
-    // public function salons()
-    // {
-    //     return $this->belongsToMany(Salon::class)->withPivot('details', 'requirements');
-    // }
+    public function salons()
+    {
+        return $this->belongsToMany(Salon::class, 'salon_sub_service')
+            ->using(SalonSubService::class)
+            ->withPivot(['price', 'duration', 'materials_used', 'requirements', 'special_notes', 'status'])
+            ->withTimestamps();
+    }
 }

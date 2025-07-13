@@ -36,6 +36,11 @@
                                 <i class="fa fa-chart-line me-2"></i>{{ __('dashboard.user_activity') }}
                             </a>
                         </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="bookings-tab" data-bs-toggle="tab" href="#bookings" role="tab" aria-controls="bookings" aria-selected="false">
+                                <i class="fa fa-calendar me-2"></i>{{ __('dashboard.bookings_and_appointments') }}
+                            </a>
+                        </li>
                     </ul>
 
                     <!-- Tab Content -->
@@ -376,6 +381,15 @@
                                 @endif
                             </div>
                         </div>
+
+                        <!-- User Bookings Tab -->
+                        <div class="tab-pane fade" id="bookings" role="tabpanel" aria-labelledby="bookings-tab">
+                            <x-dashboard.user-bookings-tab 
+                                :user="$user"
+                                :bookings="$bookings"
+                                :statistics="$bookingStatistics"
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -482,8 +496,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const tabLinks = document.querySelectorAll('#userDetailTab .nav-link');
     const tabPanes = document.querySelectorAll('.tab-pane');
 
-    // Get stored tab or default to first tab
-    const activeTab = localStorage.getItem('userDetailActiveTab') || 'info';
+    // Get tab from URL parameter or stored tab or default to first tab
+    const urlParams = new URLSearchParams(window.location.search);
+    const tabFromUrl = urlParams.get('tab');
+    const activeTab = tabFromUrl || localStorage.getItem('userDetailActiveTab') || 'info';
 
     // Activate the stored tab
     tabLinks.forEach(link => {

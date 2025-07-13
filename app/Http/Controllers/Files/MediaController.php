@@ -87,6 +87,7 @@ class MediaController extends Controller
      */
     public function destroy(DeleteMediaRequest $request, int $mediaId)
     {
+        // dd($mediaId);
         Media::deleteSingle($mediaId);
 
         return redirect()->back()->with('message', [

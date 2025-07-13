@@ -132,21 +132,34 @@ return [
         //     'icon' => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-phone"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>',
         // ],
         //Cities
-        [
-            'label' => 'dashboard.cities',
-            'url' => 'dashboard.cities.index',
-            'icon' => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-map-pin">
-            <!-- علامة الموقع الرئيسية -->
-            <path d="M12 2 C8.13 2 5 5.13 5 9 c0 5.25 7 13 7 13 s7-7.75 7-13 c0-3.87-3.13-7-7-7z"/>
-            <!-- دائرة صغيرة في المركز للدلالة على الموقع -->
-            <circle cx="12" cy="9" r="2"/>
-            </svg>',
-        ],
+        // [
+        //     'label' => 'dashboard.cities',
+        //     'url' => 'dashboard.cities.index',
+        //     'icon' => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-map-pin">
+        //     <!-- علامة الموقع الرئيسية -->
+        //     <path d="M12 2 C8.13 2 5 5.13 5 9 c0 5.25 7 13 7 13 s7-7.75 7-13 c0-3.87-3.13-7-7-7z"/>
+        //     <!-- دائرة صغيرة في المركز للدلالة على الموقع -->
+        //     <circle cx="12" cy="9" r="2"/>
+        //     </svg>',
+        // ],
         //sub_service
-        [
-            'label' => 'dashboard.sub_services',
-            'url' => 'dashboard.sub_services.index',
-            'icon' => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-box"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>',
+        // [
+        //     'label' => 'dashboard.sub_services',
+        //     'url' => 'dashboard.sub_services.index',
+        //     'icon' => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-box"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>',
+        // ],
+         //management
+         [
+            'label' => 'dashboard.management',
+            'url' => 'javascript:void(0)',
+            'icon' => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-align-left"><line x1="17" y1="10" x2="3" y2="10"></line><line x1="21" y1="6" x2="3" y2="6"></line><line x1="21" y1="14" x2="3" y2="14"></line><line x1="17" y1="18" x2="3" y2="18"></line></svg>',
+            'submenu' => [
+                ['label' => 'dashboard.sub_services', 'url' => 'dashboard.sub_services.index'],
+                ['label' => 'dashboard.cities', 'url' => 'dashboard.cities.index'],
+                ['label' => 'dashboard.salons', 'url' => 'dashboard.salons.index'],
+                ['label' => 'dashboard.bookings', 'url' => 'dashboard.bookings.index'],
+                ['label' => 'dashboard.appointments', 'url' => 'dashboard.appointments.index'],
+            ],
         ],
         //Reports
         [
@@ -154,6 +167,7 @@ return [
             'url' => 'dashboard.reports',
             'icon' => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bar-chart"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg>',
         ],
+
         //Media
         [
             'label' => 'dashboard.file_manager',

@@ -103,7 +103,7 @@
                             </select>
                         </div>
                         <div class="form-group mb-0">
-                            <select name="city_id" class="form-control" style="min-width: 100px;">
+                            {{-- <select name="city_id" class="form-control" style="min-width: 100px;">
                                 <option value="">{{ __('dashboard.all_cities') }}</option>
                                 <option value="">اختر المدينة</option>
                                 <option value="1">الرياض</option>
@@ -117,8 +117,9 @@
 
                                 {{-- @foreach($cites as $id => $name)
                                     <option value="{{ $id }}" {{ in_array($name, $filters['city_id'] ?? []) ? 'selected' : '' }} >{{ $name }}</option>
-                                @endforeach --}}
-                            </select>
+                                @endforeach
+                             </select> --}}
+                             <x-form.city-select name="city_id" class="form-control"/>
                         </div>
                         <div class="form-group mb-0">
                             <button type="submit" class="btn btn-primary">{{ __('dashboard.apply_filters') }}</button>
@@ -174,7 +175,7 @@
                                     @csrf
                                     @method('PATCH')
                                 </form>
-                                <a href="#" class="text-{{ $user->is_active ? 'orange-500' : 'green-500' }} hover:text-{{ $user->is_active ? 'orange-700' : 'green-700' }} mr-2" title="{{ $user->is_active ? __('dashboard.deactivate') : __('dashboard.activate') }}" onclick="event.preventDefault(); return confirm('{{ __('dashboard.are_you_sure_toggle_status') }} {{ $user->is_active ? __('dashboard.deactivate') : __('dashboard.activate') }} {{ __('dashboard.this_user') }}') && document.getElementById('toggle-status-form-{{ $user->id }}').submit();">
+                                <a href="#" class="mr-2" title="{{ $user->is_active ? __('dashboard.deactivate') : __('dashboard.activate') }}" onclick="event.preventDefault(); return confirm('{{ __('dashboard.are_you_sure_toggle_status') }} {{ $user->is_active ? __('dashboard.deactivate') : __('dashboard.activate') }} {{ __('dashboard.this_user') }}') && document.getElementById('toggle-status-form-{{ $user->id }}').submit();">
                                     <i class="fa fa-{{ $user->is_active ? 'ban' : 'check' }}"></i>
                                 </a>
                                 <form action="{{ route('dashboard.users.destroy', $user) }}" method="POST" id="destroy-form-{{ $user->id }}" style="display:none;">

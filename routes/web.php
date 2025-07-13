@@ -3,12 +3,16 @@
 use App\Http\Controllers\Abilities\PermissionController;
 use App\Http\Controllers\Abilities\RoleController;
 use App\Http\Controllers\Abilities\UserController;
+use App\Http\Controllers\Dashboard\AppointmentController;
+use App\Http\Controllers\Dashboard\BookingController;
 use App\Http\Controllers\Dashboard\CityController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\ReportsController;
 use App\Http\Controllers\Dashboard\SettingsController;
 use App\Http\Controllers\Dashboard\VisitTimeController;
 use App\Http\Controllers\Dashboard\SubServiceController;
+use App\Http\Controllers\Dashboard\SalonController;
+use App\Http\Controllers\Dashboard\SalonSubServiceController;
 use App\Http\Controllers\Files\FileManagerController;
 use App\Http\Controllers\Files\MediaController;
 use App\Http\Controllers\Frontend\FrontController;
@@ -98,6 +102,48 @@ Route::group([
     // Sub Services CRUD
     Route::resource('sub_services', SubServiceController::class);
 
+    // Salons CRUD
+    Route::resource('salons', SalonController::class);
+    Route::group([
+        'as'=>'salons.',  //pefor(pre) each name route
+        'prefix'=>'salons', //pefor(pre) each path route
+    ],function () {
+        Route::get('create/step1', [SalonController::class, 'createStep1'])->name('create.step1');
+        Route::post('create/step1', [SalonController::class, 'storeStep1'])->name('store.step1');
+        Route::post('create/step2/{salon}', [SalonController::class, 'storeStep2'])->name('store.step2');
+
+        // Salon Sub-Services CRUD
+        Route::resource('{salon}/sub-services', SalonSubServiceController::class)->names('sub-services');
+    });
+
+    // Bookings CRUD
+    Route::resource('bookings',BookingController::class);
+    Route::get('bookings/{booking}/confirm', [BookingController::class, 'confirmForm'])->name('bookings.confirm-form');
+    Route::post('bookings/{booking}/confirm', [BookingController::class, 'confirm'])->name('bookings.confirm');
+    Route::get('bookings/{booking}/reject', [BookingController::class, 'rejectForm'])->name('bookings.reject-form');
+    Route::post('bookings/{booking}/reject', [BookingController::class, 'reject'])->name('bookings.reject');
+    Route::post('bookings/{booking}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
+    Route::get('bookings/salon/{salon}', [BookingController::class, 'salonBookings'])->name('bookings.salon');
+    Route::get('bookings/user/{user}', [BookingController::class, 'userBookings'])->name('bookings.user');
+    Route::get('bookings/available-slots', [BookingController::class, 'getAvailableSlots'])->name('bookings.available-slots');
+
+    // Appointments CRUD
+    Route::resource('appointments', AppointmentController::class);
+    Route::post('appointments/{appointment}/in-progress', [AppointmentController::class, 'markInProgress'])->name('appointments.in-progress');
+    Route::post('appointments/{appointment}/completed', [AppointmentController::class, 'markCompleted'])->name('appointments.completed');
+    Route::post('appointments/{appointment}/cancel', [AppointmentController::class, 'cancel'])->name('appointments.cancel');
+    Route::post('appointments/{appointment}/no-show', [AppointmentController::class, 'markNoShow'])->name('appointments.no-show');
+    Route::post('appointments/{appointment}/payment-status', [AppointmentController::class, 'updatePaymentStatus'])->name('appointments.payment-status');
+    Route::get('appointments/salon/{salon}', [AppointmentController::class, 'salonAppointments'])->name('appointments.salon');
+    Route::get('appointments/user/{user}', [AppointmentController::class, 'userAppointments'])->name('appointments.user');
+    Route::get('appointments/today', [AppointmentController::class, 'today'])->name('appointments.today');
+    Route::get('appointments/upcoming', [AppointmentController::class, 'upcoming'])->name('appointments.upcoming');
+    Route::get('appointments/calendar', [AppointmentController::class, 'calendar'])->name('appointments.calendar');
+
+
+});
+
+Route::prefix('dashboard/salons')->name('dashboard.salons.')->middleware(['auth', 'role:super-admin'])->group(function () {
 
 });
 

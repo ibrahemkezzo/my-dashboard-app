@@ -86,6 +86,11 @@ class User extends Authenticatable
         return $this->hasMany(Session::class);
     }
 
+    public function salons()
+    {
+        return $this->hasMany(Salon::class, 'owner_id');
+    }
+
     // Optional: Override getMediaData to customize logic
     protected function getMediaData()
     {
@@ -95,5 +100,21 @@ class User extends Authenticatable
     public function city()
     {
         return $this->belongsTo(City::class, 'city_id', 'id');
+    }
+
+    /**
+     * Get the bookings made by this user.
+     */
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
+
+    /**
+     * Get the appointments for this user.
+     */
+    public function appointments()
+    {
+        return $this->hasManyThrough(Appointment::class, Booking::class);
     }
 }

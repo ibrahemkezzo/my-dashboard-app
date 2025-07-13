@@ -96,9 +96,16 @@ class UserController extends Controller
         // Get user activity data using the service
         $activityData = $this->userActivityService->getUserActivityData($id);
 
-        // dd($activityData);
+        // Get user booking data
+        $user = $activityData['user'];
+        $bookingFilters = request()->only(['search', 'status', 'date_from', 'date_to']);
+        $bookings = app(\App\Services\BookingService::class)->getByUser($user, 10, $bookingFilters);
+        $bookingStatistics = app(\App\Services\BookingService::class)->getStatistics(array_merge($bookingFilters, ['user_id' => $user->id]));
 
-        return view('dashboard.users.show', $activityData);
+        return view('dashboard.users.show', array_merge($activityData, [
+            'bookings' => $bookings,
+            'bookingStatistics' => $bookingStatistics
+        ]));
     }
 
     /**
