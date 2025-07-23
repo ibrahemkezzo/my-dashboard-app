@@ -119,18 +119,6 @@
                 </select>
             </div>
             <div class="col-md-2">
-                <label class="form-label">{{ __('dashboard.materials_used') }}</label>
-                <textarea class="form-control" rows="1" name="salon_services[${serviceIndex}][materials_used]"></textarea>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">{{ __('dashboard.requirements') }}</label>
-                <textarea class="form-control" rows="1" name="salon_services[${serviceIndex}][requirements]"></textarea>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">{{ __('dashboard.special_notes') }}</label>
-                <textarea class="form-control" rows="1" name="salon_services[${serviceIndex}][special_notes]"></textarea>
-            </div>
-            <div class="col-md-2">
                 <label class="form-label">{{ __('dashboard.sub_service_images') }}</label>
                 <input type="file" class="form-control" name="salon_services[${serviceIndex}][images][]" multiple accept="image/*">
             </div>
@@ -168,4 +156,4 @@
         attachServiceChange(row, index);
     });
 </script>
-@endpush 
+@endpush

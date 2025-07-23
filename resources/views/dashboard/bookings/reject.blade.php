@@ -71,14 +71,7 @@
                             </div>
                         </div>
 
-                        @if($booking->special_requirements)
-                        <div class="row mb-3">
-                            <div class="col-md-12">
-                                <label class="fw-bold text-muted">{{ __('dashboard.special_requirements') }}:</label>
-                                <p class="mb-0">{{ $booking->special_requirements }}</p>
-                            </div>
-                        </div>
-                        @endif
+
 
                         <div class="row mb-3">
                             <div class="col-md-6">

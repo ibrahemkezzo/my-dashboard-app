@@ -82,17 +82,6 @@
             @enderror
         </div>
 
-        <!-- Special Requirements -->
-        <div class="col-md-12 mb-3">
-            <label for="special_requirements" class="form-label">{{ __('dashboard.special_requirements') }}</label>
-            <textarea name="special_requirements" id="special_requirements" rows="3"
-                      class="form-control @error('special_requirements') is-invalid @enderror"
-                      placeholder="{{ __('dashboard.any_special_requirements') }}">{{ old('special_requirements', $booking?->special_requirements) }}</textarea>
-            @error('special_requirements')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
-
         <!-- Status -->
         <div class="col-md-6 mb-3">
             <label for="status" class="form-label">{{ __('dashboard.status') }}</label>
@@ -100,8 +89,11 @@
                 <option value="pending" {{ old('status', $booking?->status ?? 'pending') == 'pending' ? 'selected' : '' }}>
                     {{ __('dashboard.pending') }}
                 </option>
-                <option value="confirmed" {{ old('status', $booking?->status) == 'confirmed' ? 'selected' : '' }}>
-                    {{ __('dashboard.confirmed') }}
+                <option value="salon_confirmed" {{ old('status', $booking?->status) == 'salon_confirmed' ? 'selected' : '' }}>
+                    {{ __('dashboard.salon_confirmed') }}
+                </option>
+                <option value="user_confirmed" {{ old('status', $booking?->status) == 'user_confirmed' ? 'selected' : '' }}>
+                    {{ __('dashboard.user_confirmed') }}
                 </option>
                 <option value="rejected" {{ old('status', $booking?->status) == 'rejected' ? 'selected' : '' }}>
                     {{ __('dashboard.rejected') }}

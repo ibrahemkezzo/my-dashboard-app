@@ -26,47 +26,41 @@
 
                 <!-- Search Bar -->
                 <div class="search-bar">
-                    <div class="search-grid">
-                        <div class="search-field">
-                            <label class="search-label">نوع الخدمة</label>
-                            <select class="search-select" id="serviceSelect">
-                                <option value="">اختاري الخدمة</option>
-                                <option value="skincare">العناية بالبشرة</option>
-                                <option value="hair">الشعر والصالون</option>
-                                <option value="nails">الأظافر</option>
-                                <option value="makeup">المكياج</option>
-                                <option value="bridal">باقات العروس</option>
-                                <option value="laser">إزالة الشعر</option>
-                                <option value="eyebrows">الحواجب والرموش</option>
-                                <option value="massage">التدليك والاسترخاء</option>
-                            </select>
+                    <form method="GET" action="{{route('front.salons.list')}}">
+                        {{-- @csrf --}}
+                        <div class="search-grid">
+                            <div class="search-field">
+                                <label class="search-label">نوع الخدمة</label>
+                                <select class="search-select no-hover-effects" id="serviceType" name="service_type">
+                                    <option value="">جميع الخدمات</option>
+                                    @foreach($subServices as $subService)
+                                        <option value="{{ $subService->name }}" {{ request('service_type') == $subService->name ? 'selected' : '' }}>
+                                            {{ $subService->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="search-field">
+                                <label class="search-label">المدينة</label>
+                                <select class="search-select no-hover-effects" id="city" name="city_id">
+                                    <option value="">جميع المدن</option>
+                                    @foreach($cities as $city)
+                                        <option value="{{ $city->id }}" {{ request('city_id') == $city->id ? 'selected' : '' }}>
+                                            {{ $city->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="search-field">
+                                <label class="search-label">البحث بالاسم</label>
+                                <input type="text" class="search-select no-hover-effects" id="date" name="search" />
+                            </div>
                         </div>
-
-                        <div class="search-field">
-                            <label class="search-label">المدينة</label>
-                            <select class="search-select" id="citySelect">
-                                <option value="">اختاري المدينة</option>
-                                <option value="riyadh">الرياض</option>
-                                <option value="jeddah">جدة</option>
-                                <option value="dammam">الدمام</option>
-                                <option value="mecca">مكة المكرمة</option>
-                                <option value="medina">المدينة المنورة</option>
-                                <option value="taif">الطائف</option>
-                                <option value="tabuk">تبوك</option>
-                                <option value="khobar">الخبر</option>
-                            </select>
-                        </div>
-
-                        <div class="search-field">
-                            <label class="search-label">تاريخ الحجز</label>
-                            <input type="date" class="search-select" id="dateSelect">
-                        </div>
-                    </div>
-
-                    <button class="search-btn">
-                        <i data-lucide="search"></i>
-                        ابحثي عن أفضل الخيارات
-                    </button>
+                        <button type="submit" class="search-btn">
+                            <i data-lucide="search"></i>
+                            ابحثي عن أفضل الخيارات
+                        </button>
+                    </form>
                 </div>
 
                 <!-- Stats -->
@@ -158,169 +152,11 @@
                         اكتشفي أفضل صالونات التجميل المُقيمة من قبل عميلاتنا
                     </p>
                 </div>
-
-                <div class="salons-grid">
-                    <div class="salon-card">
-                        <div class="salon-image-container">
-                            <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400"
-                                alt="صالون النجمة الذهبية" class="salon-image">
-                            <div class="salon-badge featured">
-                                <i data-lucide="award"></i>
-                                مركز معتمد
-                            </div>
-                            <button class="salon-favorite">
-                                <i data-lucide="heart"></i>
-                            </button>
-                            <div class="salon-status open">
-                                <div class="status-dot"></div>
-                                مفتوح
-                            </div>
-                        </div>
-                        <div class="salon-content">
-                            <h3 class="salon-name">صالون النجمة الذهبية</h3>
-                            <div class="salon-rating">
-                                <div class="rating-stars">
-                                    <i data-lucide="star" class="star filled"></i>
-                                    <span class="rating-number">4.9</span>
-                                </div>
-                                <span class="reviews-count">(24 تقييم)</span>
-                            </div>
-                            <div class="salon-location">
-                                <i data-lucide="map-pin"></i>
-                                <span>الرياض، حي الملز</span>
-                            </div>
-                            <div class="salon-services">
-                                <span class="service-tag">العناية بالبشرة</span>
-                                <span class="service-tag">الشعر</span>
-                                <span class="service-more">+1</span>
-                            </div>
-                            <div class="salon-price">150-400 ريال</div>
-                            <div class="salon-offer">خصم 20% على الجلسة الأولى</div>
-                            <button class="btn btn-primary salon-book-btn">احجزي موعدك</button>
-                        </div>
-                    </div>
-
-                    <div class="salon-card">
-                        <div class="salon-image-container">
-                            <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400"
-                                alt="مركز أناقة العروس" class="salon-image">
-                            <div class="salon-badge featured">
-                                <i data-lucide="award"></i>
-                                مركز معتمد
-                            </div>
-                            <button class="salon-favorite">
-                                <i data-lucide="heart"></i>
-                            </button>
-                            <div class="salon-status open">
-                                <div class="status-dot"></div>
-                                مفتوح
-                            </div>
-                        </div>
-                        <div class="salon-content">
-                            <h3 class="salon-name">مركز أناقة العروس</h3>
-                            <div class="salon-rating">
-                                <div class="rating-stars">
-                                    <i data-lucide="star" class="star filled"></i>
-                                    <span class="rating-number">4.8</span>
-                                </div>
-                                <span class="reviews-count">(18 تقييم)</span>
-                            </div>
-                            <div class="salon-location">
-                                <i data-lucide="map-pin"></i>
-                                <span>جدة، حي الروضة</span>
-                            </div>
-                            <div class="salon-services">
-                                <span class="service-tag">باقات العروس</span>
-                                <span class="service-tag">المكياج</span>
-                                <span class="service-more">+1</span>
-                            </div>
-                            <div class="salon-price">200-600 ريال</div>
-                            <br>
-                            <br>
-                            <button class="btn btn-primary salon-book-btn">احجزي موعدك</button>
-                        </div>
-                    </div>
-
-                    <div class="salon-card">
-                        <div class="salon-image-container">
-                            <img src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=400"
-                                alt="استوديو الجمال المتطور" class="salon-image">
-                            <button class="salon-favorite">
-                                <i data-lucide="heart"></i>
-                            </button>
-                            <div class="salon-status closed">
-                                <div class="status-dot"></div>
-                                مغلق
-                            </div>
-                        </div>
-                        <div class="salon-content">
-                            <h3 class="salon-name">استوديو الجمال المتطور</h3>
-                            <div class="salon-rating">
-                                <div class="rating-stars">
-                                    <i data-lucide="star" class="star filled"></i>
-                                    <span class="rating-number">4.7</span>
-                                </div>
-                                <span class="reviews-count">(15 تقييم)</span>
-                            </div>
-                            <div class="salon-location">
-                                <i data-lucide="map-pin"></i>
-                                <span>الدمام، كورنيش الدمام</span>
-                            </div>
-                            <div class="salon-services">
-                                <span class="service-tag">ليزر</span>
-                                <span class="service-tag">العناية بالبشرة</span>
-                                <span class="service-more">+1</span>
-                            </div>
-                            <div class="salon-price">100-350 ريال</div>
-                            <br>
-                            <br>
-                            <button class="btn btn-primary salon-book-btn">احجزي موعدك</button>
-                        </div>
-                    </div>
-
-                    <div class="salon-card">
-                        <div class="salon-image-container">
-                            <img src="https://images.unsplash.com/photo-1562322140-8baeececf3df?w=400"
-                                alt="بيوتي لاونج الفاخر" class="salon-image">
-                            <div class="salon-badge featured">
-                                <i data-lucide="award"></i>
-                                مركز معتمد
-                            </div>
-                            <button class="salon-favorite">
-                                <i data-lucide="heart"></i>
-                            </button>
-                            <div class="salon-status open">
-                                <div class="status-dot"></div>
-                                مفتوح
-                            </div>
-                        </div>
-                        <div class="salon-content">
-                            <h3 class="salon-name">بيوتي لاونج الفاخر</h3>
-                            <div class="salon-rating">
-                                <div class="rating-stars">
-                                    <i data-lucide="star" class="star filled"></i>
-                                    <span class="rating-number">5.0</span>
-                                </div>
-                                <span class="reviews-count">(9 تقييم)</span>
-                            </div>
-                            <div class="salon-location">
-                                <i data-lucide="map-pin"></i>
-                                <span>نجران، الفيصلية</span>
-                            </div>
-                            <div class="salon-services">
-                                <span class="service-tag">الشعر</span>
-                                <span class="service-tag">الحواجب والرموش</span>
-                                <span class="service-more">+1</span>
-                            </div>
-                            <div class="salon-price">120-300 ريال</div>
-                            <div class="salon-offer">عرض خاص: 3 جلسات بسعر جلستين</div>
-                            <button class="btn btn-primary salon-book-btn">احجزي موعدك</button>
-                        </div>
-                    </div>
-                </div>
-
+                {{-- start salons list --}}
+                <x-frontend.salons-list :limit='4' status="active" />
+                {{-- end salons list --}}
                 <div class="section-footer">
-                    <button class="btn btn-outline btn-lg">عرض جميع الصالونات</button>
+                    <a href="{{route('front.salons.list')}}" class="btn btn-outline btn-lg">عرض جميع الصالونات</a>
                 </div>
             </div>
         </section>
@@ -624,3 +460,8 @@
         </section>
     </main>
 @endsection
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ asset('frontend/assets/js/pages-scripts.js') }}"></script>
+@endpush

@@ -40,56 +40,56 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Search functionality
-    const searchBtn = document.querySelector('.search-btn');
-    const searchSelects = {
-        service: document.getElementById('serviceSelect'),
-        city: document.getElementById('citySelect'),
-        price: document.getElementById('priceSelect'),
-        rating: document.getElementById('ratingSelect')
-    };
+    // const searchBtn = document.querySelector('.search-btn');
+    // const searchSelects = {
+    //     service: document.getElementById('serviceSelect'),
+    //     city: document.getElementById('citySelect'),
+    //     price: document.getElementById('priceSelect'),
+    //     rating: document.getElementById('ratingSelect')
+    // };
 
-    searchBtn.addEventListener('click', function(e) {
-        e.preventDefault();
+    // searchBtn.addEventListener('click', function(e) {
+    //     e.preventDefault();
 
-        const searchData = {
-            service: searchSelects.service.value,
-            city: searchSelects.city.value,
-            price: searchSelects.price.value,
-            rating: searchSelects.rating.value
-        };
+    //     const searchData = {
+    //         service: searchSelects.service.value,
+    //         city: searchSelects.city.value,
+    //         price: searchSelects.price.value,
+    //         rating: searchSelects.rating.value
+    //     };
 
-        console.log('البحث عن:', searchData);
+    //     console.log('البحث عن:', searchData);
 
-        // Show search results (placeholder functionality)
-        let searchMessage = 'البحث عن: ';
-        const searchTerms = [];
+    //     // Show search results (placeholder functionality)
+    //     let searchMessage = 'البحث عن: ';
+    //     const searchTerms = [];
 
-        if (searchData.service) searchTerms.push(`الخدمة: ${searchSelects.service.options[searchSelects.service.selectedIndex].text}`);
-        if (searchData.city) searchTerms.push(`المدينة: ${searchSelects.city.options[searchSelects.city.selectedIndex].text}`);
-        if (searchData.price) searchTerms.push(`السعر: ${searchSelects.price.options[searchSelects.price.selectedIndex].text}`);
-        if (searchData.rating) searchTerms.push(`التقييم: ${searchSelects.rating.options[searchSelects.rating.selectedIndex].text}`);
+    //     if (searchData.service) searchTerms.push(`الخدمة: ${searchSelects.service.options[searchSelects.service.selectedIndex].text}`);
+    //     if (searchData.city) searchTerms.push(`المدينة: ${searchSelects.city.options[searchSelects.city.selectedIndex].text}`);
+    //     if (searchData.price) searchTerms.push(`السعر: ${searchSelects.price.options[searchSelects.price.selectedIndex].text}`);
+    //     if (searchData.rating) searchTerms.push(`التقييم: ${searchSelects.rating.options[searchSelects.rating.selectedIndex].text}`);
 
-        if (searchTerms.length > 0) {
-            searchMessage += searchTerms.join(' | ');
-        } else {
-            searchMessage = 'يرجى اختيار معايير البحث';
-        }
+    //     if (searchTerms.length > 0) {
+    //         searchMessage += searchTerms.join(' | ');
+    //     } else {
+    //         searchMessage = 'يرجى اختيار معايير البحث';
+    //     }
 
-        alert(searchMessage);
-    });
+    //     alert(searchMessage);
+    // });
 
     // Salon booking functionality
-    const bookingButtons = document.querySelectorAll('.salon-book-btn');
-    bookingButtons.forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            if (!btn.disabled) {
-                const salonCard = btn.closest('.salon-card');
-                const salonName = salonCard.querySelector('.salon-name').textContent;
-                alert(`تم النقر على حجز موعد في: ${salonName}`);
-            }
-        });
-    });
+    // const bookingButtons = document.querySelectorAll('.salon-book-btn');
+    // bookingButtons.forEach(btn => {
+    //     btn.addEventListener('click', function(e) {
+    //         e.preventDefault();
+    //         if (!btn.disabled) {
+    //             const salonCard = btn.closest('.salon-card');
+    //             const salonName = salonCard.querySelector('.salon-name').textContent;
+    //             alert(`تم النقر على حجز موعد في: ${salonName}`);
+    //         }
+    //     });
+    // });
 
     // Favorite functionality
     const favoriteButtons = document.querySelectorAll('.salon-favorite');

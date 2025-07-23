@@ -158,7 +158,7 @@ return [
                 ['label' => 'dashboard.cities', 'url' => 'dashboard.cities.index'],
                 ['label' => 'dashboard.salons', 'url' => 'dashboard.salons.index'],
                 ['label' => 'dashboard.bookings', 'url' => 'dashboard.bookings.index'],
-                ['label' => 'dashboard.appointments', 'url' => 'dashboard.appointments.index'],
+                // ['label' => 'dashboard.appointments', 'url' => 'dashboard.appointments.index'],
             ],
         ],
         //Reports

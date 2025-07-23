@@ -38,7 +38,7 @@
                         </li>
                         <li class="nav-item" role="presentation">
                             <a class="nav-link" id="bookings-tab" data-bs-toggle="tab" href="#bookings" role="tab" aria-controls="bookings" aria-selected="false">
-                                <i class="fa fa-calendar me-2"></i>{{ __('dashboard.bookings_and_appointments') }}
+                                <i class="fa fa-calendar me-2"></i>{{ __('dashboard.bookings') }}
                             </a>
                         </li>
                     </ul>

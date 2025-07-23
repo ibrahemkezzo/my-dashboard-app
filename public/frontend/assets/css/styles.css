@@ -1439,16 +1439,16 @@ a {
     .search-grid {
         grid-template-columns: 1fr 1fr;
     }
-    
+
     .newsletter-form {
         flex-direction: row;
     }
-    
+
     .footer-bottom-content {
         flex-direction: row;
         justify-content: space-between;
     }
-    
+
     .join-buttons {
         flex-direction: row;
     }
@@ -1458,47 +1458,47 @@ a {
     .hero-title {
         font-size: 3.75rem;
     }
-    
+
     .nav-desktop {
         display: flex;
     }
-    
+
     .auth-buttons-desktop {
         display: flex;
     }
-    
+
     .mobile-menu-btn {
         display: none;
     }
-    
+
     .categories-grid {
         grid-template-columns: 1fr 1fr;
     }
-    
+
     .salons-grid {
         grid-template-columns: 1fr 1fr;
     }
-    
+
     .steps-grid {
         grid-template-columns: 1fr 1fr;
     }
-    
+
     .beautician-steps {
         grid-template-columns: 1fr 1fr 1fr;
     }
-    
+
     .reviews-grid {
         grid-template-columns: 1fr 1fr;
     }
-    
+
     .trust-indicators {
         grid-template-columns: 1fr 1fr 1fr 1fr;
     }
-    
+
     .join-grid {
         grid-template-columns: 1fr 1fr;
     }
-    
+
     .footer-content {
         grid-template-columns: 1fr 1fr;
     }
@@ -1508,23 +1508,23 @@ a {
     .search-grid {
         grid-template-columns: 1fr 1fr 1fr;
     }
-    
+
     .categories-grid {
         grid-template-columns: 1fr 1fr 1fr 1fr;
     }
-    
+
     .salons-grid {
         grid-template-columns: 1fr 1fr 1fr 1fr;
     }
-    
+
     .steps-grid {
         grid-template-columns: 1fr 1fr 1fr;
     }
-    
+
     .reviews-grid {
         grid-template-columns: 1fr 1fr 1fr;
     }
-    
+
     .footer-content {
         grid-template-columns: 1fr 1fr 1fr 1fr;
     }
@@ -1582,4 +1582,18 @@ footer .footer-content .footer-section a .logo-footer {
 .btn:first-child:active {
     border: none !important;
     outline: none;
+}
+#profile-header .btn {
+    color: #e43f6f !important;
+}
+
+#profile-header .btn-check:checked+#profile-header .btn, #profile-header .btn.active, #profile-header .btn.show, #profile-header .btn:first-child:active, :not(#profile-header .btn-check)+#profile-header .btn:active, #profile-header .btn:hover {
+    color: #fff !important;
+    background-color: #e43f6f !important;
+    border-color: #e43f6f !important;
+}
+
+#profile-header .dropdown-item.active, #profile-header .dropdown-item:active {
+        color: #fff !important;
+    background-color: #e43f6f !important;
 }

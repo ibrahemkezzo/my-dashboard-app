@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Requests\StoreBookingRequest;
 use App\Http\Requests\UpdateBookingRequest;
-use App\Http\Requests\ConfirmBookingRequest;
+use App\Http\Requests\SalonConfirmBookingRequest;
+use App\Http\Requests\UserConfirmBookingRequest;
 use App\Http\Requests\RejectBookingRequest;
 use App\Models\Booking;
 use App\Models\User;
@@ -50,13 +51,12 @@ class BookingController extends Controller
     public function create(): View
     {
         $users = User::where('is_active', true)->orderBy('name')->get();
-        // $users = User::all();
         $salons = Salon::where('status', true)->orderBy('name')->get();
         $salonSubServices = SalonSubService::with(['salon', 'subService.service'])
             ->where('status', true)
             ->get()
             ->groupBy('salon_id');
-        // dd($salonSubServices);
+
         return view('dashboard.bookings.create', compact('users', 'salons', 'salonSubServices'));
     }
 
@@ -65,7 +65,6 @@ class BookingController extends Controller
      */
     public function store(StoreBookingRequest $request): RedirectResponse
     {
-        // dd($request->all());
         try {
             $this->bookingService->create($request->validated());
 
@@ -137,37 +136,71 @@ class BookingController extends Controller
     }
 
     /**
-     * Show the form for confirming a booking.
+     * Show the form for salon to confirm/modify a booking.
      */
-    public function confirmForm(Booking $booking)
+    public function salonConfirmForm(Booking $booking)
     {
-        if (!$booking->canBeConfirmed()) {
-            return redirect()->route('dashboard.bookings.show', $booking)->with('message', ['type' => 'error', 'content' => __('dashboard.booking_cannot_be_confirmed')]);
+        if (!$booking->canBeConfirmedBySalon()) {
+            return redirect()->route('dashboard.bookings.show', $booking)
+                ->with('message', ['type' => 'error', 'content' => __('dashboard.booking_cannot_be_confirmed_by_salon')]);
         }
 
         $booking->load(['user', 'salon', 'salonSubService.subService.service']);
 
         // Get available time slots for the preferred date
         $preferredDate = $booking->preferred_datetime->format('Y-m-d');
-        $availableSlots = $this->appointmentService->getAvailableTimeSlots(
-            $booking->salon_id,
-            $preferredDate,
-            $booking->salonSubService->duration ?? 60
-        );
-
-        return view('dashboard.bookings.confirm', compact('booking', 'availableSlots'));
+        $durationMinutes = $booking->salonSubService->duration ?? 60;
+        // dd($durationMinutes,$booking->salonSubService);
+        // $availableSlots = $this->appointmentService->getAvailableTimeSlots(
+        //     $booking->salon_id,
+        //     $preferredDate,
+        //     $durationMinutes
+        // );
+        // dd($availableSlots);
+        return view('dashboard.bookings.salon_confirm', compact('booking',  'durationMinutes'));
     }
 
     /**
-     * Confirm a booking and create an appointment.
+     * Salon confirms or modifies a booking.
      */
-    public function confirm(ConfirmBookingRequest $request, Booking $booking): RedirectResponse
+    public function salonConfirm(SalonConfirmBookingRequest $request, Booking $booking): RedirectResponse
     {
         try {
-            $appointment = $this->bookingService->confirmBooking($booking, $request->validated());
+            $this->bookingService->salonConfirmBooking($booking, $request->validated());
 
             return redirect()->route('dashboard.bookings.show', $booking)
-                ->with('message', ['type' => 'success', 'content' => __('dashboard.booking_confirmed_successfully')]);
+                ->with('message', ['type' => 'success', 'content' => __('dashboard.booking_confirmed_by_salon_successfully')]);
+        } catch (\Exception $e) {
+            return back()->withInput()
+                ->with('message', ['type' => 'error', 'content' => $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Show the form for user to confirm salon's response.
+     */
+    public function userConfirmForm(Booking $booking)
+    {
+        if (!$booking->canBeConfirmedByUser()) {
+            return redirect()->route('dashboard.bookings.show', $booking)
+                ->with('message', ['type' => 'error', 'content' => __('dashboard.booking_cannot_be_confirmed_by_user')]);
+        }
+
+        $booking->load(['user', 'salon', 'salonSubService.subService.service']);
+
+        return view('dashboard.bookings.user_confirm', compact('booking'));
+    }
+
+    /**
+     * User confirms salon's response and creates appointment.
+     */
+    public function userConfirm(UserConfirmBookingRequest $request, Booking $booking): RedirectResponse
+    {
+        try {
+            $result = $this->bookingService->userConfirmBooking($booking, $request->validated());
+            // Remove appointment creation logic
+            return redirect()->route('dashboard.bookings.show', $booking)
+                ->with('message', ['type' => 'success', 'content' => __('dashboard.booking_confirmed_by_user_successfully')]);
         } catch (\Exception $e) {
             return back()->withInput()
                 ->with('message', ['type' => 'error', 'content' => $e->getMessage()]);
@@ -217,6 +250,21 @@ class BookingController extends Controller
         } catch (\Exception $e) {
             return back()
                 ->with('message', ['type' => 'error', 'content' => $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Mark a booking as completed.
+     */
+    public function complete(Booking $booking): RedirectResponse
+    {
+        try {
+            $this->bookingService->markBookingCompleted($booking);
+            return redirect()->route('dashboard.bookings.show', $booking)
+                ->with('message', ['type' => 'success', 'content' => __('dashboard.booking_marked_completed_successfully')]);
+        } catch (\Exception $e) {
+            // dd($e);
+            return back()->with('message', ['type' => 'error', 'content' => $e->getMessage()]);
         }
     }
 

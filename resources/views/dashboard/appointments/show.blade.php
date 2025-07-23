@@ -236,14 +236,7 @@
                     </div>
                 </div>
                 
-                @if($appointment->booking->special_requirements)
-                <div class="row mt-3">
-                    <div class="col-md-12">
-                        <label class="fw-bold text-muted">{{ __('dashboard.special_requirements') }}:</label>
-                        <p class="mb-0">{{ $appointment->booking->special_requirements }}</p>
-                    </div>
-                </div>
-                @endif
+
 
                 <div class="mt-3">
                     <a href="{{ route('dashboard.bookings.show', $appointment->booking) }}" class="btn btn-info">

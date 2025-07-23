@@ -13,13 +13,13 @@ function initUserInteractions() {
     // User dropdown functionality
     const userBtn = document.querySelector('.user-btn');
     const userMenu = document.querySelector('.dropdown-menu');
-    
+
     if (userBtn && userMenu) {
         userBtn.addEventListener('click', function(e) {
             e.stopPropagation();
             toggleUserMenu();
         });
-        
+
         // Close dropdown when clicking outside
         document.addEventListener('click', function() {
             userMenu.classList.remove('show');
@@ -42,38 +42,38 @@ function toggleMobileMenu() {
 // Bookings Page Functionality
 function initBookingsPage() {
     if (!document.querySelector('.booking-tabs')) return;
-    
+
     // Handle tab switching
     const tabButtons = document.querySelectorAll('.booking-tab');
     const tabPanes = document.querySelectorAll('.tab-pane');
-    
+
     tabButtons.forEach(button => {
         button.addEventListener('click', function() {
             const targetTab = this.dataset.tab;
-            
+
             // Remove active class from all tabs and panes
             tabButtons.forEach(btn => btn.classList.remove('active'));
             tabPanes.forEach(pane => pane.classList.remove('active'));
-            
+
             // Add active class to clicked tab and corresponding pane
             this.classList.add('active');
             const targetPane = document.getElementById(targetTab);
             if (targetPane) {
                 targetPane.classList.add('active');
             }
-            
+
             updateBookingStats(targetTab);
         });
     });
-    
+
     // Handle booking actions
-    const actionButtons = document.querySelectorAll('.btn-action');
-    actionButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            handleBookingAction(this);
-        });
-    });
+    // const actionButtons = document.querySelectorAll('.btn-action');
+    // actionButtons.forEach(button => {
+    //     button.addEventListener('click', function(e) {
+    //         e.preventDefault();
+    //         handleBookingAction(this);
+    //     });
+    // });
 }
 
 // Handle booking action clicks
@@ -81,7 +81,7 @@ function handleBookingAction(button) {
     const action = getActionType(button);
     const bookingCard = button.closest('.booking-card');
     const salonName = bookingCard.querySelector('.salon-name').textContent;
-    
+
     switch(action) {
         case 'cancel':
             handleCancelBooking(salonName, bookingCard);
@@ -92,9 +92,9 @@ function handleBookingAction(button) {
         case 'rate':
             handleRateBooking(salonName);
             break;
-        case 'rebook':
-            handleRebookService(salonName);
-            break;
+        // case 'rebook':
+        //     handleRebookService(salonName);
+        //     break;
     }
 }
 
@@ -102,7 +102,7 @@ function getActionType(button) {
     if (button.classList.contains('cancel')) return 'cancel';
     if (button.classList.contains('modify')) return 'modify';
     if (button.classList.contains('rate')) return 'rate';
-    if (button.classList.contains('rebook')) return 'rebook';
+    // if (button.classList.contains('rebook')) return 'rebook';
     return '';
 }
 
@@ -112,7 +112,7 @@ function handleCancelBooking(salonName, card) {
         // Animate card removal
         card.style.transform = 'translateX(-100%)';
         card.style.opacity = '0';
-        
+
         setTimeout(() => {
             card.remove();
             showNotification('تم إلغاء الحجز بنجاح', 'success');
@@ -136,10 +136,10 @@ function handleRateBooking(salonName) {
 }
 
 // Rebook service
-function handleRebookService(salonName) {
-    showNotification(`سيتم توجيهك لحجز موعد جديد في ${salonName}`, 'info');
-    // Here you would typically redirect to the booking page
-}
+// function handleRebookService(salonName) {
+//     showNotification(`سيتم توجيهك لحجز موعد جديد في ${salonName}`, 'info');
+//     // Here you would typically redirect to the booking page
+// }
 
 // Update booking statistics
 function updateBookingStats(tabType) {
@@ -153,7 +153,7 @@ function checkEmptyState() {
     const currentBookings = document.querySelectorAll('#current .booking-card');
     const pastBookings = document.querySelectorAll('#past .booking-card');
     const emptyState = document.getElementById('emptyState');
-    
+
     if (currentBookings.length === 0 && pastBookings.length === 0 && emptyState) {
         emptyState.classList.remove('hidden');
     }
@@ -162,7 +162,7 @@ function checkEmptyState() {
 // Favorites Page Functionality
 function initFavoritesPage() {
     if (!document.getElementById('favoritesGrid')) return;
-    
+
     // Handle favorite heart buttons
     const heartButtons = document.querySelectorAll('.favorite-btn');
     heartButtons.forEach(button => {
@@ -172,7 +172,7 @@ function initFavoritesPage() {
             handleFavoriteToggle(this);
         });
     });
-    
+
     // Handle sorting
     const sortSelect = document.getElementById('sortFavorites');
     if (sortSelect) {
@@ -180,7 +180,7 @@ function initFavoritesPage() {
             handleFavoriteSort(this.value);
         });
     }
-    
+
     // Handle city filtering
     const cityFilter = document.getElementById('cityFilter');
     if (cityFilter) {
@@ -188,11 +188,11 @@ function initFavoritesPage() {
             handleCityFilter(this.value, this.selectedOptions[0].text);
         });
     }
-    
+
     // Handle favorite actions
     const viewButtons = document.querySelectorAll('.btn-availability');
     const bookButtons = document.querySelectorAll('.btn-book-now');
-    
+
     viewButtons.forEach(button => {
         button.addEventListener('click', function(e) {
             if (!this.getAttribute('onclick')) {
@@ -201,7 +201,7 @@ function initFavoritesPage() {
             }
         });
     });
-    
+
     bookButtons.forEach(button => {
         button.addEventListener('click', function(e) {
             e.preventDefault();
@@ -215,13 +215,13 @@ function initFavoritesPage() {
 function handleFavoriteToggle(button) {
     const card = button.closest('.salon-card');
     const salonName = card.querySelector('.salon-name').textContent;
-    
+
     if (button.classList.contains('active')) {
         // Remove from favorites
         if (confirm(`هل تريدين إزالة ${salonName} من المفضلة؟`)) {
             card.style.transform = 'scale(0.8)';
             card.style.opacity = '0';
-            
+
             setTimeout(() => {
                 card.remove();
                 updateFavoritesCount();
@@ -236,37 +236,37 @@ function handleFavoriteToggle(button) {
 function handleFavoriteSort(sortBy) {
     const grid = document.getElementById('favoritesGrid');
     if (!grid) return;
-    
+
     const cards = Array.from(grid.children);
-    
+
     cards.sort((a, b) => {
         const aCard = a.querySelector('.salon-card');
         const bCard = b.querySelector('.salon-card');
-        
+
         switch(sortBy) {
             case 'name':
                 const aName = aCard.querySelector('.salon-name').textContent;
                 const bName = bCard.querySelector('.salon-name').textContent;
                 return aName.localeCompare(bName, 'ar');
-            
+
             case 'rating':
                 const aRating = aCard.querySelector('.rating-text').textContent;
                 const bRating = bCard.querySelector('.rating-text').textContent;
                 return parseFloat(bRating.replace(/[()]/g, '')) - parseFloat(aRating.replace(/[()]/g, ''));
-            
+
             case 'location':
                 const aLocation = aCard.querySelector('.detail-item span').textContent;
                 const bLocation = bCard.querySelector('.detail-item span').textContent;
                 return aLocation.localeCompare(bLocation, 'ar');
-            
+
             default: // recent
                 return 0;
         }
     });
-    
+
     // Re-append sorted cards
     cards.forEach(card => grid.appendChild(card));
-    
+
     showNotification(`تم ترتيب النتائج حسب: ${getSortLabel(sortBy)}`, 'info');
 }
 
@@ -285,10 +285,10 @@ function getSortLabel(sortBy) {
 function handleCityFilter(selectedCity, cityName) {
     const cards = document.querySelectorAll('#favoritesGrid > *');
     let visibleCount = 0;
-    
+
     cards.forEach(card => {
         const cardCity = card.dataset.city;
-        
+
         if (!selectedCity || cardCity === selectedCity) {
             card.style.display = 'block';
             visibleCount++;
@@ -296,7 +296,7 @@ function handleCityFilter(selectedCity, cityName) {
             card.style.display = 'none';
         }
     });
-    
+
     if (visibleCount === 0) {
         showNotification('لا توجد صالونات في المدينة المختارة', 'warning');
     } else {
@@ -318,7 +318,7 @@ function updateFavoritesCount() {
 function checkEmptyFavorites() {
     const favorites = document.querySelectorAll('.salon-card');
     const emptyState = document.getElementById('emptyFavorites');
-    
+
     if (favorites.length === 0 && emptyState) {
         emptyState.classList.remove('hidden');
     }
@@ -329,7 +329,7 @@ function showNotification(message, type = 'info') {
     // Remove existing notifications
     const existingNotifications = document.querySelectorAll('.notification');
     existingNotifications.forEach(notification => notification.remove());
-    
+
     // Create notification element
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
@@ -352,17 +352,17 @@ function showNotification(message, type = 'info') {
         transform: translateX(100%);
         transition: transform 0.3s ease;
     `;
-    
+
     notification.innerHTML = `
         <div style="display: flex; align-items: center; gap: 0.75rem;">
             <i class="fas fa-${getNotificationIcon(type)}" style="color: ${getNotificationColor(type)};"></i>
             <span style="flex: 1;">${message}</span>
             <button onclick="this.parentNode.parentNode.remove()" style="
-                background: none; 
-                border: none; 
-                font-size: 1.2rem; 
-                color: #999; 
-                cursor: pointer; 
+                background: none;
+                border: none;
+                font-size: 1.2rem;
+                color: #999;
+                cursor: pointer;
                 padding: 0;
                 width: 20px;
                 height: 20px;
@@ -372,14 +372,14 @@ function showNotification(message, type = 'info') {
             ">×</button>
         </div>
     `;
-    
+
     document.body.appendChild(notification);
-    
+
     // Animate in
     setTimeout(() => {
         notification.style.transform = 'translateX(0)';
     }, 10);
-    
+
     // Auto remove after 4 seconds
     setTimeout(() => {
         if (notification.parentNode) {
@@ -417,13 +417,13 @@ function getNotificationIcon(type) {
 
 // Utility functions
 function formatArabicDate(date) {
-    const options = { 
-        year: 'numeric', 
-        month: 'long', 
+    const options = {
+        year: 'numeric',
+        month: 'long',
         day: 'numeric',
         weekday: 'long'
     };
-    
+
     return new Intl.DateTimeFormat('ar-SA', options).format(date);
 }
 
@@ -439,11 +439,11 @@ function smoothScrollTo(element) {
 // Loading state management
 function showLoading(element) {
     if (!element) return () => {};
-    
+
     const originalContent = element.innerHTML;
     element.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-left: 0.5rem;"></i>جاري التحميل...';
     element.disabled = true;
-    
+
     return () => {
         element.innerHTML = originalContent;
         element.disabled = false;
@@ -453,7 +453,7 @@ function showLoading(element) {
 // Animation utility
 function animateElement(element, animationClass) {
     if (!element) return;
-    
+
     element.classList.add(animationClass);
     element.addEventListener('animationend', function() {
         element.classList.remove(animationClass);

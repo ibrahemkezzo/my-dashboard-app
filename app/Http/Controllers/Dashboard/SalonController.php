@@ -53,9 +53,16 @@ class SalonController extends Controller
 
     public function storeStep1(StoreSalonRequest $request)
     {
+        $user = User::findOrFail($request->owner_id);
 
         $validated = $request->validated();
         $salon = $this->service->create($validated);
+        if ($salon) {
+            $user->assignRole('salon-manager');
+            $user->removeRole('user');
+            $user->type = 'salon-manager';
+            $user->save();
+        }
         if (!$salon) return redirect()->route('dashboard.salons.create.step1');
         $subServices = SubService::with('service')->orderBy('name')->get();
         $allServices = Service::all();
@@ -85,12 +92,12 @@ class SalonController extends Controller
     public function show(Salon $salon): View
     {
         $salon->load(['owner', 'city', 'subServices.service']);
-        
+
         // Get salon booking data
         $bookingFilters = request()->only(['search', 'status', 'user_id', 'date_from', 'date_to']);
         $bookings = app(\App\Services\BookingService::class)->getBySalon($salon, 10, $bookingFilters);
         $bookingStatistics = app(\App\Services\BookingService::class)->getStatistics(array_merge($bookingFilters, ['salon_id' => $salon->id]));
-        
+
         return view('dashboard.salons.show', compact('salon', 'bookings', 'bookingStatistics'));
     }
 
@@ -108,6 +115,7 @@ class SalonController extends Controller
     public function update(UpdateSalonRequest $request, Salon $salon): RedirectResponse
     {
         $data = $request->validated();
+        // dd($data);
         $this->service->update($salon, $data, $request->file('logo'), $request->file('cover_image'));
 
         // Handle gallery images

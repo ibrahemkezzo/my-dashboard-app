@@ -22,12 +22,22 @@ class Booking extends Model
         'preferred_datetime',
         'status',
         'rejection_reason',
-        'special_requirements',
+        'salon_confirmed_datetime',
+        'user_confirmed_datetime',
+        'salon_proposed_datetime',
+        'salon_proposed_price',
+        'salon_proposed_duration',
+        'salon_notes',
+        'salon_modification_reason',
         'additional_data',
     ];
 
     protected $casts = [
         'preferred_datetime' => 'datetime',
+        'salon_confirmed_datetime' => 'datetime',
+        'user_confirmed_datetime' => 'datetime',
+        'salon_proposed_datetime' => 'datetime',
+        'salon_proposed_price' => 'decimal:2',
         'additional_data' => 'array',
     ];
 
@@ -63,13 +73,7 @@ class Booking extends Model
         return $this->hasOne(Appointment::class);
     }
 
-    /**
-     * Get the sub-service details.
-     */
-    public function subService(): BelongsTo
-    {
-        return $this->belongsTo(SubService::class, 'salon_sub_service_id', 'id');
-    }
+
 
     /**
      * Generate a unique booking number.
@@ -84,11 +88,19 @@ class Booking extends Model
     }
 
     /**
-     * Check if the booking can be confirmed.
+     * Check if the booking can be confirmed by salon.
      */
-    public function canBeConfirmed(): bool
+    public function canBeConfirmedBySalon(): bool
     {
         return $this->status === 'pending';
+    }
+
+    /**
+     * Check if the booking can be confirmed by user.
+     */
+    public function canBeConfirmedByUser(): bool
+    {
+        return $this->status === 'salon_confirmed';
     }
 
     /**
@@ -96,7 +108,7 @@ class Booking extends Model
      */
     public function canBeRejected(): bool
     {
-        return in_array($this->status, ['pending', 'confirmed']);
+        return in_array($this->status, ['pending', 'salon_confirmed']);
     }
 
     /**
@@ -104,7 +116,48 @@ class Booking extends Model
      */
     public function canBeCancelled(): bool
     {
-        return in_array($this->status, ['pending', 'confirmed']);
+        return in_array($this->status, ['pending', 'salon_confirmed', 'user_confirmed']);
+    }
+
+    /**
+     * Check if salon has modified the booking.
+     */
+    public function isModifiedBySalon(): bool
+    {
+        return $this->salon_proposed_datetime && 
+               $this->salon_proposed_datetime->ne($this->preferred_datetime);
+    }
+
+    /**
+     * Get the final appointment datetime (salon proposed or user preferred).
+     */
+    public function getFinalDatetimeAttribute(): Carbon
+    {
+        return $this->salon_proposed_datetime ?? $this->preferred_datetime;
+    }
+
+    /**
+     * Get the final price (salon proposed or service price).
+     */
+    public function getFinalPriceAttribute(): float
+    {
+        return $this->salon_proposed_price ?? $this->salonSubService->price ?? 0;
+    }
+
+    /**
+     * Get the final duration (salon proposed or service duration).
+     */
+    public function getFinalDurationAttribute(): int
+    {
+        return $this->salon_proposed_duration ?? $this->salonSubService->duration ?? 60;
+    }
+
+    /**
+     * Check if the booking can be completed.
+     */
+    public function canBeCompleted(): bool
+    {
+        return in_array($this->status, ['user_confirmed']);
     }
 
     /**
@@ -114,7 +167,9 @@ class Booking extends Model
     {
         return match($this->status) {
             'pending' => 'bg-warning',
-            'confirmed' => 'bg-success',
+            'salon_confirmed' => 'bg-info',
+            'user_confirmed' => 'bg-success',
+            'completed' => 'bg-primary',
             'rejected' => 'bg-danger',
             'cancelled' => 'bg-secondary',
             default => 'bg-secondary',
@@ -128,7 +183,9 @@ class Booking extends Model
     {
         return match($this->status) {
             'pending' => __('dashboard.pending'),
-            'confirmed' => __('dashboard.confirmed'),
+            'salon_confirmed' => __('dashboard.salon_confirmed'),
+            'user_confirmed' => __('dashboard.user_confirmed'),
+            'completed' => __('dashboard.completed'),
             'rejected' => __('dashboard.rejected'),
             'cancelled' => __('dashboard.cancelled'),
             default => __('dashboard.unknown'),
@@ -180,4 +237,4 @@ class Booking extends Model
             }
         });
     }
-} 
+}

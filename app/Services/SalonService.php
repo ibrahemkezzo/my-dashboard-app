@@ -17,9 +17,69 @@ class SalonService
         $this->repository = $repository;
     }
 
-    public function list($perPage = 15, $filters = [])
+    public function list($perPage = 15, $filters = [], $sort = 'default')
     {
-        return $this->repository->paginate($perPage, $filters);
+        $query = \App\Models\Salon::with(['owner', 'city', 'subServices']);
+
+        // Filters
+        if (!empty($filters['search'])) {
+            $query->where(function($q) use ($filters) {
+                $q->where('name', 'like', '%' . $filters['search'] . '%')
+                  ->orWhere('description', 'like', '%' . $filters['search'] . '%')
+                  ->orWhere('address', 'like', '%' . $filters['search'] . '%');
+            });
+        }
+        if (!empty($filters['city_id'])) {
+            $query->where('city_id', $filters['city_id']);
+        }
+        if (!empty($filters['service_type'])) {
+            $query->whereHas('subServices', function($q) use ($filters) {
+                $q->where('name', 'like', '%' . $filters['service_type'] . '%');
+            });
+        }
+        if (!empty($filters['price_min'])) {
+            $query->whereHas('subServices', function($q) use ($filters) {
+                $q->where('salon_sub_service.price', '>=', $filters['price_min']);
+            });
+        }
+        if (!empty($filters['price_max'])) {
+            $query->whereHas('subServices', function($q) use ($filters) {
+                $q->where('salon_sub_service.price', '<=', $filters['price_max']);
+            });
+        }
+        if (isset($filters['has_offer']) && $filters['has_offer']) {
+            // Example: filter by offer, adjust as needed
+            $query->where('has_offer', true);
+        }
+        if (isset($filters['status']) && $filters['status'] !== null && $filters['status'] !== '') {
+            $query->where('status', $filters['status']);
+        }
+
+        // Sorting
+        switch ($sort) {
+            case 'lowest-price':
+                $query->withMin('subServices as min_price', 'salon_sub_service.price')->orderBy('min_price');
+                break;
+            case 'highest-price':
+                $query->withMax('subServices as max_price', 'salon_sub_service.price')->orderByDesc('max_price');
+                break;
+            case 'highest-rating':
+                $query->orderByDesc('rating');
+                break;
+            case 'lowest-rating':
+                $query->orderBy('rating');
+                break;
+            case 'certified':
+                $query->orderByDesc('certified'); // Add certified column if needed
+                break;
+            case 'home-based':
+                $query->orderByDesc('home_based'); // Add home_based column if needed
+                break;
+            default:
+                $query->orderByDesc('created_at');
+        }
+
+        return $query->paginate($perPage);
     }
 
     public function all()
@@ -43,6 +103,7 @@ class SalonService
             $coverImage = $data['cover_image'];
             $data['cover_image'] = $coverImage->store('salons/covers', 'public');
         }
+        // dd($data);
         $salon = $this->repository->create($data);
         if (isset($data['gallery_images'])) {
             $galleryImages = $data['gallery_images'];
@@ -57,12 +118,12 @@ class SalonService
     {
         if ($logo) {
             Media::delete($salon,'sub_service','single_column',['column'=>'logo']);
-            Media::storeSingle($logo,$salon,'sub_service','salons/logos','single_column',['column'=>'logo']);
+            $data['logo'] = $logo->store('salons/logos', 'public');
         }
 
         if ($coverImage) {
             Media::delete($salon,'sub_service','single_column',['column'=>'cover_image']);
-            Media::storeSingle($coverImage,$salon,'sub_service','salons/covers','single_column',['column'=>'cover_image']);
+            $data['cover_image'] = $coverImage->store('salons/covers', 'public');
         }
 
         return $this->repository->update($salon, $data);
@@ -80,7 +141,7 @@ class SalonService
 
         $salonSubServiceService = app(SalonSubServiceService::class);
         foreach ($salonServices as  $subService) {
-            if ($subService['images']) {
+            if (isset($subService['images'])) {
                 $pivot = $salonSubServiceService->getSalonSubService($salon, $subService['sub_service_id']);
                 if ($pivot) {
                     $salonSubServiceService->addSubServiceImages($pivot, $subService['images']);

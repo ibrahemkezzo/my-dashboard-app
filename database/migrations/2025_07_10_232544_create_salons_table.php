@@ -19,8 +19,9 @@ return new class extends Migration
             $table->string('phone');
             $table->string('email')->nullable();
             $table->foreignId('owner_id')->constrained('users')->onDelete('cascade');
+            $table->unique('owner_id');
             $table->foreignId('city_id')->constrained('cities')->onDelete('cascade');
-            $table->boolean('status')->default(true);
+            $table->boolean('status')->default(false);
             $table->json('working_hours')->nullable();
             $table->decimal('rating', 3, 2)->default(0.00);
             $table->string('logo')->nullable();

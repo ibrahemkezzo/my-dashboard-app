@@ -163,94 +163,95 @@ function initHairdresserRegistration() {
     });
 }
 
-// Add new service
-function addNewService() {
-    const servicesContainer = document.getElementById('servicesContainer');
-    const serviceCount = servicesContainer.children.length;
+// // Add new service
+// function addNewService() {
+//     const servicesContainer = document.getElementById('servicesContainer');
+//     const serviceCount = servicesContainer.children.length;
 
-    if (serviceCount >= 10) {
-        showMessage('لا يمكن إضافة أكثر من 10 خدمات', 'warning');
-        return;
-    }
+//     if (serviceCount >= 10) {
+//         showMessage('لا يمكن إضافة أكثر من 10 خدمات', 'warning');
+//         return;
+//     }
 
-    const newService = document.createElement('div');
-    newService.className = 'service-item';
-    newService.innerHTML = `
-        <div class="row">
-            <div class="col-md-4 mb-3">
-                <label class="form-label fw-semibold">اسم الخدمة</label>
-                <input type="text" class="form-control service-name" placeholder="مثال: صبغ الشعر" required>
-            </div>
-            <div class="col-md-3 mb-3">
-                <label class="form-label fw-semibold">السعر (ريال)</label>
-                <input type="number" class="form-control service-price" placeholder="200" required>
-            </div>
-            <div class="col-md-3 mb-3">
-                <label class="form-label fw-semibold">المدة (دقيقة)</label>
-                <input type="number" class="form-control service-duration" placeholder="90" required>
-            </div>
-            <div class="col-md-2 mb-3 d-flex align-items-end">
-                <button type="button" class="btn btn-outline-danger remove-service">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </div>
-        </div>
-        <div class="mb-3">
-            <label class="form-label fw-semibold">وصف الخدمة</label>
-            <textarea class="form-control service-description" rows="2" placeholder="اكتبي وصفاً مختصراً للخدمة..." required></textarea>
-        </div>
-    `;
+//     const newService = document.createElement('div');
+//     newService.className = 'service-item';
+//     newService.innerHTML = `
+//         <div class="row">
+//             <div class="col-md-4 mb-3">
+//                 <label class="form-label fw-semibold">اسم الخدمة</label>
+//                 <input type="text" class="form-control service-name" placeholder="مثال: صبغ الشعر" required>
+//             </div>
+//             <div class="col-md-3 mb-3">
+//                 <label class="form-label fw-semibold">السعر (ريال)</label>
+//                 <input type="number" class="form-control service-price" placeholder="200" required>
+//             </div>
+//             <div class="col-md-3 mb-3">
+//                 <label class="form-label fw-semibold">المدة (دقيقة)</label>
+//                 <input type="number" class="form-control service-duration" placeholder="90" required>
+//             </div>
+//             <div class="col-md-2 mb-3 d-flex align-items-end">
+//                 <button type="button" class="btn btn-outline-danger remove-service">
+//                     <i class="fas fa-trash"></i>
+//                 </button>
+//             </div>
+//         </div>
+//         <div class="mb-3">
+//             <label class="form-label fw-semibold">وصف الخدمة</label>
+//             <textarea class="form-control service-description" rows="2" placeholder="اكتبي وصفاً مختصراً للخدمة..." required></textarea>
+//         </div>
+//     `;
 
-    servicesContainer.appendChild(newService);
+//     servicesContainer.appendChild(newService);
 
-    // Show remove button for all services when there's more than one
-    updateRemoveButtons();
+//     // Show remove button for all services when there's more than one
+//     updateRemoveButtons();
 
-    // Animate the new service
-    newService.style.opacity = '0';
-    newService.style.transform = 'translateY(20px)';
-    setTimeout(() => {
-        newService.style.transition = 'all 0.3s ease';
-        newService.style.opacity = '1';
-        newService.style.transform = 'translateY(0)';
-    }, 10);
-}
+//     // Animate the new service
+//     newService.style.opacity = '0';
+//     newService.style.transform = 'translateY(20px)';
+//     setTimeout(() => {
+//         newService.style.transition = 'all 0.3s ease';
+//         newService.style.opacity = '1';
+//         newService.style.transform = 'translateY(0)';
+//     }, 10);
+// }
 
-// Remove service
-function removeService(button) {
-    const serviceItem = button.closest('.service-item');
-    const servicesContainer = document.getElementById('servicesContainer');
+// // Remove service
+// function removeService(button) {
+//     const serviceItem = button.closest('.service-item');
+//     const servicesContainer = document.getElementById('servicesContainer');
 
-    if (servicesContainer.children.length <= 1) {
-        showMessage('يجب أن يكون لديك خدمة واحدة على الأقل', 'warning');
-        return;
-    }
+//     if (servicesContainer.children.length <= 1) {
+//         showMessage('يجب أن يكون لديك خدمة واحدة على الأقل', 'warning');
+//         return;
+//     }
 
-    serviceItem.style.transition = 'all 0.3s ease';
-    serviceItem.style.opacity = '0';
-    serviceItem.style.transform = 'translateX(-100%)';
+//     serviceItem.style.transition = 'all 0.3s ease';
+//     serviceItem.style.opacity = '0';
+//     serviceItem.style.transform = 'translateX(-100%)';
 
-    setTimeout(() => {
-        serviceItem.remove();
-        updateRemoveButtons();
-    }, 300);
-}
+//     setTimeout(() => {
+//         serviceItem.remove();
+//         updateRemoveButtons();
+//     }, 300);
+// }
 
-// Update remove button visibility
-function updateRemoveButtons() {
-    const servicesContainer = document.getElementById('servicesContainer');
-    const removeButtons = servicesContainer.querySelectorAll('.remove-service');
+// // Update remove button visibility
+// function updateRemoveButtons() {
+//     const servicesContainer = document.getElementById('servicesContainer');
+//     const removeButtons = servicesContainer.querySelectorAll('.remove-service');
 
-    if (servicesContainer.children.length > 1) {
-        removeButtons.forEach(button => {
-            button.style.display = 'block';
-        });
-    } else {
-        removeButtons.forEach(button => {
-            button.style.display = 'none';
-        });
-    }
-}
+//     if (servicesContainer.children.length > 1) {
+//         removeButtons.forEach(button => {
+//             button.style.display = 'block';
+//         });
+//     } else {
+//         removeButtons.forEach(button => {
+//             button.style.display = 'none';
+//         });
+//     }
+// }
+
 
 // Handle image preview
 function handleImagePreview(event) {
@@ -277,23 +278,23 @@ function initFormSubmissions() {
     //     userLoginForm.addEventListener('submit', handleUserLogin);
     // }
 
-    // User register form
+    // // User register form
     // const userRegisterForm = document.getElementById('userRegisterForm');
     // if (userRegisterForm) {
     //     userRegisterForm.addEventListener('submit', handleUserRegister);
     // }
 
     // Hairdresser login form
-    const hairdresserLoginForm = document.getElementById('hairdresserLogin');
-    if (hairdresserLoginForm) {
-        hairdresserLoginForm.addEventListener('submit', handleHairdresserLogin);
-    }
+    // const hairdresserLoginForm = document.getElementById('hairdresserLogin');
+    // if (hairdresserLoginForm) {
+    //     hairdresserLoginForm.addEventListener('submit', handleHairdresserLogin);
+    // }
 
     // Hairdresser register form
-    const hairdresserRegisterForm = document.getElementById('hairdresserRegister');
-    if (hairdresserRegisterForm) {
-        hairdresserRegisterForm.addEventListener('submit', handleHairdresserRegister);
-    }
+    // const hairdresserRegisterForm = document.getElementById('hairdresserRegister');
+    // if (hairdresserRegisterForm) {
+    //     hairdresserRegisterForm.addEventListener('submit', handleHairdresserRegister);
+    // }
 
     // Google authentication buttons
     const googleButtons = document.querySelectorAll('.btn-google');
@@ -383,130 +384,130 @@ function handleUserRegister(event) {
 }
 
 // Handle hairdresser login
-function handleHairdresserLogin(event) {
-    event.preventDefault();
+// function handleHairdresserLogin(event) {
+//     event.preventDefault();
 
-    const loginData = {
-        email: document.getElementById('hairdresserLoginEmail').value,
-        password: document.getElementById('hairdresserLoginPassword').value,
-        remember: document.getElementById('hairdresserRememberMe').checked
-    };
+//     const loginData = {
+//         email: document.getElementById('hairdresserLoginEmail').value,
+//         password: document.getElementById('hairdresserLoginPassword').value,
+//         remember: document.getElementById('hairdresserRememberMe').checked
+//     };
 
-    const submitButton = event.target.querySelector('button[type="submit"]');
-    const originalText = submitButton.innerHTML;
+//     const submitButton = event.target.querySelector('button[type="submit"]');
+//     const originalText = submitButton.innerHTML;
 
-    // Show loading state
-    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>جاري تسجيل الدخول...';
-    submitButton.disabled = true;
+//     // Show loading state
+//     submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>جاري تسجيل الدخول...';
+//     submitButton.disabled = true;
 
-    // Simulate API call
-    setTimeout(() => {
-        console.log('Hairdresser login data:', loginData);
-        showMessage('تم تسجيل الدخول بنجاح! مرحباً بك في لوحة التحكم', 'success');
+//     // Simulate API call
+//     setTimeout(() => {
+//         console.log('Hairdresser login data:', loginData);
+//         showMessage('تم تسجيل الدخول بنجاح! مرحباً بك في لوحة التحكم', 'success');
 
-        // Reset button
-        submitButton.innerHTML = originalText;
-        submitButton.disabled = false;
+//         // Reset button
+//         submitButton.innerHTML = originalText;
+//         submitButton.disabled = false;
 
-        // Redirect to hairdresser dashboard
-        setTimeout(() => {
-            showMessage('سيتم توجيهك للوحة التحكم الخاصة بك', 'info');
-        }, 2000);
+//         // Redirect to hairdresser dashboard
+//         setTimeout(() => {
+//             showMessage('سيتم توجيهك للوحة التحكم الخاصة بك', 'info');
+//         }, 2000);
 
-    }, 2000);
-}
+//     }, 2000);
+// }
 
 // Handle hairdresser registration
-function handleHairdresserRegister(event) {
-    event.preventDefault();
+// function handleHairdresserRegister(event) {
+//     event.preventDefault();
 
-    // Collect salon data
-    const salonData = {
-        name: document.getElementById('salonName').value,
-        email: document.getElementById('salonEmail').value,
-        description: document.getElementById('salonDescription').value,
-        type: document.getElementById('salonType').value,
-        phone: document.getElementById('salonPhone').value,
-        address: document.getElementById('salonAddress').value,
-        password: document.getElementById('hairdresserPassword').value,
-        confirmPassword: document.getElementById('hairdresserConfirmPassword').value
-    };
+//     // Collect salon data
+//     const salonData = {
+//         name: document.getElementById('salonName').value,
+//         email: document.getElementById('salonEmail').value,
+//         description: document.getElementById('salonDescription').value,
+//         type: document.getElementById('salonType').value,
+//         phone: document.getElementById('salonPhone').value,
+//         address: document.getElementById('salonAddress').value,
+//         password: document.getElementById('hairdresserPassword').value,
+//         confirmPassword: document.getElementById('hairdresserConfirmPassword').value
+//     };
 
-    // Collect services
-    const services = [];
-    const serviceItems = document.querySelectorAll('.service-item');
-    serviceItems.forEach(item => {
-        services.push({
-            name: item.querySelector('.service-name').value,
-            price: item.querySelector('.service-price').value,
-            duration: item.querySelector('.service-duration').value,
-            description: item.querySelector('.service-description').value
-        });
-    });
+//     // Collect services
+//     const services = [];
+//     const serviceItems = document.querySelectorAll('.service-item');
+//     serviceItems.forEach(item => {
+//         services.push({
+//             name: item.querySelector('.service-name').value,
+//             price: item.querySelector('.service-price').value,
+//             duration: item.querySelector('.service-duration').value,
+//             description: item.querySelector('.service-description').value
+//         });
+//     });
 
-    // Collect features
-    const features = [];
-    const selectedFeatures = document.querySelectorAll('.feature-checkbox:checked');
-    selectedFeatures.forEach(checkbox => {
-        features.push(checkbox.value);
-    });
+//     // Collect features
+//     const features = [];
+//     const selectedFeatures = document.querySelectorAll('.feature-checkbox:checked');
+//     selectedFeatures.forEach(checkbox => {
+//         features.push(checkbox.value);
+//     });
 
-    // Collect images
-    const images = [];
-    const imageInputs = document.querySelectorAll('input[type="file"]');
-    imageInputs.forEach(input => {
-        if (input.files[0]) {
-            images.push(input.files[0].name);
-        }
-    });
+//     // Collect images
+//     const images = [];
+//     const imageInputs = document.querySelectorAll('input[type="file"]');
+//     imageInputs.forEach(input => {
+//         if (input.files[0]) {
+//             images.push(input.files[0].name);
+//         }
+//     });
 
-    const registrationData = {
-        salon: salonData,
-        services: services,
-        features: features,
-        images: images
-    };
+//     const registrationData = {
+//         salon: salonData,
+//         services: services,
+//         features: features,
+//         images: images
+//     };
 
-    // Validate password confirmation
-    if (salonData.password !== salonData.confirmPassword) {
-        showMessage('كلمات المرور غير متطابقة', 'error');
-        return;
-    }
+//     // Validate password confirmation
+//     if (salonData.password !== salonData.confirmPassword) {
+//         showMessage('كلمات المرور غير متطابقة', 'error');
+//         return;
+//     }
 
-    // Validate minimum requirements
-    if (services.length === 0) {
-        showMessage('يجب إضافة خدمة واحدة على الأقل', 'error');
-        return;
-    }
+//     // Validate minimum requirements
+//     if (services.length === 0) {
+//         showMessage('يجب إضافة خدمة واحدة على الأقل', 'error');
+//         return;
+//     }
 
-    if (images.length === 0) {
-        showMessage('يجب إضافة صورة واحدة على الأقل للصالون', 'error');
-        return;
-    }
+//     if (images.length === 0) {
+//         showMessage('يجب إضافة صورة واحدة على الأقل للصالون', 'error');
+//         return;
+//     }
 
-    const submitButton = event.target.querySelector('button[type="submit"]');
-    const originalText = submitButton.innerHTML;
+//     const submitButton = event.target.querySelector('button[type="submit"]');
+//     const originalText = submitButton.innerHTML;
 
-    // Show loading state
-    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>جاري تسجيل الصالون...';
-    submitButton.disabled = true;
+//     // Show loading state
+//     submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>جاري تسجيل الصالون...';
+//     submitButton.disabled = true;
 
-    // Simulate API call
-    setTimeout(() => {
-        console.log('Hairdresser registration data:', registrationData);
-        showMessage('تم تسجيل صالونك بنجاح! سيتم مراجعة طلبك خلال 24 ساعة', 'success');
+//     // Simulate API call
+//     setTimeout(() => {
+//         console.log('Hairdresser registration data:', registrationData);
+//         showMessage('تم تسجيل صالونك بنجاح! سيتم مراجعة طلبك خلال 24 ساعة', 'success');
 
-        // Reset button
-        submitButton.innerHTML = originalText;
-        submitButton.disabled = false;
+//         // Reset button
+//         submitButton.innerHTML = originalText;
+//         submitButton.disabled = false;
 
-        // Show additional success message
-        setTimeout(() => {
-            showMessage('ستصلك رسالة تأكيد عبر البريد الإلكتروني قريباً', 'info');
-        }, 2000);
+//         // Show additional success message
+//         setTimeout(() => {
+//             showMessage('ستصلك رسالة تأكيد عبر البريد الإلكتروني قريباً', 'info');
+//         }, 2000);
 
-    }, 4000);
-}
+//     }, 4000);
+// }
 
 // Handle Google authentication
 function handleGoogleAuth(event) {

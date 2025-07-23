@@ -174,7 +174,7 @@
                             <div class="form-check mb-3">
                                 <input class="form-check-input @error('agree_terms') is-invalid @enderror" type="checkbox" id="agreeTerms" name="agree_terms" required>
                                 <label class="form-check-label" for="agreeTerms">
-                                    أوافق على <a href="{{ route('terms.conditions') }}" class="text-decoration-none">الشروط والأحكام</a> و <a href="{{ route('privacy.policy') }}" class="text-decoration-none">سياسة الخصوصية</a>
+                                    أوافق على <a href="{{ route('front.terms') }}" class="text-decoration-none">الشروط والأحكام</a> و <a href="{{ route('front.privacy') }}" class="text-decoration-none">سياسة الخصوصية</a>
                                 </label>
                                 @error('agree_terms')
                                     <div class="invalid-feedback">{{ $message }}</div>
