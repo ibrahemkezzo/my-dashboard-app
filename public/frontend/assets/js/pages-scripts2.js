@@ -164,14 +164,14 @@ function initFavoritesPage() {
     if (!document.getElementById('favoritesGrid')) return;
 
     // Handle favorite heart buttons
-    const heartButtons = document.querySelectorAll('.favorite-btn');
-    heartButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            handleFavoriteToggle(this);
-        });
-    });
+    // const heartButtons = document.querySelectorAll('.favorite-btn');
+    // heartButtons.forEach(button => {
+    //     button.addEventListener('click', function(e) {
+    //         e.preventDefault();
+    //         e.stopPropagation();
+    //         handleFavoriteToggle(this);
+    //     });
+    // });
 
     // Handle sorting
     const sortSelect = document.getElementById('sortFavorites');
@@ -212,25 +212,25 @@ function initFavoritesPage() {
 }
 
 // Handle favorite toggle
-function handleFavoriteToggle(button) {
-    const card = button.closest('.salon-card');
-    const salonName = card.querySelector('.salon-name').textContent;
+// function handleFavoriteToggle(button) {
+//     const card = button.closest('.salon-card');
+//     const salonName = card.querySelector('.salon-name').textContent;
 
-    if (button.classList.contains('active')) {
-        // Remove from favorites
-        if (confirm(`هل تريدين إزالة ${salonName} من المفضلة؟`)) {
-            card.style.transform = 'scale(0.8)';
-            card.style.opacity = '0';
+//     if (button.classList.contains('active')) {
+//         // Remove from favorites
+//         if (confirm(`هل تريدين إزالة ${salonName} من المفضلة؟`)) {
+//             card.style.transform = 'scale(0.8)';
+//             card.style.opacity = '0';
 
-            setTimeout(() => {
-                card.remove();
-                updateFavoritesCount();
-                showNotification('تم إزالة الصالون من المفضلة', 'info');
-                checkEmptyFavorites();
-            }, 300);
-        }
-    }
-}
+//             setTimeout(() => {
+//                 card.remove();
+//                 updateFavoritesCount();
+//                 showNotification('تم إزالة الصالون من المفضلة', 'info');
+//                 checkEmptyFavorites();
+//             }, 300);
+//         }
+//     }
+// }
 
 // Handle favorite sorting
 function handleFavoriteSort(sortBy) {
@@ -306,23 +306,23 @@ function handleCityFilter(selectedCity, cityName) {
 }
 
 // Update favorites count
-function updateFavoritesCount() {
-    const count = document.querySelectorAll('.salon-card').length;
-    const statItem = document.querySelector('.stat-item');
-    if (statItem) {
-        statItem.innerHTML = `<i class="fas fa-heart"></i>${count} صالونات مفضلة`;
-    }
-}
+// function updateFavoritesCount() {
+//     const count = document.querySelectorAll('.salon-card').length;
+//     const statItem = document.querySelector('.stat-item');
+//     if (statItem) {
+//         statItem.innerHTML = `<i class="fas fa-heart"></i>${count} صالونات مفضلة`;
+//     }
+// }
 
 // Check if favorites is empty
-function checkEmptyFavorites() {
-    const favorites = document.querySelectorAll('.salon-card');
-    const emptyState = document.getElementById('emptyFavorites');
+// function checkEmptyFavorites() {
+//     const favorites = document.querySelectorAll('.salon-card');
+//     const emptyState = document.getElementById('emptyFavorites');
 
-    if (favorites.length === 0 && emptyState) {
-        emptyState.classList.remove('hidden');
-    }
-}
+//     if (favorites.length === 0 && emptyState) {
+//         emptyState.classList.remove('hidden');
+//     }
+// }
 
 // Show notification
 function showNotification(message, type = 'info') {

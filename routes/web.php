@@ -185,6 +185,7 @@ Route::group([
         Route::get('account',[ProfileController::class,'account'])->name('account');
         Route::put('account/{user}',[ProfileController::class,'updateAccount'])->name('update');
         Route::get('favourites',[ProfileController::class,'favourites'])->name('favourites');
+        Route::post('favorite/toggle', [ProfileController::class, 'toggleFavorite'])->name('toggleFavorite');
         Route::get('bookings',[FrontendBookingController::class,'bookings'])->name('bookings');
         Route::post('bookings/create',[FrontendBookingController::class,'store'])->name('bookings.create');
         Route::post('bookings/cancel',[FrontendBookingController::class,'cancel'])->name('bookings.cancel');

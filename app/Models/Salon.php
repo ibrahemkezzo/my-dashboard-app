@@ -67,6 +67,12 @@ class Salon extends Model
         return $this->hasManyThrough(Appointment::class, Booking::class);
     }
 
+    public function favoritedByUsers()
+    {
+        return $this->belongsToMany(User::class, 'favorite_salons', 'salon_id', 'user_id')
+                    ->withTimestamps();
+    }
+    
     /**
      * Get the price range for the salon's services.
      *

@@ -117,4 +117,10 @@ class User extends Authenticatable
     {
         return $this->hasManyThrough(Appointment::class, Booking::class);
     }
+
+    public function favoriteSalons()
+    {
+        return $this->belongsToMany(Salon::class, 'favorite_salons', 'user_id', 'salon_id')
+                    ->withTimestamps();
+    }
 }

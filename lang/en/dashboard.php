@@ -879,4 +879,7 @@ return [
     'booking_marked_completed_successfully' => 'Booking marked as completed successfully.',
     'completed_bookings' => 'Completed Bookings',
     'rejected_bookings' => 'Rejected Bookings',
+    'favorite_added' => 'The salon has been added to favorites.',
+    'favorite_removed' => 'The salon has been removed from favorites.',
+    'favorite_error' => 'An error occurred while updating favorites.',
 ];

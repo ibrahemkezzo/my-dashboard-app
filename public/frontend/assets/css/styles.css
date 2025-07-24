@@ -634,13 +634,14 @@ a {
     height: 0.75rem;
 }
 
-.salon-favorite {
+.salon-fa-vorite {
     position: absolute;
     top: 0.75rem;
     left: 0.75rem;
     width: 2rem;
     height: 2rem;
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: #d9d9d9;
+    color: #808080;
     border: none;
     border-radius: 50%;
     display: flex;
@@ -650,9 +651,18 @@ a {
     transition: all 0.3s ease;
 }
 
-.salon-favorite:hover {
-    background-color: white;
-    color: var(--primary);
+.salon-fa-vorite:hover {
+    background-color: var(--primary);
+    color: white ;
+}
+
+.salon-fa-vorite.active {
+     background-color: var(--primary);
+    color: white;
+}
+.salon-fa-vorite.active:hover {
+     background-color: #d9d9d9;
+    color: #808080;
 }
 
 .salon-status {
@@ -1597,3 +1607,5 @@ footer .footer-content .footer-section a .logo-footer {
         color: #fff !important;
     background-color: #e43f6f !important;
 }
+
+

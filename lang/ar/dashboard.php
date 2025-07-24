@@ -888,5 +888,8 @@ return [
     'completed_bookings' => 'الحجوزات المكتملة',
 
     'rejected_bookings' => 'الحجوزات الملغاة/المرفوضة',
+    'favorite_added' => 'تمت إضافة الصالون إلى المفضلة.',
+    'favorite_removed' => 'تمت إزالة الصالون من المفضلة.',
+    'favorite_error' => 'حدث خطأ أثناء تحديث المفضلة.',
 
 ];

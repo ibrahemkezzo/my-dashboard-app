@@ -1,5 +1,4 @@
-
-{{-- @dd($salon->working_hours) --}}
+{{-- @dump(Auth::user()->favoriteSalons()->where('salon_id', $salon->id)->first() != null) --}}
 <div class="salon-card">
     <div class="salon-image-container">
         <img src="{{ $salon->cover_image_url }}" alt="{{ $salon->name }}" class="salon-image">
@@ -7,9 +6,15 @@
             <i data-lucide="award"></i>
             مركز معتمد
         </div>
-        <button class="salon-favorite">
-            <i data-lucide="heart"></i>
+        @auth
+        <button
+
+            class="salon-fa-vorite {{Auth::user()->favoriteSalons()->where('salon_id', $salon->id)->first() ? 'active' : '' }}"
+            data-salon-id="{{ $salon->id }}" onclick="toggleFavorite({{ $salon->id }})">
+            <i data-lucide="heart" ></i>
         </button>
+        @endauth
+
         <div class="salon-status {{ $salon->isOpen ? 'open' : 'closed' }}">
             <div class="status-dot"></div>
             {{ $salon->isOpen ? 'مفتوح' : 'مغلق' }}
@@ -64,3 +69,44 @@
         <a href="{{ route('front.salons.show', $salon->id) }}" class="btn btn-primary salon-book-btn">احجزي موعدك</a>
     </div>
 </div>
+
+
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('frontend/assets/js/pages-scripts2.js') }}"></script>
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        function toggleFavorite(salonId) {
+            // Prevent action if user is not authenticated
+            @if (!auth()->check())
+                alert('يرجى تسجيل الدخول لإضافة الصالون إلى المفضلة.');
+                return;
+            @endif
+
+            const button = document.querySelector(`button[data-salon-id="${salonId}"]`);
+
+            fetch('{{ route('front.profile.toggleFavorite') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                },
+                body: JSON.stringify({ salon_id: salonId }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Only toggle the 'active' class on the button
+                    button.classList.toggle('active', data.is_favorited);
+                   
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('حدث خطأ أثناء الاتصال بالخادم، حاول مرة أخرى.');
+            });
+        }
+    </script>
+@endpush
