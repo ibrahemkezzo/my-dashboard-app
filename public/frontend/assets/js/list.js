@@ -1,6 +1,6 @@
 // Hairdressers Page JavaScript
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Fetch filter data and populate dropdowns
     fetch('/salons/filters')
         .then(res => res.json())
@@ -56,10 +56,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (priceFilter) {
             let min = Math.floor(data.price_min);
             let max = Math.ceil(data.price_max);
-            let step = Math.max(50, Math.round((max-min)/4));
+            let step = Math.max(50, Math.round((max - min) / 4));
             let options = `<option value="">تصفية السعر</option>`;
-            for(let i=min; i<max; i+=step) {
-                let to = Math.min(i+step-1, max);
+            for (let i = min; i < max; i += step) {
+                let to = Math.min(i + step - 1, max);
                 options += `<option value="${i}-${to}">${i} - ${to} ريال</option>`;
             }
             priceFilter.innerHTML = options;
@@ -188,24 +188,32 @@ document.addEventListener('DOMContentLoaded', function() {
     function salonCardTemplate(salon) {
         // Handle sub_services as array of strings or objects
         let subServices = Array.isArray(salon.sub_services) ? salon.sub_services : [];
-        let subServiceTags = subServices.slice(0,3).map(s =>
+        let subServiceTags = subServices.slice(0, 3).map(s =>
             typeof s === 'string' ? `<span class="service-tag">${s}</span>` : `<span class="service-tag">${s.name ?? s}</span>`
         ).join('');
         let moreTag = (subServices.length > 3) ? `<span class="service-more">+${subServices.length - 3} المزيد</span>` : '<br/>';
         // Fix: Use window.routes.salonShow and replace :id with salon.id
         let salonShowUrl = window.routes && window.routes.salonShow ? window.routes.salonShow.replace(':id', salon.id) : '#';
+            // Generate badge content using JavaScript conditional
+        let badgeContent = salon.type === 'beauty_center'
+            ? `<i data-lucide="award"></i> مركز معتمد`
+            : `<i style="width: 20px; height:20px;" data-lucide="home"></i> صالون منزلي`;
+        // Generate favorite button with dynamic class based on favorite status
+        let isFavorited = salon.is_favorited ? 'active' : '';
+        let favoriteButton = `
+            <button class="salon-fa-vorite ${isFavorited}" data-salon-id="${salon.id}" onclick="toggleFavorite(${salon.id})">
+                <i data-lucide="heart"></i>
+            </button>
+        `;
         return `
         <div class="salon-card">
             <div class="salon-image-container">
                 <img src="${salon.cover_image_url ?? 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400'}"
                     alt="${salon.name}" class="salon-image">
-                <div class="salon-badge featured">
-                    <i data-lucide="award"></i>
-                    مركز معتمد
+                 <div class="salon-badge featured">
+                    ${badgeContent}
                 </div>
-                <button class="salon-favorite">
-                    <i data-lucide="heart"></i>
-                </button>
+                ${favoriteButton}
                 <div class="salon-status ${salon.is_open ? 'open' : 'closed'}">
                     <div class="status-dot"></div>
                     ${salon.is_open ? 'مفتوح' : 'مغلق'}
@@ -230,10 +238,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
                 <div class="salon-price">
                     ${salon.price_range
-                        ? (salon.price_range.min == salon.price_range.max
-                            ? salon.price_range.min
-                            : `${salon.price_range.min}-${salon.price_range.max} ريال`)
-                        : 'لا يوجد أسعار'}
+                ? (salon.price_range.min == salon.price_range.max
+                    ? salon.price_range.min
+                    : `${salon.price_range.min}-${salon.price_range.max} ريال`)
+                : 'لا يوجد أسعار'}
                 </div>
                 <div class="salon-offer">${salon.offer_text ?? 'خصم 20% على الجلسة الأولى'}</div>
                 <a href="${salonShowUrl}" class="btn btn-primary salon-book-btn">احجزي موعدك</a>
@@ -241,4 +249,36 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
         `;
     }
+    // Initialize Lucide icons
+lucide.createIcons();
+
+function toggleFavorite(salonId) {
+    // Prevent action if user is not authenticated
+    if (!window.isAuthenticated) {
+        alert('يرجى تسجيل الدخول لإضافة الصالون إلى المفضلة.');
+        return;
+    }
+
+    const button = document.querySelector(`button[data-salon-id="${salonId}"]`);
+
+    fetch(window.routes.toggleFavorite, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': window.csrfToken,
+        },
+        body: JSON.stringify({ salon_id: salonId }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Only toggle the 'active' class on the button
+            button.classList.toggle('active', data.is_favorited);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('حدث خطأ أثناء الاتصال بالخادم، حاول مرة أخرى.');
+    });
+}
 });

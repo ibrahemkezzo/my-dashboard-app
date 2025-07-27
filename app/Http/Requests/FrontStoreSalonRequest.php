@@ -23,6 +23,7 @@ class FrontStoreSalonRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
+            'email'=> 'sometimes|email',
             'description' => 'nullable|string|max:1000',
             'type' => 'required|in:beauty_center,home_salon',
             'phone' => 'required|string|max:20',
@@ -34,7 +35,7 @@ class FrontStoreSalonRequest extends FormRequest
             'working_hours' => 'required',
             'working_hours.*.open' => 'nullable|date_format:H:i',
             'working_hours.*.close' => 'nullable|date_format:H:i',
-            'working_hours.*.status' => 'nullable|boolean',
+            'working_hours.*.closed' => 'nullable|string|in:on',
             'social_links.facebook' => 'nullable|url|max:255',
             'social_links.instagram' => 'nullable|url|max:255',
             'social_links.snapchat' => 'nullable|url|max:255',

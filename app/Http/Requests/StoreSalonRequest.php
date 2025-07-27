@@ -26,7 +26,7 @@ class StoreSalonRequest extends FormRequest
             'working_hours' => 'required',
             'working_hours.*.open' => 'nullable|date_format:H:i',
             'working_hours.*.close' => 'nullable|date_format:H:i',
-            'working_hours.*.status' => 'nullable|boolean',
+            'working_hours.*.closed' => 'nullable|string|in:on',
             'social_links.facebook' => 'nullable|url|max:255',
             'social_links.instagram' => 'nullable|url|max:255',
             'social_links.snapchat' => 'nullable|url|max:255',

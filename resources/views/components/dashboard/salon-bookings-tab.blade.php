@@ -78,7 +78,7 @@
                         <span class="text-muted">{{ $booking->salonSubService->subService->name }}</span>
                     </div>
                     <div class="col-md-2">
-                        <strong>{{ __('dashboard.date') }}:</strong>
+                        <strong>{{ __('dashboard.date') }}:</strong> <br>
                         <span class="text-muted">{{ $booking->preferred_datetime->format('M j, Y') }}</span>
                     </div>
                     <div class="col-md-2">
@@ -109,7 +109,7 @@
                         <div class="col-md-6">
                             <h6 class="mb-3">{{ __('dashboard.booking_details') }}</h6>
                             <p><strong>{{ __('dashboard.service_description') }}:</strong> {{ $booking->service_description }}</p>
-                            <p><strong>{{ __('dashboard.preferred_datetime') }}:</strong> {{ $booking->preferred_datetime->format('F j, Y \a\t g:i A') }}</p>
+                            <p><strong>{{ __('dashboard.preferred_datetime') }}:</strong><br> {{ $booking->preferred_datetime->format('F j, Y \a\t g:i A') }}</p>
                             @if($booking->rejection_reason)
                                 <p><strong>{{ __('dashboard.rejection_reason') }}:</strong> {{ $booking->rejection_reason }}</p>
                             @endif

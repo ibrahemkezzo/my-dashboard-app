@@ -3,10 +3,15 @@
     <div class="salon-image-container">
         <img src="{{ $salon->cover_image_url }}" alt="{{ $salon->name }}" class="salon-image">
         <div class="salon-badge featured">
+            @if ($salon->type == 'beauty_center')
             <i data-lucide="award"></i>
             مركز معتمد
+            @else
+            <i  style="width: 20px; height:20px;" data-lucide="home"></i>
+            صالون منزلي
+            @endif
         </div>
-        @auth
+        @auth   
         <button
 
             class="salon-fa-vorite {{Auth::user()->favoriteSalons()->where('salon_id', $salon->id)->first() ? 'active' : '' }}"
@@ -100,7 +105,7 @@
                 if (data.success) {
                     // Only toggle the 'active' class on the button
                     button.classList.toggle('active', data.is_favorited);
-                   
+
                 }
             })
             .catch(error => {

@@ -26,7 +26,7 @@
                             @endif
                         </div>
                         <div class="d-flex justify-content-center gap-2">
-                            <a href="{{ route('dashboard.salons.sub-services.edit', [$salon, $subService]) }}" class="btn btn-warning mb-">
+                            <a href="{{ route('dashboard.salons.sub-services.edit', [$salon, $subService]) }}" class="btn btn-warning mb-3">
                                 <i class="fa fa-edit"></i> {{ __('dashboard.edit') }}
                             </a>
                             <form action="{{ route('dashboard.salons.sub-services.destroy', [$salon, $subService]) }}" method="POST" style="display:inline;">

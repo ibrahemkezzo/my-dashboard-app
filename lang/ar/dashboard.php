@@ -892,4 +892,12 @@ return [
     'favorite_removed' => 'تمت إزالة الصالون من المفضلة.',
     'favorite_error' => 'حدث خطأ أثناء تحديث المفضلة.',
 
+    'home_salon' => 'صالون منزلي',
+    'beauty_center' => 'مركز معتمد',
+    'type_salon' => 'نوع الصالون',
+    'no_service_images' => 'لا يوجد صور للخدمة',
+    'features' => 'المميزات',
+    'service_added_successfully' => 'تم اضافة الخدمة بنجاح',
+    'date' => 'التاريخ',
+
 ];

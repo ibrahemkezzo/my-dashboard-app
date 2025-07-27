@@ -28,6 +28,7 @@
                 <div class="tab-pane active" id="current">
                     <div class="bookings-grid">
                         @php
+
                             $now = now();
                             $currentBookings = $bookings->filter(
                                 fn($b) => in_array($b->status, ['pending', 'salon_confirmed', 'user_confirmed']) &&
@@ -68,6 +69,9 @@
                                     <div class="detail-row">
                                         <i class="fas fa-cut detail-icon"></i>
                                         <span>{{ $booking->salonSubService->subService->name }}</span>
+                                        @isset($booking->rejection_reason)
+                                         <span>{{ $booking->rejection_reason }}</span>
+                                        @endisset
                                     </div>
                                     <div class="detail-row">
                                         <i class="fas fa-money-bill-wave detail-icon"></i>
@@ -76,7 +80,7 @@
                                 </div>
                                 <div class="booking-actions">
                                     @if ($booking->canBeCancelled())
-                                        <form action="{{ route('front.profile.bookings.cancel', $booking) }}"
+                                        <form action="{{ route('front.profile.bookings.cancel', $booking->id) }}"
                                             method="POST" style="display:inline;">
                                             @csrf
                                             <button class="btn-action cancel" type="submit">
@@ -106,12 +110,12 @@
                                             <button type="submit" class="btn-primo confirm">مكتمل</button>
                                         </form>
                                     @endif
-                                    @if ($booking->canBeRejected())
+                                    {{-- @if ($booking->canBeRejected())
                                         <a href="{{ route('front.profile.bookings.edit', $booking) }}"
                                             class="btn-action modify">
                                             <i class="fas fa-edit"></i>تعديل
                                         </a>
-                                    @endif
+                                    @endif --}}
                                 </div>
                             </div>
                         @empty
@@ -140,6 +144,9 @@
                                             class="fas fa-{{ $booking->status === 'completed' ? 'check-double' : ($booking->status === 'cancelled' ? 'times' : 'ban') }}-circle"></i>
                                         {{ $booking->status_text }}
                                     </span>
+                                     @isset($booking->rejection_reason)
+                                        <span style="color: red" class="me-3 mt-5">{{ $booking->rejection_reason }}</span>
+                                    @endisset
                                 </div>
                                 <div class="booking-header">
                                     <div class="salon-image">
@@ -166,6 +173,7 @@
                                     <div class="detail-row">
                                         <i class="fas fa-cut detail-icon"></i>
                                         <span>{{ $booking->salonSubService->subService->name }}</span>
+
                                     </div>
                                     <div class="detail-row">
                                         <i class="fas fa-money-bill-wave detail-icon"></i>
@@ -173,6 +181,7 @@
                                     </div>
                                 </div>
                                 <div class="booking-actions">
+
                                     <a href="{{ route('front.salons.show', $booking->salon->id) }}"
                                         class="btn-action re-book">
                                         <i class="fas fa-redo"></i>حجز مرة أخرى

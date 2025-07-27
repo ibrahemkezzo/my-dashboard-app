@@ -882,4 +882,13 @@ return [
     'favorite_added' => 'The salon has been added to favorites.',
     'favorite_removed' => 'The salon has been removed from favorites.',
     'favorite_error' => 'An error occurred while updating favorites.',
+
+    'home_salon' => 'Home Salon',
+    'beauty_center' => 'Beauty Center',
+    'type_salon' => 'Salon Type',
+    'no_service_images' => 'No Service Images',
+    'features' => 'Features',
+    'service_added_successfully' => 'Service Added Successfuly',
+    'date' => 'Date',
+
 ];

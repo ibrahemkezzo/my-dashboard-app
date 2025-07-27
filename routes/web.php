@@ -188,7 +188,7 @@ Route::group([
         Route::post('favorite/toggle', [ProfileController::class, 'toggleFavorite'])->name('toggleFavorite');
         Route::get('bookings',[FrontendBookingController::class,'bookings'])->name('bookings');
         Route::post('bookings/create',[FrontendBookingController::class,'store'])->name('bookings.create');
-        Route::post('bookings/cancel',[FrontendBookingController::class,'cancel'])->name('bookings.cancel');
+        Route::post('bookings/cancel/{booking}',[FrontendBookingController::class,'cancel'])->name('bookings.cancel');
         Route::post('bookings/edit/{booking}',[FrontendBookingController::class,'store'])->name('bookings.edit');
         Route::post('bookings/confirm/{booking}',[FrontendBookingController::class,'confirm'])->name('bookings.confirm');
         Route::post('bookings/completed/{booking}',[FrontendBookingController::class,'completed'])->name('bookings.completed');

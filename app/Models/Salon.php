@@ -6,12 +6,13 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Auth;
 
 class Salon extends Model
 {
     protected $fillable = [
         'name', 'description', 'address', 'phone', 'email', 'owner_id', 'city_id',
-        'status', 'working_hours', 'rating', 'logo', 'cover_image', 'social_links', 'seo_meta','features'
+        'status', 'working_hours', 'rating', 'logo', 'cover_image', 'social_links', 'seo_meta','features' ,'type'
     ];
 
     protected $casts = [
@@ -23,7 +24,7 @@ class Salon extends Model
         'rating' => 'decimal:2',
     ];
 
-    protected $appends = ['cover_image_url','logo_url' , 'is_open'];
+    protected $appends = ['cover_image_url','logo_url' , 'is_open' , 'is_favorited'];
 
     /**
      * The owner of the salon (one-to-one with User).
@@ -72,7 +73,16 @@ class Salon extends Model
         return $this->belongsToMany(User::class, 'favorite_salons', 'salon_id', 'user_id')
                     ->withTimestamps();
     }
-    
+
+    /**
+     * Accessor to check if the salon is favorited by the current user.
+     *
+     * @return bool
+     */
+    public function getIsFavoritedAttribute()
+    {
+        return Auth::check() ? $this->favoritedByUsers->contains(Auth::id()) : false;
+    }
     /**
      * Get the price range for the salon's services.
      *

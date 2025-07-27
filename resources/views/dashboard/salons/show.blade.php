@@ -41,16 +41,31 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="card">
-                                            <div class="card-body text-center">
-                                                @if ($salon->logo)
-                                                    <img src="{{ asset('storage/' . $salon->logo) }}" alt="logo"
-                                                        style="width:150px;height:150px;object-fit:cover;border-radius:50%;">
-                                                @else
+
+                                                <div style="position:relative;">
+                                                    @if ($salon->cover_image_url)
+                                                        <div
+                                                            style="height:120px;background:url('{{ $salon->cover_image_url }}') center center/cover no-repeat;border-top-left-radius:.5rem;border-top-right-radius:.5rem;">
+                                                        </div>
+                                                    @else
+                                                        <div
+                                                            style="height:120px;background:#e9ecef;border-top-left-radius:.5rem;border-top-right-radius:.5rem;">
+                                                        </div>
+                                                    @endif
                                                     <div
-                                                        style="width:150px;height:150px;background:#f0f0f0;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto;">
-                                                        <i class="fa fa-building fa-3x text-muted"></i>
+                                                        style="position:absolute;left:50%;bottom:-50px;transform:translateX(-50%);">
+                                                        @if ($salon->logo_url)
+                                                            <img src="{{ $salon->logo_url }}" alt="logo"
+                                                                style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:4px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+                                                        @else
+                                                            <div
+                                                                style="width:100px;height:100px;background:#f0f0f0;border-radius:50%;display:flex;align-items:center;justify-content:center;border:4px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+                                                                <i class="fa fa-building fa-2x text-muted"></i>
+                                                            </div>
+                                                        @endif
                                                     </div>
-                                                @endif
+                                                </div>
+                                                <div class="card-body text-center mt-3">
                                                 <h4 class="mt-3">{{ $salon->name }}</h4>
                                                 <p class="text-muted">{{ $salon->description }}</p>
                                                 <div class="mb-3">
@@ -58,6 +73,13 @@
                                                         <span class="badge bg-success">{{ __('dashboard.active') }}</span>
                                                     @else
                                                         <span class="badge bg-danger">{{ __('dashboard.inactive') }}</span>
+                                                    @endif
+
+                                                    @if ($salon->type == 'beauty_center')
+                                                        <span
+                                                            class="badge bg-info">{{ __('dashboard.beauty_center') }}</span>
+                                                    @else
+                                                        <span class="badge bg-info">{{ __('dashboard.home_salon') }}</span>
                                                     @endif
                                                 </div>
                                                 <div class="d-flex justify-content-center gap-2">
@@ -93,7 +115,8 @@
                                                         <p><strong>{{ __('dashboard.phone') }}:</strong>
                                                             {{ $salon->phone }}</p>
                                                         <p><strong>{{ __('dashboard.email') }}:</strong>
-                                                            {{ $salon->email ?? $salon->owner->email ?? __('dashboard.not_provided') }}</p>
+                                                            {{ $salon->email ?? ($salon->owner->email ?? __('dashboard.not_provided')) }}
+                                                        </p>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <p><strong>{{ __('dashboard.rating') }}:</strong>
@@ -109,6 +132,8 @@
                                                             {{ $salon->address }}</p>
                                                         <p><strong>{{ __('dashboard.created_at') }}:</strong>
                                                             {{ $salon->created_at->format('M j, Y') }}</p>
+                                                        <p><strong>{{ __('dashboard.type_salon') }}:</strong>
+                                                            {{ __('dashboard.' . $salon->type) }}</p>
                                                     </div>
                                                 </div>
 
@@ -122,9 +147,9 @@
                                                                     {{-- @dump($day, $times) --}}
                                                                     <strong>{{ __('dashboard.' . $day) }}:</strong>
                                                                     @if (isset($times['closed']) && $times['closed'] == 'on')
-                                                                    <span
-                                                                        class="badge bg-primary me-2">{{ __('dashboard.closed') }}
-                                                                    </span>
+                                                                        <span
+                                                                            class="badge bg-primary me-2">{{ __('dashboard.closed') }}
+                                                                        </span>
                                                                     @else
                                                                         @php
                                                                             try {
@@ -167,6 +192,119 @@
                                                         </div>
                                                     </div>
                                                 @endif
+                                                <div class="mt-3">
+                                                    <h6>{{ __('dashboard.features') }}</h6>
+                                                    <div class="row ">
+                                                        @if (isset($salon->features['parking']))
+                                                            <div class="quality-metric col-md-6  mb-1">
+                                                                <i style="color: #6c757d" class="fa fa-car ms-2"></i>
+                                                                <span>موقف سيارات</span>
+                                                            </div>
+                                                        @endif
+                                                        @if (isset($salon->features['wifi']))
+                                                            <div class="quality-metric col-md-6 mb-1">
+                                                                <i style="color: #6c757d" class="fa fa-wifi ms-2"></i>
+                                                                <span>واي فاي مجاني</span>
+                                                            </div>
+                                                        @endif
+                                                        @if (isset($salon->features['ac']))
+                                                            <div class="quality-metric col-md-6 mb-1">
+                                                                <i style="color: #6c757d" class="fa fa-snowflake ms-2"></i>
+                                                                <span>تكييف</span>
+                                                            </div>
+                                                        @endif
+                                                        @if (isset($salon->features['waiting-area']))
+                                                            <div class="quality-metric col-md-6 mb-1">
+                                                                <i style="color: #6c757d" class="fa fa-couch ms-2"></i>
+                                                                <span>منطقة انتظار</span>
+                                                            </div>
+                                                        @endif
+                                                        @if (isset($salon->features['refreshments']))
+                                                            <div class="quality-metric col-md-6 mb-1">
+                                                                <i style="color: #6c757d" class="fa fa-coffee ms-2"></i>
+                                                                <span>مشروبات مجانية</span>
+                                                            </div>
+                                                        @endif
+                                                        @if (isset($salon->features['child-care']))
+                                                            <div class="quality-metric col-md-6 mb-1">
+                                                                <i style="color: #6c757d" class="fa fa-baby ms-2"></i>
+                                                                <span>رعاية أطفال</span>
+                                                            </div>
+                                                        @endif
+
+                                                    </div>
+
+                                                </div>
+                                                <div class="mt-3">
+                                                    <h6>{{ __('dashboard.social_links') }}</h6>
+                                                    <div class="row ">
+
+
+                                                        @if (isset($salon->social_links['instagram']))
+                                                            <div class="quality-metric col-md-6 mb-1 ">
+
+                                                                <a href="{{ $salon->social_links['instagram'] }}"
+                                                                    class="social">
+                                                                    <i class="fa fa-instagram ms-2 me-2 "></i></a>
+                                                                <span>instagram</span>
+
+                                                            </div>
+                                                        @endif
+                                                        @if (isset($salon->social_links['facebook']))
+                                                            <div class="quality-metric col-md-6 mb-1">
+                                                                <a href="{{ $salon->social_links['facebook'] }}"
+                                                                    class="social">
+                                                                    <i class="fa fa-facebook ms-2 me-2"></i></a>
+                                                                <span>facebook</span>
+
+                                                            </div>
+                                                        @endif
+
+                                                    </div>
+                                                    <div class="row">
+                                                        @if (isset($salon->social_links['snapchat']))
+                                                            <div class="quality-metric col-md-6 mb-1">
+                                                                <a href="{{ $salon->social_links['snapchat'] }}"
+                                                                    class="social">
+                                                                    <i class="fa fa-snapchat ms-2 me-2"></i>
+                                                                    <span>snapchat</span>
+                                                                </a>
+
+                                                            </div>
+                                                        @endif
+                                                        @if (isset($salon->social_links['tiktok']))
+                                                            <div class="quality-metric col-md-6 mb-1">
+                                                                <a href="{{ $salon->social_links['tiktok'] }}"
+                                                                    class="social">
+                                                                    <i class="fa fa-tiktok ms-2 me-2"></i>
+                                                                    <span>tiktok</span>
+                                                                </a>
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                    <div class="row">
+                                                        @if (isset($salon->social_links['youtube']))
+                                                            <div class="quality-metric col-md-6 mb-1">
+                                                                <a href="{{ $salon->social_links['youtube'] }}"
+                                                                    class="social">
+                                                                    <i class="fa fa-youtube ms-2 me-2"></i>
+                                                                    <span>youtube</span>
+                                                                </a>
+
+                                                            </div>
+                                                        @endif
+                                                        @if (isset($salon->social_links['twitter']))
+                                                            <div class="quality-metric col-md-6 mb-1">
+                                                                <a href="{{ $salon->social_links['twitter'] }}"
+                                                                    class="social">
+                                                                    <i class="fa fa-twitter ms-2 me-2"></i>
+                                                                    <span>(X)_twitter</span>
+                                                                </a>
+
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -214,6 +352,7 @@
                                                                             title="{{ __('dashboard.view') }}">
                                                                             <i class="fa fa-eye"></i>
                                                                         </a>
+
                                                                         <a href="{{ route('dashboard.salons.sub-services.edit', [$salon, $subService->pivot->id]) }}"
                                                                             class="text-warning me-2"
                                                                             title="{{ __('dashboard.edit') }}">
@@ -350,4 +489,21 @@
             });
         });
     </script>
+@endpush
+
+@push('styles')
+    <style>
+        .social {
+            color: #000;
+
+
+        }
+
+        /* لون النص عند الـ hover */
+        .social:hover {
+            color: #F56476;
+            /* اللون المطلوب عند الـ hover */
+        }
+    </style>
+    </style>
 @endpush

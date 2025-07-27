@@ -141,7 +141,7 @@
                         </div>
 
                         <!-- Special Offers -->
-                        <div class="sidebar-section">
+                        {{-- <div class="sidebar-section">
                             <h5 class="fw-semibold mb-3">العروض الخاصة</h5>
                             <div class="offers-filter">
                                 <div class="form-check mb-2">
@@ -163,7 +163,7 @@
                                     </label>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -179,6 +179,7 @@
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('frontend/assets/js/list.js') }}"></script>
+    <script src="{{ asset('frontend/assets/js/pages-scripts.js') }}"></script>
     <script>
         // تعريف المسار في Blade
         window.routes = {
