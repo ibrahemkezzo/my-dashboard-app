@@ -139,15 +139,15 @@ class SalonService
         $syncData = $this->transformSalonServicesForSync($salonServices);
         $newServices = $this->repository->syncSubServices($salon, $syncData);
 
-        $salonSubServiceService = app(SalonSubServiceService::class);
-        foreach ($salonServices as  $subService) {
-            if (isset($subService['images'])) {
-                $pivot = $salonSubServiceService->getSalonSubService($salon, $subService['sub_service_id']);
-                if ($pivot) {
-                    $salonSubServiceService->addSubServiceImages($pivot, $subService['images']);
-                }
-            }
-        }
+        // $salonSubServiceService = app(SalonSubServiceService::class);
+        // foreach ($salonServices as  $subService) {
+        //     if (isset($subService['images'])) {
+        //         $pivot = $salonSubServiceService->getSalonSubService($salon, $subService['sub_service_id']);
+        //         if ($pivot) {
+        //             $salonSubServiceService->addSubServiceImages($pivot, $subService['images']);
+        //         }
+        //     }
+        // }
         return $newServices;
     }
 

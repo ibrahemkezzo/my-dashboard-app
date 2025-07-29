@@ -208,7 +208,7 @@
                                             <a href="{{ route('dashboard.appointments.edit', $appointment) }}" class="btn btn-sm btn-warning" title="{{ __('dashboard.edit') }}">
                                                 <i class="fa fa-edit"></i>
                                             </a>
-                                            
+
                                             @if($appointment->canBeInProgress())
                                                 <form action="{{ route('dashboard.appointments.in-progress', $appointment) }}" method="POST" style="display: inline;">
                                                     @csrf
@@ -217,7 +217,7 @@
                                                     </button>
                                                 </form>
                                             @endif
-                                            
+
                                             @if($appointment->canBeCompleted())
                                                 <form action="{{ route('dashboard.appointments.completed', $appointment) }}" method="POST" style="display: inline;">
                                                     @csrf
@@ -226,7 +226,7 @@
                                                     </button>
                                                 </form>
                                             @endif
-                                            
+
                                             @if($appointment->canBeCancelled())
                                                 <form action="{{ route('dashboard.appointments.cancel', $appointment) }}" method="POST" style="display: inline;">
                                                     @csrf
@@ -235,7 +235,7 @@
                                                     </button>
                                                 </form>
                                             @endif
-                                            
+
                                             @if(in_array($appointment->status, ['scheduled', 'in_progress']))
                                                 <form action="{{ route('dashboard.appointments.no-show', $appointment) }}" method="POST" style="display: inline;">
                                                     @csrf
@@ -262,7 +262,7 @@
 
                 <!-- Pagination -->
                 <div class="d-flex justify-content-center mt-4">
-                    {{ $appointments->appends(request()->query())->links() }}
+                    {{ $appointments->appends(request()->query())->links('pagination::simple-tailwind') }}
                 </div>
             </div>
         </div>
@@ -274,17 +274,17 @@
     .card {
         transition: transform 0.2s;
     }
-    
+
     .card:hover {
         transform: translateY(-2px);
     }
-    
+
     .btn-group .btn {
         margin-right: 2px;
     }
-    
+
     .table img {
         object-fit: cover;
     }
 </style>
-@endpush 
+@endpush

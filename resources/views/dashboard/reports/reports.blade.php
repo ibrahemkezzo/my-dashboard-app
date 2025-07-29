@@ -26,14 +26,14 @@
                                     <option value="custom" {{ $timeRange == 'custom' ? 'selected' : '' }}>{{ __('dashboard.custom_range') }}</option>
                                 </select>
                             </div>
-                            <div class="col-md-3">
+                            {{-- <div class="col-md-3">
                                 <label for="start_date" class="form-label">{{ __('dashboard.start_date') }}</label>
                                 <input type="date" name="start_date" id="start_date" value="{{ $startDate }}" class="form-control" {{ $timeRange != 'custom' ? 'disabled' : '' }}>
                             </div>
                             <div class="col-md-3">
                                 <label for="end_date" class="form-label">{{ __('dashboard.end_date') }}</label>
                                 <input type="date" name="end_date" id="end_date" value="{{ $endDate }}" class="form-control" {{ $timeRange != 'custom' ? 'disabled' : '' }}>
-                            </div>
+                            </div> --}}
                             <div class="col-md-3">
                                 <label for="device_type" class="form-label">{{ __('dashboard.device_type') }}</label>
                                 <select name="device_type" id="device_type" class="form-select">
@@ -63,7 +63,7 @@
 
     <!-- Statistics Widgets -->
     <div class="row mb-4">
-        <div class="col-xxl-3 col-md-6 xl-50">
+        <div class="col-xxl-4 col-md-6 xl-50">
             <div class="card o-hidden widget-cards">
                 <div class="primary-box card-body">
                     <div class="media static-top-widget align-items-center">
@@ -80,7 +80,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xxl-3 col-md-6 xl-50">
+        {{-- <div class="col-xxl-3 col-md-6 xl-50">
             <div class="card o-hidden widget-cards">
                 <div class="secondary-box card-body">
                     <div class="media static-top-widget align-items-center">
@@ -99,8 +99,8 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-xxl-3 col-md-6 xl-50">
+        </div> --}}
+        <div class="col-xxl-4 col-md-6 xl-50">
             <div class="card o-hidden widget-cards">
                 <div class="warning-box card-body">
                     <div class="media static-top-widget align-items-center">
@@ -117,7 +117,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xxl-3 col-md-6 xl-50">
+        <div class="col-xxl-4 col-md-6 xl-50">
             <div class="card o-hidden widget-cards">
                 <div class="danger-box card-body">
                     <div class="media static-top-widget align-items-center">
@@ -137,7 +137,7 @@
     </div>
 
     <!-- Trend Chart Placeholder -->
-    <div class="row mb-4">
+    {{-- <div class="row mb-4">
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
@@ -151,7 +151,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <!-- Detailed Tables -->
     <div class="row">
@@ -166,7 +166,7 @@
                             <tr>
                                 <th>{{ __('dashboard.page_url') }}</th>
                                 <th>{{ __('dashboard.visits') }}</th>
-                                <th>{{ __('dashboard.avg_time_seconds') }}</th>
+                                {{-- <th>{{ __('dashboard.avg_time_seconds') }}</th> --}}
                             </tr>
                         </thead>
                         <tbody>
@@ -174,12 +174,12 @@
                                 <tr>
                                     <td>{{ $item['page_url'] }}</td>
                                     <td>{{ $item['visit_count'] }}</td>
-                                    <td>
+                                    {{-- <td>
                                         @php
                                             $avg = collect($averageTimeSpent)->firstWhere('page_url', $item['page_url'])['avg_time_spent'] ?? 0;
                                         @endphp
                                         {{ number_format($avg, 2) }}
-                                    </td>
+                                    </td> --}}
                                 </tr>
                             @endforeach
                         </tbody>

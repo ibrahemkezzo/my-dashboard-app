@@ -370,7 +370,7 @@
                                                                         <a href="#"
                                                                             class="text-red-500 hover:text-red-700"
                                                                             title="{{ __('dashboard.delete') }}"
-                                                                            onclick="event.preventDefault(); return confirm('{{ __('dashboard.are_you_sure_delete_salon') }}') && document.getElementById('destroy-form-{{ $subService->pivot->id }}').submit();">
+                                                                            onclick="event.preventDefault(); return confirm('{{ __('dashboard.are_you_sure_delete_subservice') }}') && document.getElementById('destroy-form-{{ $subService->pivot->id }}').submit();">
                                                                             <i class="fa fa-trash"></i>
                                                                         </a>
                                                                     </td>

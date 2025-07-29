@@ -66,23 +66,23 @@
                             </div>
                         </div>
 
-                        @if($subService->materials_used)
+                        {{-- @if($subService->materials_used)
                             <div class="mt-3">
                                 <h6>{{ __('dashboard.materials_used') }}</h6>
                                 <p>{{ $subService->materials_used }}</p>
                             </div>
-                        @endif
+                        @endif --}}
 
-                        @if($subService->requirements)
+                        {{-- @if($subService->requirements)
                             <div class="mt-3">
                                 <h6>{{ __('dashboard.requirements') }}</h6>
                                 <p>{{ $subService->requirements }}</p>
                             </div>
-                        @endif
+                        @endif --}}
 
                         @if($subService->special_notes)
                             <div class="mt-3">
-                                <h6>{{ __('dashboard.special_notes') }}</h6>
+                                <h6>{{ __('dashboard.description') }}</h6>
                                 <p>{{ $subService->special_notes }}</p>
                             </div>
                         @endif
@@ -90,7 +90,7 @@
                 </div>
 
                 <!-- Service Images Section -->
-                <div class="card mt-3">
+                {{-- <div class="card mt-3">
                     <div class="card-header">
                         <h5>{{ __('dashboard.service_images') }}</h5>
                     </div>
@@ -122,7 +122,7 @@
                             <p class="text-muted">{{ __('dashboard.no_service_images') }}</p>
                         @endif
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>

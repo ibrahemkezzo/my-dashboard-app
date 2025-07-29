@@ -187,7 +187,7 @@
                     </table>
                 </div>
                 <div class="d-flex justify-content-center">
-                    {{ $salons->appends(request()->query())->links() }}
+                    {{ $salons->appends(request()->query())->links('pagination::simple-tailwind') }}
                 </div>
             </div>
         </div>

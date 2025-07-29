@@ -164,7 +164,7 @@
                     </table>
                 </div>
                 <div class="d-flex justify-content-center">
-                    {{ $subServices->appends(request()->query())->links() }}
+                    {{ $subServices->appends(request()->query())->links('pagination::simple-tailwind') }}
                 </div>
             </div>
         </div>

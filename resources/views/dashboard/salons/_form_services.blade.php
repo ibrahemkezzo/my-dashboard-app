@@ -7,8 +7,8 @@
                 'price' => $ss->pivot->price,
                 'duration' => $ss->pivot->duration,
                 'status' => $ss->pivot->status,
-                'materials_used' => $ss->pivot->materials_used,
-                'requirements' => $ss->pivot->requirements,
+                // 'materials_used' => $ss->pivot->materials_used,
+                // 'requirements' => $ss->pivot->requirements,
                 'special_notes' => $ss->pivot->special_notes,
             ];
         })->toArray() : []);
@@ -50,29 +50,29 @@
                     <option value="0" {{ ($serviceData['status'] ?? 1) == 0 ? 'selected' : '' }}>{{ __('dashboard.inactive') }}</option>
                 </select>
             </div>
-            <div class="col-md-2">
+            {{-- <div class="col-md-2">
                 <label class="form-label">{{ __('dashboard.materials_used') }}</label>
                 <textarea class="form-control" rows="1" name="salon_services[{{ $i }}][materials_used]">{{ $serviceData['materials_used'] ?? '' }}</textarea>
-            </div>
-            <div class="col-md-6">
+            </div> --}}
+            {{-- <div class="col-md-6">
                 <label class="form-label">{{ __('dashboard.requirements') }}</label>
                 <textarea class="form-control" rows="1" name="salon_services[{{ $i }}][requirements]">{{ $serviceData['requirements'] ?? '' }}</textarea>
-            </div>
+            </div> --}}
             <div class="col-md-6">
-                <label class="form-label">{{ __('dashboard.special_notes') }}</label>
+                <label class="form-label">{{ __('dashboard.description') }}</label>
                 <textarea class="form-control" rows="1" name="salon_services[{{ $i }}][special_notes]">{{ $serviceData['special_notes'] ?? '' }}</textarea>
             </div>
-            <div class="col-md-2">
+            {{-- <div class="col-md-2">
                 <label class="form-label">{{ __('dashboard.sub_service_images') }}</label>
                 <input type="file" class="form-control" name="salon_services[{{ $i }}][images][]" multiple accept="image/*">
-            </div>
+            </div> --}}
             <div class="col-md-1 d-flex align-items-end">
                 <button type="button" class="btn btn-danger remove-service-row" onclick="removeServiceRow(this)"><i class="fa fa-trash"></i></button>
             </div>
         </div>
     @endforeach
 </div>
-<button type="button" class="btn btn-outline-primary mt-2" id="add-service-row"><i class="fa fa-plus"></i> {{ __('dashboard.add_service') }}</button>
+<button type="button" class="btn btn-outline-primary" id="add-service-row"><i class="fa fa-plus"></i> {{ __('dashboard.add_service') }}</button>
 <button type="submit" class="btn btn-primary">{{ $saveText ?? __('Save') }}</button>
 
 @push('scripts')
@@ -117,10 +117,6 @@
                     <option value="1">{{ __('dashboard.active') }}</option>
                     <option value="0">{{ __('dashboard.inactive') }}</option>
                 </select>
-            </div>
-            <div class="col-md-2">
-                <label class="form-label">{{ __('dashboard.sub_service_images') }}</label>
-                <input type="file" class="form-control" name="salon_services[${serviceIndex}][images][]" multiple accept="image/*">
             </div>
             <div class="col-md-1 d-flex align-items-end">
                 <button type="button" class="btn btn-danger remove-service-row" onclick="removeServiceRow(this)"><i class="fa fa-trash"></i></button>

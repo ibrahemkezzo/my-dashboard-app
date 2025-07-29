@@ -106,7 +106,7 @@
                                         <p>المدة: {{ $service->pivot->duration }} دقيقة</p>
                                         <p>الحالة: {{ $service->pivot->status ? 'مفعلة' : 'غير مفعلة' }}</p>
                                         <p>الوصف: {{ $service->pivot->special_notes }}</p>
-                                        <h6>صور الخدمة:</h6>
+                                        {{-- <h6>صور الخدمة:</h6>
                                         <div class="row">
                                             @if($service->pivot->media && $service->pivot->media->count() > 0)
                                                 @foreach($service->pivot->media as $media)
@@ -126,7 +126,7 @@
                                             @csrf
                                             <input type="file" name="images[]" multiple accept="image/*" class="form-control mb-2">
                                             <button type="submit" class="btn btn-primary btn-sm">إضافة صور</button>
-                                        </form>
+                                        </form> --}}
                                     </div>
                                 </div>
                             </div>
@@ -176,4 +176,4 @@
             @endforeach
         </tbody>
     </table>
-</div> 
+</div>

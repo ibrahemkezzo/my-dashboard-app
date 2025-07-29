@@ -47,7 +47,7 @@ class SalonController extends Controller
 
     public function createStep1()
     {
-        $owners = User::orderBy('name')->get();
+        $owners = User::where('type','user')->orderBy('name')->get();
         return view('dashboard.salons.create_step1', compact('owners'));
     }
 
@@ -78,10 +78,10 @@ class SalonController extends Controller
             'salon_services.*.price' => 'nullable|numeric',
             'salon_services.*.duration' => 'nullable|integer',
             'salon_services.*.status' => 'nullable|boolean',
-            'salon_services.*.materials_used' => 'nullable|string',
-            'salon_services.*.requirements' => 'nullable|string',
+            // 'salon_services.*.materials_used' => 'nullable|string',
+            // 'salon_services.*.requirements' => 'nullable|string',
             'salon_services.*.special_notes' => 'nullable|string',
-            'salon_services.*.images.*' => 'nullable|image|max:2048',
+            // 'salon_services.*.images.*' => 'nullable|image|max:2048',
         ]);
 
 

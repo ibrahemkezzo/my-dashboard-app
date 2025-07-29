@@ -63,12 +63,13 @@ class SalonManagerController extends Controller
             'price' => 'required|numeric|min:0',
             'duration' => 'required|integer|min:0',
             'status' => 'nullable|boolean',
-            'materials_used' => 'nullable|string|max:1000',
-            'requirements' => 'nullable|string|max:1000',
+            // 'materials_used' => 'nullable|string|max:1000',
+            // 'requirements' => 'nullable|string|max:1000',
             'special_notes' => 'nullable|string|max:1000',
-            'images.*' => 'nullable|image|max:2048',
+            // 'images.*' => 'nullable|image|max:2048',
         ]);
-        $this->salonSubServiceService->createSalonSubService($salon, $data, $request->file('images'));
+        // $this->salonSubServiceService->createSalonSubService($salon, $data, $request->file('images'));
+        $this->salonSubServiceService->createSalonSubService($salon, $data);
         return redirect()->route('front.profile.salon.manager', ['tab' => 'services'])->with('message', ['type' => 'success', 'content' => __('تمت إضافة الخدمة')]);
     }
 
@@ -141,8 +142,10 @@ class SalonManagerController extends Controller
     {
         $user = Auth::user();
         $salon = $user->salon;
+        // dd($salon);
         if (!$salon) abort(404);
-        $pivot = $this->salonSubServiceService->getSalonSubService($salon, $subServiceId);
+        $pivot = SalonSubService::findOrFail($subServiceId);
+        // dd($pivot,$subServiceId);
         if (!$pivot) abort(404);
         $this->salonSubServiceService->deleteSalonSubService($pivot);
         return redirect()->route('front.profile.salon.manager', ['tab' => 'services'])->with('message', ['type' => 'success', 'content' => __('تم حذف الخدمة')]);

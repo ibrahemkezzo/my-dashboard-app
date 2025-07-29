@@ -25,15 +25,17 @@
                     </ul>
                 </div>
             @endif
-            <form action="{{ route('dashboard.salons.sub-services.store', $salon) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('dashboard.salons.sub-services.store', $salon) }}" method="POST"
+                enctype="multipart/form-data">
                 @csrf
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <label class="form-label">{{ __('dashboard.service') }}</label>
                         <select name="service_id" class="form-control main-service-select" required>
                             <option value="">{{ __('dashboard.choose_service') }}</option>
-                            @foreach($allServices as $service)
-                                <option value="{{ $service->id }}" {{ old('service_id') == $service->id ? 'selected' : '' }}>{{ $service->name }}</option>
+                            @foreach ($allServices as $service)
+                                <option value="{{ $service->id }}"
+                                    {{ old('service_id') == $service->id ? 'selected' : '' }}>{{ $service->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -45,45 +47,51 @@
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <label class="form-label">{{ __('dashboard.price') }}</label>
-                        <input type="number" step="0.01" class="form-control" name="price" value="{{ old('price', 0) }}">
+                        <input type="number" step="0.01" class="form-control" name="price"
+                            value="{{ old('price', 0) }}">
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <label class="form-label">{{ __('dashboard.duration') }} ({{ __('dashboard.minutes') }})</label>
                         <input type="number" class="form-control" name="duration" value="{{ old('duration', 0) }}">
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <label class="form-label">{{ __('dashboard.status') }}</label>
                         <select class="form-control" name="status">
-                            <option value="1" {{ old('status', 1) == 1 ? 'selected' : '' }}>{{ __('dashboard.active') }}</option>
-                            <option value="0" {{ old('status', 1) == 0 ? 'selected' : '' }}>{{ __('dashboard.inactive') }}</option>
+                            <option value="1" {{ old('status', 1) == 1 ? 'selected' : '' }}>
+                                {{ __('dashboard.active') }}</option>
+                            <option value="0" {{ old('status', 1) == 0 ? 'selected' : '' }}>
+                                {{ __('dashboard.inactive') }}</option>
                         </select>
                     </div>
-                    <div class="col-md-3">
+                    {{-- <div class="col-md-3">
                         <label class="form-label">{{ __('dashboard.service_images') }}</label>
                         <input type="file" class="form-control" name="images[]" multiple accept="image/*">
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="row mb-3">
                     <div class="col-md-12">
-                        <label class="form-label">{{ __('dashboard.materials_used') }}</label>
-                        <textarea class="form-control" rows="2" name="materials_used">{{ old('materials_used') }}</textarea>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label class="form-label">{{ __('dashboard.requirements') }}</label>
-                        <textarea class="form-control" rows="2" name="requirements">{{ old('requirements') }}</textarea>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">{{ __('dashboard.special_notes') }}</label>
+                        <label class="form-label">{{ __('dashboard.description') }}</label>
                         <textarea class="form-control" rows="2" name="special_notes">{{ old('special_notes') }}</textarea>
                     </div>
+
+                </div>
+                <div class="row mb-3">
+                    {{-- <div class="col-md-6">
+                        <label class="form-label">{{ __('dashboard.requirements') }}</label>
+                        <textarea class="form-control" rows="2" name="requirements">{{ old('requirements') }}</textarea>
+                    </div> --}}
+                    {{-- <div class="col-md-12">
+                        <label class="form-label">{{ __('dashboard.materials_used') }}</label>
+                        <textarea class="form-control" rows="2" name="materials_used">{{ old('materials_used') }}</textarea>
+                    </div> --}}
+
                 </div>
                 <div class="d-flex gap-2">
                     <button type="submit" class="btn btn-primary">{{ __('dashboard.save') }}</button>
-                    <a href="{{ route('dashboard.salons.show', $salon) }}" class="btn btn-secondary">{{ __('dashboard.cancel') }}</a>
+                    <a href="{{ route('dashboard.salons.show', $salon) }}"
+                        class="btn btn-secondary">{{ __('dashboard.cancel') }}</a>
                 </div>
             </form>
         </div>
@@ -91,20 +99,26 @@
 @endsection
 
 @push('scripts')
-<script>
-    const allServices = @json($allServices->map(function($s){ return ['id'=>$s->id,'name'=>$s->name]; }));
-    const subServices = @json($subServices->map(function($ss){ return ['id'=>$ss->id,'name'=>$ss->name,'service_id'=>$ss->service_id]; }));
+    <script>
+        const allServices = @json(
+            $allServices->map(function ($s) {
+                return ['id' => $s->id, 'name' => $s->name];
+            }));
+        const subServices = @json(
+            $subServices->map(function ($ss) {
+                return ['id' => $ss->id, 'name' => $ss->name, 'service_id' => $ss->service_id];
+            }));
 
-    document.querySelector('.main-service-select').addEventListener('change', function() {
-        const serviceId = this.value;
-        const subSelect = document.querySelector('.sub-service-select');
-        subSelect.innerHTML = `<option value="">{{ __('dashboard.choose_sub_service') }}</option>`;
-        
-        subServices.forEach(function(ss) {
-            if (ss.service_id == serviceId) {
-                subSelect.innerHTML += `<option value="${ss.id}">${ss.name}</option>`;
-            }
+        document.querySelector('.main-service-select').addEventListener('change', function() {
+            const serviceId = this.value;
+            const subSelect = document.querySelector('.sub-service-select');
+            subSelect.innerHTML = `<option value="">{{ __('dashboard.choose_sub_service') }}</option>`;
+
+            subServices.forEach(function(ss) {
+                if (ss.service_id == serviceId) {
+                    subSelect.innerHTML += `<option value="${ss.id}">${ss.name}</option>`;
+                }
+            });
         });
-    });
-</script>
-@endpush 
+    </script>
+@endpush

@@ -65,17 +65,17 @@ div.dataTables_wrapper {
 		white-space: nowrap;
 	}
 
-	div.dataTables_paginate {
-		margin: 0;
-		white-space: nowrap;
-		text-align: right;
+	// div.dataTables_paginate {
+	// 	margin: 0;
+	// 	white-space: nowrap;
+	// 	text-align: right;
 
-		ul.pagination {
-			margin: 2px 0;
-			white-space: nowrap;
-			justify-content: flex-end;
-		}
-	}
+	// 	ul.pagination {
+	// 		margin: 2px 0;
+	// 		white-space: nowrap;
+	// 		justify-content: flex-end;
+	// 	}
+	// }
 
 	div.dataTables_processing {
 		position: absolute;

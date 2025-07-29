@@ -68,7 +68,7 @@
                             </div>
 
                             <button type="button" class="btn btn-outline-primary" id="addService">
-                                <i class="fas fa-plus me-2"></i>إضافة خدمة 
+                                <i class="fas fa-plus me-2"></i>إضافة خدمة
                             </button>
                         </div>
 
@@ -155,14 +155,10 @@
                             <option value="0">غير مفعل</option>
                         </select>
                     </div>
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label fw-semibold">صور الخدمة</label>
-                        <input type="file" class="form-control" name="salon_services[${serviceIndex}][images][]" multiple accept="image/*">
-                    </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label fw-semibold">وصف الخدمة</label>
-                    <textarea class="form-control service-description" name="salon_services[${serviceIndex}][description]" rows="2" placeholder="اكتبي وصفاً مختصراً للخدمة..." required></textarea>
+                    <textarea class="form-control service-description" name="salon_services[${serviceIndex}][special_notes]" rows="2" placeholder="اكتبي وصفاً مختصراً للخدمة..." required></textarea>
                 </div>
             `;
 

@@ -3700,6 +3700,15 @@
                                         @enderror
                                     </div>
                                     <div class="col-md-6">
+                                        <label class="form-label">{{ __('dashboard.email') }}</label>
+                                        <input type="email" name="email_settings"
+                                            value="{{ old('email_settings', $generalSettings['email_settings']) }}"
+                                            class="form-control">
+                                        @error('email_settings')
+                                            <div class="text-danger small">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    {{-- <div class="col-md-6">
                                         <label class="form-label">{{ __('dashboard.default_language') }}</label>
                                         <select name="default_language" class="form-select">
                                             <option value="ar"
@@ -3712,7 +3721,7 @@
                                         @error('default_language')
                                             <div class="text-danger small">{{ $message }}</div>
                                         @enderror
-                                    </div>
+                                    </div> --}}
                                     <div class="col-md-6">
                                         <label class="form-label">{{ __('dashboard.site_status') }}</label>
                                         <select name="site_status" class="form-select">
@@ -3727,29 +3736,21 @@
                                             <div class="text-danger small">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                    <div class="col-md-12">
+                                    {{-- <div class="col-md-12">
                                         <label class="form-label">{{ __('dashboard.maintenance_message') }}</label>
                                         <textarea name="maintenance_message" class="form-control">{{ old('maintenance_message', $generalSettings['maintenance_message']) }}</textarea>
                                         @error('maintenance_message')
                                             <div class="text-danger small">{{ $message }}</div>
                                         @enderror
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">{{ __('dashboard.email') }}</label>
-                                        <input type="email" name="email_settings"
-                                            value="{{ old('email_settings', $generalSettings['email_settings']) }}"
-                                            class="form-control">
-                                        @error('email_settings')
-                                            <div class="text-danger small">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="col-md-6">
+                                    </div> --}}
+
+                                    {{-- <div class="col-md-6">
                                         <label class="form-label">{{ __('dashboard.analytics_code') }}</label>
                                         <textarea name="analytics_code" class="form-control">{{ old('analytics_code', $generalSettings['analytics_code']) }}</textarea>
                                         @error('analytics_code')
                                             <div class="text-danger small">{{ $message }}</div>
                                         @enderror
-                                    </div>
+                                    </div> --}}
                                     <div class="col-md-12">
                                         <label class="form-label">{{ __('dashboard.social_links') }}</label>
                                         <div class="row g-2">
@@ -4117,44 +4118,35 @@
                             {{-- Services Settings --}}
                             <div class="tab-pane fade" id="services" role="tabpanel">
                                 @foreach ($services as $service)
-                                    <div style="margin-left: 80%">
-                                        <form action="{{ route('dashboard.settings.destroyService', $service) }}"
-                                            method="POST">
+                                    <div class="border-bottom pb-4">
+                                        <form action="{{ route('dashboard.settings.updateService', $service) }}" class="row g-3 mb-4"
+                                            method="POST" enctype="multipart/form-data">
                                             @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-air-danger px-4"
-                                                onclick="return confirm('{{ __('dashboard.are_you_sure') }}')">{{ __('dashboard.delete') }}</button>
-                                        </form>
-                                    </div>
-
-                                    <form action="{{ route('dashboard.settings.updateService', $service) }}"
-                                        method="POST" enctype="multipart/form-data"
-                                        class="row g-3 mb-4 border-bottom pb-4">
-                                        @csrf
-                                        @method('PUT')
-                                        <div class="col-md-6">
-                                            <label class="form-label">{{ __('dashboard.service_name') }}</label>
-                                            <input type="text" name="name"
-                                                value="{{ old('name', $service->name) }}" class="form-control" required>
-                                            @error('name')
-                                                <div class="text-danger small">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">{{ __('dashboard.short_description') }}</label>
-                                            <textarea name="short_description" class="form-control">{{ old('short_description', $service->short_description) }}</textarea>
-                                            @error('short_description')
-                                                <div class="text-danger small">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">{{ __('dashboard.long_description') }}</label>
-                                            <textarea name="long_description" class="form-control">{{ old('long_description', $service->long_description) }}</textarea>
-                                            @error('long_description')
-                                                <div class="text-danger small">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                        <div class="col-md-6">
+                                            @method('PUT')
+                                            <div class="col-md-6">
+                                                <label class="form-label">{{ __('dashboard.service_name') }}</label>
+                                                <input type="text" name="name"
+                                                    value="{{ old('name', $service->name) }}" class="form-control"
+                                                    required>
+                                                @error('name')
+                                                    <div class="text-danger small">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">{{ __('dashboard.short_description') }}</label>
+                                                <textarea name="short_description" class="form-control">{{ old('short_description', $service->short_description) }}</textarea>
+                                                @error('short_description')
+                                                    <div class="text-danger small">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">{{ __('dashboard.long_description') }}</label>
+                                                <textarea name="long_description" class="form-control">{{ old('long_description', $service->long_description) }}</textarea>
+                                                @error('long_description')
+                                                    <div class="text-danger small">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                            {{-- <div class="col-md-6">
                                             <label class="form-label">{{ __('dashboard.custom_url') }}</label>
                                             <input type="url" name="custom_url"
                                                 value="{{ old('custom_url', $service->custom_url) }}"
@@ -4162,64 +4154,78 @@
                                             @error('custom_url')
                                                 <div class="text-danger small">{{ $message }}</div>
                                             @enderror
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label class="form-label">{{ __('dashboard.order') }}</label>
-                                            <input type="number" name="order"
-                                                value="{{ old('order', $service->order) }}" class="form-control"
-                                                min="0">
-                                            @error('order')
-                                                <div class="text-danger small">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label class="form-label">{{ __('dashboard.status') }}</label>
-                                            <div class="form-check">
-                                                <input type="checkbox" name="status" class="form-check-input"
-                                                    id="status-{{ $service->id }}"
-                                                    {{ old('status', $service->status) ? 'checked' : '' }}
-                                                    value="1">
-                                                <label class="form-check-label"
-                                                    for="status-{{ $service->id }}">{{ __('dashboard.active') }}</label>
+                                        </div> --}}
+                                            {{-- <div class="col-md-3">
+                                                <label class="form-label">{{ __('dashboard.order') }}</label>
+                                                <input type="number" name="order"
+                                                    value="{{ old('order', $service->order) }}" class="form-control"
+                                                    min="0">
+                                                @error('order')
+                                                    <div class="text-danger small">{{ $message }}</div>
+                                                @enderror
+                                            </div> --}}
+                                            <div class="col-md-3 me-5">
+                                                <label class="form-label">{{ __('dashboard.status') }}</label>
+                                                <div class="form-check">
+                                                    <input type="checkbox" name="status"
+                                                    style="width: 20px; height:20px;"
+                                                    class="form-check-input mt-3 "
+                                                        id="status-{{ $service->id }}"
+                                                        {{ old('status', $service->status) ? 'checked' : '' }}
+                                                        value="1">
+                                                    <label class="form-check-label mt-3 ms-3 me-3"
+                                                        for="status-{{ $service->id }}">{{ __('dashboard.active') }}</label>
+                                                </div>
+                                                @error('status')
+                                                    <div class="text-danger small">{{ $message }}</div>
+                                                @enderror
                                             </div>
-                                            @error('status')
-                                                <div class="text-danger small">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label">{{ __('dashboard.seo_meta') }}</label>
-                                            <input type="text" name="seo_meta[title]"
-                                                value="{{ old('seo_meta.title', $service->seo_meta['title'] ?? '') }}"
-                                                class="form-control mb-2" placeholder="{{ __('dashboard.seo_title') }}">
-                                            <textarea name="seo_meta[description]" class="form-control" placeholder="{{ __('dashboard.seo_description') }}">{{ old('seo_meta.description', $service->seo_meta['description'] ?? '') }}</textarea>
-                                            @error('seo_meta.title')
-                                                <div class="text-danger small">{{ $message }}</div>
-                                            @enderror
-                                            @error('seo_meta.description')
-                                                <div class="text-danger small">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                        <div class="col-md-12">
-                                            <label class="form-label">{{ __('dashboard.service_image') }}</label>
-                                            <div class="d-flex justify-content-center align-items-center mb-2"
-                                                style="height:120px;">
-                                                @foreach ($service->media as $image)
-                                                    <img src="{{ asset($image->url) }}"
-                                                        class="img-thumbnail shadow-sm me-2"
-                                                        style="max-width:100px; max-height:100px; object-fit:contain;"
-                                                        alt="Service Image" />
-                                                @endforeach
+                                            {{-- <div class="col-md-6">
+                                                <label class="form-label">{{ __('dashboard.seo_meta') }}</label>
+                                                <input type="text" name="seo_meta[title]"
+                                                    value="{{ old('seo_meta.title', $service->seo_meta['title'] ?? '') }}"
+                                                    class="form-control mb-2"
+                                                    placeholder="{{ __('dashboard.seo_title') }}">
+                                                <textarea name="seo_meta[description]" class="form-control" placeholder="{{ __('dashboard.seo_description') }}">{{ old('seo_meta.description', $service->seo_meta['description'] ?? '') }}</textarea>
+                                                @error('seo_meta.title')
+                                                    <div class="text-danger small">{{ $message }}</div>
+                                                @enderror
+                                                @error('seo_meta.description')
+                                                    <div class="text-danger small">{{ $message }}</div>
+                                                @enderror
+                                            </div> --}}
+                                            <div class="col-md-6">
+                                                <label class="form-label">{{ __('dashboard.service_image') }}</label>
+                                                <div class="d-flex justify-content-center align-items-center mb-2"
+                                                    style="height:120px;">
+                                                    @foreach ($service->media as $image)
+                                                        <img src="{{ asset($image->url) }}"
+                                                            class="img-thumbnail shadow-sm me-2"
+                                                            style="max-width:100px; max-height:100px; object-fit:contain;"
+                                                            alt="Service Image" />
+                                                    @endforeach
+                                                </div>
+                                                <input type="file" name="image" accept="image/*"
+                                                    class="form-control">
+                                                @error('image')
+                                                    <div class="text-danger small">{{ $message }}</div>
+                                                @enderror
                                             </div>
-                                            <input type="file" name="image" accept="image/*" class="form-control">
-                                            @error('image')
-                                                <div class="text-danger small">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                        <div class="col-9 d-flex gap-2 align-items-center mt-2">
-                                            <button type="submit"
-                                                class="btn btn-primary btn-air-primary px-4">{{ __('dashboard.update_service') }}</button>
-                                        </div>
-                                    </form>
+                                            <div class="col-9 d-flex gap-2 align-items-center mt-2">
+                                                <button type="submit"
+                                                    class="btn btn-primary btn-air-primary px-4">{{ __('dashboard.update_service') }}</button>
+                                            </div>
+                                        </form>
+
+                                        <form action="{{ route('dashboard.settings.destroyService', $service) }}"
+                                            method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-air-danger px-4"
+                                                onclick="return confirm('{{ __('dashboard.are_you_sure') }}')">{{ __('dashboard.delete') }}</button>
+                                        </form>
+
+                                    </div>
                                 @endforeach
                                 <h4 class="mt-4 mb-3">{{ __('dashboard.add_new_service') }}</h4>
                                 <form action="{{ route('dashboard.settings.storeService') }}" method="POST"
@@ -4319,7 +4325,7 @@
                                         <div class="digital-add needs-validation">
                                             <div class="form-group mb-0">
                                                 <div class="description-sm">
-                                                    <textarea  dir="rtl" id="editor1" name="terms_content" cols="100" rows="100" style="display: none;">
+                                                    <textarea dir="rtl" id="editor1" name="terms_content" cols="100" rows="100" style="display: none;">
                                                         {{ old('terms_content', $legalSettings['terms_content'] ?? '') }}
 
                                                     </textarea>
@@ -4330,12 +4336,16 @@
                                                             id="ck-editor__label_eb2735bf47c5aabe2e9a46b62e05ff770">Rich
                                                             Text Editor</label>
                                                         <div class="ck ck-editor__top ck-reset_all" role="presentation">
-                                                            <div class="ck ck-sticky-panel" lang="ar" dir="rtl">
+                                                            <div class="ck ck-sticky-panel" lang="ar"
+                                                                dir="rtl">
                                                                 <div class="ck ck-sticky-panel__placeholder"
-                                                                    style="display: none;" lang="ar" dir="rtl"></div>
-                                                                <div class="ck ck-sticky-panel__content" lang="ar" dir="rtl">
+                                                                    style="display: none;" lang="ar" dir="rtl">
+                                                                </div>
+                                                                <div class="ck ck-sticky-panel__content" lang="ar"
+                                                                    dir="rtl">
                                                                     <div class="ck ck-toolbar ck-toolbar_grouping"
-                                                                        role="toolbar" aria-label="Editor toolbar" lang="ar" dir="rtl">
+                                                                        role="toolbar" aria-label="Editor toolbar"
+                                                                        lang="ar" dir="rtl">
 
                                                                     </div>
                                                                 </div>
@@ -4419,8 +4429,7 @@
                                                         placeholder="{{ __('dashboard.section_title') }}">
                                                     <textarea name="privacy_sections[0][content]" class="col-md-5 form-control" style="margin-right: 1%"
                                                         placeholder="{{ __('dashboard.section_content') }}"></textarea>
-                                                    <button type="submit"
-                                                        class="col-md-2 btn btn-outline-primary btn-sm"
+                                                    <button type="submit" class="col-md-2 btn btn-outline-primary btn-sm"
                                                         style="margin-left: 1%; margin-right: 0.5%"><i
                                                             class="fa fa-plus"></i>
                                                         {{ __('dashboard.add_section') }}</button>
