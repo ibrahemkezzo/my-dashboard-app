@@ -195,9 +195,9 @@
                     </tbody>
                 </table>
             </div>
-            <div class="d-flex justify-content-center">
-                {{ $users->appends(request()->query())->links() }}
-            </div>
+        </div>
+        <div class="d-flex justify-content-center" dir="ltr">
+            {{ $users->appends(request()->query())->links('pagination::simple-tailwind') }}
         </div>
     </div>
 </div>

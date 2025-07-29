@@ -40,21 +40,33 @@
     </div>
 </div>
 <div class="row mb-3">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <label for="status" class="form-label">{{ __('dashboard.status') }}</label>
         <select name="status" id="status" class="form-control">
             <option value="1" {{ old('status', $salon->status ?? 1) == 1 ? 'selected' : '' }}>{{ __('dashboard.active') }}</option>
             <option value="0" {{ old('status', $salon->status ?? 1) == 0 ? 'selected' : '' }}>{{ __('dashboard.inactive') }}</option>
         </select>
     </div>
-    <div class="col-md-4">
+
+    <div class="col-md-6">
+        <label for="type" class="form-label">{{ __('dashboard.type_salon') }}</label>
+        <select name="type" id="type" class="form-control">
+            <option value="beauty_center" {{ old('type', $salon->type ?? 'beauty_center') == 'beauty_center' ? 'selected' : '' }}>{{ __('dashboard.beauty_center') }}</option>
+            <option value="home_salon" {{ old('type', $salon->type ?? 'beauty_center') == 'home_salon' ? 'selected' : '' }}>{{ __('dashboard.home_salon') }}</option>
+        </select>
+    </div>
+
+</div>
+{{-- @dd(10) --}}
+<div class="row mb-3">
+    <div class="col-md-6">
         <label for="logo" class="form-label">{{ __('dashboard.logo') }}</label>
         <input type="file" class="form-control" id="logo" name="logo" accept="image/*">
         @if(!empty($salon) && $salon->logo)
             <img src="{{ asset('storage/'.$salon->logo) }}" alt="logo" style="width:40px;height:40px;object-fit:cover;border-radius:50%;" class="mt-2">
         @endif
     </div>
-    <div class="col-md-4">
+    <div class="col-md-6">
         <label for="cover_image" class="form-label">{{ __('dashboard.cover_image') }}</label>
         <input type="file" class="form-control" id="cover_image" name="cover_image" accept="image/*">
         @if(!empty($salon) && $salon->cover_image)
@@ -65,16 +77,34 @@
 <div class="row mb-3">
     <div class="col-md-12">
         <label class="form-label">{{ __('dashboard.working_hours') }}</label>
-        <div class="row g-2">
-            @php
-                $days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-                $workingHours = old('working_hours', $salon->working_hours ?? []);
-            @endphp
+
+        @php
+        $days = [ 'friday', 'saturday', 'sunday','monday', 'tuesday', 'wednesday', 'thursday'];
+        $workingHours = old('working_hours', $salon->working_hours ?? []);
+        @endphp
+
+        <div class="working-hours-container">
             @foreach($days as $day)
-                <div class="col-md-6">
-                    <label for="working_hours_{{ $day }}" class="form-label">{{ ucfirst($day) }}</label>
-                    <input type="text" class="form-control" id="working_hours_{{ $day }}" name="working_hours[{{ $day }}]" value="{{ $workingHours[$day] ?? '' }}" placeholder="9:00 AM - 6:00 PM">
+
+            <div class="working-day mb-3">
+                <div class="row align-items-center">
+                    <div class="col-md-3">
+                        <label for="working_hours_{{ $day }}" class="form-label fw-semibold">{{ __('dashboard.'.$day) }}</label>
+                    </div>
+                    <div class="col-md-3">
+                        <input type="time" name="working_hours[{{ $day }}][open]" class="form-control" value="{{ $workingHours[$day]['open'] ?? '' }}" id="saturdayStart" placeholder="من">
+                    </div>
+                    <div class="col-md-3">
+                        <input type="time" name="working_hours[{{ $day }}][close]" class="form-control" value="{{ $workingHours[$day]['close'] ?? '' }}" id="saturdayEnd" placeholder="إلى">
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="working_hours[{{ $day }}][closed]"  id="saturdayClosed" @checked(isset($workingHours[$day]['closed']))>
+                            <label class="form-check-label" for="saturdayClosed">مغلق</label>
+                        </div>
+                    </div>
                 </div>
+            </div>
             @endforeach
         </div>
     </div>
@@ -93,6 +123,64 @@
             <div class="col-md-4">
                 <input type="url" name="social_links[instagram]" value="{{ old('social_links.instagram', $salon->social_links['instagram'] ?? '') }}" class="form-control" placeholder="Instagram URL">
             </div>
+            <div class="col-md-4">
+                <input type="url" name="social_links[snapchat]" value="{{ old('social_links.snapchat', $salon->social_links['snapchat'] ?? '') }}" class="form-control" placeholder="snapchat URL">
+            </div>
+            <div class="col-md-4">
+                <input type="url" name="social_links[tiktok]" value="{{ old('social_links.tiktok', $salon->social_links['tiktok'] ?? '') }}" class="form-control" placeholder="tiktok URL">
+            </div>
+            <div class="col-md-4">
+                <input type="url" name="social_links[youtube]" value="{{ old('social_links.youtube', $salon->social_links['youtube'] ?? '') }}" class="form-control" placeholder="youtube URL">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="mb-3">
+
+    <label class="form-label">المميزات المتوفرة</label>
+
+    <div class="row g-2">
+        <div class="col-md-4">
+            <label class="form-check-label">
+                <input name="features[parking]" type="checkbox" class="form-checkbox" @checked(old('features.parking',isset($salon->features['parking']))) value="on">
+                <i class="fa fa-car"></i>
+                <span>موقف سيارات</span>
+            </label>
+        </div>
+        <div class="col-md-4">
+            <label class="form-check-label">
+                <input name="features[wifi]" type="checkbox" class="form-checkbox" @checked(old('features.wifi',isset($salon->features['wifi']))) value="on">
+                <i class="fa fa-wifi"></i>
+                <span>واي فاي مجاني</span>
+            </label>
+        </div>
+        <div class="col-md-4">
+            <label class="form-check-label">
+                <input name="features[ac]" type="checkbox" class="form-checkbox" @checked(old('features.ac',isset($salon->features['ac']))) value="on">
+                <i class="fa fa-fan"></i>
+                <span>تكييف</span>
+            </label>
+        </div>
+        <div class="col-md-4">
+            <label class="form-check-label">
+                <input name="features[waiting-area]" type="checkbox" class="form-checkbox" @checked(old('features.waiting-area',isset($salon->features['waiting-area']))) value="on">
+                <i class="fa fa-clock"></i>
+                <span>منطقة انتظار</span>
+            </label>
+        </div>
+        <div class="col-md-4">
+            <label class="form-check-label">
+                <input name="features[refreshments]" type="checkbox" class="form-checkbox" @checked(old('features.refreshments',isset($salon->features['refreshments']))) value="on">
+                <i class="fa fa-coffee"></i>
+                <span>مشروبات مجانية</span>
+            </label>
+        </div>
+        <div class="col-md-4">
+            <label class="form-check-label">
+                <input name="features[child-care]" type="checkbox" class="form-checkbox" @checked(old('features.child-care',isset($salon->features['child-care']))) value="on">
+                <i class="fa fa-child"></i>
+                <span>رعاية أطفال</span>
+            </label>
         </div>
     </div>
 </div>

@@ -2,35 +2,51 @@
 
 <div class="booking-summary mb-4">
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
             <div class="card bg-primary text-white">
                 <div class="card-body text-center">
                     <h4>{{ $statistics['total'] }}</h4>
-                    <p class="mb-0">{{ __('dashboard.total_bookings') }}</p>
+                    <p class="mb-0 text-white">إجمالي الحجوزات</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card bg-success text-white">
-                <div class="card-body text-center">
-                    <h4>{{ $statistics['confirmed'] }}</h4>
-                    <p class="mb-0">{{ __('dashboard.confirmed_bookings') }}</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
+        <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
             <div class="card bg-warning text-white">
                 <div class="card-body text-center">
                     <h4>{{ $statistics['pending'] }}</h4>
-                    <p class="mb-0">{{ __('dashboard.pending_bookings') }}</p>
+                    <p class="mb-0 text-white">بانتظار التأكيد</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
             <div class="card bg-info text-white">
+                <div style="padding-right: 7%; padding-left: 7%;" class="card-body text-center">
+                    <h4>{{ $statistics['salon_confirmed'] }}</h4>
+                    <p class="mb-0 text-white">تم تأكيدها من الصالون</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
+            <div class="card bg-success text-white">
+                <div style="padding-right: 7%; padding-left: 7%;" class="card-body text-center">
+                    <h4>{{ $statistics['user_confirmed'] }}</h4>
+                    <p class="mb-0 text-white">تم تأكيدها من العميل</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
+            <div class="card bg-danger text-white">
                 <div class="card-body text-center">
-                    <h4>{{ $statistics['cancelled'] }}</h4>
-                    <p class="mb-0">{{ __('dashboard.cancelled_bookings') }}</p>
+                    <h4>{{ $statistics['rejected'] + $statistics['cancelled'] }}</h4>
+                    <p class="mb-0 text-white"> ملغية أو مرفوضة </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
+            <div class="card bg-info text-white ">
+                <div class="card-body text-center">
+                    <h4>{{ $statistics['completed'] }}</h4>
+                    <p class="mb-0 text-white">{{ __('dashboard.completed_bookings') }}</p>
                 </div>
             </div>
         </div>
@@ -62,13 +78,13 @@
                         <span class="text-muted">{{ $booking->salonSubService->subService->name }}</span>
                     </div>
                     <div class="col-md-2">
-                        <strong>{{ __('dashboard.date') }}:</strong>
+                        <strong>{{ __('dashboard.date') }}:</strong> <br>
                         <span class="text-muted">{{ $booking->preferred_datetime->format('M j, Y') }}</span>
                     </div>
                     <div class="col-md-2">
                         <strong>{{ __('dashboard.status') }}:</strong>
-                        <span class="badge bg-{{ $booking->status === 'confirmed' ? 'success' : ($booking->status === 'pending' ? 'warning' : ($booking->status === 'rejected' ? 'danger' : 'secondary')) }}">
-                            {{ __('dashboard.' . $booking->status) }}
+                        <span class="badge {{ $booking->status_badge_class }}">
+                            {{ $booking->status_text }}
                         </span>
                     </div>
                     <div class="col-md-1">
@@ -76,6 +92,14 @@
                             <i class="fa fa-chevron-down"></i>
                         </button>
                     </div>
+                    @if($booking->canBeCompleted())
+                        <form action="{{ route('dashboard.bookings.complete', $booking) }}" method="POST" style="display: inline;">
+                            @csrf
+                            <button type="submit" class="btn btn-sm btn-primary ms-2" onclick="return confirm('{{ __('dashboard.confirm_mark_complete') }}')">
+                                <i class="fa fa-check-double"></i> {{ __('dashboard.mark_as_complete') }}
+                            </button>
+                        </form>
+                    @endif
                 </div>
             </div>
 
@@ -85,37 +109,17 @@
                         <div class="col-md-6">
                             <h6 class="mb-3">{{ __('dashboard.booking_details') }}</h6>
                             <p><strong>{{ __('dashboard.service_description') }}:</strong> {{ $booking->service_description }}</p>
-                            @if($booking->special_requirements)
-                                <p><strong>{{ __('dashboard.special_requirements') }}:</strong> {{ $booking->special_requirements }}</p>
-                            @endif
-                            <p><strong>{{ __('dashboard.preferred_datetime') }}:</strong> {{ $booking->preferred_datetime->format('F j, Y \a\t g:i A') }}</p>
+                            <p><strong>{{ __('dashboard.preferred_datetime') }}:</strong><br> {{ $booking->preferred_datetime->format('F j, Y \a\t g:i A') }}</p>
                             @if($booking->rejection_reason)
                                 <p><strong>{{ __('dashboard.rejection_reason') }}:</strong> {{ $booking->rejection_reason }}</p>
                             @endif
                         </div>
                         <div class="col-md-6">
                             <h6 class="mb-3">{{ __('dashboard.appointment_details') }}</h6>
-                            @if($booking->appointment)
-                                <p><strong>{{ __('dashboard.appointment_number') }}:</strong> {{ $booking->appointment->appointment_number }}</p>
-                                <p><strong>{{ __('dashboard.scheduled_datetime') }}:</strong> {{ $booking->appointment->scheduled_datetime->format('F j, Y \a\t g:i A') }}</p>
-                                <p><strong>{{ __('dashboard.duration') }}:</strong> {{ $booking->appointment->duration_minutes }} {{ __('dashboard.minutes') }}</p>
-                                <p><strong>{{ __('dashboard.total_price') }}:</strong> {{ $booking->appointment->total_price }} {{ __('dashboard.currency') }}</p>
-                                <p><strong>{{ __('dashboard.payment_status') }}:</strong> 
-                                    <span class="badge bg-{{ $booking->appointment->payment_status === 'paid' ? 'success' : ($booking->appointment->payment_status === 'partial' ? 'warning' : 'secondary') }}">
-                                        {{ __('dashboard.' . $booking->appointment->payment_status) }}
-                                    </span>
-                                </p>
-                                <p><strong>{{ __('dashboard.appointment_status') }}:</strong> 
-                                    <span class="badge bg-{{ $booking->appointment->status === 'completed' ? 'success' : ($booking->appointment->status === 'in_progress' ? 'primary' : ($booking->appointment->status === 'scheduled' ? 'info' : 'secondary')) }}">
-                                        {{ __('dashboard.' . $booking->appointment->status) }}
-                                    </span>
-                                </p>
-                            @else
-                                <p class="text-muted">{{ __('dashboard.no_appointment_scheduled') }}</p>
-                            @endif
+                            <p class="text-muted">{{ __('dashboard.no_appointment_scheduled') }}</p>
                         </div>
                     </div>
-                    
+
                     <div class="mt-3">
                         <div class="d-flex gap-2">
                             <a href="{{ route('dashboard.bookings.show', $booking) }}" class="btn btn-sm btn-info">
@@ -129,10 +133,12 @@
                                     <i class="fa fa-calendar"></i> {{ __('dashboard.view_appointment') }}
                                 </a>
                             @endif
-                            @if($booking->status === 'pending')
-                                <a href="{{ route('dashboard.bookings.confirm-form', $booking) }}" class="btn btn-sm btn-success">
+                            @if($booking->canBeConfirmedBySalon())
+                                <a href="{{ route('dashboard.bookings.salon-confirm-form', $booking) }}" class="btn btn-sm btn-success">
                                     <i class="fa fa-check"></i> {{ __('dashboard.confirm') }}
                                 </a>
+                            @endif
+                            @if($booking->canBeRejected())
                                 <a href="{{ route('dashboard.bookings.reject-form', $booking) }}" class="btn btn-sm btn-danger">
                                     <i class="fa fa-times"></i> {{ __('dashboard.reject') }}
                                 </a>
@@ -159,4 +165,4 @@
             {{ $bookings->links() }}
         </div>
     @endif
-</div> 
+</div>

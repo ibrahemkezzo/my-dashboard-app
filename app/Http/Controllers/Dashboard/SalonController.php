@@ -47,15 +47,22 @@ class SalonController extends Controller
 
     public function createStep1()
     {
-        $owners = User::orderBy('name')->get();
+        $owners = User::where('type','user')->orderBy('name')->get();
         return view('dashboard.salons.create_step1', compact('owners'));
     }
 
     public function storeStep1(StoreSalonRequest $request)
     {
+        $user = User::findOrFail($request->owner_id);
 
         $validated = $request->validated();
         $salon = $this->service->create($validated);
+        if ($salon) {
+            $user->assignRole('salon-manager');
+            $user->removeRole('user');
+            $user->type = 'salon-manager';
+            $user->save();
+        }
         if (!$salon) return redirect()->route('dashboard.salons.create.step1');
         $subServices = SubService::with('service')->orderBy('name')->get();
         $allServices = Service::all();
@@ -71,10 +78,10 @@ class SalonController extends Controller
             'salon_services.*.price' => 'nullable|numeric',
             'salon_services.*.duration' => 'nullable|integer',
             'salon_services.*.status' => 'nullable|boolean',
-            'salon_services.*.materials_used' => 'nullable|string',
-            'salon_services.*.requirements' => 'nullable|string',
+            // 'salon_services.*.materials_used' => 'nullable|string',
+            // 'salon_services.*.requirements' => 'nullable|string',
             'salon_services.*.special_notes' => 'nullable|string',
-            'salon_services.*.images.*' => 'nullable|image|max:2048',
+            // 'salon_services.*.images.*' => 'nullable|image|max:2048',
         ]);
 
 
@@ -85,12 +92,12 @@ class SalonController extends Controller
     public function show(Salon $salon): View
     {
         $salon->load(['owner', 'city', 'subServices.service']);
-        
+
         // Get salon booking data
         $bookingFilters = request()->only(['search', 'status', 'user_id', 'date_from', 'date_to']);
         $bookings = app(\App\Services\BookingService::class)->getBySalon($salon, 10, $bookingFilters);
         $bookingStatistics = app(\App\Services\BookingService::class)->getStatistics(array_merge($bookingFilters, ['salon_id' => $salon->id]));
-        
+
         return view('dashboard.salons.show', compact('salon', 'bookings', 'bookingStatistics'));
     }
 
@@ -108,6 +115,7 @@ class SalonController extends Controller
     public function update(UpdateSalonRequest $request, Salon $salon): RedirectResponse
     {
         $data = $request->validated();
+        // dd($data);
         $this->service->update($salon, $data, $request->file('logo'), $request->file('cover_image'));
 
         // Handle gallery images

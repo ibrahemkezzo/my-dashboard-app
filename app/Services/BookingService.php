@@ -61,7 +61,6 @@ class BookingService
     {
         return DB::transaction(function () use ($data) {
             // Validate that the salon sub-service exists and is active
-            // dd($data);
             $salonSubService = DB::table('salon_sub_service')
                 ->where('id', $data['salon_sub_service_id'])
                 ->where('status', true)
@@ -76,7 +75,7 @@ class BookingService
             if ($preferredDatetime->isPast()) {
                 throw new \Exception('Preferred appointment time must be in the future.');
             }
-            // dd($data);
+
             // Create the booking
             $booking = $this->bookingRepository->create($data);
 
@@ -132,44 +131,96 @@ class BookingService
     }
 
     /**
-     * Confirm a booking and create an appointment.
+     * Salon confirms or modifies a booking.
      */
-    public function confirmBooking(Booking $booking, array $appointmentData)
+    public function salonConfirmBooking(Booking $booking, array $data)
     {
-        return DB::transaction(function () use ($booking, $appointmentData) {
-            // Check if booking can be confirmed
-            if (!$booking->canBeConfirmed()) {
-                throw new \Exception('Booking cannot be confirmed in its current status.');
+        return DB::transaction(function () use ($booking, $data) {
+            // Check if booking can be confirmed by salon
+            if (!$booking->canBeConfirmedBySalon()) {
+                throw new \Exception('Booking cannot be confirmed by salon in its current status.');
             }
 
-            // Check for scheduling conflicts
-            $scheduledDatetime = Carbon::parse($appointmentData['scheduled_datetime']);
-            $durationMinutes = $appointmentData['duration_minutes'] ?? 60;
+            $action = $data['action'];
+            $updateData = [
+                'status' => 'salon_confirmed',
+                'salon_confirmed_datetime' => now(),
+                'salon_notes' => $data['salon_notes'] ?? null,
+            ];
 
-            if ($this->appointmentRepository->checkConflicts(
-                $booking->salon_id,
-                $scheduledDatetime,
-                $durationMinutes
-            )) {
-                throw new \Exception('There is a scheduling conflict for the selected time.');
+            if ($action === 'modify') {
+                // Salon is modifying the booking
+                $updateData['salon_proposed_datetime'] = $data['salon_proposed_datetime'] ?? null;
+                $updateData['salon_proposed_price'] = $data['salon_proposed_price'] ?? null;
+                $updateData['salon_proposed_duration'] = $data['salon_proposed_duration'] ?? null;
+                $updateData['salon_modification_reason'] = $data['salon_modification_reason'] ?? null;
+
+                // Validate proposed datetime if provided
+                if (isset($data['salon_proposed_datetime'])) {
+                    $proposedDatetime = Carbon::parse($data['salon_proposed_datetime']);
+                    if ($proposedDatetime->isPast()) {
+                        throw new \Exception('Proposed appointment time must be in the future.');
+                    }
+                }
             }
 
-            // Update booking status
-            $this->bookingRepository->update($booking, ['status' => 'confirmed']);
+            $booking = $this->bookingRepository->update($booking, $updateData);
 
-            // Create appointment
-            $appointmentData['booking_id'] = $booking->id;
-            $appointment = $this->appointmentRepository->create($appointmentData);
-
-            Log::info('Booking confirmed and appointment created', [
+            Log::info('Booking confirmed/modified by salon', [
                 'booking_id' => $booking->id,
                 'booking_number' => $booking->booking_number,
-                'appointment_id' => $appointment->id,
-                'appointment_number' => $appointment->appointment_number,
-                'scheduled_datetime' => $appointment->scheduled_datetime,
+                'action' => $action,
+                'modified' => $action === 'modify',
             ]);
 
-            return $appointment;
+            return $booking;
+        });
+    }
+
+    /**
+     * User confirms salon's response and creates appointment.
+     */
+    public function userConfirmBooking(Booking $booking, array $data)
+    {
+        return DB::transaction(function () use ($booking, $data) {
+            // Check if booking can be confirmed by user
+            if (!$booking->canBeConfirmedByUser()) {
+                throw new \Exception('Booking cannot be confirmed by user in its current status.');
+            }
+
+            $action = $data['action'];
+
+            if ($action === 'confirm') {
+                // User confirms the salon's response
+                $booking = $this->bookingRepository->update($booking, [
+                    'status' => 'user_confirmed',
+                    'user_confirmed_datetime' => now(),
+                ]);
+
+                // APPOINTMENT SYSTEM SUSPENDED: Do not create appointment
+                // (No appointment creation here)
+
+                Log::info('Booking confirmed by user', [
+                    'booking_id' => $booking->id,
+                    'booking_number' => $booking->booking_number,
+                ]);
+
+                return $booking;
+            } else {
+                // User rejects the salon's response
+                $booking = $this->bookingRepository->update($booking, [
+                    'status' => 'rejected',
+                    'rejection_reason' => $data['user_notes'] ?? 'Rejected by user',
+                ]);
+
+                Log::info('Booking rejected by user', [
+                    'booking_id' => $booking->id,
+                    'booking_number' => $booking->booking_number,
+                    'user_notes' => $data['user_notes'] ?? null,
+                ]);
+
+                return $booking;
+            }
         });
     }
 
@@ -213,14 +264,8 @@ class BookingService
                 'rejection_reason' => $cancellationReason,
             ]);
 
-            // If there's an appointment, cancel it too
-            if ($booking->appointment) {
-                $this->appointmentRepository->update($booking->appointment, [
-                    'status' => 'cancelled',
-                    'cancellation_reason' => $cancellationReason,
-                    'cancelled_at' => now(),
-                ]);
-            }
+            // APPOINTMENT SYSTEM SUSPENDED: Do not cancel appointment
+            // (No appointment update here)
 
             Log::info('Booking cancelled', [
                 'booking_id' => $booking->id,
@@ -228,6 +273,26 @@ class BookingService
                 'cancellation_reason' => $cancellationReason,
             ]);
 
+            return $booking;
+        });
+    }
+
+    /**
+     * Mark a booking as completed.
+     */
+    public function markBookingCompleted(Booking $booking)
+    {
+        return DB::transaction(function () use ($booking) {
+            if ($booking->status !== 'user_confirmed') {
+                throw new \Exception('Only user confirmed bookings can be marked as completed.');
+            }
+            $booking = $this->bookingRepository->update($booking, [
+                'status' => 'completed',
+            ]);
+            Log::info('Booking marked as completed', [
+                'booking_id' => $booking->id,
+                'booking_number' => $booking->booking_number,
+            ]);
             return $booking;
         });
     }

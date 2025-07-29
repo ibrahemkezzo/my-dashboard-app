@@ -338,7 +338,7 @@ class AppointmentService
         $startTime = $date->copy()->setTime(9, 0); // Salon opens at 9 AM
         $endTime = $date->copy()->setTime(18, 0); // Salon closes at 6 PM
         $timeSlots = [];
-
+        // dd($durationMinutes);
         // Generate time slots every 30 minutes
         $currentTime = $startTime->copy();
         while ($currentTime->addMinutes($durationMinutes) <= $endTime) {
@@ -396,4 +396,4 @@ class AppointmentService
 
         return $errors;
     }
-} 
+}

@@ -20,7 +20,7 @@
         <div class="footer-content">
             <!-- Company Info -->
             <div class="footer-section">
-                <a href="{{ route('home') }}"><img class="logo-footer" src="{{ asset('storage/'.$settings['cover_image']) }}" alt="كوافيري | My Kawafir" width="168px" /></a>
+                <a href="{{ route('front.home') }}"><img class="logo-footer" src="{{ asset('storage/'.$settings['cover_image']) }}" alt="كوافيري | My Kawafir" width="168px" /></a>
                 <p class="footer-description">
                     {{$settings['footer_text']}}
                 </p>
@@ -45,27 +45,22 @@
             <div class="footer-section">
                 <h3 class="footer-section-title">روابط سريعة</h3>
                 <ul class="footer-links">
-                    <li><a href="{{ route('home') }}" class="footer-link">الرئيسية</a></li>
-                    <li><a href="{{ route('about') }}" class="footer-link">عن المنصة</a></li>
-                    <li><a href="{{ route('list', ['hasOffers' => true]) }}" class="footer-link">العروض الخاصة</a></li>
-                    <li><a href="{{ route('faq') }}" class="footer-link">الأسئلة الشائعة</a></li>
+                    <li><a href="{{ route('front.home') }}" class="footer-link">الرئيسية</a></li>
+                    <li><a href="{{ route('front.about-us') }}" class="footer-link">عن المنصة</a></li>
+                    <li><a href="{{ route('front.salons.list', ['hasOffers' => true]) }}" class="footer-link">العروض الخاصة</a></li>
+                    <li><a href="{{ route('front.faq') }}" class="footer-link">الأسئلة الشائعة</a></li>
                     <li><a href="#" class="footer-link">تواصل معنا</a></li>
-                    <li><a href="{{ route('privacy.policy') }}" class="footer-link">سياسة الخصوصية</a></li>
-                    <li><a href="{{ route('terms.conditions') }}" class="footer-link">الشروط والأحكام</a></li>
+                    <li><a href="{{ route('front.privacy') }}" class="footer-link">سياسة الخصوصية</a></li>
+                    <li><a href="{{ route('front.terms') }}" class="footer-link">الشروط والأحكام</a></li>
                 </ul>
             </div>
             <!-- Services -->
             <div class="footer-section">
                 <h3 class="footer-section-title">الخدمات</h3>
                 <ul class="footer-links">
-                    <li><a href="#" class="footer-link">العناية بالبشرة</a></li>
-                    <li><a href="#" class="footer-link">الشعر والصالون</a></li>
-                    <li><a href="#" class="footer-link">الأظافر</a></li>
-                    <li><a href="#" class="footer-link">المكياج</a></li>
-                    <li><a href="#" class="footer-link">باقات العروس</a></li>
-                    <li><a href="#" class="footer-link">إزالة الشعر</a></li>
-                    <li><a href="#" class="footer-link">الحواجب والرموش</a></li>
-                    <li><a href="#" class="footer-link">التدليك والاسترخاء</a></li>
+                    @foreach ($services as $service)
+                        <li><a href="{{ route('front.salons.list', ['service_type' => $service->name]) }}" class="footer-link">{{ $service->name }}</a></li>
+                    @endforeach
                 </ul>
             </div>
             <!-- Cities & Social -->
@@ -73,7 +68,7 @@
                 <h3 class="footer-section-title">المدن المتاحة</h3>
                 <ul class="footer-links">
                     @foreach ($cities as $city)
-                        <li><a href="#" class="footer-link">{{$city->name}}</a></li>
+                        <li><a href="{{route('front.salons.list',['city_id'=>$city->id])}}" class="footer-link">{{$city->name}}</a></li>
                     @endforeach
                 </ul>
 
@@ -101,8 +96,8 @@
                     منصة كوافيري. جميع الحقوق محفوظة 2025 ©
                 </div>
                 <div class="footer-bottom-links">
-                    <a href="{{ route('terms.conditions') }}" class="footer-bottom-link">الشروط والأحكام</a>
-                    <a href="{{ route('privacy.policy') }}" class="footer-bottom-link">سياسة الخصوصية</a>
+                    <a href="{{ route('front.terms') }}" class="footer-bottom-link">الشروط والأحكام</a>
+                    <a href="{{ route('front.privacy') }}" class="footer-bottom-link">سياسة الخصوصية</a>
                 </div>
             </div>
         </div>

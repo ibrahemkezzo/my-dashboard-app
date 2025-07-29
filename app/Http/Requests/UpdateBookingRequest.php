@@ -34,9 +34,8 @@ class UpdateBookingRequest extends FormRequest
             ],
             'service_description' => ['sometimes', 'required', 'string', 'min:10', 'max:1000'],
             'preferred_datetime' => ['sometimes', 'required', 'date', 'after:now'],
-            'status' => ['sometimes', 'required', 'in:pending,confirmed,rejected,cancelled'],
+            'status' => ['sometimes', 'required', 'in:pending,salon_confirmed,user_confirmed,rejected,cancelled'],
             'rejection_reason' => ['nullable', 'string', 'max:500'],
-            'special_requirements' => ['nullable', 'string', 'max:500'],
             'additional_data' => ['nullable', 'array'],
         ];
     }
@@ -62,7 +61,6 @@ class UpdateBookingRequest extends FormRequest
             'status.required' => __('dashboard.status_required'),
             'status.in' => __('dashboard.status_invalid'),
             'rejection_reason.max' => __('dashboard.rejection_reason_max_length'),
-            'special_requirements.max' => __('dashboard.special_requirements_max_length'),
         ];
     }
 
@@ -79,7 +77,6 @@ class UpdateBookingRequest extends FormRequest
             'preferred_datetime' => __('dashboard.preferred_datetime'),
             'status' => __('dashboard.status'),
             'rejection_reason' => __('dashboard.rejection_reason'),
-            'special_requirements' => __('dashboard.special_requirements'),
         ];
     }
 }

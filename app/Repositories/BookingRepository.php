@@ -67,7 +67,7 @@ class BookingRepository
      */
     public function find($id)
     {
-        return Booking::with(['user', 'salon', 'salonSubService.subService.service', 'appointment'])
+        return Booking::with(['user', 'salon', 'salonSubService.subService.service'])
             ->findOrFail($id);
     }
 
@@ -76,7 +76,7 @@ class BookingRepository
      */
     public function findByBookingNumber($bookingNumber)
     {
-        return Booking::with(['user', 'salon', 'salonSubService.subService.service', 'appointment'])
+        return Booking::with(['user', 'salon', 'salonSubService.subService.service'])
             ->where('booking_number', $bookingNumber)
             ->first();
     }
@@ -111,7 +111,7 @@ class BookingRepository
      */
     public function getByUser(User $user, $perPage = 15, $filters = [])
     {
-        $query = $user->bookings()->with(['salon', 'salonSubService.subService.service', 'appointment']);
+        $query = $user->bookings()->with(['salon', 'salonSubService.subService.service']);
 
         if (!empty($filters['status'])) {
             $query->where('status', $filters['status']);
@@ -133,7 +133,7 @@ class BookingRepository
      */
     public function getBySalon(Salon $salon, $perPage = 15, $filters = [])
     {
-        $query = $salon->bookings()->with(['user', 'salonSubService.subService.service', 'appointment']);
+        $query = $salon->bookings()->with(['user', 'salonSubService.subService.service']);
 
         if (!empty($filters['status'])) {
             $query->where('status', $filters['status']);
@@ -180,7 +180,9 @@ class BookingRepository
         return [
             'total' => $query->count(),
             'pending' => (clone $query)->where('status', 'pending')->count(),
-            'confirmed' => (clone $query)->where('status', 'confirmed')->count(),
+            'salon_confirmed' => (clone $query)->where('status', 'salon_confirmed')->count(),
+            'user_confirmed' => (clone $query)->where('status', 'user_confirmed')->count(),
+            'completed' => (clone $query)->where('status', 'completed')->count(),
             'rejected' => (clone $query)->where('status', 'rejected')->count(),
             'cancelled' => (clone $query)->where('status', 'cancelled')->count(),
         ];

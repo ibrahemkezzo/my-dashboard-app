@@ -11,36 +11,54 @@
     <x-alert-message />
     <div class="container-fluid">
         <!-- Statistics Cards -->
-        <div class="row mb-4">
-            <div class="col-md-3">
-                <div class="card bg-primary text-white">
-                    <div class="card-body text-center">
-                        <h4>{{ $statistics['total'] }}</h4>
-                        <p class="mb-0">{{ __('dashboard.total_bookings') }}</p>
+        <div class="booking-summary mb-4">
+            <div class="row">
+                <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body text-center">
+                            <h4>{{ $statistics['total'] }}</h4>
+                            <p class="mb-0 text-white">إجمالي الحجوزات</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card bg-warning text-white">
-                    <div class="card-body text-center">
-                        <h4>{{ $statistics['pending'] }}</h4>
-                        <p class="mb-0">{{ __('dashboard.pending_bookings') }}</p>
+                <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
+                    <div class="card bg-warning text-white">
+                        <div class="card-body text-center">
+                            <h4>{{ $statistics['pending'] }}</h4>
+                            <p class="mb-0 text-white">بانتظار التأكيد</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card bg-success text-white">
-                    <div class="card-body text-center">
-                        <h4>{{ $statistics['confirmed'] }}</h4>
-                        <p class="mb-0">{{ __('dashboard.confirmed_bookings') }}</p>
+                <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
+                    <div class="card bg-info text-white">
+                        <div style="padding-right: 7%; padding-left: 7%;" class="card-body text-center">
+                            <h4>{{ $statistics['salon_confirmed'] }}</h4>
+                            <p class="mb-0 text-white">تم تأكيدها من الصالون</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="card bg-danger text-white">
-                    <div class="card-body text-center">
-                        <h4>{{ $statistics['rejected'] + $statistics['cancelled'] }}</h4>
-                        <p class="mb-0">{{ __('dashboard.rejected_cancelled_bookings') }}</p>
+                <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
+                    <div class="card bg-success text-white">
+                        <div style="padding-right: 7%; padding-left: 7%;" class="card-body text-center">
+                            <h4>{{ $statistics['user_confirmed'] }}</h4>
+                            <p class="mb-0 text-white">تم تأكيدها من العميل</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
+                    <div class="card bg-danger text-white">
+                        <div class="card-body text-center">
+                            <h4>{{ $statistics['rejected'] + $statistics['cancelled'] }}</h4>
+                            <p class="mb-0 text-white"> ملغية أو مرفوضة </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
+                    <div class="card bg-info text-white ">
+                        <div class="card-body text-center">
+                            <h4>{{ $statistics['completed'] }}</h4>
+                            <p class="mb-0 text-white">{{ __('dashboard.completed_bookings') }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -65,7 +83,8 @@
                                 <select name="status" class="form-control">
                                     <option value="">{{ __('dashboard.all_statuses') }}</option>
                                     <option value="pending" {{ ($filters['status'] ?? '') == 'pending' ? 'selected' : '' }}>{{ __('dashboard.pending') }}</option>
-                                    <option value="confirmed" {{ ($filters['status'] ?? '') == 'confirmed' ? 'selected' : '' }}>{{ __('dashboard.confirmed') }}</option>
+                                    <option value="salon_confirmed" {{ ($filters['status'] ?? '') == 'salon_confirmed' ? 'selected' : '' }}>{{ __('dashboard.salon_confirmed') }}</option>
+                                    <option value="user_confirmed" {{ ($filters['status'] ?? '') == 'user_confirmed' ? 'selected' : '' }}>{{ __('dashboard.user_confirmed') }}</option>
                                     <option value="rejected" {{ ($filters['status'] ?? '') == 'rejected' ? 'selected' : '' }}>{{ __('dashboard.rejected') }}</option>
                                     <option value="cancelled" {{ ($filters['status'] ?? '') == 'cancelled' ? 'selected' : '' }}>{{ __('dashboard.cancelled') }}</option>
                                 </select>
@@ -144,8 +163,8 @@
                                     </td>
                                     <td>
                                         <div>
-                                            {{-- <div>{{ $booking->preferred_datetime->format('M j, Y') }}</div> --}}
-                                            {{ $booking->preferred_datetime }}
+                                            <div>{{ $booking->preferred_datetime->format('M j, Y') }}</div>
+                                            <small class="text-muted">{{ $booking->preferred_datetime->format('g:i A') }}</small>
                                         </div>
                                     </td>
                                     <td>
@@ -155,8 +174,8 @@
                                     </td>
                                     <td>
                                         <div>
-                                            {{-- <div>{{ $booking->created_at->format('M j, Y') }}</div> --}}
-                                            <small class="text-muted">{{ $booking->created_at }}</small>
+                                            <div>{{ $booking->created_at->format('M j, Y') }}</div>
+                                            <small class="text-muted">{{ $booking->created_at->format('g:i A') }}</small>
                                         </div>
                                     </td>
                                     <td>
@@ -168,9 +187,15 @@
                                                 <i class="fa fa-edit"></i>
                                             </a>
 
-                                            @if($booking->canBeConfirmed())
-                                                <a href="{{ route('dashboard.bookings.confirm-form', $booking) }}" class="me-2" title="{{ __('dashboard.confirm') }}">
+                                            @if($booking->canBeConfirmedBySalon())
+                                                <a href="{{ route('dashboard.bookings.salon-confirm-form', $booking) }}" class="me-2" title="{{ __('dashboard.salon_confirm') }}">
                                                     <i class="fa fa-check"></i>
+                                                </a>
+                                            @endif
+
+                                            @if($booking->canBeConfirmedByUser())
+                                                <a href="{{ route('dashboard.bookings.user-confirm-form', $booking) }}" class="me-2" title="{{ __('dashboard.user_confirm') }}">
+                                                    <i class="fa fa-user-check"></i>
                                                 </a>
                                             @endif
 
@@ -192,6 +217,15 @@
                                                 </form>
                                                 <a href="#" class="text-red-500 hover:text-red-700" title="{{ __('dashboard.delete') }}" onclick="event.preventDefault(); return confirm('{{ __('dashboard.are_you_sure_delete_user') }}') && document.getElementById('destroy-form-{{ $booking->id }}').submit();">
                                                     <i class="fa fa-ban"></i>
+                                                </a>
+                                            @endif
+
+                                            @if($booking->canBeCompleted())
+                                                <form action="{{ route('dashboard.bookings.complete', $booking)  }}" method="POST" id="complete-form-{{ $booking->id }}" style="display:none;">
+                                                    @csrf
+                                                </form>
+                                                <a href="#" class="text-red-500 hover:text-red-700 ms-2" title="{{ __('dashboard.complete') }}" onclick="event.preventDefault(); return confirm('{{ __('dashboard.confirm_mark_complete') }}') && document.getElementById('complete-form-{{ $booking->id }}').submit();">
+                                                    <i class="fa fa-check-circle"></i>
                                                 </a>
                                             @endif
                                         </div>

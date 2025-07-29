@@ -33,7 +33,6 @@ class StoreBookingRequest extends FormRequest
             ],
             'service_description' => ['required', 'string', 'min:10', 'max:1000'],
             'preferred_datetime' => ['required', 'date', 'after:now'],
-            'special_requirements' => ['nullable', 'string', 'max:500'],
             'additional_data' => ['nullable', 'array'],
         ];
     }
@@ -56,7 +55,6 @@ class StoreBookingRequest extends FormRequest
             'preferred_datetime.required' => __('dashboard.preferred_datetime_required'),
             'preferred_datetime.date' => __('dashboard.preferred_datetime_invalid'),
             'preferred_datetime.after' => __('dashboard.preferred_datetime_future'),
-            'special_requirements.max' => __('dashboard.special_requirements_max_length'),
         ];
     }
 
@@ -71,7 +69,6 @@ class StoreBookingRequest extends FormRequest
             'salon_sub_service_id' => __('dashboard.service'),
             'service_description' => __('dashboard.service_description'),
             'preferred_datetime' => __('dashboard.preferred_datetime'),
-            'special_requirements' => __('dashboard.special_requirements'),
         ];
     }
 }

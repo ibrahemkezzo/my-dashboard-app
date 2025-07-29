@@ -15,24 +15,45 @@ class UpdateSalonRequest extends FormRequest
     {
         return [
             'name' => 'sometimes|string|max:255',
-            'description' => 'nullable|string',
-            'address' => 'sometimes|string|max:500',
+            // 'email'=> 'sometimes|email',
+            'description' => 'sometimes|string|max:1000',
+            'type' => 'sometimes|in:beauty_center,home_salon',
             'phone' => 'sometimes|string|max:20',
-            'email' => 'nullable|email|max:255',
-            'owner_id' => 'sometimes|exists:users,id',
             'city_id' => 'sometimes|exists:cities,id',
-            'status' => 'nullable|boolean',
-            'working_hours' => 'nullable|array',
-            'working_hours.*' => 'nullable|string',
-            'social_links' => 'nullable|array',
-            'social_links.facebook' => 'nullable|url',
-            'social_links.twitter' => 'nullable|url',
-            'social_links.instagram' => 'nullable|url',
-            'seo_meta' => 'nullable|array',
-            'seo_meta.title' => 'nullable|string|max:255',
-            'seo_meta.description' => 'nullable|string',
-            'logo' => 'nullable|image|max:2048',
-            'cover_image' => 'nullable|image|max:2048',
+            'address' => 'sometimes|string|max:255',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:8192',
+            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:8192',
+            'gallery_images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:8192',
+            'working_hours' => 'sometimes',
+            'working_hours.*.open' => 'nullable|date_format:H:i',
+            'working_hours.*.close' => 'nullable|date_format:H:i',
+            'working_hours.*.closed' => 'nullable|string|in:on',
+            'social_links.facebook' => 'nullable|url|max:255',
+            'social_links.instagram' => 'nullable|url|max:255',
+            'social_links.snapchat' => 'nullable|url|max:255',
+            'social_links.tiktok' => 'nullable|url|max:255',
+            'social_links.youtube' => 'nullable|url|max:255',
+            'social_links.twitter' => 'nullable|url|max:255',
+            // 'password' => 'nullable|string|min:8|confirmed',
+            'agree_terms' => 'sometimes|accepted',
+            'features' => ['nullable', 'array', 'min:1'],
+            'features.*' => ['in:on'],
+            'latitude' => 'nullable|numeric|between:-90,90',
+            'longitude' => 'nullable|numeric|between:-180,180',
+            'verification' => 'nullable|boolean',
         ];
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $allowedFeatures = ['parking', 'wifi', 'ac', 'waiting-area', 'refreshments', 'child-care'];
+            $features = $this->input('features', []);
+            $invalidKeys = array_diff(array_keys($features), $allowedFeatures);
+
+            if (!empty($invalidKeys)) {
+                $validator->errors()->add('features', 'مفاتيح المميزات غير صالحة: ' . implode(', ', $invalidKeys));
+            }
+        });
     }
 }

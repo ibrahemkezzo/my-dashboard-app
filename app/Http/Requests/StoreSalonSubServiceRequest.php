@@ -22,7 +22,6 @@ class StoreSalonSubServiceRequest extends FormRequest
             'materials_used' => 'nullable|string|max:1000',
             'requirements' => 'nullable|string|max:1000',
             'special_notes' => 'nullable|string|max:1000',
-            'images.*' => 'nullable|image|max:2048',
         ];
     }
 
@@ -41,4 +40,4 @@ class StoreSalonSubServiceRequest extends FormRequest
             'images.*.max' => __('dashboard.image_size_too_large'),
         ];
     }
-} 
+}
