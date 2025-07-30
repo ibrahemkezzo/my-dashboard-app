@@ -20,6 +20,7 @@ class UpdateSalonRequest extends FormRequest
             'type' => 'sometimes|in:beauty_center,home_salon',
             'phone' => 'sometimes|string|max:20',
             'city_id' => 'sometimes|exists:cities,id',
+            'status' => 'nullable|boolean',
             'address' => 'sometimes|string|max:255',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:8192',
             'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:8192',
@@ -41,6 +42,11 @@ class UpdateSalonRequest extends FormRequest
             'latitude' => 'nullable|numeric|between:-90,90',
             'longitude' => 'nullable|numeric|between:-180,180',
             'verification' => 'nullable|boolean',
+            'license_start_date' => 'nullable|date',
+            'license_end_date' => 'nullable|date|after_or_equal:license_start_date',
+            'hasOffer' => 'nullable|boolean',
+            'offer' => 'nullable|json',
+            'is_promoted' => 'nullable|boolean',
         ];
     }
 

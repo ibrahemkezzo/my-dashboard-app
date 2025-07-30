@@ -17,18 +17,18 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h4>{{ __('dashboard.booking_details') }} - {{ $booking->booking_number }}</h4>
                         <div class="btn-group" role="group">
-                            <a href="{{ route('dashboard.bookings.edit', $booking) }}" class="btn btn-warning me-2 mb-3">
+                            <a href="{{ route('dashboard.bookings.edit', $booking) }}" class="btn btn-warning me-2 mb-5">
                                 <i class="fa fa-edit"></i> {{ __('dashboard.edit') }}
                             </a>
 
                             @if($booking->canBeConfirmedBySalon())
-                                <a href="{{ route('dashboard.bookings.salon-confirm-form', $booking) }}" class="btn btn-success me-2 mb-3">
+                                <a href="{{ route('dashboard.bookings.salon-confirm-form', $booking) }}" class="btn btn-success me-2 mb-5">
                                     <i class="fa fa-check"></i> {{ __('dashboard.salon_confirmation') }}
                                 </a>
                             @endif
 
                             @if($booking->canBeConfirmedByUser())
-                                <a href="{{ route('dashboard.bookings.user-confirm-form', $booking) }}" class="btn btn-info me-2 mb-3">
+                                <a href="{{ route('dashboard.bookings.user-confirm-form', $booking) }}" class="btn btn-info me-2 mb-5">
                                     <i class="fa fa-user-check"></i> {{ __('dashboard.user_confirmation') }}
                                 </a>
                             @endif
@@ -43,7 +43,7 @@
                             @endif
 
                             @if($booking->canBeRejected())
-                                <a href="{{ route('dashboard.bookings.reject-form', $booking) }}" class="btn btn-danger me-2 mb-3">
+                                <a href="{{ route('dashboard.bookings.reject-form', $booking) }}" class="btn btn-danger me-2 mb-5">
                                     <i class="fa fa-times"></i> {{ __('dashboard.reject') }}
                                 </a>
                             @endif
@@ -116,7 +116,7 @@
                                             <td><strong>{{ __('dashboard.salon_confirmed_at') }}:</strong></td>
                                             <td>{{ $booking->salon_confirmed_datetime->format('F j, Y \a\t g:i A') }}</td>
                                         </tr>
-                                        
+
                                         @if($booking->isModifiedBySalon())
                                             <tr>
                                                 <td><strong>{{ __('dashboard.salon_proposed_datetime') }}:</strong></td>
@@ -137,7 +137,7 @@
                                                 </tr>
                                             @endif
                                         @endif
-                                        
+
                                         @if($booking->salon_notes)
                                             <tr>
                                                 <td><strong>{{ __('dashboard.salon_notes') }}:</strong></td>

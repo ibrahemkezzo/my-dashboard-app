@@ -45,24 +45,21 @@
                                         </div>
                                     </div>
                                     <div class="row g-3">
-                                        <div class="col-lg-4 col-md-4">
+                                        <div class="col-lg-6 col-md-4">
                                             <label class="form-label fw-semibold">نوع الخدمة</label>
                                             <select class="form-select no-hover-effects" id="serviceType">
                                                 <option value="">جميع الخدمات</option>
 
                                             </select>
                                         </div>
-                                        <div class="col-lg-4 col-md-4">
+                                        <div class="col-lg-6 col-md-4">
                                             <label class="form-label fw-semibold">المدينة</label>
                                             <select class="form-select no-hover-effects" id="city">
                                                 <option value="">جميع المدن</option>
 
                                             </select>
                                         </div>
-                                        <div class="col-lg-4 col-md-4">
-                                            <label class="form-label fw-semibold">تاريخ الحجز</label>
-                                            <input type="date" class="form-control no-hover-effects" id="date" />
-                                        </div>
+
                                         <div class="col-lg-4 col-md-4 d-none">
                                             <label class="form-label fw-semibold">نطاق السعر</label>
                                             <select class="form-select no-hover-effects" id="priceRange">

@@ -63,10 +63,12 @@
                         <label class="form-label fw-semibold">{{ __('dashboard.' . $day) }}</label>
                     </div>
                     <div class="col-md-4">
+                        <label class="form-label">وقت الفتح</label>
                         <input type="time" name="working_hours[{{ $day }}][open]" class="form-control"
                             value="{{ $workingHours[$day]['open'] ?? '' }}" placeholder="من">
                     </div>
                     <div class="col-md-4">
+                        <label class="form-label">وقت الاغلاق</label>
                         <input type="time" name="working_hours[{{ $day }}][close]" class="form-control"
                             value="{{ $workingHours[$day]['close'] ?? '' }}" placeholder="إلى">
                     </div>
@@ -74,8 +76,9 @@
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox"
                                 name="working_hours[{{ $day }}][closed]"
+                                id="working_hours[{{ $day }}][closed]"
                                 {{ !empty($workingHours[$day]['closed']) ? 'checked' : '' }}>
-                            <label class="form-check-label">مغلق</label>
+                            <label for="working_hours[{{ $day }}][closed]" class="form-check-label">عطلة عمل</label>
                         </div>
                     </div>
                 </div>
@@ -125,46 +128,80 @@
         <div class="row g-2">
             <div class="col-md-4">
                 <label class="form-check-label">
-                    <input name="features[parking]" type="checkbox" @checked(old('features.parking',isset($salon->features['parking']))) class="form-checkbox" value="on">
+                    <input name="features[parking]" type="checkbox" @checked(old('features.parking', isset($salon->features['parking'])))
+                        class="form-checkbox" value="on">
                     <i class="fas fa-car"></i>
                     <span>موقف سيارات</span>
                 </label>
             </div>
             <div class="col-md-4">
                 <label class="form-check-label">
-                    <input name="features[wifi]" type="checkbox" @checked(old('features.wifi',isset($salon->features['wifi']))) class="form-checkbox" value="on">
+                    <input name="features[wifi]" type="checkbox" @checked(old('features.wifi', isset($salon->features['wifi']))) class="form-checkbox"
+                        value="on">
                     <i class="fas fa-wifi"></i>
                     <span>واي فاي مجاني</span>
                 </label>
             </div>
             <div class="col-md-4">
                 <label class="form-check-label">
-                    <input name="features[ac]" type="checkbox" @checked(old('features.ac',isset($salon->features['ac']))) class="form-checkbox" value="on">
+                    <input name="features[ac]" type="checkbox" @checked(old('features.ac', isset($salon->features['ac']))) class="form-checkbox"
+                        value="on">
                     <i class="fas fa-snowflake"></i>
                     <span>تكييف</span>
                 </label>
             </div>
             <div class="col-md-4">
                 <label class="form-check-label">
-                    <input name="features[waiting-area]" type="checkbox" @checked(old('features.waiting-area',isset($salon->features['waiting-area']))) class="form-checkbox" value="on">
+                    <input name="features[waiting-area]" type="checkbox" @checked(old('features.waiting-area', isset($salon->features['waiting-area'])))
+                        class="form-checkbox" value="on">
                     <i class="fas fa-couch"></i>
                     <span>منطقة انتظار</span>
                 </label>
             </div>
             <div class="col-md-4">
                 <label class="form-check-label">
-                    <input name="features[refreshments]" type="checkbox"  @checked(old('features.refreshments',isset($salon->features['refreshments']))) class="form-checkbox" value="on">
+                    <input name="features[refreshments]" type="checkbox" @checked(old('features.refreshments', isset($salon->features['refreshments'])))
+                        class="form-checkbox" value="on">
                     <i class="fas fa-coffee"></i>
                     <span>مشروبات مجانية</span>
                 </label>
             </div>
             <div class="col-md-4">
                 <label class="form-check-label">
-                    <input name="features[child-care]" type="checkbox" @checked(old('features.child-care',isset($salon->features['child-care']))) class="form-checkbox" value="on">
+                    <input name="features[child-care]" type="checkbox" @checked(old('features.child-care', isset($salon->features['child-care'])))
+                        class="form-checkbox" value="on">
                     <i class="fas fa-baby"></i>
                     <span>رعاية أطفال</span>
                 </label>
             </div>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">تاريخ بداية الرخصة</label>
+            <input name="license_start_date" type="date"
+                class="form-control no-hover-effects @error('license_start_date') is-invalid @enderror"
+                id="date" />
+            @error('license_start_date')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+        <div class="col-md-4">
+            <label class="form-label fw-semibold">تاريخ نهاية الرخصة</label>
+            <input name="license_end_date" type="date"
+                class="form-control no-hover-effects @error('license_end_date') is-invalid @enderror"
+                id="date" />
+            @error('license_end_date')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+        <div class="col-md-4">
+            <label for="license_document" class="form-label">تحديث الترخيص</label>
+            <input type="file" class="form-control" id="license_document" name="license_document" accept="image/*">
+            @if ($salon->license_url)
+                <img src="{{ $salon->license_url }}" alt="license"
+                    style="width:40px;height:40px;object-fit:license;" class="mt-2">
+            @endif
         </div>
     </div>
     <button type="submit" class="btn btn-primary">حفظ التعديلات</button>

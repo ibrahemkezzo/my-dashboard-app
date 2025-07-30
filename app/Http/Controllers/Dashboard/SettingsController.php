@@ -67,7 +67,6 @@ class SettingsController extends Controller
             'cover_image' => $request->file('cover_image'),
             'favicon' => $request->file('favicon'),
         ]);
-        // dd($files);
 
         $response = $this->settingsService->updateGeneralSettings($data, $files);
 

@@ -114,7 +114,10 @@ class SalonController extends Controller
         if (!$salon) return redirect()->route('front.salons.create.step1');
         $subServices = SubService::with('service')->orderBy('name')->get();
         $allServices = Service::all();
-        return view('frontend.salons.create_step2', compact('salon', 'subServices', 'allServices'));
+        return view('frontend.salons.create_step2', compact('salon', 'subServices', 'allServices'))->with('message', [
+            'type' => 'success',
+            'content' => __('تم انشاء الصالون الرجاء ادخال الخدمات المقدمة')
+        ]);
     }
 
     public function storeStep2(Request $request , Salon $salon)
@@ -135,7 +138,7 @@ class SalonController extends Controller
         // dd($validated);
 
          $sync = $this->service->syncSubServices($salon,$validated['salon_services']);
-        return redirect()->route('front.home')->with('message', ['type' => 'success', 'content' => __('dashboard.saved_successfully')]);
+        return redirect()->route('front.home')->with('message', ['type' => 'success', 'content' => __('تم تقديم الطلب سيتم تنشيط الصالون باقرب وقت ممكن')]);
     }
 
     public function show(Salon $salon){

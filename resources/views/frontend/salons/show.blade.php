@@ -22,6 +22,7 @@
             <!-- Main Content -->
             <div class="col-lg-8">
                 <!-- Salon Header -->
+
                 <div class="salon-profile-header mb-4">
                     <div class="d-flex justify-content-between align-items-start mb-3">
                         <h1 class="h2 fw-bold text-dark title">
@@ -35,8 +36,16 @@
                                 </div>
                             @endif
                             {{ $salon->name }}
+
                         </h1>
                         <div class="d-flex gap-2">
+                            <div class="text-center">
+                                <button class="btn btn-primary px-5" id="bookNowBtn" data-bs-toggle="modal"
+                                    data-bs-target="#bookingModal">
+                                    <i class="fas fa-calendar-check me-2"></i>احجز الآن
+                                </button>
+                            </div>
+
                             <button class="btn-icon-outline" id="favoriteBtn" title="إضافة للمفضلة">
                                 <i class="far fa-heart"></i>
                             </button>
@@ -195,7 +204,8 @@
 
                 <!-- Book Now Button -->
                 <div class="text-center py-4">
-                    <button class="btn btn-primary btn-lg px-5" id="bookNowBtn" data-bs-toggle="modal" data-bs-target="#bookingModal">
+                    <button class="btn btn-primary btn-lg px-5" id="bookNowBtn" data-bs-toggle="modal"
+                        data-bs-target="#bookingModal">
                         <i class="fas fa-calendar-check me-2"></i>احجز الآن
                     </button>
                 </div>
@@ -418,6 +428,7 @@
         .social {
             color: #000;
         }
+
         .social:hover {
             color: #F56476;
         }
@@ -433,7 +444,7 @@
         window.isAuthenticated = @json(auth()->check());
 
         // Handle Book Now button click
-        document.getElementById('bookNowBtn').addEventListener('click', function (event) {
+        document.getElementById('bookNowBtn').addEventListener('click', function(event) {
             if (!window.isAuthenticated) {
                 event.preventDefault(); // Prevent modal from opening
                 Swal.fire({

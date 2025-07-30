@@ -3631,14 +3631,14 @@
                                 <a class="nav-link active" id="general-tab" data-bs-toggle="tab" href="#general"
                                     role="tab">{{ __('dashboard.general') }}</a>
                             </li>
-                            <li class="nav-item">
+                            {{-- <li class="nav-item">
                                 <a class="nav-link" id="aboutus-tab" data-bs-toggle="tab" href="#aboutus"
                                     role="tab">{{ __('dashboard.about_us') }}</a>
-                            </li>
-                            <li class="nav-item">
+                            </li> --}}
+                            {{-- <li class="nav-item">
                                 <a class="nav-link" id="contactus-tab" data-bs-toggle="tab" href="#contactus"
                                     role="tab">{{ __('dashboard.contact_us') }}</a>
-                            </li>
+                            </li> --}}
                             <li class="nav-item">
                                 <a class="nav-link" id="services-tab" data-bs-toggle="tab" href="#services"
                                     role="tab">{{ __('dashboard.services') }}</a>
@@ -3685,7 +3685,7 @@
                                     </div>
                                     <div class="col-md-12">
                                         <label class="form-label">{{ __('dashboard.meta_description_seo') }}</label>
-                                        <textarea name="meta_description" class="form-control">{{ old('meta_description', $generalSettings['meta_description']) }}</textarea>
+                                        <textarea rows="6" name="meta_description" class="form-control">{{ old('meta_description', $generalSettings['meta_description']) }}</textarea>
                                         @error('meta_description')
                                             <div class="text-danger small">{{ $message }}</div>
                                         @enderror
@@ -3699,12 +3699,21 @@
                                             <div class="text-danger small">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <label class="form-label">{{ __('dashboard.email') }}</label>
                                         <input type="email" name="email_settings"
                                             value="{{ old('email_settings', $generalSettings['email_settings']) }}"
                                             class="form-control">
                                         @error('email_settings')
+                                            <div class="text-danger small">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">{{ __('dashboard.phone_number') }}</label>
+                                        <input type="text" name="number_settings"
+                                            value="{{ old('number_settings', $generalSettings['number_settings']) }}"
+                                            class="form-control">
+                                        @error('number_settings')
                                             <div class="text-danger small">{{ $message }}</div>
                                         @enderror
                                     </div>
@@ -3722,7 +3731,7 @@
                                             <div class="text-danger small">{{ $message }}</div>
                                         @enderror
                                     </div> --}}
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <label class="form-label">{{ __('dashboard.site_status') }}</label>
                                         <select name="site_status" class="form-select">
                                             <option value="active"
@@ -3754,17 +3763,17 @@
                                     <div class="col-md-12">
                                         <label class="form-label">{{ __('dashboard.social_links') }}</label>
                                         <div class="row g-2">
-                                            <div class="col">
+                                            <div class="col-md-4">
                                                 <input type="url" name="social_links[facebook]"
                                                     value="{{ old('social_links.facebook', $generalSettings['social_links']['facebook'] ?? '') }}"
                                                     class="form-control" placeholder="Facebook">
                                             </div>
-                                            <div class="col">
+                                            <div class="col-md-4">
                                                 <input type="url" name="social_links[twitter]"
                                                     value="{{ old('social_links.twitter', $generalSettings['social_links']['twitter'] ?? '') }}"
                                                     class="form-control" placeholder="Twitter">
                                             </div>
-                                            <div class="col">
+                                            <div class="col-md-4">
                                                 <input type="url" name="social_links[instagram]"
                                                     value="{{ old('social_links.instagram', $generalSettings['social_links']['instagram'] ?? '') }}"
                                                     class="form-control" placeholder="Instagram">
@@ -3794,7 +3803,7 @@
                                             @if ($generalSettings['site_logo'])
                                                 <img src="{{ asset('storage/' . $generalSettings['site_logo']) }}"
                                                     class="img-thumbnail shadow-sm"
-                                                    style="max-width:100px; max-height:100px; object-fit:contain;"
+                                                    style="max-width:100px; max-height:100px; object-fit:contain; background-color:rgb(210, 203, 203);"
                                                     alt="Site Logo" />
                                             @endif
                                         </div>
@@ -3810,7 +3819,7 @@
                                             @if ($generalSettings['cover_image'])
                                                 <img src="{{ asset('storage/' . $generalSettings['cover_image']) }}"
                                                     class="img-thumbnail shadow-sm"
-                                                    style="max-width:100px; max-height:100px; object-fit:contain;"
+                                                    style="max-width:100px; max-height:100px; object-fit:contain; background-color:rgb(210, 203, 203);"
                                                     alt="Cover Image" />
                                             @endif
                                         </div>
@@ -3826,7 +3835,7 @@
                                             @if ($generalSettings['favicon'])
                                                 <img src="{{ asset('storage/' . $generalSettings['favicon']) }}"
                                                     class="img-thumbnail shadow-sm"
-                                                    style="max-width:48px; max-height:48px; object-fit:contain;"
+                                                    style="max-width:48px; max-height:48px; object-fit:contain; background-color:rgb(210, 203, 203);"
                                                     alt="Favicon" />
                                             @endif
                                         </div>
@@ -3842,7 +3851,7 @@
                                     </div>
                                 </form>
                             </div>
-                            {{-- About Us Settings --}}
+                            {{-- About Us Settings
                             <div class="tab-pane fade" id="aboutus" role="tabpanel">
                                 <form action="{{ route('dashboard.settings.updateAboutUs') }}" method="POST"
                                     enctype="multipart/form-data" class="row g-3">
@@ -3975,9 +3984,9 @@
                                             class="btn btn-primary btn-air-primary px-5">{{ __('dashboard.save_settings') }}</button>
                                     </div>
                                 </form>
-                            </div>
+                            </div> --}}
                             {{-- Contact Us Settings --}}
-                            <div class="tab-pane fade" id="contactus" role="tabpanel">
+                            {{-- <div class="tab-pane fade" id="contactus" role="tabpanel">
                                 <form action="{{ route('dashboard.settings.updateContactUs') }}" method="POST"
                                     class="row g-3">
                                     @csrf
@@ -4114,7 +4123,7 @@
                                             class="btn btn-primary btn-air-primary px-5">{{ __('dashboard.save_settings') }}</button>
                                     </div>
                                 </form>
-                            </div>
+                            </div> --}}
                             {{-- Services Settings --}}
                             <div class="tab-pane fade" id="services" role="tabpanel">
                                 @foreach ($services as $service)

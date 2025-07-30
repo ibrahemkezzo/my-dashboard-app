@@ -47,7 +47,7 @@ class SalonManagerController extends Controller
         $salon = $user->salon;
         if (!$salon) abort(404);
         $data = $request->validated();
-        $this->salonService->update($salon, $data, $request->file('logo'), $request->file('cover_image'));
+        $this->salonService->update($salon, $data, $request->file('logo'), $request->file('cover_image') , $request->file('license_document'));
         return redirect()->route('front.profile.salon.manager', ['tab' => 'info'])->with('message', ['type' => 'success', 'content' => __('تم تحديث بيانات الصالون')]);
     }
 

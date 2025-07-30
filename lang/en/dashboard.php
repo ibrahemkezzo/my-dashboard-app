@@ -890,5 +890,16 @@ return [
     'features' => 'Features',
     'service_added_successfully' => 'Service Added Successfuly',
     'date' => 'Date',
+    'most_used' => 'Most Used',
+    'bookings_count' => 'Bookings Count',
+    'popular_salons' => 'Popular salons',
+    'view_all_salons' => 'View All Salons',
+    'view_all_users' =>'View All Users',
+    'frontend' => 'Frontend Website',
+    'promotion' => 'Promotion',
+    'anpromoted' => 'Anpromoted',
+    'promoted' => 'Promoted',
+
+
 
 ];

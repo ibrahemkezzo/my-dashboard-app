@@ -153,7 +153,7 @@
                     </p>
                 </div>
                 {{-- start salons list --}}
-                <x-frontend.salons-list :limit='4' status="active" />
+                <x-frontend.salons-list :limit='4' status="active" promoted="active" />
                 {{-- end salons list --}}
                 <div class="section-footer">
                     <a href="{{route('front.salons.list')}}" class="btn btn-outline btn-lg">عرض جميع الصالونات</a>
@@ -464,4 +464,6 @@
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="{{ asset('frontend/assets/js/pages-scripts.js') }}"></script>
+<script src="{{ asset('frontend/assets/js/pages-scripts2.js') }}"></script>
+
 @endpush

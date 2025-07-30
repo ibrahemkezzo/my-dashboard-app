@@ -49,6 +49,11 @@ class FrontUpdaeteSalonRequest extends FormRequest
             'latitude' => 'nullable|numeric|between:-90,90',
             'longitude' => 'nullable|numeric|between:-180,180',
             'verification' => 'nullable|boolean',
+            'license_document' => 'nullable|image|max:2048',
+            'license_start_date' => 'nullable|date',
+            'license_end_date' => 'nullable|date|after_or_equal:license_start_date',
+            'hasOffer' => 'nullable|boolean',
+            'offer' => 'nullable|json',
         ];
     }
 
@@ -108,6 +113,12 @@ class FrontUpdaeteSalonRequest extends FormRequest
             'password.confirmed' => 'تأكيد كلمة المرور غير مطابق.',
             'agree_terms.required' => 'يجب الموافقة على الشروط والأحكام.',
             'agree_terms.accepted' => 'يجب الموافقة على الشروط والأحكام.',
+            'license_end_date.after_or_equal' => 'تاريخ نهاية الترخيص يجب أن يكون بعد أو يساوي تاريخ البداية.',
+            'hasOffer.boolean' => 'حقل يحتوي على عرض يجب أن يكون قيمة منطقية (صحيحة أو خاطئة).',
+            'offer.json' => 'حقل تفاصيل العرض يجب أن يكون بتنسيق JSON صالح.',
+            'license_document.image' => 'الملف المرفوع يجب أن يكون صورة.',
+            'license_document.max' => 'حجم الصورة يجب ألا يزيد عن 2 ميغابايت.',
+            // 'is_promoted.boolean' => 'حقل الترويج يجب أن يكون قيمة منطقية (صحيحة أو خاطئة).',
         ];
     }
 }

@@ -17,13 +17,18 @@ class SalonsList extends Component
      * @param int|null $limit
      * @param string|null $status 'active', 'inactive', or 'all' (default: all)
      */
-    public function __construct($limit = null, $status = null)
+    public function __construct($limit = null, $status = null ,$promoted = null)
     {
         $query = Salon::with(['subServices', 'city', 'owner']);
         if ($status === 'active') {
             $query->where('status', true);
         } elseif ($status === 'inactive') {
             $query->where('status', false);
+        }
+        if ($promoted === 'active') {
+            $query->where('is_promoted', true);
+        } elseif ($promoted === 'inactive') {
+            $query->where('is_promoted', false);
         }
         if ($limit) {
             $query->limit($limit);

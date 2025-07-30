@@ -53,9 +53,9 @@
                     <option value="abha">أبها</option>
                     <option value="tabuk">تبوك</option>
                 </select> --}}
-                <x-form.city-select name="city_id" class="form-select" />
+                <x-form.city-select name="city_id" class="form-select" :selected="old('phone_number', $user->city->id ?? '')" />
 
-                @error('city') <span class="text-danger">{{ $message }}</span> @enderror
+                @error('city_id') <span class="text-danger">{{ $message }}</span> @enderror
             </div>
 
             <div class="form-group mb-3">

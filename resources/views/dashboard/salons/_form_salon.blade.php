@@ -20,6 +20,15 @@
     </div>
 </div>
 <div class="row mb-3">
+    <div class="col-md-12">
+         <label for="promotion" class="form-label">{{ __('dashboard.promotion') }}</label>
+        <select name="is_promoted" id="promotion" class="form-control">
+            <option value="1" {{ old('status', $salon->is_promoted ?? 1) == 1 ? 'selected' : '' }}>{{ __('dashboard.active') }}</option>
+            <option value="0" {{ old('status', $salon->is_promoted ?? 1) == 0 ? 'selected' : '' }}>{{ __('dashboard.inactive') }}</option>
+        </select>
+    </div>
+</div>
+<div class="row mb-3">
     <div class="col-md-6">
         <label for="address" class="form-label">{{ __('dashboard.address') }}</label>
         <input type="text" class="form-control" id="address" name="address" value="{{ old('address', $salon->address ?? '') }}" required>
