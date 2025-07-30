@@ -45,6 +45,11 @@ class StoreSalonRequest extends FormRequest
             'latitude' => 'nullable|numeric|between:-90,90',
             'longitude' => 'nullable|numeric|between:-180,180',
             'verification' => 'nullable|boolean',
+            'license_start_date' => 'nullable|date',
+            'license_end_date' => 'nullable|date|after_or_equal:license_start_date',
+            'hasOffer' => 'nullable|boolean',
+            'offer' => 'nullable|json',
+            'is_promoted' => 'nullable|boolean',
 
         ];
     }

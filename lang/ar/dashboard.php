@@ -905,6 +905,8 @@ return [
     'view_all_salons' => 'عرض كل الصالونات',
     'view_all_users' =>'عرض كل المستخدمين',
     'frontend' => 'الموقع الرأيسي',
-    'My_Kawafir_Admin' => 'ادارة موقع كوافيري'
-
+    'My_Kawafir_Admin' => 'ادارة موقع كوافيري',
+    'promotion' => 'ترويج',
+    'anpromoted' => 'غير مروج',
+    'promoted' => ' مروج',
 ];

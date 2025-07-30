@@ -103,6 +103,10 @@ class SalonService
             $coverImage = $data['cover_image'];
             $data['cover_image'] = $coverImage->store('salons/covers', 'public');
         }
+        if (isset($data['license_document'])) {
+            $coverImage = $data['license_document'];
+            $data['license_document'] = $coverImage->store('salons/liciense', 'public');
+        }
         // dd($data);
         $salon = $this->repository->create($data);
         if (isset($data['gallery_images'])) {
@@ -114,7 +118,7 @@ class SalonService
         return $salon;
     }
 
-    public function update(Salon $salon, array $data, ?UploadedFile $logo = null, ?UploadedFile $coverImage = null)
+    public function update(Salon $salon, array $data, ?UploadedFile $logo = null, ?UploadedFile $coverImage = null, ?UploadedFile $license_document = null )
     {
         if ($logo) {
             Media::delete($salon,'sub_service','single_column',['column'=>'logo']);
@@ -124,6 +128,10 @@ class SalonService
         if ($coverImage) {
             Media::delete($salon,'sub_service','single_column',['column'=>'cover_image']);
             $data['cover_image'] = $coverImage->store('salons/covers', 'public');
+        }
+        if ($license_document) {
+            Media::delete($salon,'sub_service','single_column',['column'=>'license_document']);
+            $data['license_document'] = $coverImage->store('salons/license', 'public');
         }
 
         return $this->repository->update($salon, $data);

@@ -896,6 +896,10 @@ return [
     'view_all_salons' => 'View All Salons',
     'view_all_users' =>'View All Users',
     'frontend' => 'Frontend Website',
+    'promotion' => 'Promotion',
+    'anpromoted' => 'Anpromoted',
+    'promoted' => 'Promoted',
+
 
 
 ];

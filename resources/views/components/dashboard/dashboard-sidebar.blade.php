@@ -1,7 +1,7 @@
 <div class="page-sidebar">
     <div class="main-header-left d-none d-lg-block">
         <div class="logo-wrapper">
-            <a href="index.html">
+            <a href="{{route('dashboard.index')}}">
                 <img class="d-none d-lg-block blur-up lazyloaded"
                     style="height:60px; "
                     src="{{asset('storage/'.$cover->value)}}" alt="">

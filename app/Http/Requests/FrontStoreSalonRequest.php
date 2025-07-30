@@ -47,6 +47,11 @@ class FrontStoreSalonRequest extends FormRequest
             'latitude' => 'nullable|numeric|between:-90,90',
             'longitude' => 'nullable|numeric|between:-180,180',
             'verification' => 'nullable|boolean',
+            'license_document' => 'nullable|image',
+            'license_start_date' => 'nullable|date',
+            'license_end_date' => 'nullable|date|after_or_equal:license_start_date',
+            'hasOffer' => 'nullable|boolean',
+            'offer' => 'nullable|json',
 
             // 'password' => 'required|string|min:8|confirmed',
         ];
@@ -104,6 +109,8 @@ class FrontStoreSalonRequest extends FormRequest
             'working_hours.*.satuts.boolean' => 'حالة يوم العمل يجب أن تكون إما مفتوح أو مغلق.',
             'social_links.*.url' => 'رابط التواصل الاجتماعي يجب أن يكون رابطاً صالحاً.',
             'social_links.*.max' => 'رابط التواصل الاجتماعي يجب ألا يتجاوز 255 حرفاً.',
+            'license_document.image' => 'الملف المرفوع يجب أن يكون صورة.',
+            'license_document.max' => 'حجم الصورة يجب ألا يزيد عن 2 ميغابايت.',
             // 'password.required' => 'كلمة المرور مطلوبة.',
             // 'password.string' => 'كلمة المرور يجب أن تكون نصاً.',
             // 'password.min' => 'كلمة المرور يجب ألا تقل عن 8 أحرف.',

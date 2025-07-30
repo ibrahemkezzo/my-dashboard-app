@@ -12,7 +12,8 @@ class Salon extends Model
 {
     protected $fillable = [
         'name', 'description', 'address', 'phone', 'email', 'owner_id', 'city_id',
-        'status', 'working_hours', 'rating', 'logo', 'cover_image', 'social_links', 'seo_meta','features' ,'type'
+        'status', 'working_hours', 'rating', 'logo', 'cover_image', 'social_links', 'seo_meta','features' ,'type',
+        'license_document','license_start_date', 'license_end_date', 'hasOffer', 'offer','is_promoted'
     ];
 
     protected $casts = [
@@ -24,7 +25,7 @@ class Salon extends Model
         'rating' => 'decimal:2',
     ];
 
-    protected $appends = ['cover_image_url','logo_url' , 'is_open' , 'is_favorited'];
+    protected $appends = ['cover_image_url','logo_url' , 'is_open' , 'is_favorited','license_url'];
 
     /**
      * The owner of the salon (one-to-one with User).
@@ -116,6 +117,13 @@ class Salon extends Model
     public function getLogoUrlAttribute()
     {
         return $this->logo ? asset('storage/' . $this->logo) : null;
+    }
+    /**
+     * Get the full URL for the logo image.
+     */
+    public function getLicenseUrlAttribute()
+    {
+        return $this->license_document ? asset('storage/' . $this->license_document) : null;
     }
 
     /**

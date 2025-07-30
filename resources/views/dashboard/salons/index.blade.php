@@ -126,7 +126,7 @@
                                 <th>{{ __('dashboard.owner') }}</th>
                                 <th>{{ __('dashboard.city') }}</th>
                                 <th>{{ __('dashboard.phone') }}</th>
-                                <th>{{ __('dashboard.rating') }}</th>
+                                <th>{{ __('dashboard.promotion') }}</th>
                                 <th>{{ __('dashboard.status') }}</th>
                                 <th>{{ __('dashboard.actions') }}</th>
                             </tr>
@@ -148,11 +148,18 @@
                                     <td>{{ $salon->owner->name ?? '-' }}</td>
                                     <td>{{ $salon->city->name ?? '-' }}</td>
                                     <td>{{ $salon->phone }}</td>
-                                    <td>
+                                    {{-- <td>
                                         @if($salon->rating > 0)
                                             <span class="badge bg-warning">{{ $salon->rating }}/5</span>
                                         @else
                                             <span class="text-muted">{{ __('dashboard.no_rating') }}</span>
+                                        @endif
+                                    </td> --}}
+                                    <td>
+                                        @if($salon->is_promoted)
+                                            <span class="badge bg-success">{{ __('dashboard.promoted') }}</span>
+                                        @else
+                                            <span class="badge bg-danger">{{ __('dashboard.anpromoted') }}</span>
                                         @endif
                                     </td>
                                     <td>

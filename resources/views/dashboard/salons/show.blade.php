@@ -42,30 +42,30 @@
                                     <div class="col-md-4">
                                         <div class="card">
 
-                                                <div style="position:relative;">
-                                                    @if ($salon->cover_image_url)
-                                                        <div
-                                                            style="height:120px;background:url('{{ $salon->cover_image_url }}') center center/cover no-repeat;border-top-left-radius:.5rem;border-top-right-radius:.5rem;">
-                                                        </div>
+                                            <div style="position:relative;">
+                                                @if ($salon->cover_image_url)
+                                                    <div
+                                                        style="height:120px;background:url('{{ $salon->cover_image_url }}') center center/cover no-repeat;border-top-left-radius:.5rem;border-top-right-radius:.5rem;">
+                                                    </div>
+                                                @else
+                                                    <div
+                                                        style="height:120px;background:#e9ecef;border-top-left-radius:.5rem;border-top-right-radius:.5rem;">
+                                                    </div>
+                                                @endif
+                                                <div
+                                                    style="position:absolute;left:50%;bottom:-50px;transform:translateX(-50%);">
+                                                    @if ($salon->logo_url)
+                                                        <img src="{{ $salon->logo_url }}" alt="logo"
+                                                            style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:4px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
                                                     @else
                                                         <div
-                                                            style="height:120px;background:#e9ecef;border-top-left-radius:.5rem;border-top-right-radius:.5rem;">
+                                                            style="width:100px;height:100px;background:#f0f0f0;border-radius:50%;display:flex;align-items:center;justify-content:center;border:4px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+                                                            <i class="fa fa-building fa-2x text-muted"></i>
                                                         </div>
                                                     @endif
-                                                    <div
-                                                        style="position:absolute;left:50%;bottom:-50px;transform:translateX(-50%);">
-                                                        @if ($salon->logo_url)
-                                                            <img src="{{ $salon->logo_url }}" alt="logo"
-                                                                style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:4px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
-                                                        @else
-                                                            <div
-                                                                style="width:100px;height:100px;background:#f0f0f0;border-radius:50%;display:flex;align-items:center;justify-content:center;border:4px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
-                                                                <i class="fa fa-building fa-2x text-muted"></i>
-                                                            </div>
-                                                        @endif
-                                                    </div>
                                                 </div>
-                                                <div class="card-body text-center mt-3">
+                                            </div>
+                                            <div class="card-body text-center mt-3">
                                                 <h4 class="mt-3">{{ $salon->name }}</h4>
                                                 <p class="text-muted">{{ $salon->description }}</p>
                                                 <div class="mb-3">
@@ -99,6 +99,43 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="card">
+                                            <div style="position:relative;">
+                                                @if ($salon->license_url)
+                                                    <div style="height:200px; background:url('{{ $salon->license_url }}') center center/cover no-repeat; border-top-left-radius:.5rem; border-top-right-radius:.5rem; cursor: pointer;"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#licenseModal{{ $salon->id }}">
+                                                    </div>
+                                                @else
+                                                    <div
+                                                        style="height:120px; background:#e9ecef; border-top-left-radius:.5rem; border-top-right-radius:.5rem;">
+                                                    </div>
+                                                @endif
+                                                <div class="card-body">
+                                                    <p>تاريخ بداية الترخيص: {{ $salon->license_start_date ?? '' }}</p>
+                                                    <p>تاريخ نهاية الترخيص: {{ $salon->license_end_date ?? '' }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="licenseModal{{ $salon->id }}" tabindex="-1"
+                                            aria-labelledby="licenseModalLabel{{ $salon->id }}" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="licenseModalLabel{{ $salon->id }}">
+                                                            صورة الترخيص</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body text-center">
+                                                        <img src="{{ $salon->license_url }}" alt="License Image"
+                                                            class="img-fluid" style="max-height: 80vh;">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                     <div class="col-md-8">
                                         <div class="card">
@@ -209,7 +246,8 @@
                                                         @endif
                                                         @if (isset($salon->features['ac']))
                                                             <div class="quality-metric col-md-6 mb-1">
-                                                                <i style="color: #6c757d" class="fa fa-snowflake ms-2"></i>
+                                                                <i style="color: #6c757d"
+                                                                    class="fa fa-snowflake ms-2"></i>
                                                                 <span>تكييف</span>
                                                             </div>
                                                         @endif
