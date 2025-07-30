@@ -8,7 +8,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
 
-class dashboardSidebar extends Component
+class DashboardSidebar extends Component
 {
 
 

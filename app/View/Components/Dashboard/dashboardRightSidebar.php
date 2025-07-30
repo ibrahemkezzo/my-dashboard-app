@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class dashboardRightSidebar extends Component
+class DashboardRightSidebar extends Component
 {
     /**
      * Create a new component instance.

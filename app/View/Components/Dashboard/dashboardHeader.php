@@ -8,7 +8,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
 
-class dashboardHeader extends Component
+class DashboardHeader extends Component
 {
     public $user;
     public $logo;
