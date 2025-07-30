@@ -25,9 +25,9 @@
                                 <th>{{ __('dashboard.id') }}</th>
                                 <th>{{ __('dashboard.name') }}</th>
                                 <th>{{ __('dashboard.country') }}</th>
-                                <th>{{ __('dashboard.latitude') }}</th>
+                                {{-- <th>{{ __('dashboard.latitude') }}</th>
                                 <th>{{ __('dashboard.longitude') }}</th>
-                                <th>{{ __('dashboard.timezone') }}</th>
+                                <th>{{ __('dashboard.timezone') }}</th> --}}
                                 {{-- <th>{{ __('dashboard.is_active') }}</th> --}}
                                 <th>{{ __('dashboard.actions') }}</th>
                             </tr>
@@ -38,9 +38,9 @@
                                     <td>{{ $city->id }}</td>
                                     <td>{{ $city->name }}</td>
                                     <td>{{ $city->country }}</td>
-                                    <td>{{ $city->latitude }}</td>
-                                    <td>{{ $city->longitude }}</td>
-                                    <td>{{ $city->timezone }}</td>
+                                    {{-- <td>{{ $city->latitude }}</td> --}}
+                                    {{-- <td>{{ $city->longitude }}</td>0--}}
+                                    {{-- <td>{{ $city->timezone }}</td> --}}
                                     {{-- <td>
                                         @if($city->is_active)
                                             <span class="badge" style="background-color: #1fdd50;">{{ __('dashboard.active') }}</span>

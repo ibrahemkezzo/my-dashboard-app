@@ -11,7 +11,7 @@
     <meta name="author" content="{{ __('dashboard.pixelstrap') }}">
     <link rel="icon" href="{{asset('assets/images/dashboard/favicon.png')}}" type="image/x-icon">
     <link rel="shortcut icon" href="{{asset('assets/images/dashboard/favicon.png')}}" type="image/x-icon">
-    <title>{{ __('dashboard.multikart_admin') }} - {{ __('dashboard.premium_admin_template') }}</title>
+    <title>{{ __('dashboard.My_Kawafir_Admin') }}</title>
 
     <!-- Google font-->
     <link rel="stylesheet"

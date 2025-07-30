@@ -34,6 +34,7 @@ class SettingsService
             'site_status' => 'active',
             'maintenance_message' => '',
             'email_settings' => '',
+            'number_settings' => '',
             'analytics_code' => '',
             'social_links' => [],
             'notification_settings' => [],
@@ -136,7 +137,6 @@ class SettingsService
         }
         $updatedSettings = [];
         $imageKeys = ['site_logo', 'cover_image', 'favicon'];
-
         foreach ($data as $key => $value) {
             if (array_key_exists($key, $this->defaultGeneralSettings) && !in_array($key, $imageKeys)) {
                 $updatedSettings[$key] = $this->repository->set($key, $value, 'general');

@@ -117,9 +117,9 @@
                                 <th>#</th>
                                 <th>{{ __('dashboard.name') }}</th>
                                 <th>{{ __('dashboard.service') }}</th>
-                                <th>{{ __('dashboard.order') }}</th>
+                                {{-- <th>{{ __('dashboard.order') }}</th> --}}
                                 <th>{{ __('dashboard.status') }}</th>
-                                <th>{{ __('dashboard.icon_or_image') }}</th>
+                                {{-- <th>{{ __('dashboard.icon_or_image') }}</th> --}}
                                 <th>{{ __('dashboard.actions') }}</th>
                             </tr>
                         </thead>
@@ -129,7 +129,7 @@
                                     <td>{{ $subService->id }}</td>
                                     <td>{{ $subService->name }}</td>
                                     <td>{{ $subService->service->name ?? '-' }}</td>
-                                    <td>{{ $subService->order }}</td>
+                                    {{-- <td>{{ $subService->order }}</td> --}}
                                     <td>
                                         @if($subService->status)
                                             <span class="badge bg-success">{{ __('dashboard.active') }}</span>
@@ -137,11 +137,11 @@
                                             <span class="badge bg-danger">{{ __('dashboard.inactive') }}</span>
                                         @endif
                                     </td>
-                                    <td>
+                                    {{-- <td>
                                         @if($subService->icon_or_image)
                                             <img src="{{ asset('storage/'.$subService->icon_or_image) }}" alt="icon" style="width:40px;height:40px;object-fit:cover;">
                                         @endif
-                                    </td>
+                                    </td> --}}
                                     <td>
                                         <a href="{{ route('dashboard.sub_services.edit', $subService) }}" class="text-warning me-2" title="{{ __('dashboard.edit') }}">
                                             <i class="fa fa-edit"></i>

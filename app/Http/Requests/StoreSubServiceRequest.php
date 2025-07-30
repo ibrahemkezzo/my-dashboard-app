@@ -17,9 +17,9 @@ class StoreSubServiceRequest extends FormRequest
             'service_id' => 'required|exists:services,id',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'order' => 'nullable|integer|min:0',
+            // 'order' => 'nullable|integer|min:0',
             'status' => 'nullable|boolean',
-            'seo_meta' => 'nullable|array',
+            // 'seo_meta' => 'nullable|array',
         ];
     }
 }

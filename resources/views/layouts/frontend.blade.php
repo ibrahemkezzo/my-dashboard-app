@@ -36,6 +36,10 @@
     <x-frontend.front-header/>
     {{-- end header --}}
 
+     <!-- Alert Message Start -->
+            <x-alert-message />
+    <!-- Alert Message End -->
+
     @yield('main')
 
     {{-- @include('frontend.layouts.footer') --}}

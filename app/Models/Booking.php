@@ -124,7 +124,7 @@ class Booking extends Model
      */
     public function isModifiedBySalon(): bool
     {
-        return $this->salon_proposed_datetime && 
+        return $this->salon_proposed_datetime &&
                $this->salon_proposed_datetime->ne($this->preferred_datetime);
     }
 
@@ -169,9 +169,9 @@ class Booking extends Model
             'pending' => 'bg-warning',
             'salon_confirmed' => 'bg-info',
             'user_confirmed' => 'bg-success',
-            'completed' => 'bg-primary',
+            'completed' => 'bg-secondary',
             'rejected' => 'bg-danger',
-            'cancelled' => 'bg-secondary',
+            'cancelled' => 'bg-primary',
             default => 'bg-secondary',
         };
     }

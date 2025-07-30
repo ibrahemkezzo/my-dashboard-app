@@ -2,6 +2,7 @@
 
 namespace App\View\Components\Dashboard;
 
+use App\Models\Setting;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +13,8 @@ class dashboardSidebar extends Component
 
 
     public $sidebarItems;
+    public $favicon;
+    public $cover;
 
 
     /**
@@ -20,6 +23,8 @@ class dashboardSidebar extends Component
     public function __construct()
     {
          $this->sidebarItems = config('sidebar.items');
+        $this->favicon = Setting::where('key','favicon')->first();
+        $this->cover = Setting::where('key','cover_image')->first();
     }
 
     /**

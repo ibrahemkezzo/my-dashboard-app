@@ -208,7 +208,7 @@ return [
     'social_links' => 'الروابط الاجتماعية',
     'footer_text' => 'نص التذييل',
     'site_logo' => 'شعار الموقع',
-    'cover_image' => 'صورة الغلاف',
+    'cover_image' => 'شعار اخر',
     'favicon' => 'أيقونة الموقع',
     'save_settings' => 'حفظ الإعدادات',
     'updated_completed_successfully' => 'تم التحديث بنجاح!',
@@ -899,5 +899,12 @@ return [
     'features' => 'المميزات',
     'service_added_successfully' => 'تم اضافة الخدمة بنجاح',
     'date' => 'التاريخ',
+    'most_used' => 'الاكثر استخداما',
+    'bookings_count' => 'عدد الحجوزات',
+    'popular_salons' => 'الصالونات الاكثر شهرة',
+    'view_all_salons' => 'عرض كل الصالونات',
+    'view_all_users' =>'عرض كل المستخدمين',
+    'frontend' => 'الموقع الرأيسي',
+    'My_Kawafir_Admin' => 'ادارة موقع كوافيري'
 
 ];
