@@ -19,7 +19,7 @@ class StoreSalonRequest extends FormRequest
             'type' => 'required|in:beauty_center,home_salon',
             'address' => 'required|string|max:500',
             'phone' => 'required|string|max:20',
-            'email' => 'nullable|email|max:255',
+            // 'email' => 'nullable|email|max:255',
             'owner_id' => 'required|exists:users,id',
             'city_id' => 'required|exists:cities,id',
             'status' => 'nullable|boolean',

@@ -23,7 +23,7 @@ class FrontStoreSalonRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email'=> 'sometimes|email',
+            // 'email'=> 'sometimes|email',
             'description' => 'nullable|string|max:1000',
             'type' => 'required|in:beauty_center,home_salon',
             'phone' => 'required|string|max:20',

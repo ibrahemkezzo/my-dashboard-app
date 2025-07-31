@@ -52,7 +52,7 @@
                         <p><strong>المالك:</strong> {{ $salon->owner->name }}</p>
                         <p><strong>المدينة:</strong> {{ $salon->city->name }}</p>
                         <p><strong>الهاتف:</strong> {{ $salon->phone }}</p>
-                        <p><strong>البريد الإلكتروني:</strong> {{ $salon->email ?? 'غير متوفر' }}</p>
+                        <p><strong>البريد الإلكتروني:</strong> {{ $salon->email ?? $salon->owner->email ?? 'غير متوفر' }}</p>
                     </div>
                     <div class="col-md-6">
                         <p><strong>التقييم:</strong>
@@ -98,4 +98,4 @@
             @include('frontend.salons.manager._form_info', ['salon' => $salon])
         </div>
     </div>
-</div> 
+</div>
