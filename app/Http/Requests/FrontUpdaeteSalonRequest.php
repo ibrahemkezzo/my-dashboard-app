@@ -23,7 +23,7 @@ class FrontUpdaeteSalonRequest extends FormRequest
     {
         return [
             'name' => 'sometimes|string|max:255',
-            'email'=> 'sometimes|email',
+            // 'email'=> 'sometimes|email',
             'description' => 'sometimes|string|max:1000',
             'type' => 'sometimes|in:beauty_center,home_salon',
             'phone' => 'sometimes|string|max:20',

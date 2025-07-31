@@ -19,15 +19,7 @@
         <textarea class="form-control" id="description" name="description" rows="3">{{ old('description', $salon->description ?? '') }}</textarea>
     </div>
 </div>
-<div class="row mb-3">
-    <div class="col-md-12">
-         <label for="promotion" class="form-label">{{ __('dashboard.promotion') }}</label>
-        <select name="is_promoted" id="promotion" class="form-control">
-            <option value="1" {{ old('status', $salon->is_promoted ?? 1) == 1 ? 'selected' : '' }}>{{ __('dashboard.active') }}</option>
-            <option value="0" {{ old('status', $salon->is_promoted ?? 1) == 0 ? 'selected' : '' }}>{{ __('dashboard.inactive') }}</option>
-        </select>
-    </div>
-</div>
+
 <div class="row mb-3">
     <div class="col-md-6">
         <label for="address" class="form-label">{{ __('dashboard.address') }}</label>
@@ -43,9 +35,12 @@
         <label for="phone" class="form-label">{{ __('dashboard.phone') }}</label>
         <input type="text" class="form-control" id="phone" name="phone" value="{{ old('phone', $salon->phone ?? '') }}" required>
     </div>
-    <div class="col-md-6">
-        <label for="email" class="form-label">{{ __('dashboard.email') }}</label>
-        <input type="email" class="form-control" id="email" name="email" value="{{ old('email', $salon->email ?? '') }}">
+  <div class="col-md-6">
+         <label for="promotion" class="form-label">{{ __('dashboard.promotion') }}</label>
+        <select name="is_promoted" id="promotion" class="form-control">
+            <option value="1" {{ old('status', $salon->is_promoted ?? 1) == 1 ? 'selected' : '' }}>{{ __('dashboard.active') }}</option>
+            <option value="0" {{ old('status', $salon->is_promoted ?? 1) == 0 ? 'selected' : '' }}>{{ __('dashboard.inactive') }}</option>
+        </select>
     </div>
 </div>
 <div class="row mb-3">

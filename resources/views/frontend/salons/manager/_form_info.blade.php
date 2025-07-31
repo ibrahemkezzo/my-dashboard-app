@@ -7,9 +7,9 @@
                 value="{{ old('name', $salon->name) }}" required>
         </div>
         <div class="col-md-6">
-            <label for="email" class="form-label">البريد الإلكتروني</label>
+            <label for="email" class="form-label">البريد الاكتروني(لايمكن تعديله تستطيع تعديل ايميل البروفايل)</label>
             <input type="email" class="form-control" id="email" name="email"
-                value="{{ old('email', $salon->email) }}">
+                value="{{$salon->owner->email}}" readonly>
         </div>
     </div>
     <div class="mb-3">
