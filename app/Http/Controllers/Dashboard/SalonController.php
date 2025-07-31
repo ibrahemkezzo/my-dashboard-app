@@ -47,7 +47,7 @@ class SalonController extends Controller
 
     public function createStep1()
     {
-        $owners = User::where('type','user')->orderBy('name')->get();
+        $owners = User::role('user')->get();;
         return view('dashboard.salons.create_step1', compact('owners'));
     }
 
