@@ -216,11 +216,11 @@
                 <!-- Map -->
                 <div class="sidebar-section mb-4">
                     <h5 class="fw-semibold mb-3">الموقع</h5>
-                    <div class="map-container">
-                        <div class="map-placeholder">
-                            <i class="fas fa-map-marker-alt fa-3x text-muted mb-2"></i>
-                            <p class="text-muted mb-0">خريطة موقع الصالون</p>
+                    <div class="map-container" style="height: 350px">
+                        <div class="form-group">
+                            <div id="map" style="height:350px; width:350px"></div>
                         </div>
+
                     </div>
                 </div>
 
@@ -469,4 +469,140 @@
             // If authenticated, the modal will open automatically due to data-bs-toggle and data-bs-target
         });
     </script>
+@endpush
+@push('scripts')
+    <script>
+        function initMap() {
+            // الحصول على إحداثيات المدينة من المتغيرات
+            var salonLat = {{ $salon->latitude }};
+            var salonLng = {{ $salon->longitude }};
+
+            // إنشاء الخريطة مع مركز في إحداثيات المدينة
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: {
+                    lat: salonLat,
+                    lng: salonLng
+                },
+                zoom: 14
+            });
+
+            // إضافة دبوس (Marker) مع أيقونة مخصصة
+            var marker = new google.maps.Marker({
+                position: {
+                    lat: salonLat,
+                    lng: salonLng
+                },
+                map: map,
+                icon: {
+
+                        url: "{{asset('frontend/assets/img/location.png')}}", // استبدل هذا برابط الصورة الخاصة بك
+                        scaledSize: new google.maps.Size(30, 30), // حجم الأيقونة (يمكنك تعديله)
+                        origin: new google.maps.Point(0, 0),
+                        anchor: new google.maps.Point(15, 30) // نقطة التمركز (قاعدة الدبوس)
+
+                },
+                title: "{{$salon->name}}",
+            });
+
+
+            marker.addListener('click', ({
+                domEvent,
+                latLng
+            }) => {
+                const {
+                    target
+                } = domEvent;
+                // Handle the click event.
+                // ...
+            });
+            // تحديد حالة الصالون بناءً على $salon->isOpen
+            var isOpen = {{ $salon->isOpen ? 'true' : 'false' }};
+            var statusText = isOpen ? '<span style="color: green;">مفتوح</span>' : '<span style="color: red;">مغلق</span>';
+
+            // إضافة نافذة معلومات مع تفاصيل الصالون
+            var infoWindow = new google.maps.InfoWindow({
+                minWidth: "400px",
+                content: `
+                    <div class="row" dir="ltr" >
+                        <div class="col-md-6 me-0 ms-0">
+                            <img src="{{ $salon->cover_image_url }}" alt="Cover Image" style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px; margin-bottom: 5px;">
+                        </div>
+                        <div class="col-md-6 me-0 ms-0">
+                            <h5 class="me-0 ms-0" color="#f56476" style="text-color:#f56476; color=#f56476;">{{ $salon->name }}</h5>
+                            <p dir="rtl">الحالة: ${statusText}</p>
+                        </div>
+                    </div>
+                `
+            });
+
+            // فتح النافذة المعلوماتية عند النقر على العلامة
+            marker.addListener('click', function() {
+                infoWindow.open(map, marker);
+            });
+            // // إظهار النافذة عند وضع المؤشر (hover)
+            // marker.addListener('mouseover', function() {
+            //     infoWindow.open(map, marker);
+            // });
+
+            // // إخفاء النافذة عند إزالة المؤشر
+            // marker.addListener('mouseout', function() {
+            //     infoWindow.close();
+            // });
+            // فتح النافذة المعلوماتية تلقائيًا عند تحميل الخريطة
+            infoWindow.open(map, marker);
+        }
+    </script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&callback=initMap"
+        async defer>
+    </script>
+@endpush
+@push('styles')
+    <style>
+        #map {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+        }
+
+
+        .custom-map-control-button {
+            background-color: #fff;
+            border: 0;
+            border-radius: 2px;
+            box-shadow: 0 1px 4px -1px rgba(242, 237, 237, 0.3);
+            margin: 10px;
+            padding: 0 0.5em;
+            font: 400 18px Roboto, Arial, sans-serif;
+            overflow: hidden;
+            height: 40px;
+            cursor: pointer;
+        }
+
+        .custom-map-control-button:hover {
+            background: rgb(235, 235, 235);
+        }
+
+        #place-autocomplete-card {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: rgba(189, 174, 174, 0.35) 0px 5px 15px;
+            margin: 10px;
+            padding: 5px;
+            font-family: Roboto, sans-serif;
+            font-size: large;
+            font-weight: bold;
+        }
+
+        gmp-place-autocomplete {
+            width: 300px;
+        }
+
+        /* #infowindow-content .title {
+            font-weight: bold;
+        } */
+    </style>
 @endpush

@@ -543,5 +543,4 @@
             /* اللون المطلوب عند الـ hover */
         }
     </style>
-    </style>
 @endpush

@@ -1,5 +1,3 @@
-// Hairdressers Page JavaScript
-
 document.addEventListener('DOMContentLoaded', function () {
     // Fetch filter data and populate dropdowns
     fetch('/salons/filters')
@@ -10,6 +8,8 @@ document.addEventListener('DOMContentLoaded', function () {
             setInitialFilterValues();
             // Fetch and render salons with initial filters
             fetchAndRenderSalons();
+            // Initialize the map with filtered salons
+            initMap();
         })
         .catch(error => {
             console.error('Error fetching filter data:', error);
@@ -17,17 +17,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Setup event listeners for all filters and sort controls (with null checks)
     const searchInput = document.getElementById('searchInput');
-    if (searchInput) searchInput.addEventListener('input', fetchAndRenderSalons);
+    if (searchInput) searchInput.addEventListener('input', () => { fetchAndRenderSalons(); initMap(); });
     const searchButton = document.getElementById('searchButton');
-    if (searchButton) searchButton.addEventListener('click', fetchAndRenderSalons);
+    if (searchButton) searchButton.addEventListener('click', () => { fetchAndRenderSalons(); initMap(); });
     const serviceType = document.getElementById('serviceType');
-    if (serviceType) serviceType.addEventListener('change', fetchAndRenderSalons);
+    if (serviceType) serviceType.addEventListener('change', () => { fetchAndRenderSalons(); initMap(); });
     const city = document.getElementById('city');
-    if (city) city.addEventListener('change', fetchAndRenderSalons);
+    if (city) city.addEventListener('change', () => { fetchAndRenderSalons(); initMap(); });
     const priceFilter = document.getElementById('priceFilter');
-    if (priceFilter) priceFilter.addEventListener('change', fetchAndRenderSalons);
+    if (priceFilter) priceFilter.addEventListener('change', () => { fetchAndRenderSalons(); initMap(); });
     const hasOffers = document.getElementById('hasOffers');
-    if (hasOffers) hasOffers.addEventListener('change', fetchAndRenderSalons);
+    if (hasOffers) hasOffers.addEventListener('change', () => { fetchAndRenderSalons(); initMap(); });
     const sortBy = document.getElementById('sortBy');
     if (sortBy) {
         sortBy.innerHTML = `
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <option value="lowest-price">الأسعار الأقل</option>
             <option value="highest-price">الأسعار الأعلى</option>
         `;
-        sortBy.addEventListener('change', fetchAndRenderSalons);
+        sortBy.addEventListener('change', () => { fetchAndRenderSalons(); initMap(); });
     }
 
     function populateFilterDropdowns(data) {
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const city = document.getElementById('city');
         if (city) {
             city.innerHTML = '<option value="">جميع المدن</option>' +
-                data.cities.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+                data.cities.map(c => `<option value="${c.id}" data-lat="${c.latitude}" data-lng="${c.longitude}">${c.name}</option>`).join('');
         }
         // Price filter
         const priceFilter = document.getElementById('priceFilter');
@@ -74,44 +74,38 @@ document.addEventListener('DOMContentLoaded', function () {
         const priceFilter = document.getElementById('priceFilter');
         const hasOffers = document.getElementById('hasOffers');
 
-        // Set search input if parameter exists
         if (searchInput && urlParams.has('search')) {
             searchInput.value = urlParams.get('search');
         }
 
-        // Set service type if parameter exists
         if (serviceType && urlParams.has('service_type')) {
             const serviceTypeValue = urlParams.get('service_type');
-            // Ensure dropdown is populated before setting value
             const checkServiceType = () => {
                 if (serviceType.options.length > 1) {
                     if (Array.from(serviceType.options).find(opt => opt.value === serviceTypeValue)) {
                         serviceType.value = serviceTypeValue;
                     }
                 } else {
-                    setTimeout(checkServiceType, 100); // Retry until dropdown is populated
+                    setTimeout(checkServiceType, 100);
                 }
             };
             checkServiceType();
         }
 
-        // Set city if parameter exists
         if (city && urlParams.has('city_id')) {
             const cityId = urlParams.get('city_id');
-            // Ensure dropdown is populated before setting value
             const checkCity = () => {
                 if (city.options.length > 1) {
                     if (Array.from(city.options).find(opt => opt.value === cityId)) {
                         city.value = cityId;
                     }
                 } else {
-                    setTimeout(checkCity, 100); // Retry until dropdown is populated
+                    setTimeout(checkCity, 100);
                 }
             };
             checkCity();
         }
 
-        // Set price filter if parameters exist
         if (priceFilter && urlParams.has('price_min') && urlParams.has('price_max')) {
             const priceMin = urlParams.get('price_min');
             const priceMax = urlParams.get('price_max');
@@ -122,13 +116,12 @@ document.addEventListener('DOMContentLoaded', function () {
                         priceFilter.value = `${priceMin}-${priceMax}`;
                     }
                 } else {
-                    setTimeout(checkPriceFilter, 100); // Retry until dropdown is populated
+                    setTimeout(checkPriceFilter, 100);
                 }
             };
             checkPriceFilter();
         }
 
-        // Set has offer if parameter exists
         if (hasOffers && urlParams.has('has_offer')) {
             hasOffers.checked = parseInt(urlParams.get('has_offer')) === 1;
         }
@@ -154,7 +147,6 @@ document.addEventListener('DOMContentLoaded', function () {
     function fetchAndRenderSalons() {
         const filters = getFilters();
         const params = new URLSearchParams(filters);
-        // Add existing URL params to the fetch request to persist them
         const urlParams = new URLSearchParams(window.location.search);
         urlParams.forEach((value, key) => {
             if (!params.has(key)) {
@@ -186,19 +178,15 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function salonCardTemplate(salon) {
-        // Handle sub_services as array of strings or objects
         let subServices = Array.isArray(salon.sub_services) ? salon.sub_services : [];
         let subServiceTags = subServices.slice(0, 3).map(s =>
             typeof s === 'string' ? `<span class="service-tag">${s}</span>` : `<span class="service-tag">${s.name ?? s}</span>`
         ).join('');
         let moreTag = (subServices.length > 3) ? `<span class="service-more">+${subServices.length - 3} المزيد</span>` : '<br/>';
-        // Fix: Use window.routes.salonShow and replace :id with salon.id
         let salonShowUrl = window.routes && window.routes.salonShow ? window.routes.salonShow.replace(':id', salon.id) : '#';
-            // Generate badge content using JavaScript conditional
         let badgeContent = salon.type === 'beauty_center'
             ? `<i data-lucide="award"></i> مركز معتمد`
             : `<i style="width: 20px; height:20px;" data-lucide="home"></i> صالون منزلي`;
-        // Generate favorite button with dynamic class based on favorite status
         let isFavorited = salon.is_favorited ? 'active' : '';
         let favoriteButton = `
             <button class="salon-fa-vorite ${isFavorited}" data-salon-id="${salon.id}" onclick="toggleFavorite(${salon.id})">
@@ -249,36 +237,160 @@ document.addEventListener('DOMContentLoaded', function () {
         </div>
         `;
     }
-    // Initialize Lucide icons
-lucide.createIcons();
 
-function toggleFavorite(salonId) {
-    // Prevent action if user is not authenticated
-    if (!window.isAuthenticated) {
-        alert('يرجى تسجيل الدخول لإضافة الصالون إلى المفضلة.');
-        return;
+    function toggleFavorite(salonId) {
+        if (!window.isAuthenticated) {
+            alert('يرجى تسجيل الدخول لإضافة الصالون إلى المفضلة.');
+            return;
+        }
+
+        const button = document.querySelector(`button[data-salon-id="${salonId}"]`);
+
+        fetch(window.routes.toggleFavorite, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': window.csrfToken,
+            },
+            body: JSON.stringify({ salon_id: salonId }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    button.classList.toggle('active', data.is_favorited);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('حدث خطأ أثناء الاتصال بالخادم، حاول مرة أخرى.');
+            });
     }
 
-    const button = document.querySelector(`button[data-salon-id="${salonId}"]`);
+    function initMap() {
+        const filters = getFilters();
+        const params = new URLSearchParams(filters);
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.forEach((value, key) => {
+            if (!params.has(key)) {
+                params.set(key, value);
+            }
+        });
 
-    fetch(window.routes.toggleFavorite, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': window.csrfToken,
-        },
-        body: JSON.stringify({ salon_id: salonId }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Only toggle the 'active' class on the button
-            button.classList.toggle('active', data.is_favorited);
+        // Default coordinates (Saudi Arabia)
+        let centerLat = 24.7135517;
+        let centerLng = 46.6752957;
+
+        // Get selected city coordinates
+        const citySelect = document.getElementById('city');
+        if (citySelect && citySelect.value) {
+            const selectedOption = citySelect.options[citySelect.selectedIndex];
+            centerLat = parseFloat(selectedOption.getAttribute('data-lat')) || centerLat;
+            centerLng = parseFloat(selectedOption.getAttribute('data-lng')) || centerLng;
         }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('حدث خطأ أثناء الاتصال بالخادم، حاول مرة أخرى.');
-    });
-}
+
+        const locationIcon = window.routes.locationIcon;
+
+        // Initialize the map
+        const map = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: centerLat, lng: centerLng },
+            zoom: 12
+        });
+
+        // Fetch salons based on filters
+        fetch('/salons/list?' + params.toString(), { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+            .then(res => res.json())
+            .then(data => {
+                const salons = data.salons;
+                // Clear existing markers
+                const markers = [];
+
+                // Create a marker for each salon
+                salons.forEach(salon => {
+                    if (salon.latitude && salon.longitude) {
+                        const marker = new google.maps.Marker({
+                            position: {
+                                lat: parseFloat(salon.latitude),
+                                lng: parseFloat(salon.longitude)
+                            },
+                            map: map,
+                            icon: {
+                                url: locationIcon,
+                                scaledSize: new google.maps.Size(40, 40),
+                                origin: new google.maps.Point(0, 0),
+                                anchor: new google.maps.Point(15, 30)
+                            },
+                            title: salon.name
+                        });
+
+                        const statusText = salon.is_open
+                            ? '<span style="color: green;">مفتوح</span>'
+                            : '<span style="color: red;">مغلق</span>';
+
+                        const infoWindow = new google.maps.InfoWindow({
+                            minWidth: "400px",
+                            content: `
+                                <div class="row" dir="ltr">
+                                    <div class="col-md-6 me-0 ms-0">
+                                        <img src="${salon.cover_image_url ?? 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400'}"
+                                             alt="${salon.name}"
+                                             style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px; margin-bottom: 5px;">
+                                    </div>
+                                    <div class="col-md-6 me-0 ms-0">
+                                        <h5 class="me-0 ms-0" style="color: #f56476;">${salon.name}</h5>
+                                        <p dir="rtl">الحالة: ${statusText}</p>
+                                    </div>
+                                </div>
+                            `
+                        });
+
+                        // Open info window on click
+                        marker.addListener('click', () => {
+                            infoWindow.open(map, marker);
+                        });
+
+                        markers.push(marker);
+                    }
+                });
+
+                // Adjust map bounds to fit all markers if there are any
+                if (markers.length > 0) {
+                    const bounds = new google.maps.LatLngBounds();
+                    markers.forEach(marker => bounds.extend(marker.getPosition()));
+                    map.fitBounds(bounds);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching salons for map:', error);
+            });
+
+        // Add Places Autocomplete
+        const input = document.createElement('input');
+        input.id = 'place-autocomplete-card';
+        input.className = 'place-autocomplete-card';
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+        const autocomplete = new google.maps.places.Autocomplete(input);
+        autocomplete.bindTo('bounds', map);
+
+        autocomplete.addListener('place_changed', function () {
+            const place = autocomplete.getPlace();
+            if (place.geometry) {
+                map.setCenter(place.geometry.location);
+                const marker = new google.maps.Marker({
+                    position: place.geometry.location,
+                    map: map,
+                    icon: {
+                        url: locationIcon,
+                        scaledSize: new google.maps.Size(40, 40),
+                        origin: new google.maps.Point(0, 0),
+                        anchor: new google.maps.Point(15, 30)
+                    }
+                });
+                document.getElementById('latitude').value = place.geometry.location.lat();
+                document.getElementById('longitude').value = place.geometry.location.lng();
+            }
+        });
+    }
+
+    // Initialize Lucide icons
+    lucide.createIcons();
 });
