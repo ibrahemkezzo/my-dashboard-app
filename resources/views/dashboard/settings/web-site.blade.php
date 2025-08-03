@@ -3710,7 +3710,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label">{{ __('dashboard.phone_number') }}</label>
-                                        <input type="text" name="number_settings"
+                                        <input dir="ltr" type="text" name="number_settings"
                                             value="{{ old('number_settings', $generalSettings['number_settings']) }}"
                                             class="form-control">
                                         @error('number_settings')

@@ -13,6 +13,7 @@ class Salon extends Model
     protected $fillable = [
         'name', 'description', 'address', 'phone', 'email', 'owner_id', 'city_id',
         'status', 'working_hours', 'rating', 'logo', 'cover_image', 'social_links', 'seo_meta','features' ,'type',
+        'longitude','latitude',
         'license_document','license_start_date', 'license_end_date', 'hasOffer', 'offer','is_promoted'
     ];
 

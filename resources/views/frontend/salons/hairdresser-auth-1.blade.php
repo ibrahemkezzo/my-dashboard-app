@@ -29,8 +29,9 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="name" class="form-label fw-semibold">اسم الصالون</label>
-                                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name"
-                                        value="{{ old('name', $salon->name ?? '') }}" required>
+                                    <input type="text" class="form-control @error('name') is-invalid @enderror"
+                                        id="name" name="name" value="{{ old('name', $salon->name ?? '') }}"
+                                        required>
                                     @error('name')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -44,8 +45,8 @@
 
                             <div class="mb-3">
                                 <label class="form-label fw-semibold">وصف الصالون</label>
-                                <textarea name="description" class="form-control @error('description') is-invalid @enderror" id="salonDescription" rows="3"
-                                    placeholder="اكتبي وصفاً مختصراً عن صالونك وخدماتك..." required>
+                                <textarea name="description" class="form-control @error('description') is-invalid @enderror" id="salonDescription"
+                                    rows="3" placeholder="اكتبي وصفاً مختصراً عن صالونك وخدماتك..." required>
                                     {{ old('description', $salon->description ?? '') }}
                                 </textarea>
                                 @error('description')
@@ -56,10 +57,15 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label fw-semibold">نوع الصالون</label>
-                                    <select name="type" class="form-select @error('type') is-invalid @enderror" id="salonType" required>
+                                    <select name="type" class="form-select @error('type') is-invalid @enderror"
+                                        id="salonType" required>
                                         <option value="">اختر نوع الصالون</option>
-                                        <option value="beauty_center" {{ old('type', $salon->type ?? '') === 'beauty_center' ? 'selected' : '' }}>مركز معتمد</option>
-                                        <option value="home_salon" {{ old('type', $salon->type ?? '') === 'home_salon' ? 'selected' : '' }}>صالون منزلي</option>
+                                        <option value="beauty_center"
+                                            {{ old('type', $salon->type ?? '') === 'beauty_center' ? 'selected' : '' }}>
+                                            مركز معتمد</option>
+                                        <option value="home_salon"
+                                            {{ old('type', $salon->type ?? '') === 'home_salon' ? 'selected' : '' }}>
+                                            صالون منزلي</option>
                                     </select>
                                     @error('type')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -67,8 +73,9 @@
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label fw-semibold">رقم الهاتف</label>
-                                    <input type="text" class="form-control @error('phone') is-invalid @enderror" id="salonPhone" name="phone"
-                                        value="{{ old('phone', $salon->phone ?? '') }}" required>
+                                    <input type="text" class="form-control @error('phone') is-invalid @enderror"
+                                        id="salonPhone" name="phone" value="{{ old('phone', $salon->phone ?? '') }}"
+                                        required>
                                     @error('phone')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -78,22 +85,35 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label fw-semibold">المدينة</label>
-                                    <x-form.city-select name="city_id" :selected="$salon->city_id ?? null" class="form-control @error('city_id') is-invalid @enderror" />
+                                    <x-form.city-select name="city_id" :selected="$salon->city_id ?? null"
+                                        class="form-control @error('city_id')
+is-invalid
+@enderror" />
                                     @error('city_id')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label fw-semibold">العنوان الكامل</label>
-                                    <input type="text" name="address" class="form-control @error('address') is-invalid @enderror"
-                                        value="{{ old('address', $salon->address ?? '') }}" id="salonAddress" placeholder="الحي، الشارع، رقم المبنى" required>
+                                    <input type="text" name="address"
+                                        class="form-control @error('address') is-invalid @enderror"
+                                        value="{{ old('address', $salon->address ?? '') }}" id="salonAddress"
+                                        placeholder="الحي، الشارع، رقم المبنى" required>
                                     @error('address')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
                         </div>
+                        <div class="row mb-3">
+                            <div class="form-group">
+                                <label class="form-label fw-semibold">حدد موقع الصالون على الخريطة</label>
 
+                                <div id="map" style="height: 400px; width: 100%;"></div>
+                                <input type="hidden" name="latitude" id="latitude">
+                                <input type="hidden" name="longitude" id="longitude">
+                            </div>
+                        </div>
                         <!-- Logo and Cover Image -->
                         <div class="form-section mb-4">
                             <h5 class="section-title">
@@ -142,7 +162,8 @@
                                 @for ($i = 1; $i <= 4; $i++)
                                     <div class="image-upload-item">
                                         <input type="file" id="salonImage{{ $i }}"
-                                            name="gallery_images[{{ $i }}]" accept="image/*" class="d-none @error('gallery_images.' . $i) is-invalid @enderror">
+                                            name="gallery_images[{{ $i }}]" accept="image/*"
+                                            class="d-none @error('gallery_images.' . $i) is-invalid @enderror">
                                         <label for="salonImage{{ $i }}" class="image-upload-label">
                                             <i class="fas fa-camera fa-2x mb-2"></i>
                                             <span>صورة إضافية</span>
@@ -194,9 +215,12 @@
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-check">
-                                                    <input class="form-check-input @error('working_hours.' . $day . '.closed') is-invalid @enderror" type="checkbox"
+                                                    <input
+                                                        class="form-check-input @error('working_hours.' . $day . '.closed') is-invalid @enderror"
+                                                        type="checkbox"
                                                         name="working_hours[{{ $day }}][closed]"
-                                                        id="saturdayClosed" {{ $workingHours[$day]['closed'] ?? false ? 'checked' : '' }}>
+                                                        id="saturdayClosed"
+                                                        {{ $workingHours[$day]['closed'] ?? false ? 'checked' : '' }}>
                                                     <label class="form-check-label" for="saturdayClosed">مغلق</label>
                                                 </div>
                                                 @error('working_hours.' . $day . '.closed')
@@ -222,7 +246,8 @@
                                         <span class="input-group-text">
                                             <i class="fab fa-facebook"></i>
                                         </span>
-                                        <input type="url" name="social_links[facebook]" class="form-control @error('social_links.facebook') is-invalid @enderror"
+                                        <input type="url" name="social_links[facebook]"
+                                            class="form-control @error('social_links.facebook') is-invalid @enderror"
                                             id="facebookLink" placeholder="https://facebook.com/your-page">
                                         @error('social_links.facebook')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -235,7 +260,8 @@
                                         <span class="input-group-text">
                                             <i class="fab fa-instagram"></i>
                                         </span>
-                                        <input type="url" name="social_links[instagram]" class="form-control @error('social_links.instagram') is-invalid @enderror"
+                                        <input type="url" name="social_links[instagram]"
+                                            class="form-control @error('social_links.instagram') is-invalid @enderror"
                                             id="instagramLink" placeholder="https://instagram.com/your-account">
                                         @error('social_links.instagram')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -251,7 +277,8 @@
                                         <span class="input-group-text">
                                             <i class="fab fa-snapchat"></i>
                                         </span>
-                                        <input type="url" name="social_links[snapchat]" class="form-control @error('social_links.snapchat') is-invalid @enderror"
+                                        <input type="url" name="social_links[snapchat]"
+                                            class="form-control @error('social_links.snapchat') is-invalid @enderror"
                                             id="snapchatLink" placeholder="https://snapchat.com/add/your-username">
                                         @error('social_links.snapchat')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -264,7 +291,8 @@
                                         <span class="input-group-text">
                                             <i class="fab fa-tiktok"></i>
                                         </span>
-                                        <input type="url" name="social_links[tiktok]" class="form-control @error('social_links.tiktok') is-invalid @enderror"
+                                        <input type="url" name="social_links[tiktok]"
+                                            class="form-control @error('social_links.tiktok') is-invalid @enderror"
                                             id="tiktokLink" placeholder="https://tiktok.com/@your-username">
                                         @error('social_links.tiktok')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -280,7 +308,8 @@
                                         <span class="input-group-text">
                                             <i class="fab fa-youtube"></i>
                                         </span>
-                                        <input type="url" name="social_links[youtube]" class="form-control @error('social_links.youtube') is-invalid @enderror"
+                                        <input type="url" name="social_links[youtube]"
+                                            class="form-control @error('social_links.youtube') is-invalid @enderror"
                                             id="youtubeLink" placeholder="https://youtube.com/your-channel">
                                         @error('social_links.youtube')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -293,7 +322,8 @@
                                         <span class="input-group-text">
                                             <i class="fab fa-x-twitter"></i>
                                         </span>
-                                        <input type="url" name="social_links[twitter]" class="form-control @error('social_links.twitter') is-invalid @enderror"
+                                        <input type="url" name="social_links[twitter]"
+                                            class="form-control @error('social_links.twitter') is-invalid @enderror"
                                             id="twitterLink" placeholder="https://x.com/your-username">
                                         @error('social_links.twitter')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -311,7 +341,8 @@
 
                             <div class="features-grid">
                                 <label class="feature-item">
-                                    <input name="features[parking]" type="checkbox" class="feature-checkbox @error('features.parking') is-invalid @enderror"
+                                    <input name="features[parking]" type="checkbox"
+                                        class="feature-checkbox @error('features.parking') is-invalid @enderror"
                                         value="on">
                                     <i class="fas fa-car"></i>
                                     <span>موقف سيارات</span>
@@ -320,7 +351,8 @@
                                     @enderror
                                 </label>
                                 <label class="feature-item">
-                                    <input name="features[wifi]" type="checkbox" class="feature-checkbox @error('features.wifi') is-invalid @enderror"
+                                    <input name="features[wifi]" type="checkbox"
+                                        class="feature-checkbox @error('features.wifi') is-invalid @enderror"
                                         value="on">
                                     <i class="fas fa-wifi"></i>
                                     <span>واي فاي مجاني</span>
@@ -329,7 +361,8 @@
                                     @enderror
                                 </label>
                                 <label class="feature-item">
-                                    <input name="features[ac]" type="checkbox" class="feature-checkbox @error('features.ac') is-invalid @enderror"
+                                    <input name="features[ac]" type="checkbox"
+                                        class="feature-checkbox @error('features.ac') is-invalid @enderror"
                                         value="on">
                                     <i class="fas fa-snowflake"></i>
                                     <span>تكييف</span>
@@ -338,7 +371,8 @@
                                     @enderror
                                 </label>
                                 <label class="feature-item">
-                                    <input name="features[waiting-area]" type="checkbox" class="feature-checkbox @error('features.waiting-area') is-invalid @enderror"
+                                    <input name="features[waiting-area]" type="checkbox"
+                                        class="feature-checkbox @error('features.waiting-area') is-invalid @enderror"
                                         value="on">
                                     <i class="fas fa-couch"></i>
                                     <span>منطقة انتظار</span>
@@ -347,7 +381,8 @@
                                     @enderror
                                 </label>
                                 <label class="feature-item">
-                                    <input name="features[refreshments]" type="checkbox" class="feature-checkbox @error('features.refreshments') is-invalid @enderror"
+                                    <input name="features[refreshments]" type="checkbox"
+                                        class="feature-checkbox @error('features.refreshments') is-invalid @enderror"
                                         value="on">
                                     <i class="fas fa-coffee"></i>
                                     <span>مشروبات مجانية</span>
@@ -356,7 +391,8 @@
                                     @enderror
                                 </label>
                                 <label class="feature-item">
-                                    <input name="features[child-care]" type="checkbox" class="feature-checkbox @error('features.child-care') is-invalid @enderror"
+                                    <input name="features[child-care]" type="checkbox"
+                                        class="feature-checkbox @error('features.child-care') is-invalid @enderror"
                                         value="on">
                                     <i class="fas fa-baby"></i>
                                     <span>رعاية أطفال</span>
@@ -378,7 +414,8 @@
                                     <div class="col-md-9">
                                         <label class="form-label fw-semibold">تاريخ بداية الرخصة</label>
                                         <input name="license_start_date" type="date"
-                                            class="form-control no-hover-effects @error('license_start_date') is-invalid @enderror" id="date" />
+                                            class="form-control no-hover-effects @error('license_start_date') is-invalid @enderror"
+                                            id="date" />
                                         @error('license_start_date')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -386,7 +423,8 @@
                                     <div class="col-md-9">
                                         <label class="form-label fw-semibold">تاريخ نهاية الرخصة</label>
                                         <input name="license_end_date" type="date"
-                                            class="form-control no-hover-effects @error('license_end_date') is-invalid @enderror" id="date" />
+                                            class="form-control no-hover-effects @error('license_end_date') is-invalid @enderror"
+                                            id="date" />
                                         @error('license_end_date')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -397,7 +435,8 @@
                                     <label class="form-label fw-semibold">صورة واضحة عن الرخصة</label>
                                     <div class="image-upload-item">
                                         <input type="file" name="license_document" id="salonlicence"
-                                            accept="image/*" class="d-none @error('license_document') is-invalid @enderror">
+                                            accept="image/*"
+                                            class="d-none @error('license_document') is-invalid @enderror">
                                         <label for="salonlicence" class="image-upload-label">
                                             <i class="fas fa-upload fa-2x mb-2"></i>
                                             <span>اختر صورة</span>
@@ -412,7 +451,8 @@
 
                         <!-- Terms Agreement -->
                         <div class="form-check mb-4">
-                            <input class="form-check-input @error('hairdresserAgreeTerms') is-invalid @enderror" type="checkbox" id="hairdresserAgreeTerms" name="hairdresserAgreeTerms" required>
+                            <input class="form-check-input @error('hairdresserAgreeTerms') is-invalid @enderror"
+                                type="checkbox" id="hairdresserAgreeTerms" name="hairdresserAgreeTerms" required>
                             <label class="form-check-label" for="hairdresserAgreeTerms">
                                 أوافق على <a href="{{ route('front.terms') }}" class="text-decoration-none">الشروط
                                     والأحكام</a> و <a href="{{ route('front.privacy') }}"
@@ -443,4 +483,102 @@
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('frontend/assets/js/auth.js') }}"></script>
+@endpush
+@push('scripts')
+    <script>
+        function initMap() {
+            // الحصول على إحداثيات المدينة إذا كانت موجودة، وإلا استخدام إحداثيات السعودية
+            var salonLat = {{ $salon->latitude ?? '24.7135517' }};
+            var salonLng = {{ $salon->longitude ?? '46.6752957' }};
+
+            // إنشاء الخريطة مع مركز في إحداثيات المدينة أو السعودية
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: {
+                    lat: salonLat,
+                    lng: salonLng
+                },
+                zoom: 12
+            });
+
+            // إضافة دبوس (Marker) قابل للسحب في موقع المدينة أو السعودية
+            var marker = new google.maps.Marker({
+                position: {
+                    lat: salonLat,
+                    lng: salonLng
+                },
+                map: map,
+                draggable: true
+            });
+
+            // تحديث الإحداثيات عند سحب الدبوس
+            google.maps.event.addListener(marker, 'dragend', function(event) {
+                document.getElementById('latitude').value = event.latLng.lat();
+                document.getElementById('longitude').value = event.latLng.lng();
+            });
+
+            // البحث عن العناوين باستخدام Places Autocomplete
+            var input = document.createElement('input');
+            input.id = 'place-autocomplete-card';
+            input.className = 'place-autocomplete-card';
+            map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+            var autocomplete = new google.maps.places.Autocomplete(input);
+            autocomplete.bindTo('bounds', map);
+
+            autocomplete.addListener('place_changed', function() {
+                var place = autocomplete.getPlace();
+                if (place.geometry) {
+                    map.setCenter(place.geometry.location);
+                    marker.setPosition(place.geometry.location);
+                    document.getElementById('latitude').value = place.geometry.location.lat();
+                    document.getElementById('longitude').value = place.geometry.location.lng();
+                }
+            });
+        }
+    </script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&callback=initMap"
+        async defer></script>
+@endpush
+@push('styles')
+    <style>
+        #map {
+            height: 100%;
+        }
+
+        .custom-map-control-button {
+            background-color: #fff;
+            border: 0;
+            border-radius: 2px;
+            box-shadow: 0 1px 4px -1px rgba(242, 237, 237, 0.3);
+            margin: 10px;
+            padding: 0 0.5em;
+            font: 400 18px Roboto, Arial, sans-serif;
+            overflow: hidden;
+            height: 40px;
+            cursor: pointer;
+        }
+
+        .custom-map-control-button:hover {
+            background: rgb(235, 235, 235);
+        }
+
+        #place-autocomplete-card {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: rgba(189, 174, 174, 0.35) 0px 5px 15px;
+            margin: 10px;
+            padding: 5px;
+            font-family: Roboto, sans-serif;
+            font-size: large;
+            font-weight: bold;
+        }
+
+        gmp-place-autocomplete {
+            width: 300px;
+        }
+
+        #infowindow-content .title {
+            font-weight: bold;
+        }
+    </style>
 @endpush

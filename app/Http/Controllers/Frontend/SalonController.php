@@ -99,8 +99,11 @@ class SalonController extends Controller
     {
 
         $validated = $request->validated();
-        // dd($request->all(),$validated);
         $user = Auth::user();
+        if($user->roles()->first()->name != 'user'){
+            return redirect()->back()->with('message', ['type' => 'error', 'content' => __('لديك حساب صالون بالفعل لاتستطيع انشاء حساب اخر لنفس المستخدم')]);
+        }
+
         $validated['owner_id'] = $user->id;
         $validated['status'] = false;
         $salon = $this->service->create($validated);

@@ -11,7 +11,7 @@
             صالون منزلي
             @endif
         </div>
-        @auth   
+        @auth
         <button
 
             class="salon-fa-vorite {{Auth::user()->favoriteSalons()->where('salon_id', $salon->id)->first() ? 'active' : '' }}"
