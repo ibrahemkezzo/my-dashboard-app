@@ -59,13 +59,20 @@ class TrackVisitMiddleware
             $referrer = $request->header('referer') ?? 'direct';
 
             // Dispatch job to record session data
-            RecordSessionJob::dispatch([
-                'session_id' => $sessionId,
-                'user_id' => $user_id,
-                'device_type' => $deviceType,
-                'country' => $country,
-                'referrer' => $referrer,
-            ]);
+            // RecordSessionJob::dispatch([
+            //     'session_id' => $sessionId,
+            //     'user_id' => $user_id,
+            //     'device_type' => $deviceType,
+            //     'country' => $country,
+            //     'referrer' => $referrer,
+            // ]);
+             ModelsSession::create([
+            'session_id' => $sessionId,
+            'device_type' => $deviceType,
+            'country' => $country,
+            'referrer' => $referrer,
+            'started_at' => now(),
+             ]);
 
             // Mark session as tracked
             Cache::put("session_tracked_{$sessionId}", true, now()->addHours(24));
