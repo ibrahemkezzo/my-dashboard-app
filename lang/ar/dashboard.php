@@ -909,4 +909,5 @@ return [
     'promotion' => 'ترويج',
     'anpromoted' => 'غير مروج',
     'promoted' => ' مروج',
+    'location_salon' => 'موقع الصالون',
 ];

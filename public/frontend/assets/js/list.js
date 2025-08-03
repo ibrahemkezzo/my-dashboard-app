@@ -301,7 +301,6 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(res => res.json())
             .then(data => {
                 const salons = data.salons;
-                // Clear existing markers
                 const markers = [];
 
                 // Create a marker for each salon
@@ -322,42 +321,89 @@ document.addEventListener('DOMContentLoaded', function () {
                             title: salon.name
                         });
 
+                        const salonShowUrl = window.routes && window.routes.salonShow ? window.routes.salonShow.replace(':id', salon.id) : '#';
                         const statusText = salon.is_open
-                            ? '<span style="color: green;">مفتوح</span>'
+                            ? '<span style="color: gren;">مفتوح</span>'
                             : '<span style="color: red;">مغلق</span>';
 
                         const infoWindow = new google.maps.InfoWindow({
-                            minWidth: "400px",
+                            minWidth: "300px",
                             content: `
-                                <div class="row" dir="ltr">
-                                    <div class="col-md-6 me-0 ms-0">
+                                <div style="background-color: #fff; padding: 10px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); position: relative; padding-top: 0;">
+                                    <div style="display: flex; align-items: center; padding: 5px 0;">
                                         <img src="${salon.cover_image_url ?? 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400'}"
                                              alt="${salon.name}"
-                                             style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px; margin-bottom: 5px;">
+                                             style="width: 80px; height: 80px; object-fit: cover; border-radius: 5px; margin-right: 15px;">
+                                        <div style="flex-grow: 1; padding-right: 20px;">
+                                            <h4 style="margin: 0; color: #f56476; font-size: 16px; display: flex; align-items: center; justify-content: space-between;">
+                                                ${salon.name}
+                                            </h4>
+                                            <p style="margin: 8px 0; color: #666; padding-left: 5px;">الحالة: ${statusText}</p>
+                                        </div>
                                     </div>
-                                    <div class="col-md-6 me-0 ms-0">
-                                        <h5 class="me-0 ms-0" style="color: #f56476;">${salon.name}</h5>
-                                        <p dir="rtl">الحالة: ${statusText}</p>
-                                    </div>
+                                    <a href="${salonShowUrl}" style="display: inline-block; margin-top: 10px; padding: 5px 15px; background-color: #f56476; color: #fff; text-decoration: none; border-radius: 5px; font-size: 14px;">عرض التفاصيل</a>
                                 </div>
                             `
                         });
 
-                        // Open info window on click
-                        marker.addListener('click', () => {
+                        // Track hover state
+                        // let isHovered = false;
+
+                        // Show info window on marker mouseover
+                        marker.addListener('mouseover', () => {
                             infoWindow.open(map, marker);
+                            // isHovered = true;
+                        });
+
+                        // Hide info window on mouseout from marker and info window
+                        marker.addListener('mouseout', () => {
+                            infoWindow.close();
+                            // setTimeout(() => {
+                            //     if (!isHovered) {
+                            //     }
+                            // }); // Small delay to allow transition to info window
+                        });
+
+                        // Handle info window hover
+                        // infoWindow.addListener('domready', () => {
+                        //     const iwContainer = document.querySelector('.gm-style-iw');
+                        //     if (iwContainer) {
+                        //         iwContainer.addEventListener('mouseover', () => {
+                        //             isHovered = true;
+                        //         });
+                        //         iwContainer.addEventListener('mouseout', () => {
+                        //             isHovered = false;
+                        //             setTimeout(() => {
+                        //                 if (!isHovered) {
+                        //                     infoWindow.close();
+                        //                 }
+                        //             }); // Delay to prevent flicker
+                        //         });
+
+                        //     }
+                        // });
+
+                        // Redirect to salon show page on marker click
+                        marker.addListener('click', () => {
+                            window.location.href = salonShowUrl;
                         });
 
                         markers.push(marker);
                     }
                 });
 
-                // Adjust map bounds to fit all markers if there are any
-                if (markers.length > 0) {
+                // Adjust map zoom based on number of salons
+                if (markers.length === 1) {
+                    map.setZoom(14); // Max zoom for single salon
+                    map.setCenter(markers[0].getPosition());
+                } else if (markers.length > 1) {
                     const bounds = new google.maps.LatLngBounds();
                     markers.forEach(marker => bounds.extend(marker.getPosition()));
                     map.fitBounds(bounds);
+                    // Cap zoom for multiple salons
+                    if (map.getZoom() > 12) map.setZoom(12);
                 }
+
             })
             .catch(error => {
                 console.error('Error fetching salons for map:', error);

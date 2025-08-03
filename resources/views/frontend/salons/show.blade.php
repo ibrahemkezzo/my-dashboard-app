@@ -46,7 +46,12 @@
                                 </button>
                             </div>
 
-                            <button class="btn-icon-outline" id="favoriteBtn" title="إضافة للمفضلة">
+                            {{-- <button class="btn-icon-outline" id="favoriteBtn" title="إضافة للمفضلة">
+                                <i class="far fa-heart"></i>
+                            </button> --}}
+                            <button
+                                class="btn-icon-outline {{ Auth::user()->favoriteSalons()->where('salon_id', $salon->id)->first() ? 'active' : '' }}"
+                                data-salon-id="{{ $salon->id }}" onclick="toggleFavorite({{ $salon->id }})">
                                 <i class="far fa-heart"></i>
                             </button>
                             <button class="btn-icon-outline" id="shareBtn" title="مشاركة الرابط">
@@ -86,7 +91,8 @@
                             </div>
                             @foreach ($salon->media as $photo)
                                 <div class="carousel-item">
-                                    <img src="{{ $photo->url }}" class="d-block w-100 salon-gallery-image" alt="صالون 2">
+                                    <img src="{{ $photo->url }}" class="d-block w-100 salon-gallery-image"
+                                        alt="صالون 2">
                                 </div>
                             @endforeach
                         </div>
@@ -305,61 +311,66 @@
                         <h5 class="fw-semibold mb-3">
                             <i class="fas fa-star ms-2" style="color: #F56476"></i>روابط التواصل الاجتماعي
                         </h5>
-                        <div class="row">
+                        <div class="row" dir="ltr">
                             @if (isset($salon->social_links['instagram']))
                                 <div class="quality-metric col-md-6 mb-3">
-                                    <a href="{{ $salon->social_links['instagram'] }}"
-                                        class="social"><span>instagram</span><i class="fab fa-instagram me-3"></i></a>
+                                    <a href="{{ $salon->social_links['instagram'] }}" class="social">
+                                        <i class="fab fa-instagram me-3"></i>
+                                        <span>instagram</span>
+                                    </a>
                                 </div>
                             @endif
                             @if (isset($salon->social_links['facebook']))
                                 <div class="quality-metric col-md-6 mb-3">
-                                    <a href="{{ $salon->social_links['facebook'] }}"
-                                        class="social"><span>facebook</span><i class="fab fa-facebook me-2"></i></a>
+                                    <a href="{{ $salon->social_links['facebook'] }}" class="social">
+                                        <i class="fab fa-facebook me-2"></i>
+                                        <span>facebook</span>
+                                    </a>
                                 </div>
                             @endif
-                        </div>
-                        <div class="row">
+
                             @if (isset($salon->social_links['snapchat']))
                                 <div class="quality-metric col-md-6 mb-3">
                                     <a href="{{ $salon->social_links['snapchat'] }}" class="social">
-                                        <span>snapchat</span>
                                         <i class="fab fa-snapchat me-3"></i>
+                                        <span>snapchat</span>
                                     </a>
                                 </div>
                             @endif
                             @if (isset($salon->social_links['tiktok']))
                                 <div class="quality-metric col-md-6 mb-3">
                                     <a href="{{ $salon->social_links['tiktok'] }}" class="social">
-                                        <span>tiktok</span><i class="fab fa-tiktok me-3"></i>
+                                        <i class="fab fa-tiktok me-3"></i>
+                                        <span>tiktok</span>
                                     </a>
                                 </div>
                             @endif
-                        </div>
-                        <div class="row">
+
                             @if (isset($salon->social_links['youtube']))
                                 <div class="quality-metric col-md-6 mb-3">
                                     <a href="{{ $salon->social_links['youtube'] }}" class="social">
-                                        <span>youtube</span>
                                         <i class="fab fa-youtube me-3"></i>
+                                        <span>youtube</span>
                                     </a>
                                 </div>
                             @endif
                             @if (isset($salon->social_links['twitter']))
                                 <div class="quality-metric col-md-6 mb-3">
                                     <a href="{{ $salon->social_links['twitter'] }}" class="social">
-                                        <span>(X)_twitter</span>
                                         <i class="fab fa-twitter me-2"></i>
+                                        <span>(X)_twitter</span>
                                     </a>
                                 </div>
                             @endif
                         </div>
-                        <div class="row">
-                            <div class="quality-metric col-md-2 me-3"></div>
+                        <div class="row" dir="ltr">
+                            <div class="quality-metric col-md-3 "></div>
                             @if (isset($salon->phone))
-                                <div class="quality-metric col-md-8">
-                                    <span dir="ltr">{{ $salon->phone }}</span>
-                                    <i class="fa fa-phone me-2"></i>
+                                <div class="quality-metric col-md-8 ">
+                                    <div>
+                                        <i class="fa fa-phone me-2"></i>
+                                        <span>{{ $salon->phone }}</span>
+                                    </div>
                                 </div>
                             @endif
                         </div>
@@ -424,6 +435,7 @@
 @push('styles')
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/pages-styles.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         .social {
             color: #000;
@@ -431,6 +443,62 @@
 
         .social:hover {
             color: #F56476;
+        }
+
+        /*
+            .btn-icon-outline.active {
+                transform: translateY(0);
+                box-shadow: 0 2px 6px rgba(245, 100, 118, 0.2);
+            } */
+
+        .btn-icon-outline.active {
+            background: #F56476;
+            color: white;
+            box-shadow: 0 4px 12px rgba(245, 100, 118, 0.3);
+        }
+
+        .btn-icon-outline.active:hover {
+            background: white;
+            color: #F56476;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(245, 100, 118, 0.3);
+        }
+
+        .share-menu {
+            position: absolute;
+            z-index: 1000;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            padding: 10px;
+        }
+
+        .share-menu-content {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .share-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            color: #333;
+            text-decoration: none;
+            font-size: 14px;
+            border-radius: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .share-option:hover {
+            background: #f0f0f0;
+        }
+
+        .share-option i {
+            font-size: 18px;
         }
     </style>
 @endpush
@@ -469,6 +537,103 @@
             // If authenticated, the modal will open automatically due to data-bs-toggle and data-bs-target
         });
     </script>
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        function toggleFavorite(salonId) {
+            // Prevent action if user is not authenticated
+            @if (!auth()->check())
+                alert('يرجى تسجيل الدخول لإضافة الصالون إلى المفضلة.');
+                return;
+            @endif
+
+            const button = document.querySelector(`button[data-salon-id="${salonId}"]`);
+
+            fetch('{{ route('front.profile.toggleFavorite') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    },
+                    body: JSON.stringify({
+                        salon_id: salonId
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Only toggle the 'active' class on the button
+                        button.classList.toggle('active', data.is_favorited);
+
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('حدث خطأ أثناء الاتصال بالخادم، حاول مرة أخرى.');
+                });
+        }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const shareBtn = document.getElementById('shareBtn');
+            const shareUrl = "{{ route('front.salons.show', $salon->id) }}";
+
+            // إنشاء قائمة المشاركة
+            const shareMenu = document.createElement('div');
+            shareMenu.className = 'share-menu';
+            shareMenu.style.display = 'none';
+            shareMenu.innerHTML = `
+        <div class="share-menu-content">
+            <a href="https://api.whatsapp.com/send?text=${encodeURIComponent(shareUrl)}" target="_blank" class="share-option">
+                <i class="fab fa-whatsapp"></i> واتساب
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}" target="_blank" class="share-option">
+                <i class="fab fa-facebook"></i> فيسبوك
+            </a>
+            <a href="https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}" target="_blank" class="share-option">
+                <i class="fab fa-twitter"></i> تويتر
+            </a>
+            <a href="https://t.me/share/url?url=${encodeURIComponent(shareUrl)}" target="_blank" class="share-option">
+                <i class="fab fa-telegram"></i> تيليجرام
+            </a>
+            <button class="share-option copy-link">
+                <i class="fas fa-link"></i> نسخ الرابط
+            </button>
+        </div>
+    `;
+            document.body.appendChild(shareMenu);
+
+            // إظهار/إخفاء القائمة عند النقر
+            shareBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const isVisible = shareMenu.style.display === 'block';
+                shareMenu.style.display = isVisible ? 'none' : 'block';
+
+                // تحديد موقع القائمة بالنسبة للزر
+                const rect = shareBtn.getBoundingClientRect();
+                shareMenu.style.top = `${rect.bottom + window.scrollY + 5}px`;
+                shareMenu.style.left = `${rect.left + window.scrollX}px`;
+            });
+
+            // نسخ الرابط إلى الحافظة
+            shareMenu.querySelector('.copy-link').addEventListener('click', function() {
+                navigator.clipboard.writeText(shareUrl).then(() => {
+                    alert('تم نسخ الرابط!');
+                    shareMenu.style.display = 'none';
+                }).catch(err => {
+                    console.error('فشل نسخ الرابط: ', err);
+                });
+            });
+
+            // إخفاء القائمة عند النقر خارجها
+            document.addEventListener('click', function(e) {
+                if (!shareBtn.contains(e.target) && !shareMenu.contains(e.target)) {
+                    shareMenu.style.display = 'none';
+                }
+            });
+        });
+    </script>
 @endpush
 @push('scripts')
     <script>
@@ -494,16 +659,13 @@
                 },
                 map: map,
                 icon: {
-
-                        url: "{{asset('frontend/assets/img/location.png')}}", // استبدل هذا برابط الصورة الخاصة بك
-                        scaledSize: new google.maps.Size(30, 30), // حجم الأيقونة (يمكنك تعديله)
-                        origin: new google.maps.Point(0, 0),
-                        anchor: new google.maps.Point(15, 30) // نقطة التمركز (قاعدة الدبوس)
-
+                    url: "{{ asset('frontend/assets/img/location.png') }}",
+                    scaledSize: new google.maps.Size(35, 35),
+                    origin: new google.maps.Point(0, 0),
+                    anchor: new google.maps.Point(15, 30)
                 },
-                title: "{{$salon->name}}",
+                title: "{{ $salon->name }}",
             });
-
 
             marker.addListener('click', ({
                 domEvent,
@@ -515,47 +677,43 @@
                 // Handle the click event.
                 // ...
             });
+
             // تحديد حالة الصالون بناءً على $salon->isOpen
             var isOpen = {{ $salon->isOpen ? 'true' : 'false' }};
             var statusText = isOpen ? '<span style="color: green;">مفتوح</span>' : '<span style="color: red;">مغلق</span>';
 
             // إضافة نافذة معلومات مع تفاصيل الصالون
             var infoWindow = new google.maps.InfoWindow({
-                minWidth: "400px",
                 content: `
-                    <div class="row" dir="ltr" >
-                        <div class="col-md-6 me-0 ms-0">
-                            <img src="{{ $salon->cover_image_url }}" alt="Cover Image" style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px; margin-bottom: 5px;">
+                    <div style="background-color: #fff; padding: 5px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); position: relative; padding-top: 0;">
+                        <div style="display: flex; align-items: center; padding: 5px 0;">
+                            <img src="{{ $salon->cover_image_url ?? 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400' }}"
+                                 alt="{{ $salon->name }}"
+                                 style="width: 80px; height: 80px; object-fit: cover; border-radius: 5px; margin-right: 5px;">
+                            <div style="flex-grow: 1; padding-right: 10px;">
+                                <h4 style="margin: 0; color: #f56476; font-size: 16px; display: flex; align-items: center; justify-content: space-between;">
+                                    {{ $salon->name }}
+
+                                </h4>
+                                <p style="margin: 8px 0; color: #666; padding-left: 5px;">الحالة: ${statusText}</p>
+                            </div>
                         </div>
-                        <div class="col-md-6 me-0 ms-0">
-                            <h5 class="me-0 ms-0" color="#f56476" style="text-color:#f56476; color=#f56476;">{{ $salon->name }}</h5>
-                            <p dir="rtl">الحالة: ${statusText}</p>
-                        </div>
+                        <a href="https://www.google.com/maps?q=${salonLat},${salonLng}" target="_blank" style="display: flex; align-items: center; margin-top: 5px; padding: 5px 15px; background-color: #f56476; color: #fff; text-decoration: none; border-radius: 5px; font-size: 14px;">عرض على خرائط غوغل</a>
                     </div>
                 `
             });
-
             // فتح النافذة المعلوماتية عند النقر على العلامة
             marker.addListener('click', function() {
                 infoWindow.open(map, marker);
             });
-            // // إظهار النافذة عند وضع المؤشر (hover)
-            // marker.addListener('mouseover', function() {
-            //     infoWindow.open(map, marker);
-            // });
 
-            // // إخفاء النافذة عند إزالة المؤشر
-            // marker.addListener('mouseout', function() {
-            //     infoWindow.close();
-            // });
             // فتح النافذة المعلوماتية تلقائيًا عند تحميل الخريطة
             infoWindow.open(map, marker);
         }
     </script>
     <script
         src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&callback=initMap"
-        async defer>
-    </script>
+        async defer></script>
 @endpush
 @push('styles')
     <style>
@@ -602,7 +760,7 @@
         }
 
         /* #infowindow-content .title {
-            font-weight: bold;
-        } */
+                        font-weight: bold;
+                    } */
     </style>
 @endpush
