@@ -24,12 +24,11 @@
                 <p class="footer-description">
                     {{$settings['footer_text']}}
                 </p>
-
                 <!-- Contact Info -->
                 <div class="contact-info">
                     <div class="contact-item">
                         <i data-lucide="phone"></i>
-                        <span dir="ltr">{{$settings['number'] ?? '+966 50 123 4567'}}</span>
+                        <span dir="ltr">{{$settings['number_settings'] ?? '+966 50 123 4567'}}</span>
                     </div>
                     <div class="contact-item">
                         <i data-lucide="mail"></i>

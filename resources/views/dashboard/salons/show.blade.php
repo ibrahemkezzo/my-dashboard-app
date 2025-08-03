@@ -423,52 +423,63 @@
                                         </div>
                                     </div>
 
-                                    <!-- Gallery Images Section -->
-                                    <div class="card mt-3">
-                                        <div class="card-header">
-                                            <h5>{{ __('dashboard.gallery_images') }}</h5>
-                                        </div>
-                                        <div class="card-body">
-                                            @if (isset($salon) && $salon->media && $salon->media->count())
-                                                <div class="row mt-2">
-                                                    @foreach ($salon->media as $media)
-                                                        <div class="col-md-2 text-center mb-3">
-                                                            <div class="position-relative">
-                                                                <img src="{{ asset('storage/' . $media->path) }}"
-                                                                    alt="gallery"
-                                                                    style="width:100px;height:100px;object-fit:cover;border-radius:8px;">
-                                                                <div class="mt-2">
-                                                                    <form
-                                                                        action="{{ route('dashboard.media.update', $media->id) }}"
-                                                                        method="POST" enctype="multipart/form-data"
-                                                                        style="display:inline;">
-                                                                        @csrf
-                                                                        @method('PUT')
-                                                                        <input type="file" name="file"
-                                                                            accept="image/*"
-                                                                            style="width:80px;display:inline-block;">
-                                                                        <button type="submit"
-                                                                            class="btn btn-sm btn-primary mt-1"><i
-                                                                                class="fa fa-upload"></i></button>
-                                                                    </form>
-                                                                    <form
-                                                                        action="{{ route('dashboard.media.destroy', $media->id) }}"
-                                                                        method="POST" style="display:inline;">
-                                                                        @csrf
-                                                                        @method('DELETE')
-                                                                        <button type="submit"
-                                                                            class="btn btn-sm btn-danger mt-1"
-                                                                            onclick="return confirm('{{ __('dashboard.confirm_delete_image') }}')"><i
-                                                                                class="fa fa-trash"></i></button>
-                                                                    </form>
+                                    <!-- Gallery Images and Map Section -->
+                                    <div class="row">
+                                        <div class="card mt-3 col-md-6">
+                                            <div class="card-header">
+                                                <h5>{{ __('dashboard.gallery_images') }}</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                @if (isset($salon) && $salon->media && $salon->media->count())
+                                                    <div class="row mt-2">
+                                                        @foreach ($salon->media as $media)
+                                                            <div class="col-md-4 text-center mb-3">
+                                                                <div class="position-relative">
+                                                                    <img src="{{ asset('storage/' . $media->path) }}"
+                                                                        alt="gallery"
+                                                                        style="width:100px;height:100px;object-fit:cover;border-radius:8px;">
+                                                                    <div class="mt-2">
+                                                                        <form
+                                                                            action="{{ route('dashboard.media.update', $media->id) }}"
+                                                                            method="POST" enctype="multipart/form-data"
+                                                                            style="display:inline;">
+                                                                            @csrf
+                                                                            @method('PUT')
+                                                                            <input type="file" name="file"
+                                                                                accept="image/*"
+                                                                                style="width:80px;display:inline-block;">
+                                                                            <button type="submit"
+                                                                                class="btn btn-sm btn-primary mt-1"><i
+                                                                                    class="fa fa-upload"></i></button>
+                                                                        </form>
+                                                                        <form
+                                                                            action="{{ route('dashboard.media.destroy', $media->id) }}"
+                                                                            method="POST" style="display:inline;">
+                                                                            @csrf
+                                                                            @method('DELETE')
+                                                                            <button type="submit"
+                                                                                class="btn btn-sm btn-danger mt-1"
+                                                                                onclick="return confirm('{{ __('dashboard.confirm_delete_image') }}')"><i
+                                                                                    class="fa fa-trash"></i></button>
+                                                                        </form>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    @endforeach
-                                                </div>
-                                            @else
-                                                <p class="text-muted">{{ __('dashboard.no_gallery_images') }}</p>
-                                            @endif
+                                                        @endforeach
+                                                    </div>
+                                                @else
+                                                    <p class="text-muted">{{ __('dashboard.no_gallery_images') }}</p>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="card mt-3 col-md-6">
+                                            <div class="card-header">
+                                                <h5>{{ __('dashboard.location_salon') }}</h5>
+                                            </div>
+                                            <div class="form-group">
+                                                <div id="map" style="height:400px; width:100%"></div>
+                                            </div>
+
                                         </div>
                                     </div>
                                     <!-- End Gallery Images Section -->
@@ -542,6 +553,132 @@
             color: #F56476;
             /* اللون المطلوب عند الـ hover */
         }
+
+        #map {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+        }
+
+
+        .custom-map-control-button {
+            background-color: #fff;
+            border: 0;
+            border-radius: 2px;
+            box-shadow: 0 1px 4px -1px rgba(242, 237, 237, 0.3);
+            margin: 10px;
+            padding: 0 0.5em;
+            font: 400 18px Roboto, Arial, sans-serif;
+            overflow: hidden;
+            height: 40px;
+            cursor: pointer;
+        }
+
+        .custom-map-control-button:hover {
+            background: rgb(235, 235, 235);
+        }
+
+        #place-autocomplete-card {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: rgba(189, 174, 174, 0.35) 0px 5px 15px;
+            margin: 10px;
+            padding: 5px;
+            font-family: Roboto, sans-serif;
+            font-size: large;
+            font-weight: bold;
+        }
+
+        gmp-place-autocomplete {
+            width: 300px;
+        }
+
+        /* #infowindow-content .title {
+                font-weight: bold;
+            } */
     </style>
-    </style>
+@endpush
+@push('scripts')
+    <script>
+        function initMap() {
+            // الحصول على إحداثيات المدينة من المتغيرات
+            var salonLat = {{ $salon->latitude }};
+            var salonLng = {{ $salon->longitude }};
+
+            // إنشاء الخريطة مع مركز في إحداثيات المدينة
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: {
+                    lat: salonLat,
+                    lng: salonLng
+                },
+                zoom: 14
+            });
+
+            // إضافة دبوس (Marker) مع أيقونة مخصصة
+            var marker = new google.maps.Marker({
+                position: {
+                    lat: salonLat,
+                    lng: salonLng
+                },
+                map: map,
+                icon: {
+                    url: "{{ asset('frontend/assets/img/location.png') }}",
+                    scaledSize: new google.maps.Size(35, 35),
+                    origin: new google.maps.Point(0, 0),
+                    anchor: new google.maps.Point(15, 30)
+                },
+                title: "{{ $salon->name }}",
+            });
+
+            marker.addListener('click', ({
+                domEvent,
+                latLng
+            }) => {
+                const {
+                    target
+                } = domEvent;
+                // Handle the click event.
+                // ...
+            });
+
+            // تحديد حالة الصالون بناءً على $salon->isOpen
+            var isOpen = {{ $salon->isOpen ? 'true' : 'false' }};
+            var statusText = isOpen ? '<span style="color: green;">مفتوح</span>' : '<span style="color: red;">مغلق</span>';
+
+            // إضافة نافذة معلومات مع تفاصيل الصالون
+            var infoWindow = new google.maps.InfoWindow({
+                content: `
+                    <div style="background-color: #fff; padding: 10px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); position: relative; padding-top: 0;">
+                        <div style="display: flex; align-items: center; padding: 5px 0;">
+                            <img src="{{ $salon->cover_image_url ?? 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400' }}"
+                                 alt="{{ $salon->name }}"
+                                 style="width: 80px; height: 80px; object-fit: cover; border-radius: 5px; margin-right: 15px;">
+                            <div style="flex-grow: 1; padding-right: 20px;">
+                                <h4 style="margin: 0; color: #f56476; font-size: 16px; display: flex; align-items: center; justify-content: space-between;">
+                                    {{ $salon->name }}
+
+                                </h4>
+                                <p style="margin: 8px 0; color: #666; padding-left: 5px;">الحالة: ${statusText}</p>
+                            </div>
+                        </div>
+                        <a href="https://www.google.com/maps?q=${salonLat},${salonLng}" target="_blank" style="display: flex; align-items: center; margin-top: 5px; padding: 5px 15px; background-color: #f56476; color: #fff; text-decoration: none; border-radius: 5px; font-size: 14px;">عرض على خرائط غوغل</a>
+                    </div>
+                `
+            });
+            // فتح النافذة المعلوماتية عند النقر على العلامة
+            marker.addListener('click', function() {
+                infoWindow.open(map, marker);
+            });
+
+            // فتح النافذة المعلوماتية تلقائيًا عند تحميل الخريطة
+            infoWindow.open(map, marker);
+        }
+    </script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&callback=initMap"
+        async defer></script>
 @endpush

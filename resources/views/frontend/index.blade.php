@@ -408,10 +408,10 @@
                         </div>
 
                         <div class="join-buttons">
-                            <button class="btn btn-white">
+                            <a href="{{ route('front.salons.create') }}" class="btn btn-white">
                                 ابدئي الآن مجاناً
                                 <i data-lucide="arrow-left"></i>
-                            </button>
+                            </a>
 
                         </div>
                     </div>
@@ -442,7 +442,7 @@
                         <div class="success-story">
                             <h3 class="success-title">قصة نجاح</h3>
                             <div class="success-profile">
-                                <img src="{{ asset('assets/img/clients/profile.png') }}" alt="أمل محمد"
+                                <img src="{{ asset('frontend/assets/img/clients/profile.png') }}" alt="أمل محمد"
                                     class="success-avatar">
                                 <div class="success-info">
                                     <div class="success-name">أمل محمد</div>

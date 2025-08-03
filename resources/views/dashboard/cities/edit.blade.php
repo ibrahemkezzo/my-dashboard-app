@@ -9,8 +9,8 @@
 @endsection
 
 @section('content')
-    <x-alert-message />
-    <div class="card">
+<div class="card">
+        <x-alert-message />
         <div class="card-header">
             <h3>{{ __('dashboard.edit_city') }}</h3>
         </div>
