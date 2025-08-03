@@ -141,13 +141,10 @@
                         <label class="form-label fw-semibold">السعر (ريال)</label>
                         <input type="number" step="0.01" class="form-control service-price" name="salon_services[${serviceIndex}][price]" placeholder="200" required>
                     </div>
-                    <div class="col-md-2 mb-3 d-flex align-items-end">
-                        <button type="button" class="btn btn-outline-danger remove-service">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label fw-semibold">المدة </label>
+                        <input type="number" step="0.01" class="form-control service-price" name="salon_services[${serviceIndex}][duration]" placeholder="200" required>
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-md-4 mb-3">
                         <label class="form-label fw-semibold">الحالة</label>
                         <select class="form-control" name="salon_services[${serviceIndex}][status]">
@@ -155,10 +152,15 @@
                             <option value="0">غير مفعل</option>
                         </select>
                     </div>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label fw-semibold">وصف الخدمة</label>
-                    <textarea class="form-control service-description" name="salon_services[${serviceIndex}][special_notes]" rows="2" placeholder="اكتبي وصفاً مختصراً للخدمة..." required></textarea>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">وصف الخدمة</label>
+                        <textarea class="form-control service-description" name="salon_services[${serviceIndex}][special_notes]" rows="2" placeholder="اكتبي وصفاً مختصراً للخدمة..." required></textarea>
+                    </div>
+                     <div class="col-md-2 mb-3 d-flex align-items-end">
+                        <button type="button" class="btn btn-outline-danger remove-service">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
                 </div>
             `;
 
