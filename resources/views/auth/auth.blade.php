@@ -67,11 +67,12 @@
                         <div class="divider mb-3">
                             <span>أو</span>
                         </div>
-
-                        <button class="btn btn-google w-100">
-                            <i class="fab fa-google me-2"></i>
-                            تسجيل الدخول بـ Google
-                        </button>
+                        <div class="btn btn-google-f w-100">
+                            <a href="{{ route('auth.google') }}" style="text-decoration: none; color-text:black;">
+                                <i class="fab fa-google me-2"></i>
+                                تسجيل الدخول بـ Google
+                            </a>
+                        </div>
                     </div>
 
                     <!-- Register Form -->
@@ -189,14 +190,46 @@
                         <div class="divider mb-3">
                             <span>أو</span>
                         </div>
-
-                        <button class="btn btn-google w-100">
+{{-- @dd(5) --}}
+                        <a href="{{ route('auth.google') }}" class="btn-google-f btn w-100">
                             <i class="fab fa-google me-2"></i>
                             التسجيل بـ Google
-                        </button>
+                        </a>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+@push('styles')
+<style>
+    .btn-google-f {
+    text-decoration: none;
+    background: var(--white);
+    border: 2px solid #ddd;
+    color: var(--dark);
+    padding: 12px 20px;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-google-f:hover {
+    text-decoration: none;
+    border-color: #f56476;
+    color: #f56476;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(66, 133, 244, 0.2);
+}
+
+   .btn-primary,
+    .btn-google-f {
+        padding: 12px 20px;
+    }
+</style>
+@endpush

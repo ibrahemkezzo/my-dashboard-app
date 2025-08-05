@@ -207,7 +207,7 @@
 
                 <x-frontend.rating />
 
-            
+
 
         <!-- Join Beautician Section -->
         <section class="join-beautician-section">

@@ -297,10 +297,10 @@ function initFormSubmissions() {
     // }
 
     // Google authentication buttons
-    const googleButtons = document.querySelectorAll('.btn-google');
-    googleButtons.forEach(button => {
-        button.addEventListener('click', handleGoogleAuth);
-    });
+    // const googleButtons = document.querySelectorAll('.btn-google');
+    // googleButtons.forEach(button => {
+    //     button.addEventListener('click', handleGoogleAuth);
+    // });
 }
 
 // Handle user login
@@ -510,28 +510,28 @@ function handleUserRegister(event) {
 // }
 
 // Handle Google authentication
-function handleGoogleAuth(event) {
-    event.preventDefault();
+// function handleGoogleAuth(event) {
+//     event.preventDefault();
 
-    const button = event.target;
-    const originalText = button.innerHTML;
+//     const button = event.target;
+//     const originalText = button.innerHTML;
 
-    button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>جاري التوصيل مع Google...';
-    button.disabled = true;
+//     button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>جاري التوصيل مع Google...';
+//     button.disabled = true;
 
-    // Simulate Google auth
-    setTimeout(() => {
-        showMessage('تم تسجيل الدخول باستخدام Google بنجاح!', 'success');
+//     // Simulate Google auth
+//     setTimeout(() => {
+//         showMessage('تم تسجيل الدخول باستخدام Google بنجاح!', 'success');
 
-        button.innerHTML = originalText;
-        button.disabled = false;
+//         button.innerHTML = originalText;
+//         button.disabled = false;
 
-        setTimeout(() => {
-            window.location.href = 'index.html';
-        }, 2000);
+//         setTimeout(() => {
+//             window.location.href = 'index.html';
+//         }, 2000);
 
-    }, 2000);
-}
+//     }, 2000);
+// }
 
 // Show message function
 function showMessage(message, type = 'info') {
