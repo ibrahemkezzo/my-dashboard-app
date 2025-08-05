@@ -3,6 +3,7 @@
 use App\Http\Controllers\Abilities\PermissionController;
 use App\Http\Controllers\Abilities\RoleController;
 use App\Http\Controllers\Abilities\UserController;
+use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\Dashboard\AppointmentController;
 use App\Http\Controllers\Dashboard\BookingController;
 use App\Http\Controllers\Dashboard\CityController;
@@ -43,6 +44,11 @@ Route::middleware([
 Route::middleware(['auth'])->group(function () {
 
 });
+
+
+Route::get('/auth/google', [SocialAuthController::class, 'redirectToGoogle'])->name('auth.google');
+Route::get('/auth/google/callback', [SocialAuthController::class, 'handleGoogleCallback']);
+
 
 Route::group([
     'middleware' => ['auth', 'role:super-admin'],
@@ -150,9 +156,7 @@ Route::group([
 
 });
 
-Route::prefix('dashboard/salons')->name('dashboard.salons.')->middleware(['auth', 'role:super-admin'])->group(function () {
 
-});
 
 
 // route for front website
@@ -161,6 +165,7 @@ Route::group([
     'middleware' => [],
     'as'=>'front.',  //pefor(pre) each name route
 ],function () {
+
     Route::get('/',[FrontController::class,'index'])->name('home');
 
     //salons
@@ -225,25 +230,3 @@ Route::group([
     Route::get('/terms',[FrontController::class,'terms'])->name('terms');
 });
 
-
-// الصفحات الرئيسية
-// // Route::view('/home', 'frontend.index')->name('home'); // الصفحة الرئيسية
-// Route::view('/list', 'frontend.list')->name('list'); // صفحة تصفح الكوافيرات
-// // Route::view('/about', 'frontend.about')->name('about'); // عن المنصة
-// // Route::view('/faq', 'frontend.faq')->name('faq'); // صفحة الأسئلة الشائعة
-
-// // الصفحات القانونية
-// Route::view('/privacy-policy', 'frontend.legal.privacy')->name('privacy.policy'); // سياسة الخصوصية
-// Route::view('/terms-and-conditions', 'frontend.legal.terms')->name('terms.conditions'); // الشروط والأحكام
-
-// Route::view('/list/show', 'frontend.salon-show')->name('show'); // صفحة عرض الصالون
-
-// // صفحات بروفايل المستخدم
-// Route::view('/account', 'user.account')->name('account'); //  تعديل حساب المستخدم
-// Route::view('/bookings', 'user.bookings')->name('bookings'); // صفحة حجوزات المستخدم
-// Route::view('/favorits', 'user.favorits')->name('favorits'); // صفحة الكوافيرات المفضلة لدى المستخدم
-
-
-// // صفحات التسجيل / تسجيل الدخول
-// Route::view('/user-auth', 'auth.user-auth')->name('user-auth'); // التسجيل/تسجيل الدخول للمستخدم
-// Route::view('/hairdresser-auth', 'hairdresser-auth')->name('hairdresser-auth'); // التسجيل/تسجيل الدخول للكوافيرة

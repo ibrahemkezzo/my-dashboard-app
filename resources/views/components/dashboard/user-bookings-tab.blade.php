@@ -2,51 +2,51 @@
 
 <div class="booking-summary mb-4">
     <div class="row">
-        <div class="col-md-2">
+        <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
             <div class="card bg-primary text-white">
                 <div class="card-body text-center">
                     <h4>{{ $statistics['total'] }}</h4>
-                    <p class="mb-0">{{ __('dashboard.total_bookings') }}</p>
+                    <p class="mb-0 text-white">{{ __('dashboard.total_bookings') }}</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
             <div class="card bg-warning text-white">
                 <div class="card-body text-center">
                     <h4>{{ $statistics['pending'] }}</h4>
-                    <p class="mb-0">{{ __('dashboard.pending_bookings') }}</p>
+                    <p class="mb-0 text-white">{{ __('dashboard.pending_bookings') }}</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
             <div class="card bg-info text-white">
                 <div class="card-body text-center">
                     <h4>{{ $statistics['salon_confirmed'] }}</h4>
-                    <p class="mb-0">{{ __('dashboard.salon_confirmed_bookings') }}</p>
+                    <p class="mb-0 text-white">{{ __('dashboard.salon_confirmed_bookings') }}</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
             <div class="card bg-success text-white">
                 <div class="card-body text-center">
                     <h4>{{ $statistics['user_confirmed'] }}</h4>
-                    <p class="mb-0">{{ __('dashboard.user_confirmed_bookings') }}</p>
+                    <p class="mb-0 text-white">{{ __('dashboard.user_confirmed_bookings') }}</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
             <div class="card bg-danger text-white">
                 <div class="card-body text-center">
                     <h4>{{ $statistics['rejected'] }}</h4>
-                    <p class="mb-0">{{ __('dashboard.rejected_bookings') }}</p>
+                    <p class="mb-0 text-white">{{ __('dashboard.rejected_bookings') }}</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
             <div class="card bg-secondary text-white">
                 <div class="card-body text-center">
                     <h4>{{ $statistics['cancelled'] }}</h4>
-                    <p class="mb-0">{{ __('dashboard.cancelled_bookings') }}</p>
+                    <p class="mb-0 text-white">{{ __('dashboard.cancelled_bookings') }}</p>
                 </div>
             </div>
         </div>
@@ -119,7 +119,7 @@
                             <p class="text-muted">{{ __('dashboard.no_appointment_scheduled') }}</p>
                         </div>
                     </div>
-                    
+
                     <div class="mt-3">
                         <div class="d-flex gap-2">
                             <a href="{{ route('dashboard.bookings.show', $booking) }}" class="btn btn-sm btn-info">
@@ -150,4 +150,4 @@
             {{ $bookings->links() }}
         </div>
     @endif
-</div> 
+</div>

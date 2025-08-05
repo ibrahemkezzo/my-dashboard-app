@@ -60,10 +60,10 @@
 
                                 <h5 class="fw-semibold mb-3">تغيير كلمة المرور</h5>
 
-                                <div class="mb-3">
+                                {{-- <div class="mb-3">
                                     <label class="form-label fw-semibold">كلمة المرور الحالية</label>
                                     <input name="old_password" type="password" class="form-control" id="currentPassword">
-                                </div>
+                                </div> --}}
 
                                 <div class="row">
                                     <div class="col-md-6 mb-3">

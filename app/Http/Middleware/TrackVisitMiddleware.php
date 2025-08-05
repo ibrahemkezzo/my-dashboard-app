@@ -66,13 +66,14 @@ class TrackVisitMiddleware
             //     'country' => $country,
             //     'referrer' => $referrer,
             // ]);
-             ModelsSession::create([
+            
+            ModelsSession::create([
             'session_id' => $sessionId,
             'device_type' => $deviceType,
             'country' => $country,
             'referrer' => $referrer,
             'started_at' => now(),
-             ]);
+            ]);
 
             // Mark session as tracked
             Cache::put("session_tracked_{$sessionId}", true, now()->addHours(24));

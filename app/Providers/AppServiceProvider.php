@@ -3,10 +3,12 @@
 namespace App\Providers;
 
 use App\Contracts\AnalyticsInterface;
+use App\Contracts\SocialAuthServiceInterface;
 use App\Factories\StorageStrategyFactory;
 use App\Repositories\DatabaseSettingsRepository;
 use App\Repositories\UserRepository;
 use App\Repositories\VisitRepository;
+use App\Services\GoogleAuthService;
 use App\Services\MediaService;
 use App\Services\SettingsService;
 use App\Services\VisitAnalyticsService;
@@ -48,6 +50,9 @@ class AppServiceProvider extends ServiceProvider
                 $app->make(UserRepository::class)
             );
         });
+
+        $this->app->bind(SocialAuthServiceInterface::class, GoogleAuthService::class);
+
     }
 
     /**

@@ -42,6 +42,10 @@ class User extends Authenticatable
         'gender',
         'social_media_links',
         'city_id',
+        'google_id',
+        'google_token',
+        'google_refresh_token',
+        'google_token_expires_at',
     ];
 
     /**

@@ -315,7 +315,35 @@
                                                 </div>
                                                 <div class="col-md-2">
                                                     <strong>{{ __('dashboard.duration') }}:</strong>
-                                                    <span class="text-muted">{{ $session->started_at->diffInMinutes($session->updated_at) }} {{ __('dashboard.min') }}</span>
+                                                    <span class="text-muted">
+                                                        @php
+                                                            $totalSeconds = $session->started_at->diffInSeconds($session->updated_at);
+                                                            $hours = floor($totalSeconds / 3600);
+                                                            $minutes = floor(($totalSeconds % 3600) / 60);
+                                                            $seconds = $totalSeconds % 60;
+                                                        @endphp
+
+                                                        @if ($session->started_at && $session->updated_at)
+                                                            @if ($hours > 0)
+                                                                {{ $hours }}{{ $minutes > 0 || $seconds > 0 ? ':' : '' }}
+                                                                @if ($minutes > 0)
+                                                                    {{ $minutes }}{{ $seconds > 0 ? '.' : '' }}
+                                                                @endif
+                                                                @if ($seconds > 0)
+                                                                    {{ $seconds }}
+                                                                @endif
+                                                                {{ __('dashboard.hour') }}
+                                                            @else
+                                                                {{ $minutes}}{{ $seconds > 0 ? '.' : '' }}
+                                                                @if ($seconds > 0)
+                                                                    {{$seconds }}
+                                                                @endif
+                                                                {{  __('dashboard.min')  }}
+                                                            @endif
+                                                        @else
+                                                            {{ __('dashboard.unknown') }}
+                                                        @endif
+                                                    </span>
                                                 </div>
                                                 <div class="col-md-1">
                                                     <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#visits-{{ $session->id }}">
@@ -372,19 +400,21 @@
                                         <p class="text-muted">{{ __('dashboard.no_activity_description') }}</p>
                                     </div>
                                 @endforelse
+                                    <div dir="ltr">
 
-                                <!-- Pagination -->
-                                @if($sessions->hasPages())
-                                    {{-- <div class="d-flex justify-content-center mt-4"> --}}
-                                        {{ $sessions->links() }}
-                                    {{-- </div> --}}
-                                @endif
+                                        <!-- Pagination -->
+                                        @if($sessions->hasPages())
+                                            <div class="d-flex justify-content-center mt-4">
+                                                {{ $sessions->appends(request()->query())->links('pagination::simple-tailwind') }}
+                                            </div>
+                                        @endif
+                                    </div>
                             </div>
                         </div>
 
                         <!-- User Bookings Tab -->
                         <div class="tab-pane fade" id="bookings" role="tabpanel" aria-labelledby="bookings-tab">
-                            <x-dashboard.user-bookings-tab 
+                            <x-dashboard.user-bookings-tab
                                 :user="$user"
                                 :bookings="$bookings"
                                 :statistics="$bookingStatistics"
