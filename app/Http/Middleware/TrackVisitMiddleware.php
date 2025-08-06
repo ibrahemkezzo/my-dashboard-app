@@ -66,8 +66,8 @@ class TrackVisitMiddleware
             //     'country' => $country,
             //     'referrer' => $referrer,
             // ]);
-            
-            ModelsSession::create([
+
+            ModelsSession::updateOrCreate([
             'session_id' => $sessionId,
             'device_type' => $deviceType,
             'country' => $country,
