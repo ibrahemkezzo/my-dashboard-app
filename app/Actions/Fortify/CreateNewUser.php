@@ -3,6 +3,7 @@
 namespace App\Actions\Fortify;
 
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
@@ -38,6 +39,13 @@ class CreateNewUser implements CreatesNewUsers
             'password' => Hash::make($input['password']),
         ]);
         $user->assignRole('user');
+        // event(new Registered($user)); // إرسال إشعار تأكيد البريد
+          // تخزين رسالة النجاح في الـ session
+        session()->flash('message', [
+            'type' => 'info',
+            'content' => 'تم إرسال رابط تأكيد البريد الإلكتروني إلى بريدك. يرجى التحقق من بريدك الإلكتروني.'
+        ]);
+
         return $user;
     }
 }

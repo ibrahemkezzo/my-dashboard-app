@@ -17,7 +17,7 @@ class UpdateUserRequest extends FormRequest
     {
        /** @var User|null $user */
        $user = Auth::user();
-       return $user && $user->hasPermissionTo('edit-users');    }
+       return isset($user);    }
 
     /**
      * Get the validation rules that apply to the request.

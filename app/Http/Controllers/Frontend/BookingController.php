@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Frontend;
 use App\Models\Salon;
 use App\Models\SalonSubService;
 use App\Models\Booking;
+use App\Notifications\BookingConfirmedByUserNotification;
+use App\Notifications\NewBookingNotification;
 use App\Services\BookingService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class BookingController extends Controller
 {
@@ -54,7 +57,13 @@ class BookingController extends Controller
         ]);
         // dd($data);
         $data['user_id'] = $user->id;
-        $this->bookingService->create($data);
+        $booking = $this->bookingService->create($data);
+          // إرسال إشعار إلى مالك الصالون
+        $salon = Salon::find($data['salon_id']);
+        // @dd($booking);
+        if ($salon->owner) {
+            Notification::send($salon->owner, new NewBookingNotification($booking));
+        }
         return redirect()->route('front.profile.bookings')->with('message', ['type' => 'success', 'content' => __('تم إنشاء الحجز بنجاح')]);
     }
 
@@ -105,6 +114,13 @@ class BookingController extends Controller
             'user_notes' => 'nullable|string|max:500',
         ]);
         $this->bookingService->userConfirmBooking($booking, $data);
+          // إرسال إشعار إلى مالك الصالون عند التأكيد
+        if ($data['action'] === 'confirm') {
+            $salon = $booking->salon;
+            if ($salon->owner) {
+                Notification::send($salon->owner, new BookingConfirmedByUserNotification($booking));
+            }
+        }
         return redirect()->route('front.profile.bookings')->with('message', ['type' => 'success', 'content' => __('تم تحديث حالة الحجز')]);
     }
 

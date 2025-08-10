@@ -6,12 +6,14 @@ use App\Http\Requests\FrontUpdaeteSalonRequest;
 use App\Models\Salon;
 use App\Models\SalonSubService;
 use App\Models\Booking;
+use App\Notifications\BookingStatusUpdatedNotification;
 use App\Services\SalonService;
 use App\Services\SalonSubServiceService;
 use App\Services\BookingService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Notification;
 
 class SalonManagerController extends Controller
 {
@@ -177,6 +179,8 @@ class SalonManagerController extends Controller
                     'action' => 'confirm',
                     'salon_notes' => $request->input('salon_notes'),
                 ]);
+                Notification::send($booking->user, new BookingStatusUpdatedNotification($booking, 'confirm'));
+
                 break;
             case 'modify':
                 $this->bookingService->salonConfirmBooking($booking, [
@@ -187,12 +191,15 @@ class SalonManagerController extends Controller
                     'salon_modification_reason' => $request->input('salon_modification_reason'),
                     'salon_notes' => $request->input('salon_notes'),
                 ]);
+                Notification::send($booking->user, new BookingStatusUpdatedNotification($booking, 'modify'));
                 break;
             case 'reject':
                 $this->bookingService->rejectBooking($booking, $request->input('rejection_reason'));
+                Notification::send($booking->user, new BookingStatusUpdatedNotification($booking, 'rejected'));
                 break;
             case 'cancel':
                 $this->bookingService->cancelBooking($booking, $request->input('cancellation_reason'));
+                Notification::send($booking->user, new BookingStatusUpdatedNotification($booking, 'cancel'));
                 break;
             case 'completed':
                 $this->bookingService->markBookingCompleted($booking);

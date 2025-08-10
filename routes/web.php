@@ -162,7 +162,7 @@ Route::group([
 // route for front website
 
 Route::group([
-    'middleware' => [],
+    // 'middleware' => [],
     'as'=>'front.',  //pefor(pre) each name route
 ],function () {
 
@@ -181,14 +181,14 @@ Route::group([
         Route::post('create/step2/{salon}', [FrontendSalonController::class, 'storeStep2'])->name('store.step2');
         Route::get('/manager',[FrontendSalonController::class,'manager'])->name('manager');
     });
-    //prfile
+    //profile
     Route::group([
         'prefix' => 'profile/',
         'as'=>'profile.',  //pefor(pre) each name route
         'middleware'=>'auth'
     ],function () {
         Route::get('account',[ProfileController::class,'account'])->name('account');
-        Route::put('account/{user}',[ProfileController::class,'updateAccount'])->name('update');
+    Route::put('account/{user}',[ProfileController::class,'updateAccount'])->name('update');
         Route::get('favourites',[ProfileController::class,'favourites'])->name('favourites');
         Route::post('favorite/toggle', [ProfileController::class, 'toggleFavorite'])->name('toggleFavorite');
         Route::get('bookings',[FrontendBookingController::class,'bookings'])->name('bookings');
@@ -203,24 +203,25 @@ Route::group([
         Route::group([
             'prefix' => 'salon/manager/',
             'as'=>'salon.manager',  //pefor(pre) each name route
+            // 'middleware'=>'verified',
         ],function () {
-        Route::get('', [SalonManagerController::class, 'index']);
-        Route::post('update', [SalonManagerController::class, 'updateInfo'])->name('.updateInfo');
-        Route::post('services/add', [SalonManagerController::class, 'addService'])->name('.addService');
-        Route::post('services/{subServiceId}/edit', [SalonManagerController::class, 'editService'])->name('.editService');
-        Route::post('services/{subServiceId}/delete', [SalonManagerController::class, 'deleteService'])->name('.deleteService');
-        Route::post('bookings/{booking}/action', [SalonManagerController::class, 'bookingAction'])->name('.bookingAction');
-        Route::get('bookings/list', [SalonManagerController::class, 'listBookings'])->name('.listBookings');
-        // Gallery management
-        Route::post('gallery/add', [SalonManagerController::class, 'addGalleryImage'])->name('.gallery.add');
-        Route::post('gallery/{media}/delete', [SalonManagerController::class, 'deleteGalleryImage'])->name('.gallery.delete');
-        Route::post('gallery/{media}/update', [SalonManagerController::class, 'updateGalleryImage'])->name('.gallery.update');
-        // Service management (view, edit, images)
-        Route::get('services/{subServiceId}/view', [SalonManagerController::class, 'viewService'])->name('.services.view');
-        Route::post('services/{subServiceId}/edit', [SalonManagerController::class, 'editService'])->name('.services.edit');
-        Route::post('services/{subServiceId}/delete', [SalonManagerController::class, 'deleteService'])->name('.services.delete');
-        Route::post('services/{subServiceId}/images/add', [SalonManagerController::class, 'addServiceImage'])->name('.services.images.add');
-        Route::post('services/{subServiceId}/images/{media}/delete', [SalonManagerController::class, 'deleteServiceImage'])->name('.services.images.delete');
+            Route::get('', [SalonManagerController::class, 'index']);
+            Route::post('update', [SalonManagerController::class, 'updateInfo'])->name('.updateInfo');
+            Route::post('services/add', [SalonManagerController::class, 'addService'])->name('.addService');
+            Route::post('services/{subServiceId}/edit', [SalonManagerController::class, 'editService'])->name('.editService');
+            Route::post('services/{subServiceId}/delete', [SalonManagerController::class, 'deleteService'])->name('.deleteService');
+            Route::post('bookings/{booking}/action', [SalonManagerController::class, 'bookingAction'])->name('.bookingAction');
+            Route::get('bookings/list', [SalonManagerController::class, 'listBookings'])->name('.listBookings');
+            // Gallery management
+            Route::post('gallery/add', [SalonManagerController::class, 'addGalleryImage'])->name('.gallery.add');
+            Route::post('gallery/{media}/delete', [SalonManagerController::class, 'deleteGalleryImage'])->name('.gallery.delete');
+            Route::post('gallery/{media}/update', [SalonManagerController::class, 'updateGalleryImage'])->name('.gallery.update');
+            // Service management (view, edit, images)
+            Route::get('services/{subServiceId}/view', [SalonManagerController::class, 'viewService'])->name('.services.view');
+            Route::post('services/{subServiceId}/edit', [SalonManagerController::class, 'editService'])->name('.services.edit');
+            Route::post('services/{subServiceId}/delete', [SalonManagerController::class, 'deleteService'])->name('.services.delete');
+            Route::post('services/{subServiceId}/images/add', [SalonManagerController::class, 'addServiceImage'])->name('.services.images.add');
+            Route::post('services/{subServiceId}/images/{media}/delete', [SalonManagerController::class, 'deleteServiceImage'])->name('.services.images.delete');
         });
     });
     //pages

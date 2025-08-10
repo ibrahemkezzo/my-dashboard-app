@@ -92,12 +92,12 @@
                             <div class="form-group mb-0">
                                 <select name="status" class="form-control" style="min-width: 100px;">
                                     <option value="">{{ __('dashboard.view_all') }}</option>
-                                    <option value="1"
-                                        {{ isset($filters['status']) && $filters['status'] == '1' ? 'selected' : '' }}>
-                                        {{ __('dashboard.active') }}</option>
-                                    <option value="0"
-                                        {{ isset($filters['status']) && $filters['status'] == '0' ? 'selected' : '' }}>
-                                        {{ __('dashboard.inactive') }}</option>
+                                    <option value="certified"
+                                        {{ isset($filters['status']) && $filters['status'] == 'certified' ? 'selected' : '' }}>
+                                        {{ __('dashboard.certified') }}</option>
+                                    <option value="not_certified"
+                                        {{ isset($filters['status']) && $filters['status'] == 'not_certified' ? 'selected' : '' }}>
+                                        {{ __('dashboard.not_certified') }}</option>
                                 </select>
                             </div>
                             <div class="form-group mb-0">
@@ -175,7 +175,7 @@
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->phone_number }}</td>
                                     <td>{{ $user->city->name ?? 'غير محدد' }}</td>
-                                    <td>{{ $user->is_active ? __('dashboard.active') : __('dashboard.inactive') }}</td>
+                                    <td>{{ ($user->status == 'certified') ? __('dashboard.certified') : __('dashboard.not_certified') }}</td>
                                     <td>{{ $user->sessions_max_updated_at ? \Carbon\Carbon::parse($user->sessions_max_updated_at)->diffForHumans() : __('dashboard.never') }}
                                     </td>
                                     <td>{{ $user->roles->pluck('name')->implode(', ') ?: __('dashboard.customer') }} </td>
@@ -195,7 +195,7 @@
                                             title="{{ __('dashboard.manage_roles') }}">
                                             <i class="fa fa-users-cog"></i>
                                         </a>
-                                        <form action="{{ route('dashboard.users.toggleStatus', $user) }}" method="POST"
+                                        {{-- <form action="{{ route('dashboard.users.toggleStatus', $user) }}" method="POST"
                                             id="toggle-status-form-{{ $user->id }}" style="display:none;">
                                             @csrf
                                             @method('PATCH')
@@ -204,7 +204,7 @@
                                             title="{{ $user->is_active ? __('dashboard.deactivate') : __('dashboard.activate') }}"
                                             onclick="event.preventDefault(); return confirm('{{ __('dashboard.are_you_sure_toggle_status') }} {{ $user->is_active ? __('dashboard.deactivate') : __('dashboard.activate') }} {{ __('dashboard.this_user') }}') && document.getElementById('toggle-status-form-{{ $user->id }}').submit();">
                                             <i class="fa fa-{{ $user->is_active ? 'ban' : 'check' }}"></i>
-                                        </a>
+                                        </a> --}}
                                         <form action="{{ route('dashboard.users.destroy', $user) }}" method="POST"
                                             id="destroy-form-{{ $user->id }}" style="display:none;">
                                             @csrf
