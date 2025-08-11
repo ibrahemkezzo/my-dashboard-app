@@ -39,8 +39,8 @@
         <label>حدد موقع الصالون على الخريطة</label>
 
         <div id="map" style="height: 400px; width: 100%;"></div>
-        <input type="hidden" name="latitude" id="latitude">
-        <input type="hidden" name="longitude" id="longitude">
+        <input type="hidden" name="latitude" id="latitude" value="{{ old('latitude', $salon->latitude ?? '') }}">
+        <input type="hidden" name="longitude" id="longitude" value="{{ old('longitude', $salon->longitude ?? '') }}" >
     </div>
 </div>
 <div class="row mb-3">
