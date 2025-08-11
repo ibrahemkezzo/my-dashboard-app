@@ -181,6 +181,17 @@
                                     </div>
                                 </div>
                                 <div class="booking-actions">
+                                    @if($booking->status === 'completed')
+                                        @php
+                                            $hasCompleted = auth()->user()->bookings()->where('salon_id',$booking->salon->id)->where('status','completed')->exists();
+                                        @endphp
+                                        @if($hasCompleted)
+                                            <a href="{{ route('front.ratings.create', $booking->salon) }}"
+                                               class="btn-action rate">
+                                                <i class="fas fa-star"></i>قيّم/حدّث التقييم
+                                            </a>
+                                        @endif
+                                    @endif
 
                                     <a href="{{ route('front.salons.show', $booking->salon->id) }}"
                                         class="btn-action re-book">

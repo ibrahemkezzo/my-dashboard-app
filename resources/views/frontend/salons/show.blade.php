@@ -49,11 +49,13 @@
                             {{-- <button class="btn-icon-outline" id="favoriteBtn" title="إضافة للمفضلة">
                                 <i class="far fa-heart"></i>
                             </button> --}}
-                            <button
-                                class="btn-icon-outline {{ Auth::user()->favoriteSalons()->where('salon_id', $salon->id)->first() ? 'active' : '' }}"
-                                data-salon-id="{{ $salon->id }}" onclick="toggleFavorite({{ $salon->id }})">
-                                <i class="far fa-heart"></i>
-                            </button>
+                            @auth
+                                <button
+                                    class="btn-icon-outline {{ Auth::user()->favoriteSalons()->where('salon_id', $salon->id)->first() ? 'active' : '' }}"
+                                    data-salon-id="{{ $salon->id }}" onclick="toggleFavorite({{ $salon->id }})">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            @endauth
                             <button class="btn-icon-outline" id="shareBtn" title="مشاركة الرابط">
                                 <i class="fas fa-share"></i>
                             </button>
@@ -67,14 +69,22 @@
                         </p>
                         <div class="d-flex align-items-center gap-3">
                             <div class="rating">
+                                @php
+                                    $averageRating = $salon->rating ?? 0;
+                                    $ratingCount = $salon->ratings()->where('status','approved')->count();
+                                @endphp
                                 <span class="stars text-warning">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star-half-alt"></i>
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        @if ($i <= floor($averageRating))
+                                            <i class="fas fa-star"></i>
+                                        @elseif ($i - $averageRating < 1)
+                                            <i class="fas fa-star-half-alt"></i>
+                                        @else
+                                            <i class="far fa-star"></i>
+                                        @endif
+                                    @endfor
                                 </span>
-                                <span class="ms-2">4.8 (24 تقييم)</span>
+                                <span class="ms-2">{{ number_format($averageRating,1) }} ({{ $ratingCount }} تقييم)</span>
                             </div>
                             <span class="badge bg-success">مركز معتمد</span>
                         </div>

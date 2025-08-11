@@ -14,6 +14,7 @@ use App\Http\Controllers\Dashboard\VisitTimeController;
 use App\Http\Controllers\Dashboard\SubServiceController;
 use App\Http\Controllers\Dashboard\SalonController;
 use App\Http\Controllers\Dashboard\SalonSubServiceController;
+use App\Http\Controllers\Dashboard\RatingController;
 use App\Http\Controllers\Files\FileManagerController;
 use App\Http\Controllers\Files\MediaController;
 use App\Http\Controllers\Frontend\BookingController as FrontendBookingController;
@@ -140,14 +141,15 @@ Route::group([
     Route::get('bookings/available-slots', [BookingController::class, 'getAvailableSlots'])->name('bookings.available-slots');
     Route::post('bookings/{booking}/complete', [BookingController::class, 'complete'])->name('bookings.complete');
 
+    // Ratings management
+    Route::resource('ratings', RatingController::class);
+    Route::post('ratings/{rating}/approve', [RatingController::class, 'approve'])->name('ratings.approve');
+    Route::post('ratings/{rating}/reject', [RatingController::class, 'reject'])->name('ratings.reject');
+    Route::get('ratings/statistics', [RatingController::class, 'statistics'])->name('ratings.statistics');
+
     // Appointments CRUD (SUSPENDED)
     // Route::resource('appointments', AppointmentController::class);
-    // Route::post('appointments/{appointment}/in-progress', [AppointmentController::class, 'markInProgress'])->name('appointments.in-progress');
-    // Route::post('appointments/{appointment}/completed', [AppointmentController::class, 'markCompleted'])->name('appointments.completed');
-    // Route::post('appointments/{appointment}/cancel', [AppointmentController::class, 'cancel'])->name('appointments.cancel');
-    // Route::post('appointments/{appointment}/no-show', [AppointmentController::class, 'markNoShow'])->name('appointments.no-show');
-    // Route::post('appointments/{appointment}/payment-status', [AppointmentController::class, 'updatePaymentStatus'])->name('appointments.payment-status');
-    // Route::get('appointments/salon/{salon}', [AppointmentController::class, 'salonAppointments'])->name('appointments.salon');
+    // Route::post('appointments/{appointment}/in-progres
     // Route::get('appointments/user/{user}', [AppointmentController::class, 'userAppointments'])->name('appointments.user');
     // Route::get('appointments/today', [AppointmentController::class, 'today'])->name('appointments.today');
     // Route::get('appointments/upcoming', [AppointmentController::class, 'upcoming'])->name('appointments.upcoming');
@@ -162,12 +164,24 @@ Route::group([
 // route for front website
 
 Route::group([
-    'middleware' => [],
+    // 'middleware' => [],
     'as'=>'front.',  //pefor(pre) each name route
 ],function () {
 
     Route::get('/',[FrontController::class,'index'])->name('home');
+    // Rating routes
+    Route::group([
+        'prefix' => 'ratings/',
+        'as' => 'ratings.',
+        'middleware' => 'auth'
+    ], function () {
+        Route::get('create/{salon}', [App\Http\Controllers\Frontend\RatingController::class, 'create'])->name('create');
+        Route::post('store/{salon}', [App\Http\Controllers\Frontend\RatingController::class, 'store'])->name('store');
+        Route::post('update/{salon}', [App\Http\Controllers\Frontend\RatingController::class, 'store'])->name('update');
+        Route::get('my-ratings', [App\Http\Controllers\Frontend\RatingController::class, 'myRatings'])->name('my-ratings');
+    });
 
+    Route::get('salons/{salon}/ratings', [App\Http\Controllers\Frontend\RatingController::class, 'salonRatings'])->name('salons.ratings');
     //salons
     Route::group([
         'prefix' => 'salons/',
@@ -179,9 +193,8 @@ Route::group([
         Route::get('create', [FrontendSalonController::class, 'create'])->name('create');
         Route::post('create/step1', [FrontendSalonController::class, 'storeStep1'])->name('store.step1');
         Route::post('create/step2/{salon}', [FrontendSalonController::class, 'storeStep2'])->name('store.step2');
-        Route::get('/manager',[FrontendSalonController::class,'manager'])->name('manager');
     });
-    //prfile
+    //profile
     Route::group([
         'prefix' => 'profile/',
         'as'=>'profile.',  //pefor(pre) each name route
@@ -191,36 +204,41 @@ Route::group([
         Route::put('account/{user}',[ProfileController::class,'updateAccount'])->name('update');
         Route::get('favourites',[ProfileController::class,'favourites'])->name('favourites');
         Route::post('favorite/toggle', [ProfileController::class, 'toggleFavorite'])->name('toggleFavorite');
-        Route::get('bookings',[FrontendBookingController::class,'bookings'])->name('bookings');
-        Route::post('bookings/create',[FrontendBookingController::class,'store'])->name('bookings.create');
-        Route::post('bookings/cancel/{booking}',[FrontendBookingController::class,'cancel'])->name('bookings.cancel');
-        Route::post('bookings/edit/{booking}',[FrontendBookingController::class,'store'])->name('bookings.edit');
-        Route::post('bookings/confirm/{booking}',[FrontendBookingController::class,'confirm'])->name('bookings.confirm');
-        Route::post('bookings/completed/{booking}',[FrontendBookingController::class,'completed'])->name('bookings.completed');
+        Route::group([
+            'middleware'=>'verified'
+            ],function () {
+                Route::get('bookings',[FrontendBookingController::class,'bookings'])->name('bookings');
+                Route::post('bookings/create',[FrontendBookingController::class,'store'])->name('bookings.create');
+                Route::post('bookings/cancel/{booking}',[FrontendBookingController::class,'cancel'])->name('bookings.cancel');
+                Route::post('bookings/edit/{booking}',[FrontendBookingController::class,'store'])->name('bookings.edit');
+                Route::post('bookings/confirm/{booking}',[FrontendBookingController::class,'confirm'])->name('bookings.confirm');
+                Route::post('bookings/completed/{booking}',[FrontendBookingController::class,'completed'])->name('bookings.completed');
+            });
 
 
         // Salon management routes
         Route::group([
             'prefix' => 'salon/manager/',
             'as'=>'salon.manager',  //pefor(pre) each name route
+            'middleware'=>'verified',
         ],function () {
-        Route::get('', [SalonManagerController::class, 'index']);
-        Route::post('update', [SalonManagerController::class, 'updateInfo'])->name('.updateInfo');
-        Route::post('services/add', [SalonManagerController::class, 'addService'])->name('.addService');
-        Route::post('services/{subServiceId}/edit', [SalonManagerController::class, 'editService'])->name('.editService');
-        Route::post('services/{subServiceId}/delete', [SalonManagerController::class, 'deleteService'])->name('.deleteService');
-        Route::post('bookings/{booking}/action', [SalonManagerController::class, 'bookingAction'])->name('.bookingAction');
-        Route::get('bookings/list', [SalonManagerController::class, 'listBookings'])->name('.listBookings');
-        // Gallery management
-        Route::post('gallery/add', [SalonManagerController::class, 'addGalleryImage'])->name('.gallery.add');
-        Route::post('gallery/{media}/delete', [SalonManagerController::class, 'deleteGalleryImage'])->name('.gallery.delete');
-        Route::post('gallery/{media}/update', [SalonManagerController::class, 'updateGalleryImage'])->name('.gallery.update');
-        // Service management (view, edit, images)
-        Route::get('services/{subServiceId}/view', [SalonManagerController::class, 'viewService'])->name('.services.view');
-        Route::post('services/{subServiceId}/edit', [SalonManagerController::class, 'editService'])->name('.services.edit');
-        Route::post('services/{subServiceId}/delete', [SalonManagerController::class, 'deleteService'])->name('.services.delete');
-        Route::post('services/{subServiceId}/images/add', [SalonManagerController::class, 'addServiceImage'])->name('.services.images.add');
-        Route::post('services/{subServiceId}/images/{media}/delete', [SalonManagerController::class, 'deleteServiceImage'])->name('.services.images.delete');
+            Route::get('', [SalonManagerController::class, 'index']);
+            Route::post('update', [SalonManagerController::class, 'updateInfo'])->name('.updateInfo');
+            Route::post('services/add', [SalonManagerController::class, 'addService'])->name('.addService');
+            Route::post('services/{subServiceId}/edit', [SalonManagerController::class, 'editService'])->name('.editService');
+            Route::post('services/{subServiceId}/delete', [SalonManagerController::class, 'deleteService'])->name('.deleteService');
+            Route::post('bookings/{booking}/action', [SalonManagerController::class, 'bookingAction'])->name('.bookingAction');
+            Route::get('bookings/list', [SalonManagerController::class, 'listBookings'])->name('.listBookings');
+            // Gallery management
+            Route::post('gallery/add', [SalonManagerController::class, 'addGalleryImage'])->name('.gallery.add');
+            Route::post('gallery/{media}/delete', [SalonManagerController::class, 'deleteGalleryImage'])->name('.gallery.delete');
+            Route::post('gallery/{media}/update', [SalonManagerController::class, 'updateGalleryImage'])->name('.gallery.update');
+            // Service management (view, edit, images)
+            Route::get('services/{subServiceId}/view', [SalonManagerController::class, 'viewService'])->name('.services.view');
+            Route::post('services/{subServiceId}/edit', [SalonManagerController::class, 'editService'])->name('.services.edit');
+            Route::post('services/{subServiceId}/delete', [SalonManagerController::class, 'deleteService'])->name('.services.delete');
+            Route::post('services/{subServiceId}/images/add', [SalonManagerController::class, 'addServiceImage'])->name('.services.images.add');
+            Route::post('services/{subServiceId}/images/{media}/delete', [SalonManagerController::class, 'deleteServiceImage'])->name('.services.images.delete');
         });
     });
     //pages

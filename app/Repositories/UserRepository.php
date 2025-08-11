@@ -39,7 +39,7 @@ class UserRepository
                     ->orWhere('phone_number', 'like', "%{$search}%");
             });
         }
-        
+
         if (!empty($filters['roles']) && $filters['roles'][0] != null) {
             $query->whereHas('roles', function ($q) use ($filters) {
                 $q->whereIn('name', $filters['roles']);
@@ -47,7 +47,7 @@ class UserRepository
         }
 
         if (isset($filters['status']) && $filters['status'] !== '') {
-            $query->where('is_active', $filters['status']);
+            $query->where('status', $filters['status']);
         }
 
         if (isset($filters['city_id']) && $filters['city_id'] !== '') {

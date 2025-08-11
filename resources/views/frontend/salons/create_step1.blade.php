@@ -9,19 +9,14 @@
 @endsection --}}
 
 @section('main')
-    <x-alert-message />
+
+<x-alert-message />
     {{-- <div class="card">
         <div class="card-body"> --}}
 
             <form action="{{ route('front.salons.store.step1') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-
                 @include('frontend.salons.hairdresser-auth-1')
-                {{-- @include('frontend.create-salon.hairdresser-auth-1', [
-                    'salon' => null,
-                    'owners' => $owners,
-                    'nextText' => __('Next'),
-                ]) --}}
             </form>
         {{-- </div>
     </div> --}}

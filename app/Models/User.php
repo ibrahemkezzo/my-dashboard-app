@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Traits\HasDynamicMediaUrl;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -13,7 +14,7 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens,HasRoles;
 
@@ -126,5 +127,13 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Salon::class, 'favorite_salons', 'user_id', 'salon_id')
                     ->withTimestamps();
+    }
+
+    /**
+     * Get the ratings submitted by the user.
+     */
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class);
     }
 }

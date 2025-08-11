@@ -149,7 +149,5 @@ class SalonController extends Controller
         return view('frontend.salons.show',compact('salon'));
     }
 
-    public function manager(){
-        return view('frontend.salons.manager');
-    }
+   
 }

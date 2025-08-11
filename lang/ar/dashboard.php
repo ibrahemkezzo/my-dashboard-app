@@ -910,4 +910,7 @@ return [
     'anpromoted' => 'غير مروج',
     'promoted' => ' مروج',
     'location_salon' => 'موقع الصالون',
+    'certified' => 'موثق',
+    'not_certified' => 'غير موثق',
+    'ratings' => 'التقييمات',
 ];

@@ -67,22 +67,23 @@ class TrackVisitMiddleware
             //     'referrer' => $referrer,
             // ]);
 
-            ModelsSession::updateOrCreate([
-            'session_id' => $sessionId,
-            'device_type' => $deviceType,
-            'country' => $country,
-            'referrer' => $referrer,
-            'started_at' => now(),
-            ]);
+            ModelsSession::updateOrCreate(
+                ['session_id' => $sessionId],  // شروط البحث: فقط session_id
+                [
+                    'device_type' => $deviceType,
+                    'country' => $country,
+                    'referrer' => $referrer,
+                    'started_at' => now(),  // سيُضبط فقط إذا كان إنشاء جديد؛ في التحديث، لن يتغير إلا إذا أردت
+                    'user_id' => $user_id ?? null,  // أضفه هنا إذا أردت تحديثه دائماً
+                ]
+            );
 
             // Mark session as tracked
             Cache::put("session_tracked_{$sessionId}", true, now()->addHours(24));
-        }
-        else{
-            if(($user_id != null) && (ModelsSession::where('session_id', $sessionId)->first()->user_id == null)){
+        } else {
+            if (($user_id != null) && (ModelsSession::where('session_id', $sessionId)->first()->user_id == null)) {
                 ModelsSession::where('session_id', $sessionId)->update(['user_id' => $user_id]);
-            }
-            else{
+            } else {
                 ModelsSession::where('session_id', $sessionId)->update(['updated_at' => now()]);
             }
         }

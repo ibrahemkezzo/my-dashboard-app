@@ -31,7 +31,7 @@
                                     <label for="name" class="form-label fw-semibold">اسم الصالون</label>
                                     <input type="text" class="form-control @error('name') is-invalid @enderror"
                                         id="name" name="name" value="{{ old('name', $salon->name ?? '') }}"
-                                        required>
+                                        >
                                     @error('name')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
