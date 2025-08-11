@@ -128,4 +128,12 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(Salon::class, 'favorite_salons', 'user_id', 'salon_id')
                     ->withTimestamps();
     }
+
+    /**
+     * Get the ratings submitted by the user.
+     */
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class);
+    }
 }

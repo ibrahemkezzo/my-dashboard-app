@@ -899,7 +899,8 @@ return [
     'promotion' => 'Promotion',
     'anpromoted' => 'Anpromoted',
     'promoted' => 'Promoted',
-        'location_salon' => 'Location Salon',
+    'location_salon' => 'Location Salon',
+    'ratings' => 'ٌRatings',
 
 
 

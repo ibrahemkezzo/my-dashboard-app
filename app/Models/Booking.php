@@ -73,6 +73,14 @@ class Booking extends Model
         return $this->hasOne(Appointment::class);
     }
 
+    /**
+     * Get the rating for this booking.
+     */
+    public function rating()
+    {
+        return $this->hasOne(Rating::class);
+    }
+
 
 
     /**

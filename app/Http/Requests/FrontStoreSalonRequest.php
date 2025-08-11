@@ -70,11 +70,11 @@ class FrontStoreSalonRequest extends FormRequest
         });
     }
 
-    /**
-     * Get custom messages for validator errors.
-     *
-     * @return array
-     */
+    // /**
+    //  * Get custom messages for validator errors.
+    //  *
+    //  * @return array
+    //  */
     public function messages()
     {
         return [
@@ -111,6 +111,9 @@ class FrontStoreSalonRequest extends FormRequest
             'social_links.*.max' => 'رابط التواصل الاجتماعي يجب ألا يتجاوز 255 حرفاً.',
             'license_document.image' => 'الملف المرفوع يجب أن يكون صورة.',
             'license_document.max' => 'حجم الصورة يجب ألا يزيد عن 2 ميغابايت.',
+            'latitude' => 'الرجاء تحديد موقع الصالون',
+            'longitude' => 'الرجاء تحديد موقع الصالون',
+            'license_end_date.after_or_equal' => 'يجب ان يكون تاريخ انتهاء الصلاحية بعد تاريخ بدأها',
             // 'password.required' => 'كلمة المرور مطلوبة.',
             // 'password.string' => 'كلمة المرور يجب أن تكون نصاً.',
             // 'password.min' => 'كلمة المرور يجب ألا تقل عن 8 أحرف.',

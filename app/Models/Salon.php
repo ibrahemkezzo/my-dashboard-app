@@ -26,7 +26,7 @@ class Salon extends Model
         'rating' => 'decimal:2',
     ];
 
-    protected $appends = ['cover_image_url','logo_url' , 'is_open' , 'is_favorited','license_url'];
+    protected $appends = ['cover_image_url','logo_url' , 'is_open' , 'is_favorited','license_url','review_count'];
 
     /**
      * The owner of the salon (one-to-one with User).
@@ -76,6 +76,23 @@ class Salon extends Model
                     ->withTimestamps();
     }
 
+    /**
+     * Get the ratings for this salon.
+     */
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class);
+    }
+
+    /**
+     * Accessor to check if the salon is favorited by the current user.
+     *
+     * @return bool
+     */
+    public function getReviewCountAttribute()
+    {
+        return $this->ratings()->where('status','approved')->count();;
+    }
     /**
      * Accessor to check if the salon is favorited by the current user.
      *

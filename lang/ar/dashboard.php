@@ -912,4 +912,5 @@ return [
     'location_salon' => 'موقع الصالون',
     'certified' => 'موثق',
     'not_certified' => 'غير موثق',
+    'ratings' => 'التقييمات',
 ];
