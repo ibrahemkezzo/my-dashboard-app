@@ -186,7 +186,7 @@
 @endsection
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/list.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/list.css?v=1.0.1') }}">
 @endpush
 
 @push('scripts')
