@@ -2,8 +2,8 @@
 /* Authentication Styles - Shared for User and Hairdresser Auth */
 
 :root {
-    --primary-border: #F56476;
-    --primary-hover: #e55a6c;
+    --primary-border: #87365b;
+    --primary-hover: #a2416d;
     --secondary-color: #6c757d;
     --success-color: #28a745;
     --warning-color: #ffc107;
@@ -273,8 +273,8 @@ html {
 }
 
 .btn-google:hover {
-    border-color: #f56476;
-    color: #f56476;
+    border-color: #a2416d;
+    color: #a2416d;
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(66, 133, 244, 0.2);
 }
@@ -429,39 +429,39 @@ html {
         padding: 30px 25px;
         border-radius: 16px;
     }
-    
+
     .auth-card.large {
         padding: 30px 25px;
     }
-    
+
     .auth-tabs {
         padding: 4px;
     }
-    
+
     .auth-tab {
         padding: 12px 16px;
         font-size: 0.9rem;
     }
-    
+
     .form-section {
         padding: 20px 15px;
     }
-    
+
     .image-upload-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 15px;
     }
-    
+
     .image-upload-label {
         height: 100px;
         font-size: 0.8rem;
     }
-    
+
     .features-grid {
         grid-template-columns: 1fr;
         gap: 10px;
     }
-    
+
     .feature-item {
         padding: 12px;
     }
@@ -471,27 +471,27 @@ html {
     .auth-card {
         padding: 25px 20px;
     }
-    
+
     .btn-primary,
     .btn-google {
         padding: 12px 20px;
     }
-    
+
     .input-group-text,
     .form-control,
     .form-select {
         padding: 10px 12px;
     }
-    
+
     .auth-tab {
         padding: 10px 12px;
         font-size: 0.85rem;
     }
-    
+
     .section-title {
         font-size: 1rem;
     }
-    
+
     .image-upload-grid {
         grid-template-columns: 1fr;
     }
@@ -550,7 +550,7 @@ html {
 }
 
 .auth-container a {
-    color: rgb(245 100 118) !important;
+    color: var(--primary-border) !important;
     text-decoration: underline;
 }
 
