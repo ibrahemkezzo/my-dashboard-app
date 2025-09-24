@@ -1,5 +1,6 @@
 @extends('layouts.frontend')
 
+@section('title',config('app.name') . ' | '.config('app.name_ar').'منصة حجز خدمات التجميل | ')
 
 @section('main')
     <x-alert-message />

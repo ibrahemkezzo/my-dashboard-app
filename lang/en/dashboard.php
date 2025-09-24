@@ -4,12 +4,12 @@ return [
     // General
     'dashboard' => 'Dashboard',
     'admin_panel' => 'Admin Panel',
-    'multikart_admin' => 'Multikart Admin',
-    'premium_admin_template' => 'Premium Admin Template',
-    'admin_template' => 'Admin Template',
-    'dashboard_template' => 'Dashboard Template',
-    'flat_admin_template' => 'Flat Admin Template',
-    'responsive_admin_template' => 'Responsive Admin Template',
+    'multikart_admin' => 'Glowzelle Admin',
+    'premium_admin_template' => 'Premium Admin Glowzelle',
+    'admin_template' => 'Admin Glowzelle',
+    'dashboard_template' => 'Dashboard Glowzelle',
+    'flat_admin_template' => 'Flat Admin Glowzelle',
+    'responsive_admin_template' => 'Responsive Admin Glowzelle',
     'web_app' => 'Web App',
     'pixelstrap' => 'Pixelstrap',
 

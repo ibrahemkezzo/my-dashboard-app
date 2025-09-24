@@ -9,9 +9,9 @@
     <meta name="keywords"
         content="{{ __('dashboard.admin_template') }}, {{ __('dashboard.multikart_admin') }} {{ __('dashboard.admin_template') }}, {{ __('dashboard.dashboard_template') }}, {{ __('dashboard.flat_admin_template') }}, {{ __('dashboard.responsive_admin_template') }}, {{ __('dashboard.web_app') }}">
     <meta name="author" content="{{ __('dashboard.pixelstrap') }}">
-    <link rel="icon" href="{{asset('assets/images/dashboard/favicon.png')}}" type="image/x-icon">
-    <link rel="shortcut icon" href="{{asset('assets/images/dashboard/favicon.png')}}" type="image/x-icon">
-    <title>{{ __('dashboard.My_Kawafir_Admin') }}</title>
+    <link rel="icon" href="{{ asset('frontend/assets/img/icons/favicon.png') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('frontend/assets/img/icons/apple-touch-icon.png') }}" type="image/x-icon">
+    <title>{{ __('dashboard.Glowzelle_Admin') }}</title>
 
     <!-- Google font-->
     <link rel="stylesheet"

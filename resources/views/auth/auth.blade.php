@@ -28,7 +28,9 @@
                                     <span class="input-group-text">
                                         <i class="fas fa-envelope"></i>
                                     </span>
-                                    <input type="email" class="form-control @error('email') is-invalid @enderror" id="loginEmail" name="email" value="{{ old('email') }}" required autofocus autocomplete="username">
+                                    <input type="email" class="form-control @error('email') is-invalid @enderror"
+                                        id="loginEmail" name="email" value="{{ old('email') }}" required autofocus
+                                        autocomplete="username">
                                     @error('email')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -41,7 +43,9 @@
                                     <span class="input-group-text">
                                         <i class="fas fa-lock"></i>
                                     </span>
-                                    <input name="password" type="password" class="form-control @error('password') is-invalid @enderror" id="loginPassword" required autocomplete="current-password">
+                                    <input name="password" type="password"
+                                        class="form-control @error('password') is-invalid @enderror" id="loginPassword"
+                                        required autocomplete="current-password">
                                     <button class="btn btn-outline-secondary" type="button" id="toggleLoginPassword">
                                         <i class="fas fa-eye"></i>
                                     </button>
@@ -56,7 +60,8 @@
                                 <label class="form-check-label" for="rememberMe">
                                     تذكرني
                                 </label>
-                                <a href="{{ route('password.request') }}" class="float-start text-decoration-none">نسيت كلمة المرور؟</a>
+                                <a href="{{ route('password.request') }}" class="float-start text-decoration-none">نسيت
+                                    كلمة المرور؟</a>
                             </div>
 
                             <button type="submit" class="btn btn-primary btn-lg w-100 mb-3">
@@ -67,10 +72,13 @@
                         <div class="divider mb-3">
                             <span>أو</span>
                         </div>
-                        <div class="btn btn-google-f w-100">
-                            <a href="{{ route('auth.google') }}" style="text-decoration: none; color-text:black;">
-                                <i class="fab fa-google me-2"></i>
-                                تسجيل الدخول بـ Google
+                        <div class="btn-google-a btn w-100">
+                            <a href="{{ route('auth.google') }}" style="text-decoration: none; color: black;">
+                                <img src="{{ asset('frontend/assets/img/google-logo.png') }}" alt="Google Logo"
+                                    style="width: 25px; height: 25px;" class="ms-2">
+                                <span style="color: black; font-weight: 500; position: relative; padding-bottom: 2px;">
+                                    تسجيل الدخول باستخدام جوجل
+                                </span>
                             </a>
                         </div>
                     </div>
@@ -85,7 +93,10 @@
                                     <span class="input-group-text">
                                         <i class="fa fa-address-card"></i>
                                     </span>
-                                    <input name="name" type="text" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" id="firstName" required autofocus autocomplete="name">
+                                    <input name="name" type="text"
+                                        class="form-control @error('name') is-invalid @enderror"
+                                        value="{{ old('name') }}" id="firstName" required autofocus
+                                        autocomplete="name">
                                     @error('name')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -98,7 +109,9 @@
                                     <span class="input-group-text">
                                         <i class="fas fa-envelope"></i>
                                     </span>
-                                    <input name="email" type="email" class="form-control @error('email') is-invalid @enderror" id="registerEmail" value="{{ old('email') }}" required autocomplete="username">
+                                    <input name="email" type="email"
+                                        class="form-control @error('email') is-invalid @enderror" id="registerEmail"
+                                        value="{{ old('email') }}" required autocomplete="username">
                                     @error('email')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -111,7 +124,9 @@
                                     <span class="input-group-text">
                                         <i class="fas fa-phone"></i>
                                     </span>
-                                    <input name="phone_number" type="tel" class="form-control @error('phone_number') is-invalid @enderror" id="phone" value="{{ old('phone_number') }}" required>
+                                    <input name="phone_number" type="tel"
+                                        class="form-control @error('phone_number') is-invalid @enderror"
+                                        id="phone" value="{{ old('phone_number') }}" required>
                                     @error('phone_number')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -151,8 +166,11 @@
                                     <span class="input-group-text">
                                         <i class="fas fa-lock"></i>
                                     </span>
-                                    <input name="password" type="password" class="form-control @error('password') is-invalid @enderror" id="registerPassword" required>
-                                    <button class="btn btn-outline-secondary" type="button" id="toggleRegisterPassword">
+                                    <input name="password" type="password"
+                                        class="form-control @error('password') is-invalid @enderror"
+                                        id="registerPassword" required>
+                                    <button class="btn btn-outline-secondary" type="button"
+                                        id="toggleRegisterPassword">
                                         <i class="fas fa-eye"></i>
                                     </button>
                                     @error('password')
@@ -168,14 +186,19 @@
                                     <span class="input-group-text">
                                         <i class="fas fa-lock"></i>
                                     </span>
-                                    <input name="password_confirmation" type="password" class="form-control" id="confirmPassword" required>
+                                    <input name="password_confirmation" type="password" class="form-control"
+                                        id="confirmPassword" required>
                                 </div>
                             </div>
 
                             <div class="form-check mb-3">
-                                <input class="form-check-input @error('agree_terms') is-invalid @enderror" type="checkbox" id="agreeTerms" name="agree_terms" required>
+                                <input class="form-check-input @error('agree_terms') is-invalid @enderror"
+                                    type="checkbox" id="agreeTerms" name="agree_terms" required>
                                 <label class="form-check-label" for="agreeTerms">
-                                    أوافق على <a href="{{ route('front.terms') }}" class="text-decoration-none">الشروط والأحكام</a> و <a href="{{ route('front.privacy') }}" class="text-decoration-none">سياسة الخصوصية</a>
+                                    أوافق على <a href="{{ route('front.terms') }}"
+                                        class="text-decoration-none">الشروط والأحكام</a> و <a
+                                        href="{{ route('front.privacy') }}" class="text-decoration-none">سياسة
+                                        الخصوصية</a>
                                 </label>
                                 @error('agree_terms')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -190,11 +213,16 @@
                         <div class="divider mb-3">
                             <span>أو</span>
                         </div>
-{{-- @dd(5) --}}
-                        <a href="{{ route('auth.google') }}" class="btn-google-f btn w-100">
-                            <i class="fab fa-google me-2"></i>
-                            التسجيل بـ Google
-                        </a>
+                        {{-- @dd(5) --}}
+                         <div class="btn-google-a btn w-100">
+                            <a href="{{ route('auth.google') }}" style="text-decoration: none; color: black;">
+                                <img src="{{ asset('frontend/assets/img/google-logo.png') }}" alt="Google Logo"
+                                    style="width: 25px; height: 25px;" class="ms-2">
+                                <span style="color: black; font-weight: 500; position: relative; padding-bottom: 2px;">
+                                    تسجيل الدخول باستخدام جوجل
+                                </span>
+                            </a>
+                        </div>
 
                     </div>
                 </div>
@@ -202,34 +230,8 @@
         </div>
     </div>
 </div>
-@push('styles')
-<style>
-    .btn-google-f {
-    text-decoration: none;
-    background: var(--white);
-    border: 2px solid #ddd;
-    color: var(--dark);
-    padding: 12px 20px;
-    font-weight: 500;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
 
-.btn-google-f:hover {
-    text-decoration: none;
-    border-color: #f56476;
-    color: #f56476;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(66, 133, 244, 0.2);
-}
-
-   .btn-primary,
-    .btn-google-f {
-        padding: 12px 20px;
-    }
-</style>
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('frontend/assets/js/auth.js') }}"></script>
 @endpush

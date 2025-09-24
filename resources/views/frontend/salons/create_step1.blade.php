@@ -1,5 +1,8 @@
 @extends('layouts.frontend')
 
+@section('title',config('app.name') . ' | '.config('app.name_ar').'منصة حجز خدمات التجميل | ')
+
+
 {{-- @section('breadcrumbs')
     <x-dashboard.dashboard-breadcrumb :breadcrumbs="[
         ['label' => __('dashboard.dashboard'), 'url' => route('dashboard.index')],

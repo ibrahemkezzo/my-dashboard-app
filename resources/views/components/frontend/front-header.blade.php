@@ -4,7 +4,7 @@
             <!-- Logo -->
             <div class="logo">
                 {{-- <h1>كوافيري | My Kawafir</h1> --}}
-                <a href="{{ route('front.home') }}"><img src="{{ asset('frontend/assets/img/logo.png') }}"
+                <a href="{{ route('front.home') }}"><img src="{{ asset('storage/'.$settings['site_logo'])}}"
                         alt="كوافيري | My Kawafir" width="168px" /></a>
             </div>
             <!-- Desktop Navigation -->
@@ -23,7 +23,7 @@
                         @if (!Auth::user()->hasVerifiedEmail())
                            <a href="{{ route('verification.notice') }}" title="يرجى تأكيد بريدك الإلكتروني" class="mt-2">
                                <i class="fas fa-exclamation-circle"
-                                style=" color: #f56476; font-size: 1.5rem; margin-left: 0.5rem;"></i>
+                                style=" color: #87365b; font-size: 1.5rem; margin-left: 0.5rem;"></i>
                            </a>
                        @endif
                         <div class="dropdown" id="profile-header">
@@ -39,7 +39,7 @@
                                     <li>
                                         <a class="dropdown-item" href="{{ route('verification.notice') }}">
                                             <i class="fas fa-exclamation-circle"
-                                                style=" color: #f56476; font-size: 1rem; margin-left: 0.5rem;"></i>
+                                                style=" color: #87365b; font-size: 1rem; margin-left: 0.5rem;"></i>
                                             تاكيد البريد الالكتروني
                                         </a>
                                     </li>
@@ -92,7 +92,7 @@
     <div class="mobile-menu-overlay" id="mobileMenuOverlay">
         <div class="mobile-menu">
             <div class="mobile-menu-header">
-                <a href="{{ route('front.home') }}"><img src="{{ asset('frontend/assets/img/logo.png') }}"
+                <a href="{{ route('front.home') }}"><img src="{{ asset('storage/'.$settings['site_logo'])}}"
                         alt="كوافيري | My Kawafir" width="158px" /></a>
                 <button class="mobile-menu-close" id="mobileMenuClose">
                     <i data-lucide="x"></i>
@@ -105,7 +105,7 @@
                             @if (!Auth::user()->hasVerifiedEmail())
                                 <a href="{{ route('verification.notice') }}" title="يرجى تأكيد بريدك الإلكتروني">
                                     <i class="fas fa-exclamation-circle"
-                                     style=" color: #f0ad4e; font-size: 1.2rem; margin-left: 0.5rem;"></i>
+                                     style=" color: #87365b; font-size: 1.2rem; margin-left: 0.5rem;"></i>
                                 </a>
                             @endif
 

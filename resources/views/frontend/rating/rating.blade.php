@@ -1,6 +1,6 @@
 @extends('layouts.frontend')
 
-@section('title', 'تقييم الصالون | كوافيري | My Kawafir')
+@section('title',config('app.name') . ' | '.config('app.name_ar').'منصة حجز خدمات التجميل | ')
 
 @section('main')
     <main class="main-content rating-page">

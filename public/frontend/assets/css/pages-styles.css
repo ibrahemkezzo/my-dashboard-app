@@ -8,9 +8,9 @@
     justify-content: center;
     width: 40px;
     height: 40px;
-    border: 2px solid #F56476;
+    border: 2px solid #87365b;
     background: transparent;
-    color: #F56476;
+    color: #87365b;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -18,7 +18,7 @@
 }
 
 .btn-icon-outline:hover {
-    background: #F56476;
+    background: #9e456d;
     color: white;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(245, 100, 118, 0.3);
@@ -490,29 +490,29 @@
         height: 35px;
         font-size: 14px;
     }
-    
+
     .salon-gallery-image {
         height: 250px;
     }
-    
+
     .about-hero h1 {
         font-size: 2rem;
     }
-    
+
     .about-hero p {
         font-size: 1rem;
     }
-    
+
     .auth-card {
         margin: 20px;
         padding: 30px 20px;
     }
-    
+
     .feature-card,
     .step-card {
         padding: 20px;
     }
-    
+
     .step-number {
         right: 20px;
         width: 35px;
