@@ -96,7 +96,7 @@
 
 @push('styles')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/rating.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/rating.css?v=1.0.1') }}">
 @endpush
 
 @push('scripts')
