@@ -36,8 +36,8 @@ a {
 
 /* Colors Variables */
 :root {
-    --primary: #F56476;
-    --primary-border: #E43F6F;
+    --primary: #87365b;
+    --primary-border: #a2416d;
     --secondary: #5E4352;
     --background: #FFFFFF;
     --text: #000000;
@@ -286,7 +286,9 @@ a {
 /* Hero Section */
 .hero-section {
     position: relative;
-    background: linear-gradient(to left, rgba(251, 242, 244, 1), rgba(243, 232, 255, 1));
+    background-image: url('/frontend/assets/img/hero_cover.png');
+    background-size: cover; /* لضمان تغطية الصورة للقسم بالكامل */
+    background-position: center; /* لتوسيط الصورة */
     padding: 5rem 0;
     overflow: hidden;
 }
@@ -375,6 +377,7 @@ a {
 .search-field {
     display: flex;
     flex-direction: column;
+    width: 100%;
     gap: 0.5rem;
 }
 
@@ -461,7 +464,32 @@ a {
     color: #fbbf24;
     fill: currentColor;
 }
+@media (max-width: 576px) {
+    .search-bar {
+        padding: 1rem; /* تقليل المساحة الداخلية لتتناسب مع الشاشة الصغيرة */
+        max-width: 100%; /* تأكد من أن العنصر لا يتجاوز عرض الشاشة */
+        margin: 0 auto 2rem auto; /* تقليل الهامش السفلي */
+    }
 
+    .search-grid {
+        gap: 0.75rem; /* تقليل المسافة بين الحقول */
+    }
+
+    .search-field {
+        width: 100%; /* تأكيد أن كل حقل يأخذ العرض الكامل */
+    }
+
+    .search-select, .search-input {
+        width: 100%; /* ضبط العرض الكامل للسيلسكت والهيئة */
+        height: 2.5rem; /* تقليل الارتفاع ليتناسب مع الشاشة */
+        font-size: 0.875rem; /* تقليل حجم الخط */
+    }
+
+    .search-btn {
+        height: 3rem; /* تقليل ارتفاع الزر */
+        font-size: 1rem; /* تقليل حجم النص في الزر */
+    }
+}
 /* Section Styles */
 .section-header {
     text-align: center;
@@ -1594,18 +1622,18 @@ footer .footer-content .footer-section a .logo-footer {
     outline: none;
 }
 #profile-header .btn {
-    color: #e43f6f !important;
+    color: var(--primary) !important;
 }
 
 #profile-header .btn-check:checked+#profile-header .btn, #profile-header .btn.active, #profile-header .btn.show, #profile-header .btn:first-child:active, :not(#profile-header .btn-check)+#profile-header .btn:active, #profile-header .btn:hover {
     color: #fff !important;
-    background-color: #e43f6f !important;
-    border-color: #e43f6f !important;
+    background-color: var(--primary-border) !important;
+    border-color: var(--primary-border) !important;
 }
 
 #profile-header .dropdown-item.active, #profile-header .dropdown-item:active {
         color: #fff !important;
-    background-color: #e43f6f !important;
+    background-color: var(--primary-border) !important;
 }
 
 

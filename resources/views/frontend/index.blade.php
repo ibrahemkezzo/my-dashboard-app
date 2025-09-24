@@ -1,16 +1,16 @@
 @extends('layouts.frontend')
 
-@section('title', 'منصة حجز خدمات التجميل | كوافيري | My Kawafir')
+@section('title',config('app.name') . ' | '.config('app.name_ar').'منصة حجز خدمات التجميل | ')
 
 @section('main')
     <main>
         <!-- Hero Section -->
         <section class="hero-section">
-            <div class="hero-bg-pattern">
+            {{-- <div class="hero-bg-pattern">
                 <div class="hero-pattern-circle hero-pattern-1"></div>
                 <div class="hero-pattern-circle hero-pattern-2"></div>
                 <div class="hero-pattern-circle hero-pattern-3"></div>
-            </div>
+            </div> --}}
 
             <div class="container">
                 <div class="hero-content">

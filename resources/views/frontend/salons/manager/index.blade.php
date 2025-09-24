@@ -1,6 +1,6 @@
 @extends('layouts.frontend')
 
-@section('title', 'إدارة الصالون | كوافيري')
+@section('title',config('app.name') . ' | '.config('app.name_ar').'منصة حجز خدمات التجميل | ')
 
 @section('main')
 <main class="main-content">
@@ -52,4 +52,4 @@
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('frontend/assets/js/pages-scripts2.js') }}"></script>
-@endpush 
+@endpush

@@ -3813,7 +3813,7 @@
                                         @enderror
                                     </div>
                                     <div class="col-md-4">
-                                        <label class="form-label">{{ __('dashboard.cover_image') }}</label>
+                                        <label class="form-label">{{ __('dashboard.site_logo')  }}- 2</label>
                                         <div class="d-flex justify-content-center align-items-center mb-2"
                                             style="height:120px;">
                                             @if ($generalSettings['cover_image'])
