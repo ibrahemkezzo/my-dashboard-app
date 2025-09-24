@@ -6,10 +6,6 @@
     @include('auth.auth', ['activeTab' => 'register'])
 @endsection
 
-@push('styles')
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/auth.css') }}">
-@endpush
 
 
 @push('styles')
