@@ -1,3 +1,5 @@
+# Version Project
+"version": "1.3.0"
 # SalonBooking Platform
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -161,3 +163,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 For questions or support, reach out to [your.email@example.com](mailto:your.email@example.com) or open an issue on GitHub.
 
 Thank you for using SalonBooking! 🚀
+
+## v1.3.0 - 2025-09-24
+- Redesigned website with new color scheme and Google login fixes.
+- Updated visual identity including logo and icons.
