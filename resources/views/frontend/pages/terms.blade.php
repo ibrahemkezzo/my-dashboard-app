@@ -38,7 +38,7 @@
 
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/pages-styles.css') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/pages-styles.css?v=1.0.1') }}">
     <style>
         h2 {
             color: #e43f6f;
