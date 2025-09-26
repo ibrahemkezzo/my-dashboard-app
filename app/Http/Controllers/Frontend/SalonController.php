@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Requests\FrontStoreSalonRequest;
 use App\Http\Requests\StoreSalonRequest;
+use App\Models\City;
 use Illuminate\Http\Request;
 use App\Services\SalonService;
 use App\QueryFilters\SalonFilter;
@@ -75,8 +76,8 @@ class SalonController extends Controller
      */
     public function filters()
     {
-        $cities = \App\Models\City::orderBy('name')->get(['id', 'name']);
-        $subservices = \App\Models\SubService::orderBy('name')->get(['id', 'name']);
+        $cities = City::orderBy('name')->get(['id', 'name','is_active']);
+        $subservices = SubService::orderBy('name')->get(['id', 'name']);
         $minPrice = DB::table('salon_sub_service')->min('price');
         $maxPrice = DB::table('salon_sub_service')->max('price');
         return response()->json([
@@ -149,5 +150,5 @@ class SalonController extends Controller
         return view('frontend.salons.show',compact('salon'));
     }
 
-   
+
 }

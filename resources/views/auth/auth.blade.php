@@ -232,7 +232,7 @@
 </div>
 @push('styles')
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/auth.css?v=1.0.1') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/auth.css?v='.config('app.version')) }}">
 @endpush
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

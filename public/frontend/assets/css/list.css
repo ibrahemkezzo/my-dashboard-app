@@ -3,7 +3,7 @@
 
 .hairdressers-page {
     min-height: 100vh;
-    background-color: #fff;
+    background-color: #f8f6f0;
     position: relative;
     transition: all 0.3s ease;
 }
@@ -11,7 +11,7 @@
 /* Page Header */
 .page-header {
     background: linear-gradient(135deg, #a2416d 0%, #87365b 100%);
-    color: white;
+    color: #f8f6f0;
     padding: 60px 0 40px;
     text-align: center;
 }
@@ -32,7 +32,7 @@
 
 /* Filters and Controls Section */
 .filters-controls-section {
-    background: #f8f9fa;
+    background: #f8f6f0;
     border-bottom: 1px solid #e9ecef;
 }
 
@@ -45,7 +45,7 @@
 .no-hover-effects:focus,
 .no-hover-effects:active,
 .no-hover-effects.active {
-    background-color: white !important;
+    background-color: #f8f6f0 !important;
     border-color: #e9ecef !important;
     box-shadow: none !important;
     color: #333 !important;
@@ -53,7 +53,7 @@
 }
 
 .accordion-button.no-hover-effects {
-    background-color: white !important;
+    background-color: #f8f6f0 !important;
     color: #333 !important;
     font-weight: 600;
     border: 2px solid #e9ecef !important;
@@ -61,7 +61,7 @@
 }
 
 .accordion-button.no-hover-effects:not(.collapsed) {
-    background-color: white !important;
+    background-color: #f8f6f0 !important;
     color: #333 !important;
     box-shadow: none !important;
 }
@@ -69,7 +69,7 @@
 .accordion-button.no-hover-effects:hover,
 .accordion-button.no-hover-effects:focus,
 .accordion-button.no-hover-effects:active {
-    background-color: white !important;
+    background-color: #f8f6f0 !important;
     color: #333 !important;
     box-shadow: none !important;
     border-color: #e9ecef !important;
@@ -81,7 +81,7 @@
 }
 
 .accordion-body {
-    background-color: white;
+    background-color: #f8f6f0;
     border: 1px solid #e9ecef;
     border-top: none;
     border-radius: 0 0 8px 8px;
@@ -91,7 +91,7 @@
     border: 2px solid #e9ecef !important;
     border-radius: 8px !important;
     font-family: 'IBM Plex Sans Arabic', sans-serif !important;
-    background-color: white !important;
+    background-color: #f8f6f0 !important;
     color: #333 !important;
 }
 
@@ -100,7 +100,7 @@
 .form-select.no-hover-effects:active {
     border-color: #e9ecef !important;
     box-shadow: none !important;
-    background-color: white !important;
+    background-color: #f8f6f0 !important;
     color: #333 !important;
 }
 
@@ -108,7 +108,7 @@
     border: 2px solid #e9ecef !important;
     border-radius: 8px !important;
     font-family: 'IBM Plex Sans Arabic', sans-serif !important;
-    background-color: white !important;
+    background-color: #f8f6f0 !important;
     color: #333 !important;
 }
 
@@ -117,7 +117,7 @@
 .form-control.no-hover-effects:active {
     border-color: #e9ecef !important;
     box-shadow: none !important;
-    background-color: white !important;
+    background-color: #f8f6f0 !important;
     color: #333 !important;
 }
 
@@ -139,7 +139,7 @@
 }
 
 .sidebar-section {
-    background: white;
+    background: #f8f6f0;
     border-radius: 12px;
     padding: 20px;
     margin-bottom: 20px;
@@ -189,7 +189,7 @@
 }
 
 .salon-card {
-    background: white;
+    background: #f8f6f0;
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 4px 20px rgba(0,0,0,0.08);
@@ -234,13 +234,13 @@
 }
 
 .favorite-btn:hover {
-    background: white;
+    background: #f8f6f0;
     transform: scale(1.1);
 }
 
 .favorite-btn.active {
     background: #F56476;
-    color: white;
+    color: #f8f6f0;
 }
 
 .salon-card-content {
@@ -263,7 +263,7 @@
 
 .offer-badge {
     background: #F56476;
-    color: white;
+    color: #f8f6f0;
     padding: 4px 12px;
     border-radius: 20px;
     font-size: 0.8rem;

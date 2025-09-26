@@ -22,12 +22,16 @@ use App\Http\Controllers\Frontend\FrontController;
 use App\Http\Controllers\Frontend\ProfileController;
 use App\Http\Controllers\Frontend\SalonController as FrontendSalonController;
 use App\Http\Controllers\Frontend\SalonManagerController;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/laravel', function () {
     return view('welcome');
 });
-
+// Route::get('/test-mail', function () {
+//     Mail::to('ibrihemkzoo09@example.com')->send(new \Illuminate\Mail\Mailable());
+//     return 'Mail sent!';
+// });
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),

@@ -19,6 +19,7 @@ class BookingConfirmedByUserNotification extends Notification implements ShouldQ
 
     public function __construct(Booking $booking)
     {
+        $this->queue = 'emails';
         $this->booking = $booking;
     }
 

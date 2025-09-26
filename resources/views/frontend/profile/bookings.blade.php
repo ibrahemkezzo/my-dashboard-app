@@ -225,7 +225,7 @@
 @endsection
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/pages-styles2.css?v=1.0.1') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/pages-styles2.css?v='.config('app.version')) }}">
     <style>
         .btn-primo {
             display: flex;

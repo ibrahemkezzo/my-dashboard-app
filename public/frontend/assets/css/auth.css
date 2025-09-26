@@ -8,8 +8,8 @@
     --success-color: #28a745;
     --warning-color: #ffc107;
     --danger-color: #dc3545;
-    --light-bg: #f8f9fa;
-    --white: #ffffff;
+    --light-bg: #f8f6f0;
+    --white: #f8f6f0;
     --dark: #333333;
 }
 
@@ -66,7 +66,7 @@ html {
     border-radius: 12px;
     padding: 6px;
     margin-bottom: 30px;
-    border: 1px solid #e9ecef;
+    border: 1px solid #f8f6f0;
 }
 
 .auth-tab {
@@ -139,14 +139,14 @@ html {
 
 .input-group-text {
     background: var(--light-bg);
-    border: 1px solid #ddd;
+    border: 1px solid #f8f6f0;
     border-left: none;
     color: var(--secondary-color);
     padding: 12px 15px;
 }
 
 .form-control {
-    border: 1px solid #ddd;
+    border: 1px solid #f8f6f0;
     border-right: none;
     padding: 12px 15px;
     font-size: 0.95rem;
@@ -159,7 +159,7 @@ html {
 }
 
 .form-select {
-    border: 1px solid #ddd;
+    border: 1px solid #f8f6f0;
     border-right: none;
     padding: 12px 15px;
     font-size: 0.95rem;
@@ -173,14 +173,14 @@ html {
 
 /* Standalone Form Controls */
 .form-control:not(.input-group .form-control) {
-    border: 1px solid #ddd;
+    border: 1px solid #f8f6f0;
     border-radius: 8px;
     padding: 12px 15px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .form-select:not(.input-group .form-select) {
-    border: 1px solid #ddd;
+    border: 1px solid #f8f6f0;
     border-radius: 8px;
     padding: 12px 15px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -201,7 +201,7 @@ html {
 .form-check-input {
     width: 1.2em;
     height: 1.2em;
-    border: 2px solid #ddd;
+    border: 2px solid #f8f6f0;
     border-radius: 4px;
     transition: all 0.3s ease;
 }
@@ -260,7 +260,7 @@ html {
 /* Google Button */
 .btn-google {
     background: var(--white);
-    border: 2px solid #ddd;
+    border: 2px solid #f8f6f0;
     color: var(--dark);
     padding: 12px 20px;
     font-weight: 500;
@@ -293,7 +293,7 @@ html {
     left: 0;
     right: 0;
     height: 1px;
-    background: #ddd;
+    background: #f8f6f0;
 }
 
 .divider span {
@@ -309,7 +309,7 @@ html {
     border-radius: 12px;
     padding: 25px;
     margin-bottom: 25px;
-    border: 1px solid #e9ecef;
+    border: 1px solid #f8f6f0;
 }
 
 .section-title {
@@ -342,7 +342,7 @@ html {
     align-items: center;
     justify-content: center;
     height: 120px;
-    border: 2px dashed #ddd;
+    border: 2px dashed #f8f6f0;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;

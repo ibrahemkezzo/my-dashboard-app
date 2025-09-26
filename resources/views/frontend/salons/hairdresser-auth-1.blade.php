@@ -30,8 +30,7 @@
                                 <div class="col-md-6 mb-3">
                                     <label for="name" class="form-label fw-semibold">اسم الصالون</label>
                                     <input type="text" class="form-control @error('name') is-invalid @enderror"
-                                        id="name" name="name" value="{{ old('name', $salon->name ?? '') }}"
-                                        >
+                                        id="name" name="name" value="{{ old('name', $salon->name ?? '') }}">
                                     @error('name')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -477,7 +476,7 @@ is-invalid
 
 @push('styles')
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/auth.css?v=1.0.1') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/auth.css?v='.config('app.version')) }}">
 @endpush
 
 @push('scripts')

@@ -49,7 +49,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const city = document.getElementById('city');
         if (city) {
             city.innerHTML = '<option value="">جميع المدن</option>' +
-                data.cities.map(c => `<option value="${c.id}" data-lat="${c.latitude}" data-lng="${c.longitude}">${c.name}</option>`).join('');
+                data.cities.map(c => {
+                    const isDisabled = c.is_active == false ? ' disabled' : '';
+                    const nearbyText = c.is_active === 0 ? ' (قريبًا)' : '';
+                    return `<option value="${c.id}" data-lat="${c.latitude}" data-lng="${c.longitude}"${isDisabled}>${c.name}${nearbyText}</option>`;
+                }).join('');
         }
         // Price filter
         const priceFilter = document.getElementById('priceFilter');

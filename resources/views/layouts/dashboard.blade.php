@@ -22,25 +22,25 @@
 
 
     <!-- Font Awesome-->
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/font-awesome.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/font-awesome.css?v='.config('app.version'))}}">
 
     <!-- Flag icon-->
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/flag-icon.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/flag-icon.css?v='.config('app.version'))}}">
 
     <!-- ico-font-->
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/icofont.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/icofont.css?v='.config('app.version'))}}">
 
     <!-- Prism css-->
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/prism.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/prism.css?v='.config('app.version'))}}">
 
     <!-- Chartist css -->
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/chartist.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/chartist.css?v='.config('app.version'))}}">
 
     <!-- Bootstrap css-->
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/bootstrap.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/bootstrap.css?v='.config('app.version'))}}">
 
     <!-- App css-->
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/style.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/style.css?v='.config('app.version'))}}">
     <style type="text/css">
         .jqstooltip {
             position: absolute;
@@ -67,7 +67,7 @@
         }
     </style>
 
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/new.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/new.css?v='.config('app.version'))}}">
     <script src="chrome-extension://mooikfkahbdckldjjndioackbalphokd/assets/prompt.js"></script>
     @stack('styles')
 </head>

@@ -30,7 +30,7 @@ class UpdateUserRequest extends FormRequest
             'name' => 'sometimes|string|max:255',
             'email' => ['sometimes', 'email', 'max:255', Rule::unique('users', 'email')->ignore($this->route('user'))],
             'phone_number'=>'sometimes|string',
-            'city_id' => 'sometimes|exists:cities,id',
+            'city_id' => 'nullable|exists:cities,id',
             'password' => 'nullable|string|min:8|confirmed',
             'roles' => 'sometimes|array|min:1',
             'roles.*' => 'exists:roles,name',

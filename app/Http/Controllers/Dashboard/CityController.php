@@ -51,7 +51,7 @@ class CityController extends Controller
 
     public function update(UpdateCityRequest $request,City $city)
     {
-      
+
         $this->cityService->updateCity($city, $request->validated());
         return redirect()->route('dashboard.cities.index')->with('message', [
             'type' => 'success',

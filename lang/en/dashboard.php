@@ -12,6 +12,7 @@ return [
     'responsive_admin_template' => 'Responsive Admin Glowzelle',
     'web_app' => 'Web App',
     'pixelstrap' => 'Pixelstrap',
+    'Glowzelle_Admin' => 'Glowzelle Admin',
 
     // Navigation
     'search' => 'Search',

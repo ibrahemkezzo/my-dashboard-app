@@ -12,6 +12,7 @@ return [
     'responsive_admin_template' => 'قالب إدارة متجاوب',
     'web_app' => 'تطبيق الويب',
     'pixelstrap' => 'بيكسلستراب',
+    'Glowzelle_Admin' => 'لوحة التحكم الخاصة بغلوزل',
 
     // Navigation
     'search' => 'بحث',
@@ -913,4 +914,5 @@ return [
     'certified' => 'موثق',
     'not_certified' => 'غير موثق',
     'ratings' => 'التقييمات',
+    'active_status' => 'الحالة'
 ];

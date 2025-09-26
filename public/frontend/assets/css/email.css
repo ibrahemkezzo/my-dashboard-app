@@ -4,7 +4,7 @@
     --dark:#333333;
     --muted:#6c757d;
     --light:#f8f6f0;
-    --white:#ffffff;
+    --white:#f8f6f0;
     --border:#ececec;
     --radius:16px;
     --shadow-sm:0 4px 18px rgba(0,0,0,.08);
@@ -18,7 +18,7 @@ body{
     margin:0;
     font-family:'IBM Plex Sans Arabic',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
     color:var(--dark);
-    background:linear-gradient(180deg,#fff, #fff 45%, #fff 45%), radial-gradient(1200px 600px at 100% -20%, rgba(245,100,118,.06), transparent 60%) no-repeat;
+    background:linear-gradient(180deg,#f8f6f0, #f8f6f0 45%, #f8f6f0 45%), radial-gradient(1200px 600px at 100% -20%, rgba(245,100,118,.06), transparent 60%) no-repeat;
     direction:rtl;
 }
 
@@ -49,7 +49,7 @@ body{
     font-size:.95rem;
 }
 .nav-min a:hover{color:var(--primary-border)}
-.nav-min .dot{color:#cfcfcf; margin-inline:10px}
+.nav-min .dot{color:#f8f6f0; margin-inline:10px}
 
 /* Wrapper */
 .confirm-wrapper{
@@ -98,7 +98,7 @@ body{
 
 .tips{
     background:var(--light);
-    border:1px dashed #e6e6e6;
+    border:1px dashed #f8f6f0;
     border-radius:12px;
     padding:14px 16px;
     margin:16px auto 20px;
@@ -155,7 +155,7 @@ body{
     margin-top:18px;
     font-size:.95rem;
     color:#4b4b4b;
-    background:#fff6f7;
+    background:#f8f6f0;
     border:1px solid #ffd7dd;
     border-radius:10px;
     padding:12px 14px;

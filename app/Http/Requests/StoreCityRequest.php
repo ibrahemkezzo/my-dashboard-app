@@ -20,7 +20,7 @@ class StoreCityRequest extends FormRequest
             'country' => 'nullable|string|max:255',
             'google_place_id' => 'nullable|string|max:255',
             'timezone' => 'nullable|string|max:255',
-            // 'is_active' => 'sometimes|boolean',
+            'is_active' => 'sometimes|boolean',
         ];
     }
 }

@@ -20,6 +20,7 @@ class BookingStatusUpdatedNotification extends Notification implements ShouldQue
 
     public function __construct(Booking $booking, string $action)
     {
+        $this->queue = 'emails';
         $this->booking = $booking;
         $this->action = $action;
     }

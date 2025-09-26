@@ -19,7 +19,7 @@
             display: none;
             position: fixed;
             bottom: 20px;
-            left: 20%;
+            left: 50%;
             transform: translateX(-50%) translateY(100px);
             z-index: 9999;
             min-width: 35%;
@@ -38,6 +38,26 @@
         </div>
     </div>
 
+    <style>
+        @media (max-width: 768px) {
+            #dashboard-toast-alert {
+                min-width: 90%; /* زيادة العرض النسبي للشاشات الصغيرة */
+                max-width: 100vw; /* ضمان عدم خروج الرسالة عن الشاشة */
+                font-size: 14px; /* تصغير حجم الخط قليلاً */
+                padding: 0.75rem 0.5rem; /* تقليل الحشوة */
+            }
+        }
+
+        @media (max-width: 576px) {
+            #dashboard-toast-alert {
+                min-width: 99%; /* عرض أكبر للشاشات الصغيرة جدًا */
+                max-width: 100vw; /* ضمان عدم قطع الرسالة */
+                font-size: 12px; /* حجم خط أصغر */
+                padding: 0.5rem 0.2rem; /* حشوة أصغر */
+            }
+        }
+    </style>
+
     @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -50,7 +70,7 @@
                     alertEl.style.transform = 'translateX(-50%) translateY(0)';
                 }, 10); // Small delay to ensure transition triggers
 
-                // Hide the alert after 2 seconds with slide-out effect
+                // Hide the alert after 4 seconds with slide-out effect
                 setTimeout(function() {
                     alertEl.style.opacity = '0';
                     alertEl.style.transform = 'translateX(-50%) translateY(100px)';
@@ -66,3 +86,4 @@
         session()->forget('message');
     @endphp
 @endif
+

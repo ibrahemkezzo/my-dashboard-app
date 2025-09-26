@@ -37,7 +37,7 @@ class ProfileController extends Controller
         $validated = $request->validated();
         // dd($validated);
         if (!($user->id == Auth::user()->id)) {
-            return redirect()->back()->with('error', 'the user is not same user ');
+            return redirect()->back()->with('error', 'المستخدم غير مطابق ');
         }
         $userReository = new UserRepository();
         $userService = new UserService($userReository);
@@ -47,7 +47,7 @@ class ProfileController extends Controller
         );
         return redirect()->route('front.profile.account')->with('message', [
             'type' => 'success',
-            'content' => __('user update successfully!')
+            'content' => __('تم تحديث بيانات المستخدم')
         ]);
     }
 

@@ -42,14 +42,18 @@
                             </div>
                             <div class="search-field">
                                 <label class="search-label">المدينة</label>
-                                <select class="search-select no-hover-effects" id="city" name="city_id">
+                                {{-- <select class="search-select no-hover-effects" id="city" name="city_id">
                                     <option value="">جميع المدن</option>
                                     @foreach($cities as $city)
                                         <option value="{{ $city->id }}" {{ request('city_id') == $city->id ? 'selected' : '' }}>
                                             {{ $city->name }}
                                         </option>
                                     @endforeach
-                                </select>
+                                </select> --}}
+                                <x-form.city-select name="city_id" class="search-select no-hover-effects @error('city_id') is-invalid @enderror" />
+                                    @error('city_id')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                             </div>
                             <div class="search-field">
                                 <label class="search-label">البحث بالاسم</label>

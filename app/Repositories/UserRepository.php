@@ -53,7 +53,7 @@ class UserRepository
         if (isset($filters['city_id']) && $filters['city_id'] !== '') {
             $query->where('city_id', $filters['city_id']);
         }
-
+        $query->orderByDesc('created_at');
         return $query->paginate($perPage);
     }
 

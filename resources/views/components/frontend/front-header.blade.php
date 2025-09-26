@@ -118,6 +118,15 @@
                                 <li><a class="dropdown-item" href="{{ route('front.profile.bookings') }}">حجوزاتي</a></li>
                                 <li><a class="dropdown-item" href="{{ route('front.profile.favourites') }}">المفضلة</a>
                                 </li>
+                                @if (!Auth::user()->hasVerifiedEmail())
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('verification.notice') }}">
+                                            <i class="fas fa-exclamation-circle"
+                                                style=" color: #87365b; font-size: 1rem; margin-left: 0.5rem;"></i>
+                                            تاكيد البريد الالكتروني
+                                        </a>
+                                    </li>
+                                @endif
                                 @role(['salon-manager'])
                                     <li><a class="dropdown-item" href="{{ route('front.profile.salon.manager') }}">ادارة
                                             الصالون</a></li>

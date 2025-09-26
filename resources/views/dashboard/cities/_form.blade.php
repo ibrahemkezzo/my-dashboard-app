@@ -2,23 +2,33 @@
 
 
     <div class="row mb-3">
-        <div class="col-md-6">
+        <div class="col-md-4">
             <label for="name" class="form-label">{{ __('dashboard.city') }}</label>
             <input type="text" class="form-control" id="name" name="name" value="{{ old('name', $city->name ?? '') }}" required>
             <div class="invalid-feedback">{{ __('validation.required', ['attribute' => __('dashboard.name')]) }}</div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
             <label for="country" class="form-label">{{ __('dashboard.country') }}</label>
             <input type="text" class="form-control" id="country" name="country" value="{{ $city->country ?? 'السعودية' }}" readonly>
         </div>
+        <div class="col-md-4">
+        <label for="is_active" class="form-label">{{ __('dashboard.status') }}</label>
+        <div class="custom-toggle-wrapper">
+            <input type="hidden" name="is_active" value="0">
+            <input type="checkbox" class="custom-toggle" id="is_active" name="is_active" value="1" {{ old('is_active', $city->is_active ?? false) ? 'checked' : '' }}>
+            <label for="is_active" class="custom-toggle-label"></label>
+
+        </div>
+        <div class="invalid-feedback">{{ __('validation.required', ['attribute' => __('dashboard.active_status')]) }}</div>
+    </div>
     </div>
     <div class="row mb-3">
         <div class="form-group">
             <label>حدد المدينة على الخريطة</label>
 
             <div id="map" style="height: 400px; width: 100%;"></div>
-            <input type="hidden" name="latitude" id="latitude">
-            <input type="hidden" name="longitude" id="longitude">
+            <input type="hidden" name="latitude" id="latitude"  value="{{ old('latitude', $city->latitude ?? '') }}">
+            <input type="hidden" name="longitude" id="longitude"  value="{{ old('longitude', $city->longitude ?? '') }}">
         </div>
     </div>
     <button type="submit" class="btn btn-primary">{{ $submitText }}</button>
@@ -114,5 +124,47 @@
             #infowindow-content .title {
                 font-weight: bold;
             }
+            /* Custom Toggle Styles */
+        .custom-toggle-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .custom-toggle {
+            display: none;
+        }
+
+        .custom-toggle-label {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+            background-color: #ccc;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .custom-toggle-label::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .custom-toggle:checked + .custom-toggle-label {
+            background-color: #4CAF50;
+        }
+
+        .custom-toggle:checked + .custom-toggle-label::after {
+            transform: translateX(26px);
+        }
         </style>
     @endpush

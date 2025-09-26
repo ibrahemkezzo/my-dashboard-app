@@ -130,7 +130,7 @@
 
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/pages-styles.css?v=1.0.1') }}">
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/pages-styles.css?v='.config('app.version')) }}">
 @endpush
 
 @push('scripts')

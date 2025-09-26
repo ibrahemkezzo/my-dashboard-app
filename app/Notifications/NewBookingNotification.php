@@ -20,6 +20,7 @@ class NewBookingNotification extends Notification implements ShouldQueue
 
     public function __construct(Booking $booking)
     {
+        $this->queue = 'emails';
         $this->booking = $booking;
     }
 
