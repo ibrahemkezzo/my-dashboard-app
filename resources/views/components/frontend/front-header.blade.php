@@ -27,11 +27,11 @@
                            </a>
                        @endif
                         <div class="dropdown" id="profile-header">
-                            <button class="btn btn-outline-primary dropdown-toggle" type="button"
+                            <button id="profile-btn" class="btn btn-outline-primary dropdown-toggle" type="button"
                                 data-bs-toggle="dropdown">
                                 <i class="fas fa-user me-2"></i>{{ $user->name }}
                             </button>
-                            <ul class="dropdown-menu text-start">
+                            <ul id="profile-menu" class="dropdown-menu text-start ">
                                 <li><a class="dropdown-item" href="{{ route('front.profile.account') }}">حسابي</a></li>
                                 <li><a class="dropdown-item" href="{{ route('front.profile.bookings') }}">حجوزاتي</a></li>
                                 <li><a class="dropdown-item" href="{{ route('front.profile.favourites') }}">المفضلة</a></li>
@@ -109,11 +109,11 @@
                                 </a>
                             @endif
 
-                            <button class="btn btn-outline-primary dropdown-toggle" type="button"
+                            <button id="mobile-profile-btn" class="btn btn-outline-primary dropdown-toggle" type="button"
                                 data-bs-toggle="dropdown">
                                 <i class="fas fa-user me-2"></i>{{ $user->name }}
                             </button>
-                            <ul class="dropdown-menu text-start me-5">
+                            <ul id="mobile-profile-menu" class="dropdown-menu text-start me-5">
                                 <li><a class="dropdown-item" href="{{ route('front.profile.account') }}">حسابي</a></li>
                                 <li><a class="dropdown-item" href="{{ route('front.profile.bookings') }}">حجوزاتي</a></li>
                                 <li><a class="dropdown-item" href="{{ route('front.profile.favourites') }}">المفضلة</a>
@@ -141,7 +141,6 @@
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                {{-- <li><a class="dropdown-item" href="#">تسجيل الخروج</a></li> --}}
                                 <li>
                                     <a href="#" class="dropdown-item"
                                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

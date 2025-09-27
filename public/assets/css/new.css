@@ -95,3 +95,16 @@ body,
     background-color: var(--primary-color) !important;
     border-color: var(--primary-color) !important;
 }
+
+html, body {
+    overflow-x: hidden;   /* يخفي أي مسافة أفقية زائدة */
+}
+
+.page-sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
