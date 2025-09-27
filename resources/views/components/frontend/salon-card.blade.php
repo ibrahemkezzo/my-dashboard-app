@@ -6,6 +6,9 @@
             @if ($salon->type == 'beauty_center')
             <i data-lucide="award"></i>
             مركز معتمد
+            @elseif ($salon->type == 'cosmetic_clinic')
+            <i data-lucide="syringe"></i>
+            عيادة تجميل
             @else
             <i  style="width: 20px; height:20px;" data-lucide="home"></i>
             صالون منزلي

@@ -224,7 +224,7 @@ Route::group([
         Route::group([
             'prefix' => 'salon/manager/',
             'as'=>'salon.manager',  //pefor(pre) each name route
-            'middleware'=>'verified',
+            // 'middleware'=>'verified',
         ],function () {
             Route::get('', [SalonManagerController::class, 'index']);
             Route::post('update', [SalonManagerController::class, 'updateInfo'])->name('.updateInfo');

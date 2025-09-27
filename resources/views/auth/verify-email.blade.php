@@ -65,3 +65,43 @@
  <link rel="stylesheet" href="{{ asset('frontend/assets/css/email.css') }}">
 
 @endpush
+@push('scripts')
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const btn = document.getElementById("profile-btn");
+            const menu = document.getElementById("profile-menu");
+
+            // عند الضغط على الزر
+            btn.addEventListener("click", function(e) {
+                e.stopPropagation(); // منع الانتشار
+                menu.classList.toggle("show");
+            });
+
+            // عند الضغط خارج القائمة أو الزر
+            document.addEventListener("click", function(e) {
+                if (!btn.contains(e.target) && !menu.contains(e.target)) {
+                    menu.classList.remove("show");
+                }
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const btn = document.getElementById("mobile-profile-btn");
+            const menu = document.getElementById("mobile-profile-menu");
+
+            // عند الضغط على الزر
+            btn.addEventListener("click", function(e) {
+                e.stopPropagation(); // منع الانتشار
+                menu.classList.toggle("show");
+            });
+
+            // عند الضغط خارج القائمة أو الزر
+            document.addEventListener("click", function(e) {
+                if (!btn.contains(e.target) && !menu.contains(e.target)) {
+                    menu.classList.remove("show");
+                }
+            });
+        });
+    </script>
+@endpush

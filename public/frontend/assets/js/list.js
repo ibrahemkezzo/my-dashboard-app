@@ -190,7 +190,9 @@ document.addEventListener('DOMContentLoaded', function () {
         let salonShowUrl = window.routes && window.routes.salonShow ? window.routes.salonShow.replace(':id', salon.id) : '#';
         let badgeContent = salon.type === 'beauty_center'
             ? `<i data-lucide="award"></i> مركز معتمد`
-            : `<i style="width: 20px; height:20px;" data-lucide="home"></i> صالون منزلي`;
+            : salon.type === 'cosmetic_clinic'
+                ? `<i data-lucide="syringe"></i> عيادة تجميل`
+                : `<i style="width: 20px; height:20px;" data-lucide="home"></i> صالون منزلي`;
         let isFavorited = salon.is_favorited ? 'active' : '';
         let favoriteButton = `
             <button class="salon-fa-vorite ${isFavorited}" data-salon-id="${salon.id}" onclick="toggleFavorite(${salon.id})">

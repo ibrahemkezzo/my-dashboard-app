@@ -61,10 +61,16 @@
                                         <option value="">اختر نوع الصالون</option>
                                         <option value="beauty_center"
                                             {{ old('type', $salon->type ?? '') === 'beauty_center' ? 'selected' : '' }}>
-                                            مركز معتمد</option>
+                                            مركز معتمد
+                                        </option>
                                         <option value="home_salon"
                                             {{ old('type', $salon->type ?? '') === 'home_salon' ? 'selected' : '' }}>
-                                            صالون منزلي</option>
+                                            صالون منزلي
+                                        </option>
+                                        <option value="cosmetic_clinic"
+                                            {{ old('type', $salon->type ?? '') === 'cosmetic_clinic' ? 'selected' : '' }}>
+                                            عيادة تجميل
+                                        </option>
                                     </select>
                                     @error('type')
                                         <div class="invalid-feedback">{{ $message }}</div>

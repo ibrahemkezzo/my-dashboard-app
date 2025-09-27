@@ -79,6 +79,9 @@
             <option value="home_salon"
                 {{ old('type', $salon->type ?? 'beauty_center') == 'home_salon' ? 'selected' : '' }}>
                 {{ __('dashboard.home_salon') }}</option>
+            <option value="cosmetic_clinic"
+                {{ old('type', $salon->type ?? 'cosmetic_clinic') == 'cosmetic_clinic' ? 'selected' : '' }}>
+                {{ __('dashboard.cosmetic_clinic') }}</option>
         </select>
     </div>
 
