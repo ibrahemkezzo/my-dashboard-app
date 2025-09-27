@@ -914,5 +914,7 @@ return [
     'certified' => 'موثق',
     'not_certified' => 'غير موثق',
     'ratings' => 'التقييمات',
-    'active_status' => 'الحالة'
+    'active_status' => 'الحالة',
+    'cosmetic_clinic' => 'عيادة تجميل',
+    'no_gallery_images' => 'لا يوجد صور في المعرض'
 ];

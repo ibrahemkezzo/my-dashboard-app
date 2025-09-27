@@ -74,12 +74,12 @@
 
                         <!-- Navigation Buttons -->
                         <div class="row">
-                            <div class="col-md-6">
+                            {{-- <div class="col-md-6">
                                 <button type="button" class="btn btn-outline-secondary btn-lg w-100" id="backStepBtn">
                                     <i class="fas fa-arrow-right me-2"></i>رجوع
                                 </button>
-                            </div>
-                            <div class="col-md-6">
+                            </div> --}}
+                            <div class="col-md-12">
                                 <button type="submit" class="btn btn-primary btn-lg w-100">
                                     <i class="fas fa-check me-2"></i>تسجيل
                                 </button>

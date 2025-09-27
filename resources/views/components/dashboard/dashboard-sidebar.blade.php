@@ -1,10 +1,9 @@
 <div class="page-sidebar">
     <div class="main-header-left d-none d-lg-block">
         <div class="logo-wrapper">
-            <a href="{{route('dashboard.index')}}">
-                <img class="d-none d-lg-block blur-up lazyloaded"
-                    style="height:60px; "
-                    src="{{asset('storage/'.$cover->value)}}" alt="">
+            <a href="{{ route('dashboard.index') }}">
+                <img class="d-none d-lg-block blur-up lazyloaded" style="height:60px; "
+                    src="{{ asset('storage/' . $cover->value) }}" alt="">
             </a>
         </div>
     </div>
@@ -13,9 +12,9 @@
                 aria-hidden="true"></i></a>
         <div class="sidebar-user">
             <div class="align-self-center text-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                    height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-users font-danger">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="feather feather-users font-danger">
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                     <circle cx="9" cy="7" r="4"></circle>
                 </svg>

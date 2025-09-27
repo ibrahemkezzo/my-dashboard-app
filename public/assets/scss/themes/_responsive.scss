@@ -1,6 +1,7 @@
 /*=====================
     29.Responsive CSS start
 ==========================*/
+
 @media only screen and (max-width: 1660px) {
     .peity-chart-dashboard {
         .peity {
@@ -694,6 +695,7 @@
         }
 
         .page-main-header {
+            // direction: rtl !important;
             height: 60px !important;
             margin-left: 0 !important;
             width: 100% !important;

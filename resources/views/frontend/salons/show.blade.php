@@ -185,13 +185,13 @@
                                         <td>{{ $service->pivot->status ? 'متوفرة' : 'غير متوفرة' }}</td>
                                     </tr>
                                 @endforeach
-                                <tr>
+                                {{-- <tr>
                                     <td class="table-warning">باقة العروس</td>
                                     <td class="table-warning">باقة شاملة للعروس تشمل جميع الخدمات</td>
                                     <td class="table-warning">4 ساعات</td>
                                     <td class="table-warning">500 ريال</td>
                                     <td class="table-warning"></td>
-                                </tr>
+                                </tr> --}}
                             </tbody>
                         </table>
                     </div>

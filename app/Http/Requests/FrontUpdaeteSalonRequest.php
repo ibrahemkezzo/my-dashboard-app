@@ -25,7 +25,7 @@ class FrontUpdaeteSalonRequest extends FormRequest
             'name' => 'sometimes|string|max:255',
             // 'email'=> 'sometimes|email',
             'description' => 'sometimes|string|max:1000',
-            'type' => 'sometimes|in:beauty_center,home_salon',
+            'type' => 'sometimes|in:beauty_center,home_salon,cosmetic_clinic',
             'phone' => 'sometimes|string|max:20',
             'city_id' => 'sometimes|exists:cities,id',
             'address' => 'sometimes|string|max:255',

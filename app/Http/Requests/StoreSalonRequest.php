@@ -16,7 +16,7 @@ class StoreSalonRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'type' => 'required|in:beauty_center,home_salon',
+            'type' => 'required|in:beauty_center,home_salon,cosmetic_clinic',
             'address' => 'required|string|max:500',
             'phone' => 'required|string|max:20',
             // 'email' => 'nullable|email|max:255',

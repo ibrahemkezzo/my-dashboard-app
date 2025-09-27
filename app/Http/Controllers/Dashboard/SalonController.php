@@ -129,7 +129,14 @@ class SalonController extends Controller
 
     public function destroy(Salon $salon): RedirectResponse
     {
+        $user = $salon->owner;
         $this->service->delete($salon);
+        if ($salon) {
+            $user->assignRole('user');
+            $user->removeRole('salon-manager');
+            $user->type = 'user';
+            $user->save();
+        }
         return redirect()->route('dashboard.salons.index')
             ->with('message', ['type' => 'success', 'content' => __('dashboard.deleted_successfully')]);
     }

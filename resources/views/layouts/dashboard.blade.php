@@ -65,6 +65,11 @@
             font: 10px arial, san serif;
             text-align: left;
         }
+        @media (max-width: 991px) {
+            .page-main-header {
+                direction: ltr !important;
+            }
+        }
     </style>
 
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/new.css?v='.config('app.version'))}}">
@@ -94,7 +99,7 @@
 
             <!-- Right sidebar Start-->
 
-                <x-dashboard.dashboard-right-sidebar/>
+                {{-- <x-dashboard.dashboard-right-sidebar/> --}}
 
             <!-- Right sidebar Ends-->
             <div class="page-body">
