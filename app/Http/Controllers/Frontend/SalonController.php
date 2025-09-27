@@ -106,7 +106,7 @@ class SalonController extends Controller
         }
 
         $validated['owner_id'] = $user->id;
-        $validated['status'] = false;
+        // $validated['status'] = false;
         $salon = $this->service->create($validated);
         // Assign salon-manager role and update type
         if ($salon) {
@@ -115,7 +115,10 @@ class SalonController extends Controller
             $user->type = 'salon-manager';
             $user->save();
         }
-        if (!$salon) return redirect()->route('front.salons.create.step1');
+        if (!$salon) return redirect()->route('front.salons.create.step1')->with('message', [
+            'type' => 'error',
+            'content' => __('حدث خطأ اثناء انشاء الصالون الرجاء المحاولة مرة اخرى')
+        ]);
         $subServices = SubService::with('service')->orderBy('name')->get();
         $allServices = Service::all();
         return view('frontend.salons.create_step2', compact('salon', 'subServices', 'allServices'))->with('message', [

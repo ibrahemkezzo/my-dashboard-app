@@ -18,7 +18,29 @@
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 mb-3">
+            <label class="form-label">نوع الصالون</label>
+            <select name="type" class="form-select @error('type') is-invalid @enderror"
+                id="salonType" required>
+                <option value="">اختر نوع الصالون</option>
+                <option value="beauty_center"
+                    {{ old('type', $salon->type ?? '') === 'beauty_center' ? 'selected' : '' }}>
+                    مركز معتمد
+                </option>
+                <option value="home_salon"
+                    {{ old('type', $salon->type ?? '') === 'home_salon' ? 'selected' : '' }}>
+                    صالون منزلي
+                </option>
+                <option value="cosmetic_clinic"
+                    {{ old('type', $salon->type ?? '') === 'cosmetic_clinic' ? 'selected' : '' }}>
+                    عيادة تجميل
+                </option>
+            </select>
+            @error('type')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+        <div class="col-md-12">
             <label for="email" class="form-label">البريد الإلكتروني (لا يمكن تعديله، يمكنك تعديل إيميل البروفايل)</label>
             <input type="email" class="form-control" id="email" name="email" value="{{ $salon->owner->email }}"
                 readonly>

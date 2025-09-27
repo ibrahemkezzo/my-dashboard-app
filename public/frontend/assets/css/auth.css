@@ -10,6 +10,7 @@
     --danger-color: #dc3545;
     --light-bg: #f8f6f0;
     --white: #f8f6f0;
+    --white-bar: #eadee3;
     --dark: #333333;
 }
 
@@ -342,11 +343,11 @@ html {
     align-items: center;
     justify-content: center;
     height: 120px;
-    border: 2px dashed #f8f6f0;
+    border: 2px dashed #87365b;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
-    background: var(--white);
+    background: #f1e6eb;
     color: var(--secondary-color);
     font-size: 0.9rem;
     text-align: center;
@@ -360,7 +361,7 @@ html {
 
 /* Services Container */
 .service-item {
-    background: var(--white);
+    background: var(--white-bar);
     border-radius: 8px;
     padding: 20px;
     margin-bottom: 15px;

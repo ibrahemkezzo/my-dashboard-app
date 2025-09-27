@@ -17,7 +17,7 @@ return new class extends Migration
             $table->decimal('latitude', 10, 8)->nullable()->after('timezone');
             $table->decimal('longitude', 11, 8)->nullable()->after('latitude');
             $table->json('features')->nullable()->nullable()->after('longitude');
-            $table->enum('type',['home_salon','beauty_center'])->after('features');
+            $table->enum('type',['home_salon','beauty_center','cosmetic_clinic'])->after('features');
             $table->boolean('verification')->default(false)->after('type');
         });
     }

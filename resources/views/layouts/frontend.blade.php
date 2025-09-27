@@ -31,9 +31,14 @@
 
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/styles.css?v=' . config('app.version')) }}">
     @stack('styles')
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/drop.css?v=' . config('app.version')) }}">
+
 </head>
 
 <body>
+    <div id="loader">
+    <img src="{{ asset('frontend/assets/img/logo.png') }}" alt="Logo Loader" class="logo-loader">
+</div>
     {{-- @include('frontend.layouts.header') --}}
     {{-- start header --}}
     <x-frontend.front-header />
@@ -55,47 +60,65 @@
         // Initialize Lucide icons
         lucide.createIcons();
     </script>
-   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const btn = document.getElementById("profile-btn");
-        const menu = document.getElementById("profile-menu");
 
-        // عند الضغط على الزر
-        btn.addEventListener("click", function (e) {
-            e.stopPropagation(); // منع الانتشار
-            menu.classList.toggle("show");
-        });
-
-        // عند الضغط خارج القائمة أو الزر
-        document.addEventListener("click", function (e) {
-            if (!btn.contains(e.target) && !menu.contains(e.target)) {
-                menu.classList.remove("show");
-            }
-        });
-    });
-</script>
-   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const btn = document.getElementById("mobile-profile-btn");
-        const menu = document.getElementById("mobile-profile-menu");
-
-        // عند الضغط على الزر
-        btn.addEventListener("click", function (e) {
-            e.stopPropagation(); // منع الانتشار
-            menu.classList.toggle("show");
-        });
-
-        // عند الضغط خارج القائمة أو الزر
-        document.addEventListener("click", function (e) {
-            if (!btn.contains(e.target) && !menu.contains(e.target)) {
-                menu.classList.remove("show");
-            }
-        });
-    });
-</script>
 
 
     @stack('scripts')
+
 </body>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const btn = document.getElementById("profile-btn");
+        const menu = document.getElementById("profile-menu");
+
+        btn.addEventListener("click", function(e) {
+            e.stopPropagation();
+            menu.style.display = (menu.style.display === "block") ? "none" : "block";
+        });
+
+        // إغلاق القائمة عند الضغط خارجها
+        document.addEventListener("click", function() {
+            menu.style.display = "none";
+        });
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const mobileBtn = document.getElementById("mobile-profile-btn");
+        const mobileMenu = document.getElementById("mobile-profile-menu");
+
+        mobileBtn.addEventListener("click", function(e) {
+            e.stopPropagation();
+            mobileMenu.style.display = (mobileMenu.style.display === "block") ? "none" : "block";
+        });
+
+        // إغلاق القائمة عند الضغط خارجها
+        document.addEventListener("click", function() {
+            mobileMenu.style.display = "none";
+        });
+    });
+</script>
+<script>
+    const buttons = document.querySelectorAll('.custom-dropdown-btn');
+
+    buttons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            this.classList.toggle('custom-show');
+        });
+    });
+
+    document.addEventListener('click', function() {
+        buttons.forEach(btn => btn.classList.remove('custom-show'));
+    });
+</script>
+<script>
+    // إخفاء اللودر عند انتهاء تحميل الصفحة
+    window.addEventListener("load", function() {
+        const loader = document.getElementById("loader");
+        loader.style.display = "none";
+    });
+</script>
 
 </html>
