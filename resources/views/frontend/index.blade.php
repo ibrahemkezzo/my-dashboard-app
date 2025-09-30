@@ -25,7 +25,7 @@
                 </div>
 
                 <!-- Search Bar -->
-                <div class="search-bar">
+                <div class="search-bar" style="opacity: 0.9">
                     <form method="GET" action="{{route('front.salons.list')}}">
                         {{-- @csrf --}}
                         <div class="search-grid">
@@ -56,8 +56,14 @@
                                     @enderror
                             </div>
                             <div class="search-field">
-                                <label class="search-label">البحث بالاسم</label>
-                                <input type="text" class="search-select no-hover-effects" id="date" name="search" />
+                                <label class="search-label">النوع</label>
+                                <select class="search-select no-hover-effects" name="type" id="type">
+                                    <option value="">جميع الانواع</option>
+                                    <option value="cosmetic_clinic">عيادة تجميل</option>
+                                    <option value="beauty_center">مركز معتمد</option>
+                                    <option value="home_salon">صالون منزلي</option>
+
+                                </select>
                             </div>
                         </div>
                         <button type="submit" class="search-btn">
@@ -68,7 +74,7 @@
                 </div>
 
                 <!-- Stats -->
-                <div class="hero-stats">
+                <div class="hero-stats" style="opacity: 0.9">
                     <div class="stat-card">
                         <div class="stat-number">50+</div>
                         <div class="stat-label">خبيرة تجميل</div>

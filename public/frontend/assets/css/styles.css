@@ -287,17 +287,17 @@ a {
 /* Hero Section */
 .hero-section {
     position: relative;
-    background-image: url('/frontend/assets/img/hero_cover.png');
+    background-image: url('/frontend/assets/img/hero_cover_final.png');
     background-size: cover; /* لضمان تغطية الصورة للقسم بالكامل */
-    background-position: center; /* لتوسيط الصورة */
+    background-position: left; /* لتوسيط الصورة */
     padding: 5rem 0;
     overflow: hidden;
 }
-@media (max-width: 768px) {
+/* @media (max-width: 1200px) {
     .hero-section {
-        background-position: left center; /* إزاحة الخلفية إلى الطرف الأيمن */
-    }
-}
+        background-position: right center; /* إزاحة الخلفية إلى الطرف الأيمن */
+    /* } */
+/* } */
 .hero-bg-pattern {
     position: absolute;
     inset: 0;

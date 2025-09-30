@@ -16,7 +16,13 @@
                         <a class="nav-link{{ $tab == 'info' ? ' active' : '' }}" href="?tab=info">بيانات الصالون</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link{{ $tab == 'services' ? ' active' : '' }}" href="?tab=services">الخدمات المقدمة</a>
+                        <a class="nav-link{{ $tab == 'services' ? ' active' : '' }}" href="?tab=services">
+                             @if ($salon->sub_services_count == 0)
+                                <i class="fas fa-exclamation-circle" style=" color: #87365b; margin-left: 0.5rem;"></i>
+                            @endif
+                            الخدمات المقدمة
+
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link{{ $tab == 'gallery' ? ' active' : '' }}" href="?tab=gallery">معرض الصور</a>

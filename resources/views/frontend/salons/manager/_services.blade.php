@@ -1,12 +1,19 @@
 <div class="mb-4">
+    @if ($salon->sub_services_count == 0)
+        <i class="fas fa-exclamation-circle" style=" color: #87365b; margin-left: 0.5rem;"></i>
+        <span style="color: #87365b">
+            الرجاء إضافة خدمة واحدة على الأقل ليتم عرض مركزكم للعملاء
+        </span>
+    @endif
     <h5>إضافة خدمة جديدة</h5>
-    <form action="{{ route('front.profile.salon.manager.addService') }}" method="POST" enctype="multipart/form-data" class="row g-2 align-items-end" id="addServiceForm">
+    <form action="{{ route('front.profile.salon.manager.addService') }}" method="POST" enctype="multipart/form-data"
+        class="row g-2 align-items-end" id="addServiceForm">
         @csrf
         <div class="col-md-3">
             <label class="form-label">الخدمة الرئيسية</label>
             <select name="service_id" id="mainServiceSelect" class="form-control" required>
                 <option value="">اختر الخدمة</option>
-                @foreach(App\Models\Service::all() as $service)
+                @foreach (App\Models\Service::all() as $service)
                     <option value="{{ $service->id }}">{{ $service->name }}</option>
                 @endforeach
             </select>
@@ -15,8 +22,9 @@
             <label class="form-label">الخدمة الفرعية</label>
             <select name="sub_service_id" id="subServiceSelect" class="form-control" required>
                 <option value="">اختر الخدمة الفرعية</option>
-                @foreach(App\Models\SubService::all() as $subService)
-                    <option value="{{ $subService->id }}" data-service="{{ $subService->service_id }}">{{ $subService->name }}</option>
+                @foreach (App\Models\SubService::all() as $subService)
+                    <option value="{{ $subService->id }}" data-service="{{ $subService->service_id }}">
+                        {{ $subService->name }}</option>
                 @endforeach
             </select>
         </div>
@@ -34,27 +42,27 @@
     </form>
 </div>
 @push('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const mainServiceSelect = document.getElementById('mainServiceSelect');
-        const subServiceSelect = document.getElementById('subServiceSelect');
-        const allSubOptions = Array.from(subServiceSelect.querySelectorAll('option[data-service]'));
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mainServiceSelect = document.getElementById('mainServiceSelect');
+            const subServiceSelect = document.getElementById('subServiceSelect');
+            const allSubOptions = Array.from(subServiceSelect.querySelectorAll('option[data-service]'));
 
-        function updateSubServices() {
-            const selectedService = mainServiceSelect.value;
-            subServiceSelect.innerHTML = '<option value="">اختر الخدمة الفرعية</option>';
-            allSubOptions.forEach(function(option) {
-                if (!selectedService || option.getAttribute('data-service') === selectedService) {
-                    subServiceSelect.appendChild(option.cloneNode(true));
-                }
-            });
-        }
+            function updateSubServices() {
+                const selectedService = mainServiceSelect.value;
+                subServiceSelect.innerHTML = '<option value="">اختر الخدمة الفرعية</option>';
+                allSubOptions.forEach(function(option) {
+                    if (!selectedService || option.getAttribute('data-service') === selectedService) {
+                        subServiceSelect.appendChild(option.cloneNode(true));
+                    }
+                });
+            }
 
-        mainServiceSelect.addEventListener('change', updateSubServices);
-        // Initialize on page load
-        updateSubServices();
-    });
-</script>
+            mainServiceSelect.addEventListener('change', updateSubServices);
+            // Initialize on page load
+            updateSubServices();
+        });
+    </script>
 @endpush
 <div class="table-responsive">
     <table class="table table-striped">
@@ -69,7 +77,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($services as $service)
+            @foreach ($services as $service)
                 <tr>
                     <td>{{ $service->service->name ?? '-' }}</td>
                     <td>{{ $service->name }}</td>
@@ -78,26 +86,34 @@
                     <td>{{ $service->pivot->status ? 'مفعلة' : 'غير مفعلة' }}</td>
                     <td>
                         <!-- View Button -->
-                        <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#viewServiceModal{{ $service->pivot->id }}">
+                        <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                            data-bs-target="#viewServiceModal{{ $service->pivot->id }}">
                             <i class="fa fa-eye"></i>
                         </button>
                         <!-- Edit Button -->
-                        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editServiceModal{{ $service->pivot->id }}">
+                        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                            data-bs-target="#editServiceModal{{ $service->pivot->id }}">
                             <i class="fa fa-edit"></i>
                         </button>
                         <!-- Delete Button -->
-                        <form action="{{ route('front.profile.salon.manager.services.delete', $service->pivot->id) }}" method="POST" style="display:inline;">
+                        <form action="{{ route('front.profile.salon.manager.services.delete', $service->pivot->id) }}"
+                            method="POST" style="display:inline;">
                             @csrf
-                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('هل أنت متأكد من حذف الخدمة؟')"><i class="fa fa-trash"></i></button>
+                            <button type="submit" class="btn btn-danger btn-sm"
+                                onclick="return confirm('هل أنت متأكد من حذف الخدمة؟')"><i
+                                    class="fa fa-trash"></i></button>
                         </form>
 
                         <!-- View Modal -->
-                        <div class="modal fade" id="viewServiceModal{{ $service->pivot->id }}" tabindex="-1" aria-labelledby="viewServiceModalLabel{{ $service->pivot->id }}" aria-hidden="true">
+                        <div class="modal fade" id="viewServiceModal{{ $service->pivot->id }}" tabindex="-1"
+                            aria-labelledby="viewServiceModalLabel{{ $service->pivot->id }}" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="viewServiceModalLabel{{ $service->pivot->id }}">تفاصيل الخدمة</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <h5 class="modal-title" id="viewServiceModalLabel{{ $service->pivot->id }}">
+                                            تفاصيل الخدمة</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
                                         <h6>الاسم: {{ $service->name }}</h6>
@@ -108,8 +124,8 @@
                                         <p>الوصف: {{ $service->pivot->special_notes }}</p>
                                         {{-- <h6>صور الخدمة:</h6>
                                         <div class="row">
-                                            @if($service->pivot->media && $service->pivot->media->count() > 0)
-                                                @foreach($service->pivot->media as $media)
+                                            @if ($service->pivot->media && $service->pivot->media->count() > 0)
+                                                @foreach ($service->pivot->media as $media)
                                                     <div class="col-md-3 mb-2">
                                                         <img src="{{ asset('storage/'.$media->path) }}" alt="service-img" style="width:100px;height:100px;object-fit:cover;border-radius:8px;">
                                                         <form action="{{ route('front.profile.salon.manager.services.images.delete', [$service->pivot->id, $media->id]) }}" method="POST" class="mt-1">
@@ -133,29 +149,39 @@
                         </div>
 
                         <!-- Edit Modal -->
-                        <div class="modal fade" id="editServiceModal{{ $service->pivot->id }}" tabindex="-1" aria-labelledby="editServiceModalLabel{{ $service->pivot->id }}" aria-hidden="true">
+                        <div class="modal fade" id="editServiceModal{{ $service->pivot->id }}" tabindex="-1"
+                            aria-labelledby="editServiceModalLabel{{ $service->pivot->id }}" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="editServiceModalLabel{{ $service->pivot->id }}">تعديل الخدمة</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <h5 class="modal-title" id="editServiceModalLabel{{ $service->pivot->id }}">
+                                            تعديل الخدمة</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                     </div>
-                                    <form action="{{ route('front.profile.salon.manager.services.edit', $service->pivot->id) }}" method="POST">
+                                    <form
+                                        action="{{ route('front.profile.salon.manager.services.edit', $service->pivot->id) }}"
+                                        method="POST">
                                         @csrf
                                         <div class="modal-body">
                                             <div class="mb-2">
                                                 <label class="form-label">السعر (ريال)</label>
-                                                <input type="number" step="0.01" name="price" class="form-control" value="{{ $service->pivot->price }}" required>
+                                                <input type="number" step="0.01" name="price" class="form-control"
+                                                    value="{{ $service->pivot->price }}" required>
                                             </div>
                                             <div class="mb-2">
                                                 <label class="form-label">المدة (دقيقة)</label>
-                                                <input type="number" name="duration" class="form-control" value="{{ $service->pivot->duration }}" required>
+                                                <input type="number" name="duration" class="form-control"
+                                                    value="{{ $service->pivot->duration }}" required>
                                             </div>
                                             <div class="mb-2">
                                                 <label class="form-label">الحالة</label>
                                                 <select name="status" class="form-control">
-                                                    <option value="1" {{ $service->pivot->status ? 'selected' : '' }}>مفعلة</option>
-                                                    <option value="0" {{ !$service->pivot->status ? 'selected' : '' }}>غير مفعلة</option>
+                                                    <option value="1"
+                                                        {{ $service->pivot->status ? 'selected' : '' }}>مفعلة</option>
+                                                    <option value="0"
+                                                        {{ !$service->pivot->status ? 'selected' : '' }}>غير مفعلة
+                                                    </option>
                                                 </select>
                                             </div>
                                             <div class="mb-2">
@@ -164,7 +190,8 @@
                                             </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">إلغاء</button>
                                             <button type="submit" class="btn btn-success">حفظ التعديلات</button>
                                         </div>
                                     </form>

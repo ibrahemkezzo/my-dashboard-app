@@ -126,6 +126,7 @@
                                 <th>{{ __('dashboard.owner') }}</th>
                                 <th>{{ __('dashboard.city') }}</th>
                                 <th>{{ __('dashboard.phone') }}</th>
+                                <th>{{ __('dashboard.count_services') }}</th>
                                 <th>{{ __('dashboard.promotion') }}</th>
                                 <th>{{ __('dashboard.status') }}</th>
                                 <th>{{ __('dashboard.actions') }}</th>
@@ -148,6 +149,7 @@
                                     <td>{{ $salon->owner->name ?? '-' }}</td>
                                     <td>{{ $salon->city->name ?? '-' }}</td>
                                     <td>{{ $salon->phone }}</td>
+                                    <td>{{ $salon->subservicescount }}</td>
                                     {{-- <td>
                                         @if($salon->rating > 0)
                                             <span class="badge bg-warning">{{ $salon->rating }}/5</span>

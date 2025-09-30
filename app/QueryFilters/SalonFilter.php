@@ -24,6 +24,7 @@ class SalonFilter
         $this->filterPrice();
         $this->filterOffer();
         $this->filterStatus();
+        $this->filterType();
         $this->filterSort();
         return $this->query;
     }
@@ -80,6 +81,12 @@ class SalonFilter
     {
         if (!is_null($this->request->input('status')) && $this->request->input('status') !== '') {
             $this->query->where('status', $this->request->input('status'));
+        }
+    }
+    protected function filterType()
+    {
+        if (!is_null($this->request->input('type')) && $this->request->input('type') !== '') {
+            $this->query->where('type', $this->request->input('type'));
         }
     }
 

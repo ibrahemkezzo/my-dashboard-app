@@ -916,5 +916,6 @@ return [
     'ratings' => 'التقييمات',
     'active_status' => 'الحالة',
     'cosmetic_clinic' => 'عيادة تجميل',
-    'no_gallery_images' => 'لا يوجد صور في المعرض'
+    'no_gallery_images' => 'لا يوجد صور في المعرض',
+    'count_services'=> 'عدد الخدمات'
 ];

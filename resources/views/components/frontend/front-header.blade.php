@@ -20,7 +20,7 @@
             <div class="auth-buttons-desktop">
                 @auth
                     <div class="d-flex align-items-center">
-                        @if (!Auth::user()->hasVerifiedEmail())
+                        @if (!Auth::user()->hasVerifiedEmail() || (Auth::user()->hasRole('salon-manager') && Auth::user()->salon->sub_services_count == 0))
                             <a href="{{ route('verification.notice') }}" title="يرجى تأكيد بريدك الإلكتروني" class="mt-2">
                                 <i class="fas fa-exclamation-circle"
                                     style=" color: #87365b; font-size: 1.5rem; margin-left: 0.5rem;"></i>
@@ -39,13 +39,22 @@
                                     <li>
                                         <a href="{{ route('verification.notice') }}">
                                             <i class="fas fa-exclamation-circle"
-                                    style=" color: #87365b; margin-left: 0.5rem;"></i> تأكيد البريد
+                                                style=" color: #87365b; margin-left: 0.5rem;"></i> تأكيد البريد
                                             الالكتروني
                                         </a>
                                     </li>
                                 @endif
                                 @role(['salon-manager'])
-                                    <li><a href="{{ route('front.profile.salon.manager') }}">إدارة الصالون</a></li>
+                                    <li>
+
+                                        <a href="{{ route('front.profile.salon.manager') }}">
+                                            @if (Auth::user()->salon && Auth::user()->salon->sub_services_count == 0)
+                                                <i class="fas fa-exclamation-circle"
+                                                    style=" color: #87365b; margin-left: 0.5rem;"></i>
+                                            @endif
+                                            إدارة الصالون
+                                        </a>
+                                    </li>
                                 @endrole
                                 @role(['super-admin'])
                                     <li><a href="{{ route('dashboard.index') }}">لوحة التحكم</a></li>
@@ -108,13 +117,17 @@
                                 @if (!Auth::user()->hasVerifiedEmail())
                                     <li>
                                         <a href="{{ route('verification.notice') }}">
-                                           <i class="fas fa-exclamation-circle"
-                                    style=" color: #87365b; margin-left: 0.5rem;"></i> تأكيد البريد
+                                            <i class="fas fa-exclamation-circle"
+                                                style=" color: #87365b; margin-left: 0.5rem;"></i> تأكيد البريد
                                             الالكتروني
                                         </a>
                                     </li>
                                 @endif
+
                                 @role(['salon-manager'])
+                                    @if (Auth::user()->salon && Auth::user()->salon->sub_services_count == 0)
+                                        <i class="fas fa-exclamation-circle" style=" color: #87365b; margin-left: 0.5rem;"></i>
+                                    @endif
                                     <li><a href="{{ route('front.profile.salon.manager') }}">إدارة الصالون</a></li>
                                 @endrole
                                 @role(['super-admin'])
@@ -208,4 +221,3 @@
         </div>
     </div>
 </header>
-
