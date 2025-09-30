@@ -903,7 +903,8 @@ return [
     'location_salon' => 'Location Salon',
     'ratings' => 'ٌRatings',
     'cosmetic_clinic' => 'cosmetic clinic',
-    'no_gallery_images' => 'No Gallery Images'
+    'no_gallery_images' => 'No Gallery Images',
+    'count_services'=> 'Count Services'
 
 
 

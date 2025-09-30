@@ -44,7 +44,9 @@ class SalonController extends Controller
      */
     public function list(Request $request)
     {
-        $query = Salon::where('status',true)->with(['owner', 'city', 'subServices']);
+        $query = Salon::where('status',true)
+        ->whereHas('subServices')
+        ->with(['owner', 'city', 'subServices']);
         $filter = new SalonFilter($request);
         $filteredQuery = $filter->apply($query);
 

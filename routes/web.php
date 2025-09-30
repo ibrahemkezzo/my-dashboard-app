@@ -25,30 +25,30 @@ use App\Http\Controllers\Frontend\SalonManagerController;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/laravel', function () {
-    return view('welcome');
-});
+// Route::get('/laravel', function () {
+//     return view('welcome');
+// });
 // Route::get('/test-mail', function () {
 //     Mail::to('ibrihemkzoo09@example.com')->send(new \Illuminate\Mail\Mailable());
 //     return 'Mail sent!';
 // });
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
-    Route::get('/jetstream/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-});
+// Route::middleware([
+//     'auth:sanctum',
+//     config('jetstream.auth_session'),
+//     'verified',
+// ])->group(function () {
+//     Route::get('/jetstream/dashboard', function () {
+//         return view('dashboard');
+//     })->name('dashboard');
+// });
 
 
 
 //route for dashboard
 
-Route::middleware(['auth'])->group(function () {
+// Route::middleware(['auth'])->group(function () {
 
-});
+// });
 
 
 Route::get('/auth/google', [SocialAuthController::class, 'redirectToGoogle'])->name('auth.google');
@@ -209,7 +209,7 @@ Route::group([
         Route::get('favourites',[ProfileController::class,'favourites'])->name('favourites');
         Route::post('favorite/toggle', [ProfileController::class, 'toggleFavorite'])->name('toggleFavorite');
         Route::group([
-            'middleware'=>'verified'
+            // 'middleware'=>'verified'
             ],function () {
                 Route::get('bookings',[FrontendBookingController::class,'bookings'])->name('bookings');
                 Route::post('bookings/create',[FrontendBookingController::class,'store'])->name('bookings.create');

@@ -20,6 +20,8 @@ document.addEventListener('DOMContentLoaded', function () {
     if (searchInput) searchInput.addEventListener('input', () => { fetchAndRenderSalons(); initMap(); });
     const searchButton = document.getElementById('searchButton');
     if (searchButton) searchButton.addEventListener('click', () => { fetchAndRenderSalons(); initMap(); });
+    const type = document.getElementById('type');
+    if (type) type.addEventListener('change', () => { fetchAndRenderSalons(); initMap(); });
     const serviceType = document.getElementById('serviceType');
     if (serviceType) serviceType.addEventListener('change', () => { fetchAndRenderSalons(); initMap(); });
     const city = document.getElementById('city');
@@ -44,6 +46,14 @@ document.addEventListener('DOMContentLoaded', function () {
         if (serviceType) {
             serviceType.innerHTML = '<option value="">جميع الخدمات</option>' +
                 data.subservices.map(s => `<option value="${s.name}">${s.name}</option>`).join('');
+        }
+        // type
+        const type = document.getElementById('type');
+        if (type) {
+            type.innerHTML = '<option value="">جميع الانواع</option>'+
+            '<option value="cosmetic_clinic">عيادة تجميل</option>'+
+            '<option value="beauty_center">مركز معتمد</option>'+
+            '<option value="home_salon">صالون منزلي</option>';
         }
         // Cities
         const city = document.getElementById('city');
@@ -73,6 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function setInitialFilterValues() {
         const urlParams = new URLSearchParams(window.location.search);
         const searchInput = document.getElementById('searchInput');
+        const type = document.getElementById('type');
         const serviceType = document.getElementById('serviceType');
         const city = document.getElementById('city');
         const priceFilter = document.getElementById('priceFilter');
@@ -109,6 +120,19 @@ document.addEventListener('DOMContentLoaded', function () {
             };
             checkCity();
         }
+        if (type && urlParams.has('type')) {
+            const oldType = urlParams.get('type');
+            const checkType = () => {
+                if (type.options.length > 1) {
+                    if (Array.from(type.options).find(opt => opt.value === oldType)) {
+                        type.value = oldType;
+                    }
+                } else {
+                    setTimeout(checkType, 100);
+                }
+            };
+            checkType();
+        }
 
         if (priceFilter && urlParams.has('price_min') && urlParams.has('price_max')) {
             const priceMin = urlParams.get('price_min');
@@ -141,6 +165,7 @@ document.addEventListener('DOMContentLoaded', function () {
             search: searchInput ? searchInput.value : '',
             service_type: serviceType ? serviceType.value : '',
             city_id: city ? city.value : '',
+            type: type ? type.value : '',
             price_min,
             price_max,
             has_offer: hasOffers && hasOffers.checked ? 1 : 0,

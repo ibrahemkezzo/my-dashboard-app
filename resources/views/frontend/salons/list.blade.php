@@ -37,7 +37,7 @@
                                     data-bs-parent="#filtersAccordion">
                                     <div class="accordion-body">
                                         <div class="row mb-3">
-                                            <div class="col-12">
+                                            <div class="col-6 col-lg-6 col-md-4">
                                                 <label class="form-label fw-semibold">البحث</label>
                                                 <div class="input-group">
                                                     <input type="text" class="form-control no-hover-effects"
@@ -47,6 +47,15 @@
                                                     </button>
                                                 </div>
                                             </div>
+                                            
+                                            <div class="col-6 col-lg-6 col-md-4">
+                                                <label class="form-label fw-semibold">النوع</label>
+                                                <select class="form-select no-hover-effects" id="type">
+                                                    <option value="">جميع الانواع</option>
+
+                                                </select>
+                                            </div>
+
                                         </div>
                                         <div class="row g-3">
                                             <div class="col-lg-6 col-md-4">

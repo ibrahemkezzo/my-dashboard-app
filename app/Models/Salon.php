@@ -122,6 +122,16 @@ class Salon extends Model
     }
 
     /**
+     * Accessor to get the count of sub-services for this salon.
+     *
+     * @return int
+     */
+    public function getSubServicesCountAttribute()
+    {
+        return $this->subServices()->count();
+    }
+
+    /**
      * Get the full URL for the cover image.
      */
     public function getCoverImageUrlAttribute()

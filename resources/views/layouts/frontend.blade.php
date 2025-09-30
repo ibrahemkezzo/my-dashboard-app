@@ -37,8 +37,8 @@
 
 <body>
     <div id="loader">
-    <img src="{{ asset('frontend/assets/img/logo.png') }}" alt="Logo Loader" class="logo-loader">
-</div>
+        <img src="{{ asset('frontend/assets/img/logo.png') }}" alt="Logo Loader" class="logo-loader">
+    </div>
     {{-- @include('frontend.layouts.header') --}}
     {{-- start header --}}
     <x-frontend.front-header />
