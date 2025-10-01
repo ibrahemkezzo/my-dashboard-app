@@ -1,6 +1,6 @@
 @extends('layouts.frontend')
 
-@section('title',config('app.name') . ' | '.config('app.name_ar').'منصة حجز خدمات التجميل | ')
+@section('title', config('app.name') . ' | ' . config('app.name_ar') . 'منصة حجز خدمات التجميل | ')
 
 @section('main')
     <!-- Breadcrumb -->
@@ -71,7 +71,7 @@
                             <div class="rating">
                                 @php
                                     $averageRating = $salon->rating ?? 0;
-                                    $ratingCount = $salon->ratings()->where('status','approved')->count();
+                                    $ratingCount = $salon->ratings()->where('status', 'approved')->count();
                                 @endphp
                                 <span class="stars text-warning">
                                     @for ($i = 1; $i <= 5; $i++)
@@ -84,7 +84,8 @@
                                         @endif
                                     @endfor
                                 </span>
-                                <span class="ms-2">{{ number_format($averageRating,1) }} ({{ $ratingCount }} تقييم)</span>
+                                <span class="ms-2">{{ number_format($averageRating, 1) }} ({{ $ratingCount }}
+                                    تقييم)</span>
                             </div>
                             <span class="badge bg-success">مركز معتمد</span>
                         </div>
@@ -443,7 +444,7 @@
 @endsection
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/pages-styles.css?v='.config('app.version')) }}">
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/pages-styles.css?v=' . config('app.version')) }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -456,10 +457,10 @@
         }
 
         /*
-            .btn-icon-outline.active {
-                transform: translateY(0);
-                box-shadow: 0 2px 6px rgba(245, 100, 118, 0.2);
-            } */
+                .btn-icon-outline.active {
+                    transform: translateY(0);
+                    box-shadow: 0 2px 6px rgba(245, 100, 118, 0.2);
+                } */
 
         .btn-icon-outline.active {
             background: #F56476;
@@ -611,7 +612,7 @@
                 <i class="fas fa-link"></i> نسخ الرابط
             </button>
         </div>
-    `;
+        `;
             document.body.appendChild(shareMenu);
 
             // إظهار/إخفاء القائمة عند النقر
@@ -770,7 +771,7 @@
         }
 
         /* #infowindow-content .title {
-                        font-weight: bold;
-                    } */
+                            font-weight: bold;
+                        } */
     </style>
 @endpush
