@@ -34,7 +34,9 @@ class GoogleAuthService implements SocialAuthServiceInterface
         );
 
         Auth::login($user, true);
-        $user->assignRole('user');
+        if (!$user->roles()->exists()) {
+            $user->assignRole('user');
+        }
 
         return $user;
     }
