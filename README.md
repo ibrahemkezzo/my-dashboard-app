@@ -1,5 +1,5 @@
 # Version Project
-"version": "1.4.0"
+"version": "1.4.2"
 # SalonBooking Platform
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
