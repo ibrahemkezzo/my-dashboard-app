@@ -1,6 +1,6 @@
 @extends('layouts.frontend')
 
-@section('title',config('app.name') . ' | '.config('app.name_ar').'منصة حجز خدمات التجميل | ')
+@section('title', config('app.name') . ' | ' . config('app.name_ar') . 'منصة حجز خدمات التجميل | ')
 
 @section('main')
     <!-- Breadcrumb -->
@@ -71,7 +71,7 @@
                             <div class="rating">
                                 @php
                                     $averageRating = $salon->rating ?? 0;
-                                    $ratingCount = $salon->ratings()->where('status','approved')->count();
+                                    $ratingCount = $salon->ratings()->where('status', 'approved')->count();
                                 @endphp
                                 <span class="stars text-warning">
                                     @for ($i = 1; $i <= 5; $i++)
@@ -84,7 +84,8 @@
                                         @endif
                                     @endfor
                                 </span>
-                                <span class="ms-2">{{ number_format($averageRating,1) }} ({{ $ratingCount }} تقييم)</span>
+                                <span class="ms-2">{{ number_format($averageRating, 1) }} ({{ $ratingCount }}
+                                    تقييم)</span>
                             </div>
                             <span class="badge bg-success">مركز معتمد</span>
                         </div>
@@ -171,17 +172,21 @@
                                     <th>الخدمة</th>
                                     <th>الوصف</th>
                                     <th>المدة</th>
-                                    <th>السعر</th>
+                                    <th>ادنى سعر</th>
+                                    <th>اقصى سعر</th>
                                     <th>الحالة</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @php $row = 0; @endphp
                                 @foreach ($salon->subServices as $service)
-                                    <tr>
+                                    @php $row++; @endphp
+                                    <tr class="{{ $row % 2 == 1 ? 'table-warning' : '' }}">
                                         <td>{{ $service->service->name }}</td>
                                         <td>{{ $service->name }}</td>
                                         <td>{{ $service->pivot->duration }}</td>
                                         <td>{{ $service->pivot->price }}</td>
+                                        <td>{{ $service->pivot->max_price }}</td>
                                         <td>{{ $service->pivot->status ? 'متوفرة' : 'غير متوفرة' }}</td>
                                     </tr>
                                 @endforeach
@@ -267,14 +272,14 @@
                             <span class="text-sm fw-semibold">98%</span>
                         </div>
                         <div class="progress">
-                            <div class="progress-bar" style="width: 98%; background-color: #F56476;"></div>
+                            <div class="progress-bar" style="width: 98%; background-color: #87365b;"></div>
                         </div>
                     </div>
                 </div>
                 <div class="sidebar-section mb-4">
                     <div class="form-section">
                         <h5 class="fw-semibold mb-3">
-                            <i class="fas fa-star ms-2" style="color: #F56476"></i>المميزات المتوفرة
+                            <i class="fas fa-star ms-2" style="color: #87365b"></i>المميزات المتوفرة
                         </h5>
                         <div class="row">
                             @if (isset($salon->features['parking']))
@@ -319,7 +324,7 @@
                 <div class="sidebar-section mb-4">
                     <div class="form-section">
                         <h5 class="fw-semibold mb-3">
-                            <i class="fas fa-star ms-2" style="color: #F56476"></i>روابط التواصل الاجتماعي
+                            <i class="fas fa-star ms-2" style="color: #87365b"></i>روابط التواصل الاجتماعي
                         </h5>
                         <div class="row" dir="ltr">
                             @if (isset($salon->social_links['instagram']))
@@ -403,24 +408,34 @@
                         @csrf
                         <input type="hidden" name="salon_id" value="{{ $salon->id }}">
                         <input type="hidden" name="service_description"
-                            value="{{ $salon->subService->description ?? 'no thing for description stay it null' }}">
+                            value="{{ $groupedServices->first()['sub_services']->first()->description ?? 'no thing for description stay it null' }}">
+
                         <div class="mb-3">
-                            <label for="salon_sub_service_id" class="form-label">{{ __('dashboard.service') }} <span
+                            <label class="form-label">{{ __('dashboard.services') }} <span
                                     class="text-danger">*</span></label>
-                            <select name="salon_sub_service_id"
-                                class="form-select no-hover-effects @error('salon_sub_service_id') is-invalid @enderror"
-                                required>
-                                <option value="">{{ __('dashboard.select_service') }}</option>
-                                @foreach ($salon->subServices as $service)
-                                    @if ($service->pivot->status == true)
-                                        <option value="{{ $service->pivot->id }}">{{ $service->name }}</option>
-                                    @endif
-                                @endforeach
-                            </select>
-                            @error('salon_sub_service_id')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            @forelse ($groupedServices as $group)
+                                <div class="service-section mb-3">
+                                    <h6 class="fw-bold">{{ $group['service']->name }}</h6>
+                                    @foreach ($group['sub_services'] as $subService)
+                                        <div class="form-check ms-3">
+                                            <input class="form-check-input" type="checkbox"
+                                                name="services[{{ $subService->pivot->id }}][salon_sub_service_id]"
+                                                value="{{ $subService->pivot->id }}"
+                                                id="service_{{ $subService->pivot->id }}"
+                                                data-price="{{ $subService->pivot->price }}"
+                                                data-duration="{{ $subService->pivot->duration }}">
+                                            <label class="form-check-label" for="service_{{ $subService->pivot->id }}">
+                                                {{ $subService->name }} - {{ $subService->pivot->price }} ريال
+                                                ({{ $subService->pivot->duration }} دقيقة)
+                                            </label>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @empty
+                                <p class="text-muted">لا توجد خدمات متاحة للحجز حاليًا.</p>
+                            @endforelse
                         </div>
+
                         <div class="mb-3">
                             <label for="preferred_datetime" class="form-label">{{ __('dashboard.preferred_datetime') }}
                                 <span class="text-danger">*</span></label>
@@ -431,6 +446,7 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
+
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
                             <button type="submit" class="btn btn-primary">تأكيد الحجز</button>
@@ -443,7 +459,9 @@
 @endsection
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/pages-styles.css?v='.config('app.version')) }}">
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/pages-styles.css?v=' . config('app.version')) }}">
+
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -456,10 +474,10 @@
         }
 
         /*
-            .btn-icon-outline.active {
-                transform: translateY(0);
-                box-shadow: 0 2px 6px rgba(245, 100, 118, 0.2);
-            } */
+        .btn-icon-outline.active {
+            transform: translateY(0);
+            box-shadow: 0 2px 6px rgba(245, 100, 118, 0.2);
+        } */
 
         .btn-icon-outline.active {
             background: #F56476;
@@ -509,6 +527,79 @@
 
         .share-option i {
             font-size: 18px;
+        }
+    </style>
+    <style>
+        /* تنسيق أقسام الخدمات في نافذة الحجز */
+        .service-section {
+            border-bottom: 1px solid var(--gray-300); /* حدود سفلية لفصل الأقسام */
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+            background-color: rgba(245, 100, 118, 0.05); /* خلفية خفيفة لتحسين الوضوح */
+            border-radius: 0.5rem; /* زوايا مستديرة */
+            padding: 1rem;
+        }
+
+        .service-section:last-child {
+            border-bottom: none; /* إزالة الحدود لآخر قسم */
+        }
+
+        .service-section h6 {
+            color: var(--primary); /* لون العنوان بلون الثيم الأساسي */
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem; /* مسافة بين الأيقونة والنص إذا تم إضافة أيقونة */
+        }
+
+        .form-check {
+            margin-bottom: 0.5rem;
+            padding-right: 1.5rem; /* مسافة للتأكد من محاذاة الـ checkbox */
+        }
+
+        .form-check-label {
+            color: var(--text);
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .form-check-input {
+            margin-top: 0.3rem;
+            border-color: var(--gray-400);
+        }
+
+        .form-check-input:checked {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .form-check-label:hover {
+            color: var(--primary-border); /* تغيير لون النص عند التمرير */
+        }
+        @media (max-width: 576px) {
+            .service-section {
+                padding: 0.75rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .service-section h6 {
+                font-size: 1rem;
+            }
+
+            .form-check-label {
+                font-size: 0.875rem;
+            }
+
+            .modal-body {
+                padding: 1rem;
+            }
+
+            .modal-footer .btn {
+                font-size: 0.875rem;
+                padding: 0.5rem 1rem;
+            }
         }
     </style>
 @endpush
@@ -611,7 +702,7 @@
                 <i class="fas fa-link"></i> نسخ الرابط
             </button>
         </div>
-    `;
+        `;
             document.body.appendChild(shareMenu);
 
             // إظهار/إخفاء القائمة عند النقر
@@ -701,14 +792,14 @@
                                  alt="{{ $salon->name }}"
                                  style="width: 80px; height: 80px; object-fit: cover; border-radius: 5px; margin-right: 5px;">
                             <div style="flex-grow: 1; padding-right: 10px;">
-                                <h4 style="margin: 0; color: #f56476; font-size: 16px; display: flex; align-items: center; justify-content: space-between;">
+                                <h4 style="margin: 0; color: #87365b; font-size: 16px; display: flex; align-items: center; justify-content: space-between;">
                                     {{ $salon->name }}
 
                                 </h4>
                                 <p style="margin: 8px 0; color: #666; padding-left: 5px;">الحالة: ${statusText}</p>
                             </div>
                         </div>
-                        <a href="https://www.google.com/maps?q=${salonLat},${salonLng}" target="_blank" style="display: flex; align-items: center; margin-top: 5px; padding: 5px 15px; background-color: #f56476; color: #fff; text-decoration: none; border-radius: 5px; font-size: 14px;">عرض على خرائط غوغل</a>
+                        <a href="https://www.google.com/maps?q=${salonLat},${salonLng}" target="_blank" style="display: flex; align-items: center; margin-top: 5px; padding: 5px 15px; background-color: #87365b; color: #fff; text-decoration: none; border-radius: 5px; font-size: 14px;">عرض على خرائط غوغل</a>
                     </div>
                 `
             });
@@ -770,7 +861,7 @@
         }
 
         /* #infowindow-content .title {
-                        font-weight: bold;
-                    } */
+                                        font-weight: bold;
+                                    } */
     </style>
 @endpush

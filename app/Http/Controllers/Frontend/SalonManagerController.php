@@ -10,6 +10,7 @@ use App\Notifications\BookingStatusUpdatedNotification;
 use App\Services\SalonService;
 use App\Services\SalonSubServiceService;
 use App\Services\BookingService;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\Controller;
@@ -49,30 +50,63 @@ class SalonManagerController extends Controller
         $salon = $user->salon;
         if (!$salon) abort(404);
         $data = $request->validated();
-        $this->salonService->update($salon, $data, $request->file('logo'), $request->file('cover_image') , $request->file('license_document'));
+        $this->salonService->update($salon, $data, $request->file('logo'), $request->file('cover_image'), $request->file('license_document'));
         return redirect()->route('front.profile.salon.manager', ['tab' => 'info'])->with('message', ['type' => 'success', 'content' => __('تم تحديث بيانات الصالون')]);
     }
 
-    // Add a new service
+     /**
+     * Add a new service to the salon.
+     */
     public function addService(Request $request)
     {
-        $user = Auth::user();
-        $salon = $user->salon;
-        if (!$salon) abort(404);
-        $data = $request->validate([
-            'service_id' => 'required|exists:services,id',
-            'sub_service_id' => 'required|exists:sub_services,id',
-            'price' => 'required|numeric|min:0',
-            'duration' => 'required|integer|min:0',
-            'status' => 'nullable|boolean',
-            // 'materials_used' => 'nullable|string|max:1000',
-            // 'requirements' => 'nullable|string|max:1000',
-            'special_notes' => 'nullable|string|max:1000',
-            // 'images.*' => 'nullable|image|max:2048',
-        ]);
-        // $this->salonSubServiceService->createSalonSubService($salon, $data, $request->file('images'));
-        $this->salonSubServiceService->createSalonSubService($salon, $data);
-        return redirect()->route('front.profile.salon.manager', ['tab' => 'services'])->with('message', ['type' => 'success', 'content' => __('تمت إضافة الخدمة')]);
+        try {
+            $user = Auth::user();
+            $salon = $user->salon;
+            if (!$salon) {
+                abort(404);
+            }
+
+            $data = $request->validate([
+                'service_id' => 'required|exists:services,id',
+                'sub_service_id' => 'required|exists:sub_services,id',
+                'price' => 'required|numeric|min:0',
+                'max_price' => 'required|numeric|min:0|gt:price',
+                'duration' => 'required|integer|min:0',
+                'status' => 'nullable|boolean',
+                'special_notes' => 'nullable|string|max:1000',
+            ]);
+
+            $this->salonSubServiceService->createSalonSubService($salon, $data);
+
+            return redirect()->route('front.profile.salon.manager', ['tab' => 'services'])
+                ->with('message', ['type' => 'success', 'content' => __('تمت إضافة الخدمة')]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // معالجة أخطاء التحقق
+            $errors = $e->validator->errors()->all();
+            $errorMessage = implode(' ', $errors);
+
+            return back()->with('message', ['type' => 'error', 'content' => $errorMessage]);
+        } catch (QueryException $e) {
+            // معالجة أخطاء قاعدة البيانات (مثل قيد unique)
+            if (str_contains($e->getMessage(), 'Duplicate entry')) {
+                return back()->with('message', [
+                    'type' => 'error',
+                    'content' => 'هذه الخدمة مضافة مسبقًا لهذا الصالون.'
+                ]);
+            }
+
+            // تسجيل الخطأ للتتبع (اختياري)
+            \Illuminate\Support\Facades\Log::error('Failed to add service: ' . $e->getMessage(), [
+                'salon_id' => $salon->id,
+                'sub_service_id' => $request->input('sub_service_id'),
+            ]);
+
+            // إرجاع رسالة خطأ عامة إذا لم يكن الخطأ متعلقًا بـ unique
+            return back()->with('message', [
+                'type' => 'error',
+                'content' => 'حدث خطأ أثناء إضافة الخدمة. حاول مرة أخرى.'
+            ]);
+        }
     }
 
     // View service details (with images)
@@ -95,20 +129,50 @@ class SalonManagerController extends Controller
     // Edit service details
     public function editService(Request $request, $subServiceId)
     {
-        $user = Auth::user();
-        $salon = $user->salon;
-        if (!$salon) abort(404);
-        $pivot = $salon->subServices()->wherePivot('id', $subServiceId)->firstOrFail()->pivot;
-        $data = $request->validate([
-            'price' => 'required|numeric|min:0',
-            'duration' => 'required|integer|min:0',
-            'status' => 'nullable|boolean',
-            'materials_used' => 'nullable|string|max:1000',
-            'requirements' => 'nullable|string|max:1000',
-            'special_notes' => 'nullable|string|max:1000',
-        ]);
-        app(\App\Services\SalonSubServiceService::class)->updateSalonSubService($pivot, $data);
-        return back()->with('message', ['type' => 'success', 'content' => 'تم تحديث الخدمة بنجاح']);
+
+        try {
+            $user = Auth::user();
+            $salon = $user->salon;
+            if (!$salon) {
+                abort(404);
+            }
+
+            $pivot = $salon->subServices()->wherePivot('id', $subServiceId)->firstOrFail()->pivot;
+
+            $data = $request->validate([
+                'price' => 'required|numeric|min:0',
+                'max_price' => 'required|numeric|min:0|gt:price',
+                'duration' => 'required|integer|min:0',
+                'status' => 'nullable|boolean',
+                'materials_used' => 'nullable|string|max:1000',
+                'requirements' => 'nullable|string|max:1000',
+                'special_notes' => 'nullable|string|max:1000',
+            ], [
+                'price.required' => 'السعر مطلوب.',
+                'price.numeric' => 'يجب أن يكون السعر رقمًا.',
+                'price.min' => 'يجب أن يكون السعر أكبر من أو يساوي 0.',
+                'max_price.required' => 'السعر الأقصى مطلوب.',
+                'max_price.numeric' => 'يجب أن يكون السعر الأقصى رقمًا.',
+                'max_price.min' => 'يجب أن يكون السعر الأقصى أكبر من أو يساوي 0.',
+                'max_price.gt' => 'يجب أن يكون السعر الأقصى أكبر من السعر الأدنى.',
+                'duration.required' => 'المدة مطلوبة.',
+                'duration.integer' => 'يجب أن تكون المدة عددًا صحيحًا.',
+                'duration.min' => 'يجب أن تكون المدة أكبر من أو تساوي 0.',
+                'materials_used.max' => 'المواد المستخدمة يجب ألا تتجاوز 1000 حرف.',
+                'requirements.max' => 'المتطلبات يجب ألا تتجاوز 1000 حرف.',
+                'special_notes.max' => 'الملاحظات الخاصة يجب ألا تتجاوز 1000 حرف.',
+            ]);
+
+            app(\App\Services\SalonSubServiceService::class)->updateSalonSubService($pivot, $data);
+
+            return back()->with('message', ['type' => 'success', 'content' => 'تم تحديث الخدمة بنجاح']);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // استخراج رسائل الأخطاء من الاستثناء
+            $errors = $e->validator->errors()->all();
+            $errorMessage = implode(' ', $errors); // دمج جميع الأخطاء في نص واحد
+
+            return back()->with('message', ['type' => 'error', 'content' => $errorMessage]);
+        }
     }
 
     // Add image to service

@@ -38,6 +38,12 @@ class BookingConfirmedByUserNotification extends Notification implements ShouldQ
      */
     public function toMail($notifiable): MailMessage
     {
+                        // إنشاء قائمة الخدمات مع الكميات
+        $servicesList = $this->booking->services->map(function ($service) {
+            $name = $service->salonSubService->subService->name ?? 'خدمة غير محددة';
+            $quantity = $service->quantity > 1 ? ' (x' . $service->quantity . ')' : '';
+            return $name . $quantity;
+            })->implode(' + ');
 
         return (new MailMessage)
             ->subject('تأكيد حجز من المستخدم')
@@ -45,7 +51,7 @@ class BookingConfirmedByUserNotification extends Notification implements ShouldQ
             ->line('تم تأكيد الحجز من قبل المستخدم.')
             ->line('**تفاصيل الحجز:**')
             ->line('اسم العميل: ' . $this->booking->user->name)
-            ->line('الخدمة: ' . $this->booking->salonSubService->subService->name )
+            ->line('الخدمات: ' . ($servicesList ?: 'غير محددة'))
             ->line('الوقت المؤكد: ' . $this->booking->preferred_datetime )
             ->action('عرض الحجز', url('/profile/salon/manager?tab=bookings'))
             ->line('يرجى اتخاذ الإجراءات اللازمة لتجهيز الخدمة.');

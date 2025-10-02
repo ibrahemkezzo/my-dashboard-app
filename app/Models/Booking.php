@@ -26,6 +26,7 @@ class Booking extends Model
         'user_confirmed_datetime',
         'salon_proposed_datetime',
         'salon_proposed_price',
+        'salon_proposed_max_price',
         'salon_proposed_duration',
         'salon_notes',
         'salon_modification_reason',
@@ -38,6 +39,7 @@ class Booking extends Model
         'user_confirmed_datetime' => 'datetime',
         'salon_proposed_datetime' => 'datetime',
         'salon_proposed_price' => 'decimal:2',
+        'salon_proposed_max_price' => 'decimal:2',
         'additional_data' => 'array',
     ];
 
@@ -81,7 +83,15 @@ class Booking extends Model
         return $this->hasOne(Rating::class);
     }
 
-
+    /**
+     * Get the services associated with this booking (multiple services support).
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function services(): HasMany
+    {
+        return $this->hasMany(BookingService::class);
+    }
 
     /**
      * Generate a unique booking number.
@@ -133,7 +143,7 @@ class Booking extends Model
     public function isModifiedBySalon(): bool
     {
         return $this->salon_proposed_datetime &&
-               $this->salon_proposed_datetime->ne($this->preferred_datetime);
+            $this->salon_proposed_datetime->ne($this->preferred_datetime);
     }
 
     /**
@@ -173,7 +183,7 @@ class Booking extends Model
      */
     public function getStatusBadgeClassAttribute(): string
     {
-        return match($this->status) {
+        return match ($this->status) {
             'pending' => 'bg-warning',
             'salon_confirmed' => 'bg-info',
             'user_confirmed' => 'bg-success',
@@ -189,7 +199,7 @@ class Booking extends Model
      */
     public function getStatusTextAttribute(): string
     {
-        return match($this->status) {
+        return match ($this->status) {
             'pending' => __('dashboard.pending'),
             'salon_confirmed' => __('dashboard.salon_confirmed'),
             'user_confirmed' => __('dashboard.user_confirmed'),

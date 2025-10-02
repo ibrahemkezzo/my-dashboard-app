@@ -48,6 +48,12 @@ class BookingStatusUpdatedNotification extends Notification implements ShouldQue
             'cancel' => 'تم إلغاء حجزك.',
             'completed' => 'تم إكمال حجزك.',
         ];
+                        // إنشاء قائمة الخدمات مع الكميات
+        $servicesList = $this->booking->services->map(function ($service) {
+            $name = $service->salonSubService->subService->name ?? 'خدمة غير محددة';
+            $quantity = $service->quantity > 1 ? ' (x' . $service->quantity . ')' : '';
+            return $name . $quantity;
+            })->implode(' + ');
 
         $message = (new MailMessage)
             ->subject('تحديث حالة الحجز')
@@ -56,7 +62,7 @@ class BookingStatusUpdatedNotification extends Notification implements ShouldQue
             ->line('**تفاصيل الحجز:**')
             ->line('معرف الحجز: ' . $this->booking->booking_number)
             ->line('الصالون: ' . $this->booking->salon->name)
-            ->line('الخدمة: ' . $this->booking->salonSubService->subService->name)
+            ->line('الخدمات: ' . ($servicesList ?: 'غير محددة'))
             ->line('الوقت المفضل: ' . $this->booking->preferred_datetime);
 
         if ($this->action === 'modify') {

@@ -163,7 +163,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="d-flex justify-content-center">
+                <div dir="ltr" class="d-flex justify-content-center mt-3">
                     {{ $subServices->appends(request()->query())->links('pagination::simple-tailwind') }}
                 </div>
             </div>

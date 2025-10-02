@@ -5,7 +5,7 @@
                 <div class="auth-card large">
                     <div class="text-center mb-4">
                         <h2 class="fw-bold auth-title">مرحباً بك</h2>
-                        <p class="text-muted">انضمي إلى كوافيري واستمتعي بأفضل خدمات التجميل</p>
+                        <p class="text-muted">انضمي إلى غلوزيلي واستمتعي بأفضل خدمات التجميل</p>
                     </div>
 
                     <!-- Auth Tabs -->

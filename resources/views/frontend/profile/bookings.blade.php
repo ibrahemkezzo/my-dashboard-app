@@ -68,14 +68,28 @@
                                     </div>
                                     <div class="detail-row">
                                         <i class="fas fa-cut detail-icon"></i>
-                                        <span>{{ $booking->salonSubService->subService->name }}</span>
+                                        @php
+                                            $serviceNames = $booking->services->map(function ($service) {
+                                                $name = $service->salonSubService->subService->name ?? 'خدمة غير محددة';
+                                                $quantity = $service->quantity > 1 ? ' (x' . $service->quantity . ')' : '';
+                                                return $name . $quantity;
+                                            })->implode(' + ');
+                                        @endphp
+                                        <span>{{ $serviceNames }}</span>
+                                        {{-- <span>{{ $booking->salonSubService->subService->name }}</span> --}}
                                         @isset($booking->rejection_reason)
                                          <span>{{ $booking->rejection_reason }}</span>
                                         @endisset
                                     </div>
                                     <div class="detail-row">
                                         <i class="fas fa-money-bill-wave detail-icon"></i>
-                                        <span class="price">{{ $booking->final_price }} ريال</span>
+                                        <span class="price">{{ $booking->salon_proposed_price }} - {{$booking->salon_proposed_max_price}}  ريال </span><span>
+                                            (السعر تقريبي وليس نهائي )
+                                        </span>
+                                    </div>
+                                    <div class="detail-row">
+                                        <i class="fas fa-clock detail-icon"></i>
+                                        <span class="price">المدة التقديرية : </span><span>{{ $booking->salon_proposed_duration }} دقيقة</span>
                                     </div>
                                 </div>
                                 <div class="booking-actions">
@@ -172,7 +186,15 @@
                                     </div>
                                     <div class="detail-row">
                                         <i class="fas fa-cut detail-icon"></i>
-                                        <span>{{ $booking->salonSubService->subService->name }}</span>
+                                        {{-- <span>{{ $booking->salonSubService->subService->name }}</span> --}}
+                                        @php
+                                            $serviceNames = $booking->services->map(function ($service) {
+                                                $name = $service->salonSubService->subService->name ?? 'خدمة غير محددة';
+                                                $quantity = $service->quantity > 1 ? ' (x' . $service->quantity . ')' : '';
+                                                return $name . $quantity;
+                                            })->implode(' + ');
+                                        @endphp
+                                        <span>{{ $serviceNames }}</span>
 
                                     </div>
                                     <div class="detail-row">

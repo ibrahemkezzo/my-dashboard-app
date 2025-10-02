@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Requests\FrontStoreSalonRequest;
-use App\Http\Requests\StoreSalonRequest;
+use App\Http\Requests\StoreFrontSalonSubServiceRequest;
 use App\Models\City;
 use Illuminate\Http\Request;
 use App\Services\SalonService;
@@ -123,36 +123,68 @@ class SalonController extends Controller
         ]);
         $subServices = SubService::with('service')->orderBy('name')->get();
         $allServices = Service::all();
-        return view('frontend.salons.create_step2', compact('salon', 'subServices', 'allServices'))->with('message', [
-            'type' => 'success',
-            'content' => __('تم انشاء الصالون الرجاء ادخال الخدمات المقدمة')
-        ]);
+        return redirect()->route('front.salons.create.step2', $salon->id)
+                         ->with('message', [
+                            'type' => 'success',
+                            'content' => __('تم انشاء الصالون الرجاء ادخال الخدمات المقدمة')
+                        ]);
     }
 
-    public function storeStep2(Request $request , Salon $salon)
+    public function createStep2(Salon $salon)
+    {
+
+        $subServices = SubService::with('service')->orderBy('name')->get();
+        $allServices = Service::all();
+        return view('frontend.salons.create_step2', compact('salon', 'subServices', 'allServices'));
+    }
+
+    public function storeStep2(StoreFrontSalonSubServiceRequest $request , Salon $salon)
     {
         // dd($request->all());
-        $validated = $request->validate([
-            'salon_services' => 'required|array',
-            'salon_services.*.service_id' => 'required|exists:services,id',
-            'salon_services.*.sub_service_id' => 'required|exists:sub_services,id',
-            'salon_services.*.price' => 'nullable|numeric',
-            'salon_services.*.duration' => 'nullable|integer',
-            'salon_services.*.status' => 'nullable|boolean',
-            'salon_services.*.materials_used' => 'nullable|string',
-            'salon_services.*.requirements' => 'nullable|string',
-            'salon_services.*.special_notes' => 'nullable|string',
-            'salon_services.*.images.*' => 'nullable|image|max:2048',
-        ]);
-        // dd($validated);
+          if($salon->owner->id != Auth::user()->id){
+            return redirect()->back()->with('message', [
+                            'type' => 'error',
+                            'content' => __('لا يستطيع اضافة الخدمات سوى مالك المركز')
+                        ]);
+        }
+        $validated = $request->validated();
+
 
          $sync = $this->service->syncSubServices($salon,$validated['salon_services']);
-        return redirect()->route('front.home')->with('message', ['type' => 'success', 'content' => __('تم تقديم الطلب سيتم تنشيط الصالون باقرب وقت ممكن')]);
+        return redirect()->route('front.home')->with('message', ['type' => 'success', 'content' => __('تم تم اضافة الخدمات بنجاح')]);
     }
 
-    public function show(Salon $salon){
-        $salon->load('subServices','bookings','media','city','owner');
-        return view('frontend.salons.show',compact('salon'));
+    public function show(Salon $salon)
+    {
+        // تحميل العلاقات المطلوبة بكفاءة
+        $salon->load([
+            'subServices.service' => function ($query) {
+                $query->where('status', true); // تحميل الخدمات النشطة فقط
+            },
+            'bookings',
+            'media',
+            'city',
+            'owner'
+        ]);
+
+        // تجميع الخدمات الفرعية حسب الخدمة الأم (Service)
+        $groupedServices = $salon->subServices
+            ->where('pivot.status', true) // الخدمات المتاحة فقط
+            ->groupBy('service_id')
+            ->map(function ($subServices, $serviceId) {
+                $service = \App\Models\Service::find($serviceId); // جلب الخدمة
+                if (!$service || !$service->status) {
+                    return null; // تجاهل الخدمات غير النشطة
+                }
+                return [
+                    'service' => $service,
+                    'sub_services' => $subServices
+                ];
+            })
+            ->filter() // إزالة القيم الفارغة
+            ->values(); // إعادة فهرسة المصفوفة
+
+        return view('frontend.salons.show', compact('salon', 'groupedServices'));
     }
 
 
