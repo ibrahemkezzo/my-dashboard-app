@@ -195,7 +195,9 @@ Route::group([
         Route::get('show/{salon}', [FrontendSalonController::class, 'show'])->name('show');
         Route::get('filters', [FrontendSalonController::class, 'filters'])->name('filters');
         Route::get('create', [FrontendSalonController::class, 'create'])->name('create');
+        Route::get('create/step1', [FrontendSalonController::class, 'create'])->name('store.step1');
         Route::post('create/step1', [FrontendSalonController::class, 'storeStep1'])->name('store.step1');
+        Route::get('create/step2/{salon}', [FrontendSalonController::class, 'createStep2'])->name('create.step2');
         Route::post('create/step2/{salon}', [FrontendSalonController::class, 'storeStep2'])->name('store.step2');
     });
     //profile

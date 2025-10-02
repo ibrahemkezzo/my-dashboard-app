@@ -24,7 +24,7 @@ class SubService extends Model
     {
         return $this->belongsToMany(Salon::class, 'salon_sub_service')
             ->using(SalonSubService::class)
-            ->withPivot(['price', 'duration', 'materials_used', 'requirements', 'special_notes', 'status'])
+            ->withPivot(['price','max_price', 'duration', 'materials_used', 'requirements', 'special_notes', 'status'])
             ->withTimestamps();
     }
 }

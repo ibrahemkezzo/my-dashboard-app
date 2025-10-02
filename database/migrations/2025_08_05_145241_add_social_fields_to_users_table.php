@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('google_id')->nullable()->unique();
-            $table->string('google_token')->nullable(); // رمز الوصول (Access Token)
+            $table->string('google_token',2048)->nullable(); // رمز الوصول (Access Token)
             $table->string('google_refresh_token')->nullable(); // رمز التجديد (إذا كان متاحًا)
             $table->timestamp('google_token_expires_at')->nullable(); // تاريخ انتهاء صلاحية التوكن
             $table->string('avatar')->nullable();

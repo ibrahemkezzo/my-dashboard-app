@@ -39,13 +39,20 @@ class NewBookingNotification extends Notification implements ShouldQueue
      */
     public function toMail($notifiable): MailMessage
     {
+                // إنشاء قائمة الخدمات مع الكميات
+        $servicesList = $this->booking->services->map(function ($service) {
+            $name = $service->salonSubService->subService->name ?? 'خدمة غير محددة';
+            $quantity = $service->quantity > 1 ? ' (x' . $service->quantity . ')' : '';
+            return $name . $quantity;
+            })->implode(' + ');
+
         return (new MailMessage)
             ->subject('حجز جديد في صالونك')
             ->greeting('مرحبًا، ' . $notifiable->name)
             ->line('تم تقديم حجز جديد في صالونك.')
             ->line('**تفاصيل الحجز:**')
             ->line('اسم العميل: ' . $this->booking->user->name)
-            ->line('الخدمة: ' . $this->booking->salonSubService->subService->name)
+            ->line('الخدمات: ' . ($servicesList ?: 'غير محددة'))
             ->line('الوقت المفضل: ' . $this->booking->preferred_datetime)
             ->action('عرض الحجز', url('/profile/salon/manager?tab=bookings'))
             ->line('يرجى مراجعة الحجز واتخاذ الإجراء المناسب.');

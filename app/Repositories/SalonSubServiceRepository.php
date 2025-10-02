@@ -12,6 +12,7 @@ class SalonSubServiceRepository
     {
         $salon->subServices()->attach($data['sub_service_id'], [
             'price' => $data['price'] ?? 0,
+            'max_price' => $data['max_price'] ?? 0,
             'duration' => $data['duration'] ?? 0,
             'materials_used' => $data['materials_used'] ?? null,
             'requirements' => $data['requirements'] ?? null,
@@ -31,6 +32,7 @@ class SalonSubServiceRepository
     {
         return $subService->update([
             'price' => $data['price'] ?? $subService->price,
+            'max_price' => $data['max_price'] ?? $subService->max_price,
             'duration' => $data['duration'] ?? $subService->duration,
             'materials_used' => $data['materials_used'] ?? $subService->materials_used,
             'requirements' => $data['requirements'] ?? $subService->requirements,

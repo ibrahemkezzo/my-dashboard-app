@@ -361,7 +361,7 @@ html {
 
 /* Services Container */
 .service-item {
-    background: var(--white-bar);
+    background: #ececec;
     border-radius: 8px;
     padding: 20px;
     margin-bottom: 15px;

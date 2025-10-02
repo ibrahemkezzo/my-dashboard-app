@@ -24,7 +24,7 @@ class SubServiceController extends Controller
     public function index(): View
     {
         $filters = request()->only(['search', 'service_id', 'status']);
-        $subServices = $this->service->list(20, $filters);
+        $subServices = $this->service->list(15, $filters);
         $services = Service::orderBy('order')->get();
         return view('dashboard.sub_services.index', compact('subServices', 'services', 'filters'));
     }
