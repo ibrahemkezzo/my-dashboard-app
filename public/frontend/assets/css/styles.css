@@ -365,17 +365,18 @@ a {
     background-color: #f8f6f0;
     border-radius: 1rem;
     box-shadow: var(--shadow-xl);
-    padding: clamp(0.75rem, 2vw, 1rem); /* تقليص الحشو بشكل نسبي */
-    max-width: min(90%, 54rem); /* عرض نسبي مع حد أقصى */
+    padding: clamp(0.75rem, 2vw, 1rem);
+    max-width: min(90%, 54rem);
     margin: 0 auto clamp(2rem, 5vw, 3rem) auto;
     position: relative;
     z-index: 10;
+    opacity: 0.95;
 }
 
 .search-grid {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: clamp(0.5rem, 1.5vw, 1rem); /* فجوة نسبية */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
     margin-bottom: 1rem;
 }
 
@@ -387,33 +388,42 @@ a {
 }
 
 .search-label {
-    font-size: clamp(0.75rem, 2vw, 0.875rem); /* حجم خط نسبي */
+    font-size: clamp(0.75rem, 2vw, 0.875rem);
     font-weight: 500;
     color: var(--text);
 }
 
-.search-select {
-    height: clamp(2rem, 5vw, 2.5rem); /* ارتفاع نسبي */
-    padding: 0 clamp(0.5rem, 2vw, 1rem);
+.search-select,
+.search-input {
+    width: 100%;              /* العرض ثابت */
+    min-height: 2.8rem;       /* الارتفاع ثابت */
+    padding: 0 1rem;
     border: 1px solid var(--gray-300);
     border-radius: 0.5rem;
-    font-size: clamp(0.875rem, 2vw, 1rem); /* حجم خط نسبي */
+    font-size: clamp(0.875rem, 2vw, 1rem);
     background-color: #f8f6f0;
     color: var(--text);
     font-family: inherit;
+    text-overflow: ellipsis;  /* إخفاء النص الطويل */
+    white-space: nowrap;
+    overflow: hidden;
+    appearance: none;         /* توحيد المظهر بين المتصفحات */
+    box-sizing: border-box;
 }
 
-.search-select:focus {
+.search-select:focus,
+.search-input:focus {
     outline: none;
     box-shadow: 0 0 0 3px rgba(245, 100, 118, 0.1);
+
 }
 
 .search-btn {
     width: 100%;
-    height: clamp(2.5rem, 6vw, 3rem); /* ارتفاع نسبي */
+    height: clamp(2.5rem, 6vw, 3rem);
     background-color: var(--primary);
     color: #f8f6f0;
-    font-size: clamp(0.875rem, 2.5vw, 1rem); /* حجم خط نسبي */
+    font-size: clamp(0.875rem, 2.5vw, 1rem);
     font-weight: 600;
     border-radius: 0.75rem;
     border: none;
@@ -430,55 +440,46 @@ a {
     transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
 }
-/* Responsive Design for Search Bar */
-@media (max-width: 1300px) {
+
+/* Responsive Design */
+@media (max-width: 1320px) {
     .search-bar {
-        padding: clamp(0.5rem, 1.5vw, 0.75rem); /* تقليص الحشو أكثر */
-        max-width: 60%; /* عرض أصغر */
-        margin: 0 auto clamp(2rem, 4vw, 2rem) auto;
-    }
- .search-field {
-        width: 100%; /* تأكيد أن كل حقل يأخذ العرض الكامل */
-    }
-    .search-grid {
-        gap: clamp(0.5rem, 1vw, 0.75rem);
+        max-width: min(70%, 40rem);
     }
 
-    /* .search-select {
-        height: clamp(1.8rem, 4.5vw, 2.2rem);
-        font-size: clamp(0.75rem, 1.8vw, 0.875rem);
-    } */
-
-    .search-btn {
-        height: clamp(2rem, 5.5vw, 2.5rem);
-        font-size: clamp(0.75rem, 2vw, 0.875rem);
-    }
 }
 @media (max-width: 1024px) {
     .search-bar {
-        padding: clamp(0.5rem, 1.5vw, 0.75rem); /* تقليص الحشو أكثر */
-        max-width: 50%; /* عرض أصغر */
-        margin: 0 auto clamp(2rem, 4vw, 2rem) auto;
-    }
-    .search-field {
-        grid-template-columns: 1fr 1fr;
-        width: 100%; /* تأكيد أن كل حقل يأخذ العرض الكامل */
+        max-width: min(50%, 40rem);
     }
     .search-grid {
-        grid-template-columns: 1fr;
-        gap: clamp(0.5rem, 1vw, 0.75rem);
-    }
-
-    /* .search-select {
-        height: clamp(1.8rem, 4.5vw, 2.2rem);
-        font-size: clamp(0.75rem, 1.8vw, 0.875rem);
-    } */
-
-    .search-btn {
-        height: clamp(2rem, 5.5vw, 2.5rem);
-        font-size: clamp(0.75rem, 2vw, 0.875rem);
+        grid-template-columns: 1fr; /* الحقول تحت بعض */
     }
 }
+
+@media (max-width: 768px) {
+    .search-bar {
+        max-width: 80%; /* على الموبايل 80% من الشاشة */
+        padding: 1rem;
+        margin: 0 auto 2rem auto;
+    }
+
+    .search-grid {
+        gap: 0.75rem;
+    }
+
+    .search-select,
+    .search-input {
+        height: 2.5rem;
+        font-size: 0.875rem;
+    }
+
+    .search-btn {
+        height: 3rem;
+        font-size: 1rem;
+    }
+}
+
 /* Hero Stats */
 .hero-stats {
     display: flex;
@@ -517,58 +518,7 @@ a {
     color: #fbbf24;
     fill: currentColor;
 }
-@media (max-width: 700px) {
-    .search-bar {
-        padding: 1rem; /* تقليل المساحة الداخلية لتتناسب مع الشاشة الصغيرة */
-        max-width: 70%; /* تأكد من أن العنصر لا يتجاوز عرض الشاشة */
-        margin: 0 auto 2rem auto; /* تقليل الهامش السفلي */
-    }
 
-    .search-grid {
-        gap: 0.75rem; /* تقليل المسافة بين الحقول */
-    }
-
-    .search-field {
-        width: 100%; /* تأكيد أن كل حقل يأخذ العرض الكامل */
-    }
-
-    .search-select, .search-input {
-        width: 100%; /* ضبط العرض الكامل للسيلسكت والهيئة */
-        height: 2.5rem; /* تقليل الارتفاع ليتناسب مع الشاشة */
-        font-size: 0.875rem; /* تقليل حجم الخط */
-    }
-
-    .search-btn {
-        height: 3rem; /* تقليل ارتفاع الزر */
-        font-size: 1rem; /* تقليل حجم النص في الزر */
-    }
-}
-@media (max-width: 430px) {
-    .search-bar {
-        padding: 1rem; /* تقليل المساحة الداخلية لتتناسب مع الشاشة الصغيرة */
-        max-width: 90%; /* تأكد من أن العنصر لا يتجاوز عرض الشاشة */
-        margin: 0 auto 2rem auto; /* تقليل الهامش السفلي */
-    }
-
-    .search-grid {
-        gap: 0.75rem; /* تقليل المسافة بين الحقول */
-    }
-
-    .search-field {
-        width: 100%; /* تأكيد أن كل حقل يأخذ العرض الكامل */
-    }
-
-    .search-select, .search-input {
-        width: 100%; /* ضبط العرض الكامل للسيلسكت والهيئة */
-        height: 2.5rem; /* تقليل الارتفاع ليتناسب مع الشاشة */
-        font-size: 0.875rem; /* تقليل حجم الخط */
-    }
-
-    .search-btn {
-        height: 3rem; /* تقليل ارتفاع الزر */
-        font-size: 1rem; /* تقليل حجم النص في الزر */
-    }
-}
 /* Section Styles */
 .section-header {
     text-align: center;
@@ -1553,9 +1503,9 @@ a {
 
 /* Responsive Design */
 @media (min-width: 640px) {
-    .search-grid {
+    /* .search-grid {
         grid-template-columns: 1fr 1fr;
-    }
+    } */
 
     .newsletter-form {
         flex-direction: row;
@@ -1622,9 +1572,9 @@ a {
 }
 
 @media (min-width: 1024px) {
-    .search-grid {
+    /* .search-grid {
         grid-template-columns: 1fr 1fr 1fr;
-    }
+    } */
 
     .categories-grid {
         grid-template-columns: 1fr 1fr 1fr 1fr;
