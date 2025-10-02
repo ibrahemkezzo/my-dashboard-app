@@ -1,5 +1,5 @@
 # Version Project
-"version": "1.3.2"
+"version": "1.4.0"
 # SalonBooking Platform
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -167,3 +167,21 @@ Thank you for using SalonBooking! 🚀
 ## v1.3.0 - 2025-09-24
 - Redesigned website with new color scheme and Google login fixes.
 - Updated visual identity including logo and icons.
+
+## Version 1.4.0 (October 2, 2025)
+
+    New Features:
+
+    Book multiple services in a single salon appointment.
+    Added min_price and max_price for salon services.
+    Improved salon creation and service assignment.
+    Updated booking modal and hero section designs for better responsiveness.
+
+
+    Bug Fixes:
+
+    Fixed issues in service handling and data validation.
+    Optimized frontend performance.
+
+
+
