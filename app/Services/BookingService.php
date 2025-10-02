@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Booking;
 use App\Models\User;
 use App\Models\Salon;
+use App\Models\SalonSubService;
 use App\Repositories\BookingRepository;
 use App\Repositories\AppointmentRepository;
 use Illuminate\Support\Facades\DB;
@@ -55,35 +56,93 @@ class BookingService
     }
 
     /**
-     * Create a new booking.
+     * Create a new booking with multiple services.
      */
     public function create(array $data)
     {
         return DB::transaction(function () use ($data) {
-            // Validate that the salon sub-service exists and is active
-            $salonSubService = DB::table('salon_sub_service')
-                ->where('id', $data['salon_sub_service_id'])
-                ->where('status', true)
-                ->first();
-
-            if (!$salonSubService) {
-                throw new \Exception('Selected service is not available.');
+            // Validate that services array exists and is not empty
+            if (empty($data['services']) || !is_array($data['services']) || count($data['services']) === 0) {
+                throw new \Exception('At least one service must be selected.');
             }
 
-            // Validate that the preferred datetime is in the future
+            // Validate salon (common for all services)
+            $salon = Salon::find($data['salon_id']);
+            if (!$salon || !$salon->status) {
+                throw new \Exception('Selected salon is not available.');
+            }
+
+            // Validate each service and calculate totals
+            $totalPrice = 0;
+            $maxPrice = 0;
+            $totalDuration = 0;
+            $serviceNames = []; // للوصف الإجمالي
+            foreach ($data['services'] as $serviceData) {
+                $salonSubService = SalonSubService::where('id', $serviceData['salon_sub_service_id'])
+                    ->where('salon_id', $data['salon_id'])
+                    ->where('status', true)
+                    ->first();
+
+                if (!$salonSubService) {
+                    throw new \Exception("Service ID {$serviceData['salon_sub_service_id']} is not available for this salon.");
+                }
+
+                $quantity = $serviceData['quantity'] ?? 1;
+                if ($quantity < 1) {
+                    throw new \Exception("Quantity must be at least 1 for service ID {$serviceData['salon_sub_service_id']} .");
+                }
+
+                $price = $salonSubService->price ?? 0;
+                $max_price = $salonSubService->max_price ?? 0;
+                $duration = $salonSubService->duration ?? 60;
+                $totalPrice += $price;
+                $maxPrice += $max_price;
+                $totalDuration += $duration * $quantity;
+                $serviceNames[] = $salonSubService->name . " (x{$quantity})";
+            }
+            // dd($totalPrice);
+
+            // Validate preferred datetime
             $preferredDatetime = Carbon::parse($data['preferred_datetime']);
             if ($preferredDatetime->isPast()) {
                 throw new \Exception('Preferred appointment time must be in the future.');
             }
 
+            // Prepare booking data (without services)
+            $bookingData = [
+                'user_id' => $data['user_id'],
+                'salon_id' => $data['salon_id'],
+                'service_description' => $data['service_description'] ?? implode(' + ', $serviceNames), // وصف إجمالي تلقائي
+                'preferred_datetime' => $preferredDatetime,
+                'status' => 'pending',
+                'salon_proposed_price' => $totalPrice,
+                'salon_proposed_max_price' => $maxPrice,
+                'salon_proposed_duration' => $totalDuration,
+            ];
+            // dd($bookingData);
             // Create the booking
-            $booking = $this->bookingRepository->create($data);
+            $booking = $this->bookingRepository->create($bookingData);
 
-            Log::info('New booking created', [
+            // Add services to the booking
+            foreach ($data['services'] as $serviceData) {
+                $booking->services()->create([
+                    'salon_sub_service_id' => $serviceData['salon_sub_service_id'],
+                    'quantity' => $serviceData['quantity'] ?? 1,
+                    'notes' => $serviceData['notes'] ?? null,
+                ]);
+            }
+
+            // Reload booking with relations
+            $booking->load('services.salonSubService');
+
+            Log::info('New booking with multiple services created', [
                 'booking_id' => $booking->id,
                 'booking_number' => $booking->booking_number,
                 'user_id' => $booking->user_id,
                 'salon_id' => $booking->salon_id,
+                'services_count' => count($data['services']),
+                'total_price' => $totalPrice,
+                'total_duration' => $totalDuration,
             ]);
 
             return $booking;

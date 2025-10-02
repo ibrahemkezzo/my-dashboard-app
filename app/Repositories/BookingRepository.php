@@ -14,7 +14,7 @@ class BookingRepository
      */
     public function all()
     {
-        return Booking::with(['user', 'salon', 'salonSubService.subService.service'])
+        return Booking::with(['user', 'salon',  'services','salonSubService.subService.service'])
             ->orderBy('created_at', 'desc')
             ->get();
     }
@@ -24,18 +24,18 @@ class BookingRepository
      */
     public function paginate($perPage = 15, $filters = [])
     {
-        $query = Booking::with(['user', 'salon', 'salonSubService.subService.service']);
+        $query = Booking::with(['user', 'salon', 'services','salonSubService.subService.service']);
 
         if (!empty($filters['search'])) {
-            $query->where(function($q) use ($filters) {
+            $query->where(function ($q) use ($filters) {
                 $q->where('booking_number', 'like', '%' . $filters['search'] . '%')
-                  ->orWhere('service_description', 'like', '%' . $filters['search'] . '%')
-                  ->orWhereHas('user', function($userQuery) use ($filters) {
-                      $userQuery->where('name', 'like', '%' . $filters['search'] . '%');
-                  })
-                  ->orWhereHas('salon', function($salonQuery) use ($filters) {
-                      $salonQuery->where('name', 'like', '%' . $filters['search'] . '%');
-                  });
+                    ->orWhere('service_description', 'like', '%' . $filters['search'] . '%')
+                    ->orWhereHas('user', function ($userQuery) use ($filters) {
+                        $userQuery->where('name', 'like', '%' . $filters['search'] . '%');
+                    })
+                    ->orWhereHas('salon', function ($salonQuery) use ($filters) {
+                        $salonQuery->where('name', 'like', '%' . $filters['search'] . '%');
+                    });
             });
         }
 
@@ -67,7 +67,7 @@ class BookingRepository
      */
     public function find($id)
     {
-        return Booking::with(['user', 'salon', 'salonSubService.subService.service'])
+        return Booking::with(['user', 'salon', 'services', 'salonSubService.subService.service'])
             ->findOrFail($id);
     }
 
@@ -76,17 +76,21 @@ class BookingRepository
      */
     public function findByBookingNumber($bookingNumber)
     {
-        return Booking::with(['user', 'salon', 'salonSubService.subService.service'])
+        return Booking::with(['user', 'salon', 'services', 'salonSubService.subService.service'])
             ->where('booking_number', $bookingNumber)
             ->first();
     }
 
     /**
-     * Create a new booking.
+     * Create a new booking and its services.
      */
     public function create(array $data)
     {
-        return Booking::create($data);
+        $booking = Booking::create($data); // إنشاء الحجز الأساسي فقط
+
+        // الإضافة للخدمات تتم في الـ service عبر $booking->services()->create
+
+        return $booking->fresh(); // تحديث للحصول على البيانات الجديدة، بما في ذلك الحقول المحسوبة
     }
 
     /**
@@ -111,7 +115,7 @@ class BookingRepository
      */
     public function getByUser(User $user, $perPage = 15, $filters = [])
     {
-        $query = $user->bookings()->with(['salon', 'salonSubService.subService.service']);
+        $query = $user->bookings()->with(['salon', 'services', 'salonSubService.subService.service']);
 
         if (!empty($filters['status'])) {
             $query->where('status', $filters['status']);
@@ -133,7 +137,7 @@ class BookingRepository
      */
     public function getBySalon(Salon $salon, $perPage = 15, $filters = [])
     {
-        $query = $salon->bookings()->with(['user', 'salonSubService.subService.service']);
+        $query = $salon->bookings()->with(['user',  'services','salonSubService.subService.service']);
 
         if (!empty($filters['status'])) {
             $query->where('status', $filters['status']);
@@ -193,7 +197,7 @@ class BookingRepository
      */
     public function getRecent($limit = 10, $filters = [])
     {
-        $query = Booking::with(['user', 'salon', 'salonSubService.subService.service']);
+        $query = Booking::with(['user', 'salon', 'services', 'salonSubService.subService.service']);
 
         if (!empty($filters['salon_id'])) {
             $query->where('salon_id', $filters['salon_id']);
@@ -205,4 +209,4 @@ class BookingRepository
 
         return $query->orderBy('created_at', 'desc')->limit($limit)->get();
     }
-} 
+}

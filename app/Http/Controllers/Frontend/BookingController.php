@@ -11,6 +11,7 @@ use App\Services\BookingService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 
 class BookingController extends Controller
@@ -44,27 +45,46 @@ class BookingController extends Controller
     //     return view('frontend.profile.booking_create', compact('salons', 'salonSubServices'));
     // }
 
-    // Store new booking
     public function store(Request $request)
     {
         // dd($request->all());
         $user = Auth::user();
         $data = $request->validate([
             'salon_id' => ['required', 'exists:salons,id'],
-            'salon_sub_service_id' => ['required', 'exists:salon_sub_service,id'],
-            'service_description' => ['required', 'string', 'min:10', 'max:1000'],
+            'services' => ['required', 'array', 'min:1'], // مصفوفة الخدمات مطلوبة
+            'services.*.salon_sub_service_id' => ['required', 'exists:salon_sub_service,id'],
+            'services.*.quantity' => ['nullable', 'integer', 'min:1', 'max:10'], // كمية اختيارية، حد أقصى 10
+            'services.*.notes' => ['nullable', 'string', 'max:500'],
             'preferred_datetime' => ['required', 'date', 'after:now'],
+            'service_description' => ['nullable', 'string', 'min:10', 'max:1000'], // وصف إجمالي اختياري الآن
         ]);
-        // dd($data);
+
+        // إضافة user_id
         $data['user_id'] = $user->id;
-        $booking = $this->bookingService->create($data);
-          // إرسال إشعار إلى مالك الصالون
-        $salon = Salon::find($data['salon_id']);
-        // @dd($booking);
-        if ($salon->owner) {
-            Notification::send($salon->owner, new NewBookingNotification($booking));
+
+        // التحقق من البيانات باستخدام validateBookingData
+        // $errors = $this->bookingService->validateBookingData($data);
+        // if (!empty($errors)) {
+        //     return back()->withErrors(['services' => implode(', ', $errors)]);
+        // }
+
+        try {
+            $booking = $this->bookingService->create($data);
+
+            // إرسال إشعار إلى مالك الصالون
+            $salon = Salon::find($data['salon_id']);
+            if ($salon->owner) {
+                Notification::send($salon->owner, new NewBookingNotification($booking));
+            }
+
+            return redirect()->route('front.profile.bookings')->with('message', [
+                'type' => 'success',
+                'content' => __('تم إنشاء الحجز بنجاح مع ' . count($data['services']) . ' خدمة')
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Booking creation failed: ' . $e->getMessage());
+            return back()->with('message', ['type' => 'error', 'content' => $e->getMessage()]);
         }
-        return redirect()->route('front.profile.bookings')->with('message', ['type' => 'success', 'content' => __('تم إنشاء الحجز بنجاح')]);
     }
 
     // Show edit form for a booking
@@ -114,7 +134,7 @@ class BookingController extends Controller
             'user_notes' => 'nullable|string|max:500',
         ]);
         $this->bookingService->userConfirmBooking($booking, $data);
-          // إرسال إشعار إلى مالك الصالون عند التأكيد
+        // إرسال إشعار إلى مالك الصالون عند التأكيد
         if ($data['action'] === 'confirm') {
             $salon = $booking->salon;
             if ($salon->owner) {
@@ -124,7 +144,8 @@ class BookingController extends Controller
         return redirect()->route('front.profile.bookings')->with('message', ['type' => 'success', 'content' => __('تم تحديث حالة الحجز')]);
     }
 
-    public function completed(Booking $booking){
+    public function completed(Booking $booking)
+    {
         try {
             $this->bookingService->markBookingCompleted($booking);
             return redirect()->route('front.profile.bookings')->with('message', ['type' => 'success', 'content' => __('تم تحديث حالة الحجز')]);

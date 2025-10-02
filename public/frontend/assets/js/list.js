@@ -262,7 +262,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     : `${salon.price_range.min}-${salon.price_range.max} ريال`)
                 : 'لا يوجد أسعار'}
                 </div>
-                <div class="salon-offer">${salon.offer_text ?? 'خصم 20% على الجلسة الأولى'}</div>
                 <a href="${salonShowUrl}" class="btn btn-primary salon-book-btn">احجزي موعدك</a>
             </div>
         </div>

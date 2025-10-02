@@ -169,6 +169,7 @@ class SalonService
             if (!empty($row['sub_service_id'])) {
                 $syncData[$row['sub_service_id']] = [
                     'price' => $row['price'] ?? 0,
+                    'max_price' => $row['max_price'] ?? 0,
                     'duration' => $row['duration'] ?? 0,
                     'materials_used' => $row['materials_used'] ?? null,
                     'requirements' => $row['requirements'] ?? null,

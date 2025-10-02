@@ -33,6 +33,10 @@
             <input type="number" step="0.01" name="price" class="form-control" required>
         </div>
         <div class="col-md-2">
+            <label class="form-label"> اقصى سعر (ريال)</label>
+            <input type="number" step="0.01" name="max_price" class="form-control" required>
+        </div>
+        <div class="col-md-2">
             <label class="form-label">المدة (دقيقة)</label>
             <input type="number" name="duration" class="form-control" required>
         </div>
@@ -71,6 +75,7 @@
                 <th>الخدمة الرئيسية</th>
                 <th>الخدمة الفرعية</th>
                 <th>السعر</th>
+                <th>اقصى سعر</th>
                 <th>المدة</th>
                 <th>الحالة</th>
                 <th>إجراءات</th>
@@ -82,6 +87,7 @@
                     <td>{{ $service->service->name ?? '-' }}</td>
                     <td>{{ $service->name }}</td>
                     <td>{{ $service->pivot->price }}</td>
+                    <td>{{ $service->pivot->max_price }}</td>
                     <td>{{ $service->pivot->duration }}</td>
                     <td>{{ $service->pivot->status ? 'مفعلة' : 'غير مفعلة' }}</td>
                     <td>
@@ -170,6 +176,11 @@
                                                     value="{{ $service->pivot->price }}" required>
                                             </div>
                                             <div class="mb-2">
+                                                <label class="form-label">اقصى سعر (ريال)</label>
+                                                <input type="number" step="0.01" name="max_price" class="form-control"
+                                                    value="{{ $service->pivot->max_price }}" required>
+                                            </div>
+                                            <div class="mb-2">
                                                 <label class="form-label">المدة (دقيقة)</label>
                                                 <input type="number" name="duration" class="form-control"
                                                     value="{{ $service->pivot->duration }}" required>
@@ -184,10 +195,10 @@
                                                     </option>
                                                 </select>
                                             </div>
-                                            <div class="mb-2">
+                                            {{-- <div class="mb-2">
                                                 <label class="form-label">ملاحظات/وصف</label>
                                                 <textarea name="special_notes" class="form-control">{{ $service->pivot->special_notes }}</textarea>
-                                            </div>
+                                            </div> --}}
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
