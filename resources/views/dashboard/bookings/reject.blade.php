@@ -37,7 +37,6 @@
                                 <p class="mb-0">{{ $booking->preferred_datetime->format('F j, Y') }}</p>
                             </div>
                         </div>
-
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label class="fw-bold text-muted">{{ __('dashboard.user') }}:</label>
@@ -55,24 +54,12 @@
                                 <small class="text-muted">{{ $booking->salon->address }}, {{ $booking->salon->city->name }}</small>
                             </div>
                         </div>
-
-                        <div class="row mb-3">
-                            <div class="col-md-12">
-                                <label class="fw-bold text-muted">{{ __('dashboard.service') }}:</label>
-                                <p class="mb-0">{{ $booking->salonSubService->subService->name }}</p>
-                                <small class="text-muted">{{ $booking->salonSubService->subService->service->name }}</small>
-                            </div>
-                        </div>
-
                         <div class="row mb-3">
                             <div class="col-md-12">
                                 <label class="fw-bold text-muted">{{ __('dashboard.service_description') }}:</label>
                                 <p class="mb-0">{{ $booking->service_description }}</p>
                             </div>
                         </div>
-
-
-
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label class="fw-bold text-muted">{{ __('dashboard.created_at') }}:</label>
@@ -83,6 +70,38 @@
                                 <p class="mb-0">{{ $booking->preferred_datetime->format('g:i A') }}</p>
                             </div>
                         </div>
+                        @if($booking->services->isNotEmpty())
+                            <h6 class="mt-3">{{ __('dashboard.services') }}</h6>
+                            <div class="row g-3">
+                                @foreach($booking->services as $service)
+                                    <div class="col-12">
+                                        <div class="card service-card">
+                                            <div class="card-body">
+                                                <h6 class="card-title">{{ $service->salonSubService->subService->name }}</h6>
+                                                <p class="card-text mb-1">
+                                                    <strong>{{ __('dashboard.category') }}:</strong>
+                                                    {{ $service->salonSubService->subService->service->name }}
+                                                </p>
+                                                <p class="card-text mb-1">
+                                                    <strong>{{ __('dashboard.price') }}:</strong>
+                                                    {{ number_format($service->salonSubService->price, 2) }}
+                                                </p>
+                                                <p class="card-text mb-1">
+                                                    <strong>{{ __('dashboard.max_price') }}:</strong>
+                                                    {{ number_format($service->salonSubService->max_price, 2) }} ريال
+                                                </p>
+                                                <p class="card-text">
+                                                    <strong>{{ __('dashboard.duration') }}:</strong>
+                                                    {{ $service->salonSubService->duration ?? '-' }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @else
+                            <p class="text-muted mt-3">{{ __('dashboard.no_services') }}</p>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -98,65 +117,61 @@
                             <i class="fa fa-exclamation-triangle"></i>
                             <strong>{{ __('dashboard.warning') }}:</strong> {{ __('dashboard.rejecting_booking_warning') }}
                         </div>
-
                         <form action="{{ route('dashboard.bookings.reject', $booking) }}" method="POST">
                             @csrf
-                            
                             <!-- Rejection Reason -->
                             <div class="mb-3">
                                 <label for="rejection_reason" class="form-label">{{ __('dashboard.rejection_reason') }} <span class="text-danger">*</span></label>
-                                <textarea name="rejection_reason" id="rejection_reason" rows="4" 
-                                          class="form-control @error('rejection_reason') is-invalid @enderror" 
+                                <textarea name="rejection_reason" id="rejection_reason" rows="4"
+                                          class="form-control @error('rejection_reason') is-invalid @enderror"
                                           placeholder="{{ __('dashboard.please_provide_reason_for_rejection') }}" required>{{ old('rejection_reason') }}</textarea>
                                 @error('rejection_reason')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                                 <small class="form-text text-muted">{{ __('dashboard.rejection_reason_help') }}</small>
                             </div>
-
                             <!-- Common Rejection Reasons -->
                             <div class="mb-3">
                                 <label class="form-label">{{ __('dashboard.common_reasons') }}:</label>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <button type="button" class="btn btn-outline-secondary btn-sm mb-1 reason-btn" 
+                                        <button type="button" class="btn btn-outline-secondary btn-sm mb-1 reason-btn"
                                                 data-reason="{{ __('dashboard.unavailable_time_slot') }}">
                                             {{ __('dashboard.unavailable_time_slot') }}
                                         </button>
                                     </div>
                                     <div class="col-md-6">
-                                        <button type="button" class="btn btn-outline-secondary btn-sm mb-1 reason-btn" 
+                                        <button type="button" class="btn btn-outline-secondary btn-sm mb-1 reason-btn"
                                                 data-reason="{{ __('dashboard.service_not_available') }}">
                                             {{ __('dashboard.service_not_available') }}
                                         </button>
                                     </div>
                                     <div class="col-md-6">
-                                        <button type="button" class="btn btn-outline-secondary btn-sm mb-1 reason-btn" 
+                                        <button type="button" class="btn btn-outline-secondary btn-sm mb-1 reason-btn"
                                                 data-reason="{{ __('dashboard.staff_unavailable') }}">
                                             {{ __('dashboard.staff_unavailable') }}
                                         </button>
                                     </div>
                                     <div class="col-md-6">
-                                        <button type="button" class="btn btn-outline-secondary btn-sm mb-1 reason-btn" 
+                                        <button type="button" class="btn btn-outline-secondary btn-sm mb-1 reason-btn"
                                                 data-reason="{{ __('dashboard.salon_closed') }}">
                                             {{ __('dashboard.salon_closed') }}
                                         </button>
                                     </div>
                                     <div class="col-md-6">
-                                        <button type="button" class="btn btn-outline-secondary btn-sm mb-1 reason-btn" 
+                                        <button type="button" class="btn btn-outline-secondary btn-sm mb-1 reason-btn"
                                                 data-reason="{{ __('dashboard.technical_issues') }}">
                                             {{ __('dashboard.technical_issues') }}
                                         </button>
                                     </div>
                                     <div class="col-md-6">
-                                        <button type="button" class="btn btn-outline-secondary btn-sm mb-1 reason-btn" 
+                                        <button type="button" class="btn btn-outline-secondary btn-sm mb-1 reason-btn"
                                                 data-reason="{{ __('dashboard.other') }}">
                                             {{ __('dashboard.other') }}
                                         </button>
                                     </div>
                                 </div>
                             </div>
-
                             <div class="d-flex justify-content-end gap-2">
                                 <a href="{{ route('dashboard.bookings.show', $booking) }}" class="btn btn-secondary">
                                     <i class="fa fa-times"></i> {{ __('dashboard.cancel') }}
@@ -171,21 +186,82 @@
             </div>
         </div>
     </div>
+@endsection
 
-    @push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const rejectionReasonTextarea = document.getElementById('rejection_reason');
-            const reasonButtons = document.querySelectorAll('.reason-btn');
+@push('styles')
+<style>
+    .card {
+        transition: transform 0.2s;
+    }
 
-            reasonButtons.forEach(function(button) {
-                button.addEventListener('click', function() {
-                    const reason = this.getAttribute('data-reason');
-                    rejectionReasonTextarea.value = reason;
-                    rejectionReasonTextarea.focus();
-                });
+    .card:hover {
+        transform: translateY(-2px);
+    }
+
+    .service-card {
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        transition: transform 0.2s ease;
+    }
+
+    .service-card:hover {
+        transform: translateY(-3px);
+    }
+
+    .service-card .card-body {
+        padding: 1rem;
+    }
+
+    .service-card .card-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+    }
+
+    .service-card .card-text {
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+
+    @media (max-width: 576px) {
+        .service-card .card-title {
+            font-size: 1rem;
+        }
+
+        .service-card .card-text {
+            font-size: 0.8rem;
+        }
+
+        .card-body p, .card-body label {
+            font-size: 0.85rem;
+        }
+
+        .btn {
+            font-size: 0.8rem;
+            padding: 0.25rem 0.5rem;
+        }
+
+        .badge {
+            font-size: 0.75rem;
+        }
+    }
+</style>
+@endpush
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const rejectionReasonTextarea = document.getElementById('rejection_reason');
+        const reasonButtons = document.querySelectorAll('.reason-btn');
+
+        reasonButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                const reason = this.getAttribute('data-reason');
+                rejectionReasonTextarea.value = reason;
+                rejectionReasonTextarea.focus();
             });
         });
-    </script>
-    @endpush
-@endsection 
+    });
+</script>
+@endpush

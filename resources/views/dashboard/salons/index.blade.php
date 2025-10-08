@@ -195,7 +195,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="d-flex justify-content-center">
+                <div class="d-flex justify-content-center mt-3" dir="ltr">
                     {{ $salons->appends(request()->query())->links('pagination::simple-tailwind') }}
                 </div>
             </div>

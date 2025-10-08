@@ -52,7 +52,7 @@
                     <div class="bg-light rounded-3 p-4">
                         <h5 class="fw-semibold mb-3">لم تجدي إجابة لسؤالك؟</h5>
                         <p class="text-muted mb-3">تواصلي مع فريق خدمة العملاء وسنكون سعداء لمساعدتك</p>
-                        <button class="btn btn-primary">تواصل معنا</button>
+                        <a href="mailto:info@glowzelle.com?subject=Contact%20Support" class="btn btn-primary">تواصل معنا</a>
                     </div>
                 </div>
             </div>

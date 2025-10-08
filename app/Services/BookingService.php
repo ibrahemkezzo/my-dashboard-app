@@ -211,6 +211,7 @@ class BookingService
                 // Salon is modifying the booking
                 $updateData['salon_proposed_datetime'] = $data['salon_proposed_datetime'] ?? null;
                 $updateData['salon_proposed_price'] = $data['salon_proposed_price'] ?? null;
+                $updateData['salon_proposed_max_price'] = $data['salon_proposed_max_price'] ?? null;
                 $updateData['salon_proposed_duration'] = $data['salon_proposed_duration'] ?? null;
                 $updateData['salon_modification_reason'] = $data['salon_modification_reason'] ?? null;
 

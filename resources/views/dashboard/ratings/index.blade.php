@@ -112,8 +112,8 @@
                 </table>
             </div>
             @if($ratings instanceof \Illuminate\Pagination\LengthAwarePaginator)
-                <div class="card-footer d-flex justify-content-center">
-                    {{ $ratings->withQueryString()->links() }}
+                <div class="card-footer d-flex justify-content-center mt-3" dir="ltr">
+                    {{ $ratings->appends(request()->query())->links('pagination::simple-tailwind') }}
                 </div>
             @endif
         </div>

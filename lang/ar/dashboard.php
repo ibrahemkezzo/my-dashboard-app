@@ -917,5 +917,10 @@ return [
     'active_status' => 'الحالة',
     'cosmetic_clinic' => 'عيادة تجميل',
     'no_gallery_images' => 'لا يوجد صور في المعرض',
-    'count_services'=> 'عدد الخدمات'
+    'count_services'=> 'عدد الخدمات',
+    'max_price' => 'اعلى سعر ممكن',
+    'low_price' => ' ادنى سعر',
+    'salon_proposed_max_price' => 'اعلى سعر مقترح',
+    'action' => 'الإجراءات',
+    'hour' => 'ساعة',
 ];
