@@ -293,11 +293,12 @@ a {
     padding: 5rem 0;
     overflow: hidden;
 }
-/* @media (max-width: 1200px) {
+@media (max-width: 700px) {
     .hero-section {
-        background-position: right center; /* إزاحة الخلفية إلى الطرف الأيمن */
-    /* } */
-/* } */
+         background-image: url('/frontend/assets/img/hero_cover_final_mobile.png');
+        /* background-position: right center; إزاحة الخلفية إلى الطرف الأيمن */
+    }
+ }
 .hero-bg-pattern {
     position: absolute;
     inset: 0;

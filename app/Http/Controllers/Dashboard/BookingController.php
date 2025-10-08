@@ -145,7 +145,7 @@ class BookingController extends Controller
                 ->with('message', ['type' => 'error', 'content' => __('dashboard.booking_cannot_be_confirmed_by_salon')]);
         }
 
-        $booking->load(['user', 'salon', 'salonSubService.subService.service']);
+        $booking->load(['user', 'salon','services', 'salonSubService.subService.service']);
 
         // Get available time slots for the preferred date
         $preferredDate = $booking->preferred_datetime->format('Y-m-d');

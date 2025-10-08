@@ -4,7 +4,10 @@
     <x-dashboard.dashboard-breadcrumb :breadcrumbs="[
         ['label' => __('dashboard.dashboard'), 'url' => route('dashboard.index')],
         ['label' => __('dashboard.bookings'), 'url' => route('dashboard.bookings.index')],
-        ['label' => __('dashboard.user_confirmation'), 'url' => route('dashboard.bookings.user-confirm-form', $booking)],
+        [
+            'label' => __('dashboard.user_confirmation'),
+            'url' => route('dashboard.bookings.user-confirm-form', $booking),
+        ],
     ]" :pageName="__('dashboard.user_confirmation')" />
 @endsection
 
@@ -20,14 +23,47 @@
                     <div class="card-body">
                         <!-- Original Request -->
                         <div class="row mb-4">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <h5>{{ __('dashboard.original_request') }}</h5>
                                 <div class="card">
                                     <div class="card-body">
                                         <p><strong>{{ __('dashboard.user') }}:</strong> {{ $booking->user->name }}</p>
-                                        <p><strong>{{ __('dashboard.service') }}:</strong> {{ $booking->salonSubService->subService->name }}</p>
-                                        <p><strong>{{ __('dashboard.preferred_datetime') }}:</strong> {{ $booking->preferred_datetime->format('F j, Y \a\t g:i A') }}</p>
-                                        <p><strong>{{ __('dashboard.service_description') }}:</strong> {{ $booking->service_description }}</p>
+                                        <p><strong>{{ __('dashboard.preferred_datetime') }}:</strong>
+                                            {{ $booking->preferred_datetime->format('F j, Y \a\t g:i A') }}</p>
+                                        <p><strong>{{ __('dashboard.service_description') }}:</strong>
+                                            {{ $booking->service_description }}</p>
+                                        @if ($booking->services->isNotEmpty())
+                                            <h6 class="mt-3">{{ __('dashboard.services') }}</h6>
+                                            <div class="row g-3">
+                                                @foreach ($booking->services as $service)
+                                                    <div class="col-md-4">
+                                                        <div class="card service-card">
+                                                            <div class="card-body">
+                                                                <h6 class="card-title">
+                                                                    {{ $service->salonSubService->subService->name }}</h6>
+                                                                <p class="card-text mb-1">
+                                                                    <strong>{{ __('dashboard.category') }}:</strong>
+                                                                    {{ $service->salonSubService->subService->service->name }}
+                                                                </p>
+                                                                <p class="card-text mb-1">
+                                                                    <strong>{{ __('dashboard.low_price') }}:</strong>
+                                                                    {{ number_format($service->salonSubService->price, 2) }} ريال
+                                                                </p>
+                                                                <p class="card-text mb-1">
+                                                                    <strong>{{ __('dashboard.max_price') }}:</strong>
+                                                                    {{ number_format($service->salonSubService->max_price, 2) }}ريال
+                                                                </p>
+                                                                <p class="card-text">
+                                                                    <strong>{{ __('dashboard.duration') }}:</strong>
+                                                                    {{ $service->salonSubService->duration ?? '-' }} دقيقة</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        @else
+                                            <p class="text-muted mt-3">{{ __('dashboard.no_services') }}</p>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -35,8 +71,18 @@
                                 <h5>{{ __('dashboard.service_details') }}</h5>
                                 <div class="card">
                                     <div class="card-body">
-                                        <p><strong>{{ __('dashboard.price') }}:</strong> {{ $booking->salonSubService->price }} {{ __('dashboard.currency') }}</p>
-                                        <p><strong>{{ __('dashboard.duration') }}:</strong> {{ $booking->salonSubService->duration }} {{ __('dashboard.minutes') }}</p>
+                                        @if ($booking->services->isNotEmpty())
+                                            <p><strong>{{ __('dashboard.low_price') }}:</strong>
+                                                {{ number_format($booking->salon_proposed_price, 2) }}
+                                                {{ __('dashboard.currency') }}</p>
+                                            <p><strong>{{ __('dashboard.max_price') }}:</strong>
+                                                {{ number_format($booking->salon_proposed_max_price, 2) }}
+                                                {{ __('dashboard.currency') }}</p>
+                                            <p><strong>{{ __('dashboard.duration') }}:</strong>
+                                                {{ $booking->salon_proposed_duration }} {{ __('dashboard.minutes') }}</p>
+                                        @else
+                                            <p class="text-muted">{{ __('dashboard.no_service_details') }}</p>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -48,42 +94,44 @@
                                 <h5>{{ __('dashboard.salon_proposal') }}</h5>
                                 <div class="card">
                                     <div class="card-body">
-                                        @if($booking->isModifiedBySalon())
+                                        @if ($booking->isModifiedBySalon())
                                             <div class="alert alert-info">
-                                                <i class="fa fa-info-circle"></i> {{ __('dashboard.booking_modified_by_salon') }}
+                                                <i class="fa fa-info-circle"></i>
+                                                {{ __('dashboard.booking_modified_by_salon') }}
                                             </div>
-                                            
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <p><strong>{{ __('dashboard.salon_proposed_datetime') }}:</strong><br>
-                                                    {{ $booking->salon_proposed_datetime->format('F j, Y \a\t g:i A') }}</p>
+                                                        {{ $booking->salon_proposed_datetime ? $booking->salon_proposed_datetime->format('F j, Y \a\t g:i A') : '-' }}
+                                                    </p>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <p><strong>{{ __('dashboard.salon_proposed_price') }}:</strong><br>
-                                                    {{ $booking->salon_proposed_price }} {{ __('dashboard.currency') }}</p>
+                                                        {{ $booking->salon_proposed_price ? $booking->salon_proposed_price . ' ' . __('dashboard.currency') : '-' }}
+                                                    </p>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <p><strong>{{ __('dashboard.salon_proposed_duration') }}:</strong><br>
-                                                    {{ $booking->salon_proposed_duration }} {{ __('dashboard.minutes') }}</p>
+                                                        {{ $booking->salon_proposed_duration ? $booking->salon_proposed_duration . ' ' . __('dashboard.minutes') : '-' }}
+                                                    </p>
                                                 </div>
                                             </div>
-                                            
-                                            @if($booking->salon_modification_reason)
+                                            @if ($booking->salon_modification_reason)
                                                 <div class="mt-3">
                                                     <p><strong>{{ __('dashboard.salon_modification_reason') }}:</strong><br>
-                                                    {{ $booking->salon_modification_reason }}</p>
+                                                        {{ $booking->salon_modification_reason }}</p>
                                                 </div>
                                             @endif
                                         @else
                                             <div class="alert alert-success">
-                                                <i class="fa fa-check-circle"></i> {{ __('dashboard.salon_confirmed_as_requested') }}
+                                                <i class="fa fa-check-circle"></i>
+                                                {{ __('dashboard.salon_confirmed_as_requested') }}
                                             </div>
                                         @endif
-                                        
-                                        @if($booking->salon_notes)
+                                        @if ($booking->salon_notes)
                                             <div class="mt-3">
                                                 <p><strong>{{ __('dashboard.salon_notes') }}:</strong><br>
-                                                {{ $booking->salon_notes }}</p>
+                                                    {{ $booking->salon_notes }}</p>
                                             </div>
                                         @endif
                                     </div>
@@ -100,15 +148,18 @@
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <p><strong>{{ __('dashboard.final_datetime') }}:</strong><br>
-                                                {{ $booking->final_datetime->format('F j, Y \a\t g:i A') }}</p>
+                                                    {{ $booking->final_datetime ? $booking->final_datetime->format('F j, Y \a\t g:i A') : '-' }}
+                                                </p>
                                             </div>
                                             <div class="col-md-4">
                                                 <p><strong>{{ __('dashboard.final_price') }}:</strong><br>
-                                                {{ $booking->final_price }} {{ __('dashboard.currency') }}</p>
+                                                    {{ $booking->salon_proposed_price }} -
+                                                    {{ $booking->salon_proposed_max_price }} ريال</p>
                                             </div>
                                             <div class="col-md-4">
                                                 <p><strong>{{ __('dashboard.final_duration') }}:</strong><br>
-                                                {{ $booking->final_duration }} {{ __('dashboard.minutes') }}</p>
+                                                    {{ $booking->final_duration ? $booking->final_duration . ' ' . __('dashboard.minutes') : '-' }}
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
@@ -119,35 +170,35 @@
                         <!-- User Response Form -->
                         <form action="{{ route('dashboard.bookings.user-confirm', $booking) }}" method="POST">
                             @csrf
-                            
                             <div class="row">
                                 <div class="col-md-12 mb-3">
-                                    <label class="form-label">{{ __('dashboard.action') }} <span class="text-danger">*</span></label>
+                                    <label class="form-label">{{ __('dashboard.action') }} <span
+                                            class="text-danger">*</span></label>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="action" id="action_confirm" value="confirm" checked>
+                                        <input class="form-check-input" type="radio" name="action" id="action_confirm"
+                                            value="confirm" checked>
                                         <label class="form-check-label" for="action_confirm">
                                             {{ __('dashboard.confirm_salon_response') }}
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="action" id="action_reject" value="reject">
+                                        <input class="form-check-input" type="radio" name="action" id="action_reject"
+                                            value="reject">
                                         <label class="form-check-label" for="action_reject">
                                             {{ __('dashboard.reject_salon_response') }}
                                         </label>
                                     </div>
                                 </div>
-
                                 <div class="col-md-12 mb-3" id="user_notes_div" style="display: none;">
                                     <label for="user_notes" class="form-label">{{ __('dashboard.user_notes') }}</label>
                                     <textarea name="user_notes" id="user_notes" rows="3"
-                                              class="form-control @error('user_notes') is-invalid @enderror"
-                                              placeholder="{{ __('dashboard.reason_for_rejection') }}">{{ old('user_notes') }}</textarea>
+                                        class="form-control @error('user_notes') is-invalid @enderror"
+                                        placeholder="{{ __('dashboard.reason_for_rejection') }}">{{ old('user_notes') }}</textarea>
                                     @error('user_notes')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
-
                             <div class="d-flex justify-content-end gap-2">
                                 <a href="{{ route('dashboard.bookings.show', $booking) }}" class="btn btn-secondary">
                                     <i class="fa fa-times"></i> {{ __('dashboard.cancel') }}
@@ -164,31 +215,88 @@
     </div>
 @endsection
 
-@push('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const actionRadios = document.querySelectorAll('input[name="action"]');
-        const userNotesDiv = document.getElementById('user_notes_div');
-        const userNotesField = document.getElementById('user_notes');
-
-        function toggleUserNotes() {
-            const selectedAction = document.querySelector('input[name="action"]:checked').value;
-            
-            if (selectedAction === 'reject') {
-                userNotesDiv.style.display = 'block';
-                userNotesField.setAttribute('required', 'required');
-            } else {
-                userNotesDiv.style.display = 'none';
-                userNotesField.removeAttribute('required');
-            }
+@push('styles')
+    <style>
+        .card {
+            transition: transform 0.2s;
         }
 
-        actionRadios.forEach(radio => {
-            radio.addEventListener('change', toggleUserNotes);
-        });
+        .card:hover {
+            transform: translateY(-2px);
+        }
 
-        // Initialize
-        toggleUserNotes();
-    });
-</script>
-@endpush 
+        .service-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .service-card .card-body {
+            padding: 1rem;
+        }
+
+        .service-card .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .service-card .card-text {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 576px) {
+            .service-card .card-title {
+                font-size: 1rem;
+            }
+
+            .service-card .card-text {
+                font-size: 0.8rem;
+            }
+
+            .card-body p {
+                font-size: 0.85rem;
+            }
+
+            .btn {
+                font-size: 0.8rem;
+                padding: 0.25rem 0.5rem;
+            }
+        }
+    </style>
+@endpush
+
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const actionRadios = document.querySelectorAll('input[name="action"]');
+            const userNotesDiv = document.getElementById('user_notes_div');
+            const userNotesField = document.getElementById('user_notes');
+
+            function toggleUserNotes() {
+                const selectedAction = document.querySelector('input[name="action"]:checked').value;
+
+                if (selectedAction === 'reject') {
+                    userNotesDiv.style.display = 'block';
+                    userNotesField.setAttribute('required', 'required');
+                } else {
+                    userNotesDiv.style.display = 'none';
+                    userNotesField.removeAttribute('required');
+                }
+            }
+
+            actionRadios.forEach(radio => {
+                radio.addEventListener('change', toggleUserNotes);
+            });
+
+            // Initialize
+            toggleUserNotes();
+        });
+    </script>
+@endpush

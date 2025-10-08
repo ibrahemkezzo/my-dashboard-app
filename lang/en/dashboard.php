@@ -904,8 +904,11 @@ return [
     'ratings' => 'ٌRatings',
     'cosmetic_clinic' => 'cosmetic clinic',
     'no_gallery_images' => 'No Gallery Images',
-    'count_services'=> 'Count Services'
-
-
+    'count_services'=> 'Count Services',
+    'max_price' => 'Max Price',
+    'low_price' => 'Low Price',
+    'salon_proposed_max_price' => 'salon Max Price Proposed',
+    'action ' => 'Actions',
+    'hour' => 'hour',
 
 ];

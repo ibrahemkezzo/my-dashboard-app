@@ -145,7 +145,7 @@ class BookingRepository
 
         if (!empty($filters['user_id'])) {
             $query->where('user_id', $filters['user_id']);
-        }
+    }
 
         if (!empty($filters['date_from'])) {
             $query->where('preferred_datetime', '>=', $filters['date_from']);

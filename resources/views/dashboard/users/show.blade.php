@@ -192,7 +192,7 @@
                             <!-- User Activity Tab -->
                             <div class="tab-pane fade" id="activity" role="tabpanel" aria-labelledby="activity-tab">
                                 <div class="activity-summary mb-4">
-                                    <div class="row">
+                                    <div class="col-md-12 row">
                                         <div class="col-md-3">
                                             <div class="card bg-primary text-white">
                                                 <div class="card-body text-center">
@@ -320,7 +320,14 @@
                                     @forelse($sessions as $session)
                                         <div class="card mb-3">
                                             <div class="card-header">
-                                                <div class="row align-items-center">
+                                                <div class="col-md-12 row align-items-center">
+                                                    <div class="col-md-1">
+                                                        <button class="btn btn-sm btn-outline-primary" type="button"
+                                                            data-bs-toggle="collapse"
+                                                            data-bs-target="#visits-{{ $session->id }}">
+                                                            <i class="fa fa-chevron-down"></i>
+                                                        </button>
+                                                    </div>
                                                     <div class="col-md-3">
                                                         <strong>{{ __('dashboard.session_id') }}:</strong>
                                                         <span
@@ -338,10 +345,11 @@
                                                     </div>
                                                     <div class="col-md-2">
                                                         <strong>{{ __('dashboard.started') }}:</strong>
-                                                        <span
-                                                            class="text-muted">{{ $session->started_at->diffForHumans() }}</span>
+                                                        <span class="text-muted">
+                                                            {{ $session->started_at->diffForHumans() }}
+                                                        </span>
                                                     </div>
-                                                    <div class="col-md-2">
+                                                    <div class="col-md-2" dir="rtl">
                                                         <strong>{{ __('dashboard.duration') }}:</strong>
                                                         <span class="text-muted">
                                                             @php
@@ -355,19 +363,26 @@
 
                                                             @if ($session->started_at && $session->updated_at)
                                                                 @if ($hours > 0)
-                                                                    {{ $hours }}{{ $minutes > 0 || $seconds > 0 ? ':' : '' }}
-                                                                    @if ($minutes > 0)
-                                                                        {{ $minutes }}{{ $seconds > 0 ? '.' : '' }}
-                                                                    @endif
+
+
                                                                     @if ($seconds > 0)
-                                                                        {{ $seconds }}
+                                                                    <span style="font-size:0.6rem;">
+                                                                        {{ $seconds }}.
+                                                                    </span>
                                                                     @endif
+                                                                    @if ($minutes > 0)
+                                                                        {{ $minutes }}:
+                                                                    @endif
+                                                                    {{ $hours }}
                                                                     {{ __('dashboard.hour') }}
                                                                 @else
-                                                                    {{ $minutes }}{{ $seconds > 0 ? '.' : '' }}
+
                                                                     @if ($seconds > 0)
-                                                                        {{ $seconds }}
+                                                                            <span style="font-size:0.6rem;">
+                                                                        {{ $seconds }}.
+                                                                    </span>
                                                                     @endif
+                                                                    {{ $minutes }}
                                                                     {{ __('dashboard.min') }}
                                                                 @endif
                                                             @else
@@ -375,13 +390,7 @@
                                                             @endif
                                                         </span>
                                                     </div>
-                                                    <div class="col-md-1">
-                                                        <button class="btn btn-sm btn-outline-primary" type="button"
-                                                            data-bs-toggle="collapse"
-                                                            data-bs-target="#visits-{{ $session->id }}">
-                                                            <i class="fa fa-chevron-down"></i>
-                                                        </button>
-                                                    </div>
+
                                                 </div>
                                             </div>
 
@@ -411,7 +420,7 @@
                                                                             </td>
                                                                             <td>
                                                                                 @if ($visit->time_spent)
-                                                                                    {{ gmdate('H:i:s', $visit->time_spent) }}
+                                                                                    {{ gmdate('H:i', $visit->time_spent) }}
                                                                                 @else
                                                                                     <span
                                                                                         class="text-muted">{{ __('dashboard.not_recorded') }}</span>
@@ -536,6 +545,15 @@
 
         .collapsed .collapse-icon {
             transform: rotate(-90deg);
+        }
+
+        .btn-outline-primary {
+            color: #87365b;
+            border-color: #87365b;
+            padding: 8px 10px;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.3s ease;
         }
     </style>
 @endpush

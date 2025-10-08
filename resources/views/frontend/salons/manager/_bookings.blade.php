@@ -54,9 +54,11 @@
     <table class="table table-striped">
         <thead>
             <tr>
+                <th></th>
                 <th>رقم الحجز</th>
                 <th>العميل</th>
-                <th>الخدمة</th>
+                <th>السعر</th>
+                <th>المدة</th>
                 <th>التاريخ</th>
                 <th>الحالة</th>
                 <th>إجراءات</th>
@@ -64,11 +66,13 @@
         </thead>
         <tbody>
             @foreach($bookings as $booking)
-                <tr>
+                <tr data-bs-toggle="collapse" data-bs-target="#services-{{ $booking->id }}" class="accordion-toggle">
+                    <td><i class="fa fa-chevron-down toggle-icon"></i></td>
                     <td>{{ $booking->booking_number }}</td>
                     <td>{{ $booking->user->name }}</td>
-                    <td>{{ $booking->salonSubService->subService->name ?? '-' }}</td>
-                    <td>{{ $booking->preferred_datetime->format('Y-m-d H:i') }}</td>
+                    <td>{{ $booking->salon_proposed_price}} - {{$booking->salon_proposed_max_price}}</td>
+                    <td>{{ $booking->salon_proposed_duration}}</td>
+                    <td><span class="no-wrap-date">{{ $booking->preferred_datetime->format('Y-m-d') }}</span> {{ $booking->preferred_datetime->format('H:i') }}</td>
                     <td><span class="badge {{ $booking->status_badge_class }}">{{ $booking->status_text }}</span></td>
                     <td>
                         @if($booking->canBeConfirmedBySalon())
@@ -107,7 +111,54 @@
 
                     </td>
                 </tr>
+                <tr class="collapse services-collapse" id="services-{{ $booking->id }}">
+                    <td colspan="12">
+                        <div class="p-3 bg-light rounded">
+                            <h6 class="mb-3">الخدمات</h6>
+                            @if($booking->services->isNotEmpty())
+                                <div class="row g-3">
+                                    @foreach($booking->services as $service)
+                                        <div class="col-lg-4 col-md-6 col-sm-12">
+                                            <div class="card service-card shadow-sm">
+                                                <div class="card-body">
+                                                    <h6 class="card-title">{{ $service->salonSubService->subService->name }}</h6>
+                                                    <p class="card-text mb-1"><strong>الفئة:</strong> {{ $service->salonSubService->subService->service->name }}</p>
+                                                    <p class="card-text mb-1"><strong>ادنى سعر:</strong> {{ number_format($service->salonSubService->price, 2) }} ريال</p>
+                                                    <p class="card-text mb-1"><strong>السعر الأقصى:</strong> {{ number_format($service->salonSubService->max_price, 2) }} ريال</p>
+                                                    <p class="card-text"><strong>المدة:</strong> {{ $service->salonSubService->duration ?? '-' }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @else
+                                <p class="text-muted">لا توجد خدمات</p>
+                            @endif
+                        </div>
+                    </td>
+                </tr>
             @endforeach
         </tbody>
     </table>
 </div>
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.collapse').forEach(collapse => {
+            collapse.addEventListener('show.bs.collapse', function () {
+                const targetId = this.id;
+                const toggleRow = document.querySelector(`[data-bs-target="#${targetId}"]`);
+                const icon = toggleRow.querySelector('.toggle-icon');
+                icon.classList.add('active');
+            });
+            collapse.addEventListener('hide.bs.collapse', function () {
+                const targetId = this.id;
+                const toggleRow = document.querySelector(`[data-bs-target="#${targetId}"]`);
+                const icon = toggleRow.querySelector('.toggle-icon');
+                icon.classList.remove('active');
+            });
+        });
+    });
+</script>
+@endpush
