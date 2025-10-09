@@ -187,8 +187,18 @@
                                 </a>
                             @endif
                             @if ($booking->canBeCancelled())
-                                <a href="{{ route('dashboard.bookings.cancel-form', $booking) }}"
+                                {{-- <a href="{{ route('dashboard.bookings.cancel-form', $booking) }}"
                                     class="btn btn-sm btn-danger">
+                                    <i class="fa fa-times"></i> {{ __('dashboard.cancel') }}
+                                </a> --}}
+                                <form action="{{ route('dashboard.bookings.cancel', $booking) }}"
+                                    method="POST" id="destroy-form-{{ $booking->id }}"
+                                    style="display:none;">
+                                    @csrf
+                                </form>
+                                <a href="#" class="btn btn-sm btn-danger"
+                                    title="{{ __('dashboard.delete') }}"
+                                    onclick="event.preventDefault(); return confirm('{{ __('dashboard.are_you_sure_delete_user') }}') && document.getElementById('destroy-form-{{ $booking->id }}').submit();">
                                     <i class="fa fa-times"></i> {{ __('dashboard.cancel') }}
                                 </a>
                             @endif

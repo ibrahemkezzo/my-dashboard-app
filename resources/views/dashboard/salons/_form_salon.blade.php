@@ -240,7 +240,7 @@
     </div>
 </div>
 
-<div class="row mb-3">
+{{-- <div class="row mb-3">
     <div class="col-md-12">
         <label class="form-label">{{ __('dashboard.seo_meta') }}</label>
         <input type="text" class="form-control mb-2" name="seo_meta[title]"
@@ -248,7 +248,7 @@
             placeholder="{{ __('dashboard.seo_title') }}">
         <textarea class="form-control" name="seo_meta[description]" placeholder="{{ __('dashboard.seo_description') }}">{{ old('seo_meta.description', $salon->seo_meta['description'] ?? '') }}</textarea>
     </div>
-</div>
+</div> --}}
 
 <div class="row mb-3">
     <div class="col-md-12">

@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateSalonSubServiceRequest;
 use App\Models\Salon;
 use App\Models\SalonSubService;
 use App\Services\SalonSubServiceService;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\View\View;
@@ -32,13 +33,41 @@ class SalonSubServiceController extends Controller
 
     public function store(StoreSalonSubServiceRequest $request, Salon $salon): RedirectResponse
     {
-        $validatedData = $request->validated();
-        $images = $request->file('images');
+         try {
+            $validatedData = $request->validated();
+            $images = $request->file('images');
 
-        $this->salonSubServiceService->createSalonSubService($salon, $validatedData, $images);
+            $this->salonSubServiceService->createSalonSubService($salon, $validatedData, $images);
 
-        return redirect()->route('dashboard.salons.show', $salon)
-            ->with('message', ['type' => 'success', 'content' => __('dashboard.service_added_successfully')]);
+            return redirect()->route('dashboard.salons.show', $salon)
+                ->with('message', ['type' => 'success', 'content' => __('dashboard.service_added_successfully')]);
+        }catch (\Illuminate\Validation\ValidationException $e) {
+            // معالجة أخطاء التحقق
+            $errors = $e->validator->errors()->all();
+            $errorMessage = implode(' ', $errors);
+
+            return back()->with('message', ['type' => 'error', 'content' => $errorMessage]);
+        } catch (QueryException $e) {
+            // معالجة أخطاء قاعدة البيانات (مثل قيد unique)
+            if (str_contains($e->getMessage(), 'Duplicate entry')) {
+                return back()->with('message', [
+                    'type' => 'error',
+                    'content' => 'هذه الخدمة مضافة مسبقًا لهذا الصالون.'
+                ]);
+            }
+
+            // تسجيل الخطأ للتتبع (اختياري)
+            \Illuminate\Support\Facades\Log::error('Failed to add service: ' . $e->getMessage(), [
+                'salon_id' => $salon->id,
+                'sub_service_id' => $request->input('sub_service_id'),
+            ]);
+
+            // إرجاع رسالة خطأ عامة إذا لم يكن الخطأ متعلقًا بـ unique
+            return back()->with('message', [
+                'type' => 'error',
+                'content' => 'حدث خطأ أثناء إضافة الخدمة. حاول مرة أخرى.'
+            ]);
+        }
     }
 
     public function show(Salon $salon, SalonSubService $subService): View

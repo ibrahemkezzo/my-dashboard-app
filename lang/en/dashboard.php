@@ -910,5 +910,6 @@ return [
     'salon_proposed_max_price' => 'salon Max Price Proposed',
     'action ' => 'Actions',
     'hour' => 'hour',
+    'terms' => 'Terms',
 
 ];

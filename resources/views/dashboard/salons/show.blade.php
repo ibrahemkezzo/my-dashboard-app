@@ -361,7 +361,8 @@
                                                         <thead>
                                                             <tr>
                                                                 <th>{{ __('dashboard.service') }}</th>
-                                                                <th>{{ __('dashboard.price') }}</th>
+                                                                <th>{{ __('dashboard.low_price') }}</th>
+                                                                <th>{{ __('dashboard.max_price') }}</th>
                                                                 <th>{{ __('dashboard.duration') }}</th>
                                                                 <th>{{ __('dashboard.status') }}</th>
                                                                 <th>{{ __('dashboard.actions') }}</th>
@@ -372,6 +373,8 @@
                                                                 <tr>
                                                                     <td>{{ $subService->name }}</td>
                                                                     <td>{{ $subService->pivot->price }}
+                                                                        {{ __('dashboard.currency') }}</td>
+                                                                    <td>{{ $subService->pivot->max_price }}
                                                                         {{ __('dashboard.currency') }}</td>
                                                                     <td>{{ $subService->pivot->duration }}
                                                                         {{ __('dashboard.minutes') }}</td>
