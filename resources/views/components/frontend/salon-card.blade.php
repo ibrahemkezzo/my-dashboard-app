@@ -42,26 +42,17 @@
             <span>{{ $salon->city->name ?? ($salon->city_name ?? '-') }}</span>
         </div>
         <div class="salon-services">
-            @if (isset($salon->subServices))
-                @foreach ($salon->subServices->take(3) as $sub_service)
-                    <span class="service-tag">{{ $sub_service->name }}</span>
-                @endforeach
-                @if ($salon->subServices->count() > 3)
-                    <span class="service-more">+{{ $salon->subServices->count() - 3 }} المزيد</span>
-                @else
-                    <br />
-                @endif
-            @elseif(isset($salon->sub_services))
-                @foreach (collect($salon->sub_services)->take(3) as $sub_service)
-                    <span class="service-tag">{{ $sub_service }}</span>
-                @endforeach
-                @if (count($salon->sub_services) > 3)
-                    <span class="service-more">+{{ count($salon->sub_services) - 3 }} المزيد</span>
-                @else
-                    <br />
-                @endif
+        @if (isset($salon->subServices))
+            @foreach ($salon->subServices->take(3) as $sub_service)
+                <span class="service-tag two-words" data-text="{{ $sub_service->name }}">{{ implode(' ', array_slice(explode(' ', $sub_service->name), 0, 2)) }}</span>
+            @endforeach
+            @if ($salon->subServices->count() > 3)
+                <span class="service-tag">+{{ $salon->subServices->count() - 3 }} المزيد</span>
+            @else
+                <br />
             @endif
-        </div>
+        @endif
+    </div>
         <div class="salon-price">
             @if ($salon->price_range)
                 @if ($salon->price_range['min'] == $salon->price_range['max'])
@@ -73,12 +64,61 @@
                 لا يوجد أسعار
             @endif
         </div>
-        <div class="salon-offer">{{ $salon->offer_text ?? 'خصم 20% على الجلسة الأولى' }}</div>
+        {{-- <div class="salon-offer">{{ $salon->offer_text ?? 'خصم 20% على الجلسة الأولى' }}</div> --}}
         <a href="{{ route('front.salons.show', $salon->id) }}" class="btn btn-primary salon-book-btn">احجزي موعدك</a>
     </div>
 </div>
 
-
+@push('styles')
+<style>
+        .salon-services {
+            display: inline-block;
+            max-width: 300px; /* عرض ثابت */
+            height: 60px; /* طول ثابت */
+            overflow: hidden;
+            vertical-align: middle;
+        }
+        .service-tag {
+            display: inline-block;
+            /* padding: 5px 10px;
+            margin: 2px;
+            background-color: #f0f0f0; */
+            /* border-radius: 5px; */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .service-tag::after {
+            content: "";
+            display: inline-block;
+            width: 0;
+        }
+        .service-more {
+            display: inline-block;
+            /* padding: 5px 10px;
+            margin: 2px; */
+            /* background-color: #e0e0e0; */
+            /* border-radius: 5px; */
+            white-space: nowrap;
+        }
+        .service-tag.two-words {
+            max-width: 100px; /* تحديد طول ثابت لكل تاج */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: inline-block;
+        }
+        .service-tag.two-words::after {
+            content: attr(data-text);
+            position: absolute;
+            visibility: hidden;
+            white-space: nowrap;
+        }
+        .service-tag.two-words {
+            display: inline-block;
+            max-width: 100px; /* ضبط العرض حسب الحاجة */
+        }
+    </style>
+@endpush
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('frontend/assets/js/pages-scripts2.js') }}"></script>

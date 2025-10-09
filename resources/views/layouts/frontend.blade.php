@@ -32,7 +32,38 @@
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/styles.css?v=' . config('app.version')) }}">
     @stack('styles')
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/drop.css?v=' . config('app.version')) }}">
-
+      <style>
+        .dropdown-parent-f {
+            position: relative;
+        }
+        .dropdown-menu-f {
+            display: none;
+            position: absolute;
+            background-color: #000000;
+            border: 1px solid #87365b;
+            border-radius: 4px;
+            padding: 5px 0;
+            min-width: 200px;
+            z-index: 20;
+            box-shadow: 0 2px 5px rgba(52, 51, 51, 0.1);
+            right: 50%; /* يضع القائمة إلى الجانب الأيمن */
+            top: 0; /* يحاذيها مع الأعلى */
+        }
+        .dropdown-parent-f:hover .dropdown-menu-f {
+            display: block;
+        }
+        .dropdown-item {
+            list-style: none;
+            padding: 5px 10px;
+        }
+        .dropdown-item:hover {
+            color: #87365b;
+        }
+        .dropdown-item a {
+            color: #ffffff;
+            text-decoration: none;
+        }
+    </style>
 </head>
 
 <body>

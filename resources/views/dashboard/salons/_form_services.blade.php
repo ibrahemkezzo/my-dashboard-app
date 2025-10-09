@@ -5,11 +5,12 @@
                 'service_id' => $ss->service_id,
                 'sub_service_id' => $ss->id,
                 'price' => $ss->pivot->price,
+                'max_price' => $ss->pivot->max_price,
                 'duration' => $ss->pivot->duration,
                 'status' => $ss->pivot->status,
                 // 'materials_used' => $ss->pivot->materials_used,
                 // 'requirements' => $ss->pivot->requirements,
-                'special_notes' => $ss->pivot->special_notes,
+                // 'special_notes' => $ss->pivot->special_notes,
             ];
         })->toArray() : []);
     @endphp
@@ -36,8 +37,12 @@
                 </select>
             </div>
             <div class="col-md-2">
-                <label class="form-label">{{ __('dashboard.price') }}</label>
+                <label class="form-label">{{ __('dashboard.low_price') }}</label>
                 <input type="number" step="0.01" class="form-control" name="salon_services[{{ $i }}][price]" value="{{ $serviceData['price'] ?? 0 }}">
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">{{ __('dashboard.max_price') }}</label>
+                <input type="number" step="0.01" class="form-control" name="salon_services[{{ $i }}][max_price]" value="{{ $serviceData['max_price'] ?? 0 }}">
             </div>
             <div class="col-md-2">
                 <label class="form-label">{{ __('dashboard.duration') }} ({{ __('dashboard.minutes') }})</label>
@@ -104,8 +109,12 @@
                 </select>
             </div>
             <div class="col-md-2">
-                <label class="form-label">{{ __('dashboard.price') }}</label>
+                <label class="form-label">{{ __('dashboard.low_price') }}</label>
                 <input type="number" step="0.01" class="form-control" name="salon_services[${serviceIndex}][price]" value="0">
+            </div>
+            <div class="col-md-2">
+                <label class="form-label">{{ __('dashboard.max_price') }}</label>
+                <input type="number" step="0.01" class="form-control" name="salon_services[${serviceIndex}][max_price]" value="0">
             </div>
             <div class="col-md-2">
                 <label class="form-label">{{ __('dashboard.duration') }} ({{ __('dashboard.minutes') }})</label>

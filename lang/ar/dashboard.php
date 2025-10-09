@@ -923,4 +923,5 @@ return [
     'salon_proposed_max_price' => 'اعلى سعر مقترح',
     'action' => 'الإجراءات',
     'hour' => 'ساعة',
+    'terms' => 'الشروط',
 ];
