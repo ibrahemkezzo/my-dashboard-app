@@ -41,7 +41,7 @@
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/pages-styles.css?v='.config('app.version')) }}">
     <style>
         h2 {
-            color: #e43f6f;
+            color: #87365b;
             margin-top: 6%;
             margin-bottom: 4%;
         }

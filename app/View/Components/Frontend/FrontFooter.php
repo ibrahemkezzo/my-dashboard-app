@@ -2,6 +2,7 @@
 
 namespace App\View\Components\Frontend;
 
+use App\Models\Service;
 use App\Models\SubService;
 use App\Repositories\CityRepository;
 use App\Repositories\DatabaseSettingsRepository;
@@ -28,7 +29,7 @@ class FrontFooter extends Component
 
         $this->settings = $this->settingsRepository->all('general');
         $this->cities = $this->cityRepository->all();
-        $this->services = SubService::all();
+        $this->services = Service::with('sub_services')->get();
         // dd($this->settings);
     }
 

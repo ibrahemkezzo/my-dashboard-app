@@ -17,6 +17,7 @@ class UpdateSalonSubServiceRequest extends FormRequest
             'service_id' => 'required|exists:services,id',
             'sub_service_id' => 'required|exists:sub_services,id',
             'price' => 'nullable|numeric|min:0',
+            'max_price' => 'nullable|numeric|gt:price',
             'duration' => 'nullable|integer|min:0',
             'status' => 'nullable|boolean',
             'materials_used' => 'nullable|string|max:1000',
@@ -41,4 +42,4 @@ class UpdateSalonSubServiceRequest extends FormRequest
             'images.*.max' => __('dashboard.image_size_too_large'),
         ];
     }
-} 
+}

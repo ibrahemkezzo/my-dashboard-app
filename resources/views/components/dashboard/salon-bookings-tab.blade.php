@@ -111,7 +111,7 @@
             <div class="collapse" id="booking-{{ $booking->id }}">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <h6 class="mb-3">{{ __('dashboard.booking_details') }}</h6>
                             <p><strong>{{ __('dashboard.service_description') }}:</strong> {{ $booking->service_description }}</p>
                             <p><strong>{{ __('dashboard.preferred_datetime') }}:</strong><br> {{ $booking->preferred_datetime->format('F j, Y \a\t g:i A') }}</p>
@@ -122,7 +122,7 @@
                                 <h6 class="mt-3">{{ __('dashboard.services') }}</h6>
                                 <div class="row g-3">
                                     @foreach($booking->services as $service)
-                                        <div class="col-lg-4 col-md-6 col-sm-12">
+                                        <div class="col-lg-3 col-md-4 col-sm-6">
                                             <div class="card service-card shadow-sm">
                                                 <div class="card-body">
                                                     <h6 class="card-title">{{ $service->salonSubService->subService->name }}</h6>

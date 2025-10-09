@@ -47,16 +47,21 @@
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <div class="col-md-4">
-                        <label class="form-label">{{ __('dashboard.price') }}</label>
+                    <div class="col-md-3">
+                        <label class="form-label">{{ __('dashboard.low_price') }}</label>
                         <input type="number" step="0.01" class="form-control" name="price"
-                            value="{{ old('price', 0) }}">
+                            value="{{ old('price') }}">
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
+                        <label class="form-label">{{ __('dashboard.max_price') }}</label>
+                        <input type="number" step="0.01" class="form-control" name="max_price"
+                            value="{{ old('price') }}">
+                    </div>
+                    <div class="col-md-3">
                         <label class="form-label">{{ __('dashboard.duration') }} ({{ __('dashboard.minutes') }})</label>
-                        <input type="number" class="form-control" name="duration" value="{{ old('duration', 0) }}">
+                        <input type="number" class="form-control" name="duration" value="{{ old('duration') }}">
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="form-label">{{ __('dashboard.status') }}</label>
                         <select class="form-control" name="status">
                             <option value="1" {{ old('status', 1) == 1 ? 'selected' : '' }}>
@@ -70,13 +75,13 @@
                         <input type="file" class="form-control" name="images[]" multiple accept="image/*">
                     </div> --}}
                 </div>
-                <div class="row mb-3">
+                {{-- <div class="row mb-3">
                     <div class="col-md-12">
                         <label class="form-label">{{ __('dashboard.description') }}</label>
                         <textarea class="form-control" rows="2" name="special_notes">{{ old('special_notes') }}</textarea>
                     </div>
 
-                </div>
+                </div> --}}
                 <div class="row mb-3">
                     {{-- <div class="col-md-6">
                         <label class="form-label">{{ __('dashboard.requirements') }}</label>

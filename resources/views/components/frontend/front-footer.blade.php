@@ -20,23 +20,25 @@
         <div class="footer-content">
             <!-- Company Info -->
             <div class="footer-section">
-                <a href="{{ route('front.home') }}"><img class="logo-footer" src="{{ asset('storage/'.$settings['cover_image']) }}" alt="كوافيري | My Kawafir" width="168px" /></a>
+                <a href="{{ route('front.home') }}"><img class="logo-footer"
+                        src="{{ asset('storage/' . $settings['cover_image']) }}" alt="كوافيري | My Kawafir"
+                        width="168px" /></a>
                 <p class="footer-description">
-                    {{$settings['footer_text']}}
+                    {{ $settings['footer_text'] }}
                 </p>
                 <!-- Contact Info -->
                 <div class="contact-info">
                     <div class="contact-item">
                         <i data-lucide="phone"></i>
-                        <span dir="ltr">{{$settings['number_settings'] ?? '+966 50 123 4567'}}</span>
+                        <span dir="ltr">{{ $settings['number_settings'] ?? '+966 50 123 4567' }}</span>
                     </div>
                     <div class="contact-item">
                         <i data-lucide="mail"></i>
-                        <span>{{$settings['email_settings']}}</span>
+                        <span>{{ $settings['email_settings'] }}</span>
                     </div>
                     <div class="contact-item">
                         <i data-lucide="map-pin"></i>
-                        <span>{{$settings['site_title']}}</span>
+                        <span>{{ $settings['site_title'] }}</span>
                     </div>
                 </div>
             </div>
@@ -46,7 +48,8 @@
                 <ul class="footer-links">
                     <li><a href="{{ route('front.home') }}" class="footer-link">الرئيسية</a></li>
                     <li><a href="{{ route('front.about-us') }}" class="footer-link">عن المنصة</a></li>
-                    <li><a href="{{ route('front.salons.list', ['hasOffers' => true]) }}" class="footer-link">العروض الخاصة</a></li>
+                    <li><a href="{{ route('front.salons.list', ['hasOffers' => true]) }}" class="footer-link">العروض
+                            الخاصة</a></li>
                     <li><a href="{{ route('front.faq') }}" class="footer-link">الأسئلة الشائعة</a></li>
                     <li><a href="#" class="footer-link">تواصل معنا</a></li>
                     <li><a href="{{ route('front.privacy') }}" class="footer-link">سياسة الخصوصية</a></li>
@@ -58,7 +61,15 @@
                 <h3 class="footer-section-title">الخدمات</h3>
                 <ul class="footer-links">
                     @foreach ($services as $service)
-                        <li><a href="{{ route('front.salons.list', ['service_type' => $service->name]) }}" class="footer-link">{{ $service->name }}</a></li>
+                        <li class="dropdown-parent-f">{{ $service->name }}
+                            <ul class="dropdown-menu-f">
+                                @foreach ($service->sub_services as $subService)
+                                    <li class="dropdown-item"><a
+                                            href="{{ route('front.salons.list', ['service_type' => $subService->name]) }}"
+                                            class="footer-link">{{ $subService->name }}</a></li>
+                                @endforeach
+                            </ul>
+                        </li>
                     @endforeach
                 </ul>
             </div>
@@ -67,7 +78,8 @@
                 <h3 class="footer-section-title">المدن المتاحة</h3>
                 <ul class="footer-links">
                     @foreach ($cities as $city)
-                        <li><a href="{{route('front.salons.list',['city_id'=>$city->id])}}" class="footer-link">{{$city->name}}</a></li>
+                        <li><a href="{{ route('front.salons.list', ['city_id' => $city->id]) }}"
+                                class="footer-link">{{ $city->name }}</a></li>
                     @endforeach
                 </ul>
 
@@ -75,13 +87,13 @@
                 <div class="social-media">
                     <h4 class="social-title">تابعينا</h4>
                     <div class="social-links">
-                        <a href="{{$settings['social_links']['instagram'] ?? '#'}}" class="social-link">
+                        <a href="{{ $settings['social_links']['instagram'] ?? '#' }}" class="social-link">
                             <i data-lucide="instagram"></i>
                         </a>
-                        <a href="{{$settings['social_links']['facebook'] ?? '#'}}" class="social-link">
+                        <a href="{{ $settings['social_links']['facebook'] ?? '#' }}" class="social-link">
                             <i data-lucide="facebook"></i>
                         </a>
-                        <a href="{{$settings['social_links']['youtube'] ?? '#'}}" class="social-link">
+                        <a href="{{ $settings['social_links']['youtube'] ?? '#' }}" class="social-link">
                             <i data-lucide="youtube"></i>
                         </a>
                     </div>
