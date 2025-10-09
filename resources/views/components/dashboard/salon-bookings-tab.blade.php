@@ -139,7 +139,7 @@
                                 <p class="text-muted mt-3">لا توجد خدمات</p>
                             @endif
                         </div>
-                        <div class="col-md-6">
+                        {{-- <div class="col-md-6">
                             <h6 class="mb-3">{{ __('dashboard.appointment_details') }}</h6>
                             @if($booking->appointment)
                                 <p><strong>{{ __('dashboard.final_datetime') }}:</strong> {{ $booking->appointment->datetime->format('F j, Y \a\t g:i A') }}</p>
@@ -148,7 +148,7 @@
                             @else
                                 <p class="text-muted">{{ __('dashboard.no_appointment_scheduled') }}</p>
                             @endif
-                        </div>
+                        </div> --}}
                     </div>
 
                     <div class="mt-3">
@@ -156,9 +156,9 @@
                             <a href="{{ route('dashboard.bookings.show', $booking) }}" class="btn btn-sm btn-info">
                                 <i class="fa fa-eye"></i> {{ __('dashboard.view_details') }}
                             </a>
-                            <a href="{{ route('dashboard.bookings.edit', $booking) }}" class="btn btn-sm btn-warning">
+                            {{-- <a href="{{ route('dashboard.bookings.edit', $booking) }}" class="btn btn-sm btn-warning">
                                 <i class="fa fa-edit"></i> {{ __('dashboard.edit') }}
-                            </a>
+                            </a> --}}
                             @if($booking->appointment)
                                 <a href="{{ route('dashboard.appointments.show', $booking->appointment) }}" class="btn btn-sm btn-primary">
                                     <i class="fa fa-calendar"></i> {{ __('dashboard.view_appointment') }}
@@ -184,9 +184,9 @@
             <i class="fa fa-calendar-times fa-3x text-muted mb-3"></i>
             <h5 class="text-muted">{{ __('dashboard.no_bookings_found') }}</h5>
             <p class="text-muted">{{ __('dashboard.no_bookings_description') }}</p>
-            <a href="{{ route('dashboard.bookings.create') }}" class="btn btn-primary">
+            {{-- <a href="{{ route('dashboard.bookings.create') }}" class="btn btn-primary">
                 <i class="fa fa-plus"></i> {{ __('dashboard.create_first_booking') }}
-            </a>
+            </a> --}}
         </div>
     @endforelse
 
