@@ -44,10 +44,10 @@
         <div class="salon-services">
         @if (isset($salon->subServices))
             @foreach ($salon->subServices->take(3) as $sub_service)
-                <span class="service-tag two-words" data-text="{{ $sub_service->name }}">{{ implode(' ', array_slice(explode(' ', $sub_service->name), 0, 2)) }}</span>
+                <span class="service-tag service-tag-salon two-words" data-text="{{ $sub_service->name }}">{{ implode(' ', array_slice(explode(' ', $sub_service->name), 0, 2)) }}</span>
             @endforeach
             @if ($salon->subServices->count() > 3)
-                <span class="service-tag">+{{ $salon->subServices->count() - 3 }} المزيد</span>
+                <span class="service-tag service-tag-salon">+{{ $salon->subServices->count() - 3 }} المزيد</span>
             @else
                 <br />
             @endif
@@ -78,7 +78,7 @@
             overflow: hidden;
             vertical-align: middle;
         }
-        .service-tag {
+        .service-tag-salon {
             display: inline-block;
             /* padding: 5px 10px;
             margin: 2px;
@@ -88,32 +88,25 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        .service-tag::after {
+        .service-tag-salon::after {
             content: "";
             display: inline-block;
             width: 0;
         }
-        .service-more {
-            display: inline-block;
-            /* padding: 5px 10px;
-            margin: 2px; */
-            /* background-color: #e0e0e0; */
-            /* border-radius: 5px; */
-            white-space: nowrap;
-        }
+
         .service-tag.two-words {
             max-width: 100px; /* تحديد طول ثابت لكل تاج */
             overflow: hidden;
             text-overflow: ellipsis;
             display: inline-block;
         }
-        .service-tag.two-words::after {
+        .service-tag-salon.two-words::after {
             content: attr(data-text);
             position: absolute;
             visibility: hidden;
             white-space: nowrap;
         }
-        .service-tag.two-words {
+        .service-tag-salon.two-words {
             display: inline-block;
             max-width: 100px; /* ضبط العرض حسب الحاجة */
         }
