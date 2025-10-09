@@ -17,7 +17,7 @@
                     <h1 class="hero-title">
                         اكتشفي جمالك مع
                         <br>
-                        <span class="hero-title-highlight">أفضل خبيرات التجميل</span>
+                        <span class="hero-title">أفضل خبيرات التجميل</span>
                     </h1>
                     <p class="hero-description">
                         احجزي موعدك مع أفضل صالونات التجميل ومراكز العناية في مدينتك بضغطة واحدة
