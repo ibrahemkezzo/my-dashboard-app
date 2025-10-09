@@ -56,9 +56,9 @@
 <div class="bookings-list">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h5 class="mb-0">{{ __('dashboard.user_bookings') }}</h5>
-        <a href="{{ route('dashboard.bookings.create') }}" class="btn btn-primary btn-sm">
+        {{-- <a href="{{ route('dashboard.bookings.create') }}" class="btn btn-primary btn-sm">
             <i class="fa fa-plus"></i> {{ __('dashboard.create_booking') }}
-        </a>
+        </a> --}}
     </div>
 
     @forelse($bookings as $booking)
@@ -212,9 +212,9 @@
             <i class="fa fa-calendar-times fa-3x text-muted mb-3"></i>
             <h5 class="text-muted">{{ __('dashboard.no_bookings_found') }}</h5>
             <p class="text-muted">{{ __('dashboard.no_bookings_description') }}</p>
-            <a href="{{ route('dashboard.bookings.create') }}" class="btn btn-primary">
+            {{-- <a href="{{ route('dashboard.bookings.create') }}" class="btn btn-primary">
                 <i class="fa fa-plus"></i> {{ __('dashboard.create_first_booking') }}
-            </a>
+            </a> --}}
         </div>
     @endforelse
 
