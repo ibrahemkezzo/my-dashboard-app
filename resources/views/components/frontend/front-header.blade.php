@@ -5,7 +5,7 @@
             <div class="logo">
                 {{-- <h1>كوافيري | My Kawafir</h1> --}}
                 <a href="{{ route('front.home') }}"><img src="{{ asset('storage/' . $settings['site_logo']) }}"
-                        alt="كوافيري | My Kawafir" width="168px" /></a>
+                        alt="غلوزيلي | Glowzelle" width="168px" /></a>
             </div>
             <!-- Desktop Navigation -->
             <nav class="nav-desktop">

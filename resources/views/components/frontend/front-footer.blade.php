@@ -21,7 +21,7 @@
             <!-- Company Info -->
             <div class="footer-section">
                 <a href="{{ route('front.home') }}"><img class="logo-footer"
-                        src="{{ asset('storage/' . $settings['cover_image']) }}" alt="كوافيري | My Kawafir"
+                        src="{{ asset('storage/' . $settings['cover_image']) }}" alt="Glowzelle | غلوزيلي"
                         width="168px" /></a>
                 <p class="footer-description">
                     {{ $settings['footer_text'] }}
@@ -104,7 +104,7 @@
         <div class="footer-bottom">
             <div class="footer-bottom-content">
                 <div class="copyright">
-                    منصة كوافيري. جميع الحقوق محفوظة 2025 ©
+                    منصة غلوزيلي. جميع الحقوق محفوظة 2025 ©
                 </div>
                 <div class="footer-bottom-links">
                     <a href="{{ route('front.terms') }}" class="footer-bottom-link">الشروط والأحكام</a>
