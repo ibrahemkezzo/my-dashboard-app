@@ -8,7 +8,7 @@
     <div class="row align-items-center pt-5">
         <div class="col-md-6 col-10">
             <div class="about-hero-content">
-                <h1 class="display-4 fw-bold text-dark mb-4 title">عن كوافيري</h1>
+                <h1 class="display-4 fw-bold text-dark mb-4 title">عن غلوزيلي</h1>
                 <p class="lead text-muted mb-4">
                     منصة رائدة في المملكة العربية السعودية تربط بين العميلات وأفضل خبيرات التجميل والصالونات المعتمدة، لتوفير تجربة حجز سهلة ومميزة.
                 </p>
