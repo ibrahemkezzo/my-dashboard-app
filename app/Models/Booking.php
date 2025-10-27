@@ -188,11 +188,8 @@ public function canBeCompleted(): bool
 
     // الشرط الثاني: التاريخ والوقت الحالي يجب أن يكون بعد انتهاء الموعد
     $appointmentStart = $this->preferred_datetime;
-    $durationInMinutes = $this->salonSubService->duration ?? 60; // المدة الافتراضية 60 دقيقة
 
-    $appointmentEnd = $appointmentStart->copy()->addMinutes($durationInMinutes);
-
-    return now()->greaterThanOrEqualTo($appointmentEnd);
+    return now()->greaterThanOrEqualTo($appointmentStart);
 }
 
     /**
