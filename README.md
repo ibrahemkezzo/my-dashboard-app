@@ -183,5 +183,40 @@ Thank you for using SalonBooking! 🚀
     Fixed issues in service handling and data validation.
     Optimized frontend performance.
 
+## New Features (v1.5) — Rewards, Points, and Database Notifications
 
+### 1. **Points & Rewards System**
+- **Earn points automatically** on completed bookings.
+- **Admin dashboard** to create, edit, and delete rewards.
+- **User reward tracking** with statuses: `pending`, `claimed`, `expired`.
+- Auto-notification when enough points are earned.
+
+### 2. **Database Notifications with Livewire**
+- Real-time **notification dropdowns** in:
+  - Dashboard (for admins)
+  - Frontend (for users)
+- Supported events:
+  - Booking status updates
+  - Reward grants
+  - Email verification
+  - New salon requests
+
+### 3. **Booking Logic Enhancements**
+- `canBeCompleted()`: Only allowed **after appointment end time**.
+- Supports salon-proposed datetime and duration.
+- Multi-service booking support.
+
+### 4. **UX Improvements**
+- **Custom 419 error page** with login button.
+- **Livewire-powered notification dropdowns** with color-coded icons.
+- Updated sidebar, translations, and responsive styles.
+
+### 5. **Tech Stack**
+| Feature | Technology |
+|--------|------------|
+| Notifications | Laravel Notifications (`database`) |
+| Dropdowns | **Livewire** |
+| Points Logic | `Booking` → `User` → `UserReward` |
+| Rewards | `Reward`, `UserReward`, `RewardService` |
+| Time Validation | Carbon + Accessors |
 
