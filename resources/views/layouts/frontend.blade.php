@@ -32,10 +32,11 @@
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/styles.css?v=' . config('app.version')) }}">
     @stack('styles')
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/drop.css?v=' . config('app.version')) }}">
-      <style>
+    <style>
         .dropdown-parent-f {
             position: relative;
         }
+
         .dropdown-menu-f {
             display: none;
             position: absolute;
@@ -46,24 +47,39 @@
             min-width: 200px;
             z-index: 20;
             box-shadow: 0 2px 5px rgba(52, 51, 51, 0.1);
-            right: 50%; /* يضع القائمة إلى الجانب الأيمن */
-            top: 0; /* يحاذيها مع الأعلى */
+            right: 50%;
+            /* يضع القائمة إلى الجانب الأيمن */
+            top: 0;
+            /* يحاذيها مع الأعلى */
         }
+
         .dropdown-parent-f:hover .dropdown-menu-f {
             display: block;
         }
+
         .dropdown-item {
             list-style: none;
             padding: 5px 10px;
         }
+
         .dropdown-item:hover {
             color: #87365b;
         }
+
         .dropdown-item a {
             color: #ffffff;
             text-decoration: none;
         }
+
+        .hover-bg-light:hover {
+            background-color: #f8f0f4 !important;
+        }
+
+        .avatar {
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
     </style>
+    @livewireStyles
 </head>
 
 <body>
@@ -96,6 +112,8 @@
 
     @stack('scripts')
 
+    @livewireScripts
+
 </body>
 
 <script>
@@ -114,6 +132,22 @@
         });
     });
 </script>
+{{-- <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const mobileBtnNotifications = document.getElementById("notifications-btn-mobile");
+        const mobileMenuNotifications = document.getElementById("notifications-menu-mobile");
+
+        mobileBtnNotifications.addEventListener("click", function(e) {
+            e.stopPropagation();
+            mobileMenuNotifications.style.display = (mobileMenu.style.display === "block") ? "none" : "block";
+        });
+
+        // إغلاق القائمة عند الضغط خارجها
+        document.addEventListener("click", function() {
+            mobileMenuNotifications.style.display = "none";
+        });
+    });
+</script> --}}
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const mobileBtn = document.getElementById("mobile-profile-btn");
@@ -149,6 +183,98 @@
     window.addEventListener("load", function() {
         const loader = document.getElementById("loader");
         loader.style.display = "none";
+    });
+</script>
+{{-- <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Desktop
+        const notifBtn = document.getElementById("notifications-btn");
+        const notifMenu = document.getElementById("notifications-menu");
+
+        if (notifBtn && notifMenu) {
+            notifBtn.addEventListener("click", function(e) {
+                e.stopPropagation();
+                notifMenu.style.display = (notifMenu.style.display === "block") ? "none" : "block";
+            });
+        }
+
+        // Mobile
+        const mobileNotifBtn = document.getElementById("mobile-notifications-btn");
+        if (mobileNotifBtn && notifMenu) {
+            mobileNotifBtn.addEventListener("click", function(e) {
+                e.stopPropagation();
+                notifMenu.style.display = (notifMenu.style.display === "block")
+
+ ? "none" : "block";
+            });
+        }
+
+        // Close when clicking outside
+        document.addEventListener("click", function() {
+            if (notifMenu) notifMenu.style.display = "none";
+        });
+
+        // Prevent closing when clicking inside menu
+        if (notifMenu) {
+            notifMenu.addEventListener("click", function(e) {
+                e.stopPropagation();
+            });
+        }
+    });
+</script> --}}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // === Desktop ===
+        const desktopBtn = document.getElementById("notifications-btn-desktop");
+        const desktopMenu = document.getElementById("notifications-menu-desktop");
+
+        if (desktopBtn && desktopMenu) {
+            desktopBtn.addEventListener("click", function(e) {
+                e.stopPropagation();
+                desktopMenu.style.display = (desktopMenu.style.display === "block") ? "none" : "block";
+            });
+
+            desktopMenu.addEventListener("click", function(e) {
+                e.stopPropagation();
+            });
+        }
+
+        // // === Mobile ===
+       const mobileBtn = document.getElementById("notifications-btn-mobile");
+            const mobileMenu = document.getElementById("notifications-menu-mobile");
+
+            console.log("Mobile Button:", mobileBtn);
+            console.log("Mobile Menu:", mobileMenu);
+
+            if (mobileBtn && mobileMenu) {
+                mobileBtn.onclick = function(e) {
+                    e.stopPropagation();
+                    const isOpen = mobileMenu.style.display === "block";
+                    console.log("Mobile Click - Open:", !isOpen);
+                    mobileMenu.style.display = isOpen ? "none" : "block";
+                };
+                mobileMenu.onclick = (e) => e.stopPropagation();
+            } else {
+                console.warn("Mobile elements not found");
+            }
+
+            // === إغلاق عند النقر خارج القوائم ===
+            document.addEventListener("click", function() {
+                if (desktopMenu) desktopMenu.style.display = "none";
+                if (mobileMenu) mobileMenu.style.display = "none";
+                console.log("Clicked outside - Closing all menus");
+            });
+        // }
+
+        // // تفعيل فوري
+        // initNotifications();
+
+        // // إعادة التفعيل بعد كل تحديث من Livewire
+        // document.addEventListener("livewire:load", initNotifications);
+        // document.addEventListener("livewire:update", initNotifications);
+
+        // // في حال تحديث جزئي
+        // window.addEventListener("load", initNotifications)
     });
 </script>
 

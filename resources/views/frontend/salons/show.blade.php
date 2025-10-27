@@ -30,10 +30,9 @@
                                 <img src="{{ $salon->logo_url }}" alt="logo" class="me-3 ms-3"
                                     style="width:60px;height:60px;object-fit:cover;border-radius:50%;">
                             @else
-                                <div
-                                    style="width:150px;height:150px;background:#f0f0f0;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto;">
-                                    <i class="fa fa-building fa-3x text-muted"></i>
-                                </div>
+
+                                    <i class="fa fa-building text-muted" ></i>
+
                             @endif
                             {{ $salon->name }}
 
@@ -97,7 +96,7 @@
                     <div id="salonCarousel" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-inner">
                             <div class="carousel-item active">
-                                <img src="{{ $salon->cover_image_url }}" class="d-block w-100 salon-gallery-image"
+                                <img src="{{ $salon->cover_image_url ?? "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400" }}" class="d-block w-100 salon-gallery-image"
                                     alt="صالون 1">
                             </div>
                             @foreach ($salon->media as $photo)

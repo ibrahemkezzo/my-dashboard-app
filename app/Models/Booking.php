@@ -170,13 +170,30 @@ class Booking extends Model
         return $this->salon_proposed_duration ?? $this->salonSubService->duration ?? 60;
     }
 
-    /**
-     * Check if the booking can be completed.
-     */
-    public function canBeCompleted(): bool
-    {
-        return in_array($this->status, ['user_confirmed']);
+   /**
+ * Check if the booking can be completed.
+ *
+ * يُسمح بإكمال الحجز فقط إذا:
+ * 1. الحالة هي 'user_confirmed'
+ * 2. الوقت الحالي ≥ (preferred_datetime + مدة الخدمة)
+ *
+ * @return bool
+ */
+public function canBeCompleted(): bool
+{
+    // الشرط الأول: الحالة يجب أن تكون user_confirmed
+    if ($this->status !== 'user_confirmed') {
+        return false;
     }
+
+    // الشرط الثاني: التاريخ والوقت الحالي يجب أن يكون بعد انتهاء الموعد
+    $appointmentStart = $this->preferred_datetime;
+    $durationInMinutes = $this->salonSubService->duration ?? 60; // المدة الافتراضية 60 دقيقة
+
+    $appointmentEnd = $appointmentStart->copy()->addMinutes($durationInMinutes);
+
+    return now()->greaterThanOrEqualTo($appointmentEnd);
+}
 
     /**
      * Get the status badge class.

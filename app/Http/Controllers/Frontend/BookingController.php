@@ -6,6 +6,7 @@ use App\Models\Salon;
 use App\Models\SalonSubService;
 use App\Models\Booking;
 use App\Notifications\BookingConfirmedByUserNotification;
+use App\Notifications\BookingStatusUpdatedNotification;
 use App\Notifications\NewBookingNotification;
 use App\Services\BookingService;
 use Illuminate\Http\Request;
@@ -119,8 +120,13 @@ class BookingController extends Controller
     public function cancel(Request $request, Booking $booking)
     {
         $user = Auth::user();
+        $salon = $booking->salon;
         if ($booking->user_id !== $user->id) abort(403);
         $this->bookingService->cancelBooking($booking, $request->input('cancellation_reason'));
+         if ($salon->owner) {
+
+                Notification::send($salon->owner, new BookingStatusUpdatedNotification($booking,'cancel'));
+            }
         return redirect()->route('front.profile.bookings')->with('message', ['type' => 'success', 'content' => __('تم إلغاء الحجز بنجاح')]);
     }
 
@@ -148,7 +154,7 @@ class BookingController extends Controller
     {
         try {
             $this->bookingService->markBookingCompleted($booking);
-            return redirect()->route('front.profile.bookings')->with('message', ['type' => 'success', 'content' => __('تم تحديث حالة الحجز')]);
+            return redirect()->route('front.profile.bookings')->with('message', ['type' => 'success', 'content' => __('مبارك اكمال الحجز تم اضافة 5 نقاط الى رصيدك')]);
         } catch (\Exception $e) {
             // dd($e);
             return back()->with('message', ['type' => 'error', 'content' => $e->getMessage()]);

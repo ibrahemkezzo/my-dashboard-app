@@ -46,8 +46,9 @@
                                 </div>
                                 <div class="booking-header">
                                     <div class="salon-image">
-                                        <img src="{{ $booking->salon->cover_image_url ?? asset('frontend/assets/img/clients/default.png') }}"
-                                            alt="{{ $booking->salon->name }}">
+                                        <img src="{{ $booking->salon->logo_url ?? asset('frontend/assets/img/clients/default.png') }}"
+                                        alt="{{ $booking->salon->name }}"
+                                        style="width:60px;height:60px;object-fit:cover;border-radius:50%;" >
                                     </div>
                                     <div class="salon-info">
                                         <h5 class="salon-name">{{ $booking->salon->name }}</h5>

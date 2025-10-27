@@ -56,7 +56,8 @@
     <div class="row mb-3">
         <div class="col-md-6">
             <label for="city_id" class="form-label">المدينة</label>
-            <x-form.city-select name="city_id" :selected="$salon->city_id" class="form-control @error('city_id') is-invalid @enderror" />
+            <x-form.city-select name="city_id" :selected="$salon->city_id" class="form-control
+               " />
             @error('city_id')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror

@@ -102,9 +102,7 @@
                                         <div class="card">
                                             <div style="position:relative;">
                                                 @if ($salon->license_url)
-                                                    <div style="height:200px; background:url('{{ $salon->license_url }}') center center/cover no-repeat; border-top-left-radius:.5rem; border-top-right-radius:.5rem; cursor: pointer;"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#licenseModal{{ $salon->id }}">
+                                                    <div id="license-preview-{{ $salon->id }}" style="height:200px; background:url('{{ $salon->license_url }}') center center/cover no-repeat; border-top-left-radius:.5rem; border-top-right-radius:.5rem; cursor: pointer;">
                                                     </div>
                                                 @else
                                                     <div
@@ -117,18 +115,17 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- Modal -->
-                                        <div class="modal fade" id="licenseModal{{ $salon->id }}" tabindex="-1"
-                                            aria-labelledby="licenseModalLabel{{ $salon->id }}" aria-hidden="true">
-                                            <div class="modal-dialog modal-lg">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="licenseModalLabel{{ $salon->id }}">
-                                                            صورة الترخيص</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
+                                        <!-- Custom Modal -->
+                                        <div class="custom-modal" id="license-modal-{{ $salon->id }}">
+                                            <div class="custom-modal-dialog">
+                                                <div class="custom-modal-content">
+                                                    <div class="custom-modal-header">
+                                                        <h5 class="custom-modal-title">
+                                                            صورة الترخيص
+                                                        </h5>
+                                                        <button type="button" class="custom-close-btn" id="close-modal-{{ $salon->id }}">×</button>
                                                     </div>
-                                                    <div class="modal-body text-center">
+                                                    <div class="custom-modal-body text-center">
                                                         <img src="{{ $salon->license_url }}" alt="License Image"
                                                             class="img-fluid" style="max-height: 80vh;">
                                                     </div>
@@ -685,3 +682,126 @@
         src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&callback=initMap"
         async defer></script>
 @endpush
+@push('styles')
+    <style>
+        /* Custom Modal Styles - Updated */
+        .custom-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 5050;
+            margin-top:10%;
+            overflow-y: auto; /* Allow scrolling if content is taller than viewport */
+        }
+
+        .custom-modal.show {
+            display: flex;
+            align-items: flex-start; /* Align modal to the top */
+            justify-content: center;
+
+        }
+
+        .custom-modal-dialog {
+            max-width: 80%;
+            width: 800px;
+            margin: 1.5rem auto; /* Reduced top margin */
+            margin-top: 1rem; /* Force top alignment */
+        }
+
+        .custom-modal-content {
+            background-color: #fff;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            border-radius: 0.3rem;
+            box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .custom-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .custom-modal-title {
+            margin: 0;
+            font-size: 1.25rem;
+        }
+
+        .custom-close-btn {
+            font-size: 1.5rem;
+            font-weight: 700;
+            line-height: 1;
+            color: #000;
+            text-shadow: 0 1px 0 #fff;
+            opacity: 0.5;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .custom-close-btn:hover {
+            color: #000;
+            text-decoration: none;
+            opacity: 0.75;
+        }
+
+        .custom-modal-body {
+            padding: 1rem;
+            max-height: calc(100vh - 120px); /* Limit height to avoid overflow */
+            overflow-y: auto;
+        }
+
+        .custom-modal-body img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+@endpush
+
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var preview = document.getElementById('license-preview-{{ $salon->id }}');
+            var modal = document.getElementById('license-modal-{{ $salon->id }}');
+            var closeBtn = document.getElementById('close-modal-{{ $salon->id }}');
+
+            if (preview && modal && closeBtn) {
+                preview.addEventListener('click', function() {
+                    modal.classList.add('show');
+                    // Scroll to top smoothly when modal opens
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+
+                closeBtn.addEventListener('click', function() {
+                    modal.classList.remove('show');
+                });
+
+                modal.addEventListener('click', function(event) {
+                    if (event.target === modal) {
+                        modal.classList.remove('show');
+                    }
+                });
+
+                // Close with Escape key
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape' && modal.classList.contains('show')) {
+                        modal.classList.remove('show');
+                    }
+                });
+            }
+        });
+    </script>
+@endpush
+

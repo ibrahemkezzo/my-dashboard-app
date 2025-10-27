@@ -30,7 +30,7 @@ class BookingConfirmedByUserNotification extends Notification implements ShouldQ
      */
     public function via($notifiable): array
     {
-        return ['mail'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -57,15 +57,41 @@ class BookingConfirmedByUserNotification extends Notification implements ShouldQ
             ->line('يرجى اتخاذ الإجراءات اللازمة لتجهيز الخدمة.');
     }
 
-    /**
+/**
      * Get the array representation of the notification.
      *
      * @return array<string, mixed>
      */
     public function toArray(object $notifiable): array
     {
+        // تنسيق الخدمات للعرض في الـ Dropdown
+        $servicesList = $this->booking->services->map(function ($service) {
+            $name = $service->salonSubService->subService->name ?? 'خدمة';
+            $quantity = $service->quantity > 1 ? " (x{$service->quantity})" : '';
+            return $name . $quantity;
+        })->implode(' + ');
+
+        $time = $this->booking->preferred_datetime->format('H:i');
+        $date = $this->booking->preferred_datetime->format('d/m/Y');
+
         return [
-            //
+            // === العناصر المطلوبة للـ Dropdown ===
+            'title'   => 'تأكيد حجز جديد',
+            'message' => "العميل <strong>{$this->booking->user->name}</strong> أكد حجزه: <br><strong>{$servicesList}</strong> في {$time}",
+            'icon'    => 'fa-calendar-check',
+            'color'   => 'primary',
+
+            // === الرابط عند النقر ===
+            'url'     => url('/profile/salon/manager?tab=bookings'),
+
+            // === بيانات إضافية (اختيارية) ===
+            'type'              => 'booking_confirmed',
+            'booking_id'        => $this->booking->id,
+            'customer_name'     => $this->booking->user->name,
+            'services'          => $servicesList,
+            'date'              => $date,
+            'time'              => $time,
+            'preferred_datetime'=> $this->booking->preferred_datetime->toDateTimeString(),
         ];
     }
 }
