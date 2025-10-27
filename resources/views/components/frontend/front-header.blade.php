@@ -20,7 +20,9 @@
             <div class="auth-buttons-desktop">
                 @auth
                     <div class="d-flex align-items-center">
-                        @if (!Auth::user()->hasVerifiedEmail() || (Auth::user()->hasRole('salon-manager') && Auth::user()->salon->sub_services_count == 0))
+                        @if (
+                            !Auth::user()->hasVerifiedEmail() ||
+                                (Auth::user()->hasRole('salon-manager') && Auth::user()->salon->sub_services_count == 0))
                             <a href="{{ route('verification.notice') }}" title="يرجى تأكيد بريدك الإلكتروني" class="mt-2">
                                 <i class="fas fa-exclamation-circle"
                                     style=" color: #87365b; font-size: 1.5rem; margin-left: 0.5rem;"></i>
@@ -74,6 +76,21 @@
                             </ul>
                         </div>
 
+                    </div>
+                    <!-- Desktop Notifications -->
+                    <!-- Points -->
+                    <div class="d-none d-lg-block">
+                        @livewire('frontend-notifications-dropdown', ['mode' => 'desktop'])
+                    </div>
+                    <div class="d-none d-lg-block">
+                        <div class="d-flex align-items-center bg-light rounded-pill px-3 py-2 shadow-sm"
+                            style="border: 1px solid #e0c7d3; font-size: 0.9rem;">
+                            <i class="fas fa-coins text-warning me-2"></i>
+                            <span class="fw-bold ms-1 me-2" style="color: #87365b;">
+                                {{ auth()->user()->points ?? 0 }}
+                            </span>
+                            <span class="text-muted small ms-1">نقطة</span>
+                        </div>
                     </div>
                 @else
                     <a href="{{ route('login') }}" class="btn btn-ghost">
@@ -143,81 +160,61 @@
                                         تسجيل الخروج
                                     </a>
                                 </li>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">@csrf
-                                </form>
-                            </ul>
-                        </div>
-
-                        {{-- <div class="dropdown" id="profile-header">
-                            @if (!Auth::user()->hasVerifiedEmail())
-                                <a href="{{ route('verification.notice') }}" title="يرجى تأكيد بريدك الإلكتروني">
-                                    <i class="fas fa-exclamation-circle"
-                                        style=" color: #87365b; font-size: 1.2rem; margin-left: 0.5rem;"></i>
-                                </a>
-                            @endif
-
-                            <button id="mobile-profile-btn" class="btn btn-outline-primary dropdown-toggle"
-                                type="button" data-bs-toggle="dropdown">
-                                <i class="fas fa-user me-2"></i>{{ $user->name }}
-                            </button>
-                            <ul id="mobile-profile-menu" class="dropdown-menu text-start me-5">
-                                <li><a class="dropdown-item" href="{{ route('front.profile.account') }}">حسابي</a></li>
-                                <li><a class="dropdown-item" href="{{ route('front.profile.bookings') }}">حجوزاتي</a>
-                                </li>
-                                <li><a class="dropdown-item" href="{{ route('front.profile.favourites') }}">المفضلة</a>
-                                </li>
-                                @if (!Auth::user()->hasVerifiedEmail())
-                                    <li>
-                                        <a class="dropdown-item" href="{{ route('verification.notice') }}">
-                                            <i class="fas fa-exclamation-circle"
-                                                style=" color: #87365b; font-size: 1rem; margin-left: 0.5rem;"></i>
-                                            تاكيد البريد الالكتروني
-                                        </a>
-                                    </li>
-                                @endif
-                                @role(['salon-manager'])
-                                    <li><a class="dropdown-item" href="{{ route('front.profile.salon.manager') }}">ادارة
-                                            الصالون</a></li>
-                                @endrole
-                                @role(['super-admin'])
-                                    <li><a class="dropdown-item" href="{{ route('dashboard.index') }}">لوحة التحكم </a></li>
-                                @endrole
-                                @role('user')
-                                    <li><a href="{{ route('front.salons.create') }}" class="dropdown-item">انضمي كخبيرة
-                                            تجميل</a> </li>
-                                @endrole
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li>
-                                    <a href="#" class="dropdown-item"
-                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                        {{ __('dashboard.logout') }}
-                                    </a>
-                                </li>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>
                             </ul>
-                        </div> --}}
+                        </div>
                     </div>
-                @else
-                    <a href="{{ route('login') }}" class="btn btn-ghost">
-                        <i data-lucide="user"></i>
-                        تسجيل الدخول
-                    </a>
-                    <a href="{{ route('front.salons.create') }}" class="btn btn-primary">انضمي الينا الان</a>
-                @endauth
+                    <div class="d-lg-none w-100">
+                        <!-- Points -->
+                        <div class="bg-light rounded p-3 mb-3 shadow-sm" style="border: 1px solid #e0c7d3;">
+
+                            <div class="d-flex justify-content-between align-items-start">
+                                <!-- النص العلوي -->
+                                <div class="text-start">
+                                    <p class="fw-bold" style="color: #87365b; font-size: 1.2rem;">نقاطك</p>
+                                </div>
+
+                                <!-- الأيقونة الهدية -->
+
+                            </div>
+
+                            <!-- السطر السفلي: الأيقونة + النقاط + الكلمة -->
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-coins text-warning me-2" style="font-size: 1.1rem;"></i>
+
+                                    <div class="fw-bold ms-1 me-2" style="color: #87365b; font-size: 1rem;">
+                                        {{ auth()->user()->points ?? 0 }}
+                                    </div>
+                                    <div class="text-muted x-small">نقطة</div>
+
+                                </div>
+                                <i class="fas fa-gift text-primary" style="font-size: 1.3rem;"></i>
+                            </div>
+                        </div>
+                        <div class="d-lg-none">
+                            @livewire('frontend-notifications-dropdown', ['mode' => 'mobile'])
+                        </div>
+                    @else
+                        <a href="{{ route('login') }}" class="btn btn-ghost">
+                            <i data-lucide="user"></i>
+                            تسجيل الدخول
+                        </a>
+                        <a href="{{ route('front.salons.create') }}" class="btn btn-primary">انضمي الينا الان</a>
+                    @endauth
+                </div>
+                <nav class="mobile-nav">
+                    <a href="{{ route('front.home') }}" class="nav-link">الرئيسية</a>
+                    <a href="{{ route('front.about-us') }}" class="nav-link">عن المنصة</a>
+                    <a href="{{ route('front.salons.list', ['hasOffers' => true]) }}" class="nav-link">مراكز
+                        التجميل</a>
+                    <a href="{{ route('front.faq') }}" class="nav-link">الأسئلة الشائعة</a>
+                </nav>
+
+
+
             </div>
-            <nav class="mobile-nav">
-                <a href="{{ route('front.home') }}" class="nav-link">الرئيسية</a>
-                <a href="{{ route('front.about-us') }}" class="nav-link">عن المنصة</a>
-                <a href="{{ route('front.salons.list', ['hasOffers' => true]) }}" class="nav-link">مراكز التجميل</a>
-                <a href="{{ route('front.faq') }}" class="nav-link">الأسئلة الشائعة</a>
-            </nav>
-
-
-
         </div>
-    </div>
 </header>

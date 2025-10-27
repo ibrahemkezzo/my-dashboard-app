@@ -31,7 +31,7 @@ class NewBookingNotification extends Notification implements ShouldQueue
      */
     public function via($notifiable): array
     {
-        return ['mail'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -65,8 +65,33 @@ class NewBookingNotification extends Notification implements ShouldQueue
      */
     public function toArray($notifiable): array
     {
+       $servicesList = $this->booking->services->map(function ($service) {
+            $name = $service->salonSubService->subService->name ?? 'خدمة';
+            $quantity = $service->quantity > 1 ? " (x{$service->quantity})" : '';
+            return $name . $quantity;
+        })->implode(' + ');
+
+        $preferredTime = \Carbon\Carbon::parse($this->booking->preferred_datetime)
+            ->format('d/m H:i');
+
         return [
-            //
+            // === العناصر الأساسية للـ Dropdown ===
+            'title'   => 'حجز جديد من ' . $this->booking->user->name,
+            'message' => "طلب <strong>{$servicesList}</strong> في {$preferredTime}",
+            'icon'    => 'fa-calendar-check',
+            'color'   => 'primary',
+
+            // === الرابط عند النقر ===
+            'url'     => route('front.profile.salon.manager') . '?tab=bookings',
+
+            // === بيانات إضافية (اختيارية) ===
+            'type'          => 'new_booking',
+            'booking_id'    => $this->booking->id,
+            'user_name'     => $this->booking->user->name,
+            'user_email'    => $this->booking->user->email,
+            'services'      => $servicesList,
+            'preferred_time'=> $preferredTime,
+            'created_at'    => now()->toDateTimeString(),
         ];
     }
 }

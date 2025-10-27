@@ -32,6 +32,9 @@ class SalonService
         if (!empty($filters['city_id'])) {
             $query->where('city_id', $filters['city_id']);
         }
+        if (!empty($filters['owner_id'])) {
+            $query->where('owner_id', $filters['owner_id']);
+        }
         if (!empty($filters['service_type'])) {
             $query->whereHas('subServices', function($q) use ($filters) {
                 $q->where('name', 'like', '%' . $filters['service_type'] . '%');
@@ -131,7 +134,7 @@ class SalonService
         }
         if ($license_document) {
             Media::delete($salon,'sub_service','single_column',['column'=>'license_document']);
-            $data['license_document'] = $coverImage->store('salons/license', 'public');
+            $data['license_document'] = $license_document->store('salons/license', 'public');
         }
 
         return $this->repository->update($salon, $data);

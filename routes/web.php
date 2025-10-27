@@ -15,6 +15,8 @@ use App\Http\Controllers\Dashboard\SubServiceController;
 use App\Http\Controllers\Dashboard\SalonController;
 use App\Http\Controllers\Dashboard\SalonSubServiceController;
 use App\Http\Controllers\Dashboard\RatingController;
+use App\Http\Controllers\Dashboard\RewardController;
+use App\Http\Controllers\Dashboard\UserRewardController;
 use App\Http\Controllers\Files\FileManagerController;
 use App\Http\Controllers\Files\MediaController;
 use App\Http\Controllers\Frontend\BookingController as FrontendBookingController;
@@ -159,6 +161,18 @@ Route::group([
     // Route::get('appointments/upcoming', [AppointmentController::class, 'upcoming'])->name('appointments.upcoming');
     // Route::get('appointments/calendar', [AppointmentController::class, 'calendar'])->name('appointments.calendar');
 
+    // Routes rewards control
+    Route::resource('rewards', RewardController::class)->except(['show']); // يشمل index, create, store, edit, update, destroy
+
+    //control points
+    Route::get('rewards/points/edit', [RewardController::class, 'editPoints'])->name('rewards.edit_points');
+    Route::post('rewards/points/update', [RewardController::class, 'updatePoints'])->name('rewards.update_points');
+
+    // Routes for soft
+    Route::get('rewards/trashed', [RewardController::class, 'trashed'])->name('rewards.trashed');
+    Route::patch('rewards/{id}/restore', [RewardController::class, 'restore'])->name('rewards.restore');
+    Route::get('user-rewards', [UserRewardController::class, 'index'])->name('user-rewards.index');
+    Route::put('user-rewards/{userReward}/status', [UserRewardController::class, 'updateStatus'])->name('user-rewards.update_status');
 
 });
 
@@ -168,7 +182,7 @@ Route::group([
 // route for front website
 
 Route::group([
-    // 'middleware' => [],
+    'middleware' => ['trackable'],
     'as'=>'front.',  //pefor(pre) each name route
 ],function () {
 
@@ -210,6 +224,8 @@ Route::group([
         Route::put('account/{user}',[ProfileController::class,'updateAccount'])->name('update');
         Route::get('favourites',[ProfileController::class,'favourites'])->name('favourites');
         Route::post('favorite/toggle', [ProfileController::class, 'toggleFavorite'])->name('toggleFavorite');
+    //     Route::get('/notifications', NotificationsList::class)
+    // ->name('notifications');
         Route::group([
             // 'middleware'=>'verified'
             ],function () {

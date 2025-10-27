@@ -56,15 +56,28 @@ class CustomVerifyEmail extends Notification implements ShouldQueue
             ]
         );
     }
-      /**
-     * Get the array representation of the notification.
-     *
-     * @return array<string, mixed>
+/**
+     * Get the array representation of the notification (for database).
      */
-    public function toArray($notifiable): array
+    public function toArray(object $notifiable): array
     {
+        $verificationUrl = $this->verificationUrl($notifiable);
+
         return [
-            //
+            // === العناصر المطلوبة للـ Dropdown ===
+            'title'   => 'تأكيد بريدك الإلكتروني',
+            'message' => 'انقر هنا لتأكيد حسابك. الرابط صالح لمدة <strong>60 دقيقة</strong>.',
+            'icon'    => 'fa-envelope',
+            'color'   => 'info',
+
+            // === الرابط عند النقر ===
+            'url'     => $verificationUrl,
+
+            // === بيانات إضافية ===
+            'type'          => 'email_verification',
+            'user_id'       => $notifiable->id,
+            'email'         => $notifiable->email,
+            'expires_at'    => Carbon::now()->addMinutes(60)->format('Y-m-d H:i:s'),
         ];
     }
 }

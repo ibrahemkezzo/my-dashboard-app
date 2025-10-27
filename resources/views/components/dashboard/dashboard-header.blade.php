@@ -1,62 +1,61 @@
 <div class="page-main-header" dir="rtl">
     <div class="main-header-right row">
-        <div class="main-header-left d-lg-none w-auto">
-            <div class="logo-wrapper">
-                {{-- <a href="index.html">
-                    <img class="blur-up lazyloaded d-block d-lg-none" src="{{ asset('frontend/assets/img/logo.png') }}"
-                        alt="">
-                </a> --}}
-                <div  class="onhover-dropdown">
-                    <div class="media align-items-center">
-                        {{-- @dd($favicon->value) --}}
-                        <img class="align-self-center   d-block d-lg-none"
-                            src="{{ asset('storage/' . $logo->value) }}" alt="header-user">
-                        {{-- <div class="dotted-animation">
-                            <span class="animate-circle"></span>
-                            <span class="main-circle"></span>
-                        </div> --}}
-                    </div>
-                    <ul  class="profile-dropdown onhover-show-div p-20 profile-dropdown-hover">
+        <!-- Mobile Logo & Menu Toggle -->
 
+        <div class="main-header-left d-lg-none w-auto me-0 ms-0">
+            <div class="logo-wrapper">
+                <div class="onhover-dropdown">
+                    <div class="media align-items-center">
+                        <img class="align-self-center d-block d-lg-none" src="{{ asset('storage/' . $logo->value) }}"
+                            alt="header-user">
+                    </div>
+                    <ul class="profile-dropdown onhover-show-div p-20 profile-dropdown-hover">
                         <li>
                             <a href="{{ route('front.home') }}" class="d-flex align-items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                <svg style="color: #a2416d;" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-home ms-2 mt-2">
+                                    stroke-linecap="round" stroke-linejoin="round"
+                                    class="feather feather-home ms-2 mt-2">
                                     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                                     <polyline points="9 22 9 12 15 12 15 22"></polyline>
                                 </svg>
-                                <span style="color: #680d48;">
-
-                                    {{ __('dashboard.frontend') }}
-                                </span>
+                                <span style="color: #680d48;">{{ __('dashboard.frontend') }}</span>
                             </a>
                         </li>
                         <li class="mt-3">
                             <a href="#"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                                 class="d-flex align-items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                <svg style="color: #a2416d;" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out ms-2 ">
+                                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out ms-2">
                                     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
                                     <polyline points="16 17 21 12 16 7"></polyline>
                                     <line x1="21" y1="12" x2="9" y2="12"></line>
                                 </svg>
-                                <span class="mb" style="color: #680d48;">
-
-                                    {{ __('dashboard.logout') }}
-                                </span>
+                                <span style="color: #680d48;">{{ __('dashboard.logout') }}</span>
                             </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf
                             </form>
                         </li>
                     </ul>
                 </div>
             </div>
+            <!-- Notifications Dropdown (Livewire) -->
+
         </div>
-        <div class="mobile-sidebar w-auto" >
+
+
+        <div class="onhover-dropdown d-lg-none w-auto" dir="rtl">
+             @livewire('notifications-dropdown', ['mode' => 'mobile'])
+        </div>
+
+
+
+
+        <!-- Sidebar Toggle (Mobile) -->
+        <div class="mobile-sidebar w-auto">
             <div class="media-body text-end switch-sm">
                 <label class="switch">
                     <a href="javascript:void(0)">
@@ -73,8 +72,11 @@
             </div>
         </div>
 
+        <!-- Right Navigation -->
         <div class="nav-right col">
             <ul class="nav-menus">
+
+                <!-- Search -->
                 <li>
                     <form class="form-inline search-form">
                         <div class="form-group">
@@ -85,13 +87,14 @@
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
                                     <circle cx="11" cy="11" r="8"></circle>
-                                    <line x1="21" y1="21" x2="16.65" y2="16.65">
-                                    </line>
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                                 </svg>
                             </span>
                         </div>
                     </form>
                 </li>
+
+                <!-- Fullscreen -->
                 <li>
                     <a class="text-dark" href="#!" onclick="javascript:toggleFullScreen()"
                         title="{{ __('dashboard.fullscreen') }}">
@@ -105,26 +108,30 @@
                         </svg>
                     </a>
                 </li>
+
+                <!-- Language -->
                 <li class="onhover-dropdown">
                     <a class="txt-dark" href="javascript:void(0)">
                         <h6>{{ __('dashboard.language') }}</h6>
                     </a>
                     <ul class="language-dropdown onhover-show-div p-20">
-                        {{-- <li>
-                            <a href="javascript:void(0)" data-lng="en">
-                                <i class="flag-icon flag-icon-is"></i>{{ __('dashboard.english') }}</a>
-                        </li> --}}
                         <li>
                             <a href="javascript:void(0)" data-lng="ar">
-                                <i class="flag-icon flag-icon-sa"></i>{{ __('dashboard.arabic') }}</a>
+                                <i class="flag-icon flag-icon-sa"></i>{{ __('dashboard.arabic') }}
+                            </a>
                         </li>
                     </ul>
                 </li>
 
+                <!-- Notifications Dropdown (Livewire) -->
+                <li class="onhover-dropdown position-relative" dir="ltr">
+                     @livewire('notifications-dropdown', ['mode' => 'desktop'])
+                </li>
+
+                <!-- User Profile -->
                 <li class="onhover-dropdown">
                     <div class="media align-items-center">
-                        {{-- @dd($favicon->value) --}}
-                        <img class="align-self-center pull-right img-50 blur-up lazyloaded"
+                        <img class="align-self-center pull-right img-50 blur-up lazyloaded rounded-circle"
                             src="{{ asset('storage/' . $logo->value) }}" alt="header-user">
                         <div class="dotted-animation">
                             <span class="animate-circle"></span>
@@ -132,7 +139,6 @@
                         </div>
                     </div>
                     <ul class="profile-dropdown onhover-show-div p-20 profile-dropdown-hover">
-
                         <li>
                             <a href="{{ route('front.home') }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -149,19 +155,21 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round"
-                                    class="feather feather-log-out mr-2">
+                                    class="feather feather-log-out ms-2">
                                     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
                                     <polyline points="16 17 21 12 16 7"></polyline>
                                     <line x1="21" y1="12" x2="9" y2="12"></line>
                                 </svg>{{ __('dashboard.logout') }}
                             </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf
                             </form>
                         </li>
                     </ul>
                 </li>
             </ul>
+
+            <!-- Mobile Menu Toggle -->
             <div class="d-lg-none mobile-toggle pull-right">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"

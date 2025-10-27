@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\BookingCompleted;
 use App\Models\Booking;
 use App\Models\User;
 use App\Models\Salon;
@@ -353,6 +354,8 @@ class BookingService
                 'booking_id' => $booking->id,
                 'booking_number' => $booking->booking_number,
             ]);
+
+            event(new BookingCompleted($booking));
             return $booking;
         });
     }

@@ -128,16 +128,28 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            <div class="detail-item mb-3">
-                                                <label class="fw-bold text-muted">{{ __('dashboard.user_roles') }}:</label>
-                                                <div class="mt-2">
-                                                    @forelse($user->roles as $role)
-                                                        <span class="badge bg-primary me-2">{{ $role->name }}</span>
-                                                    @empty
-                                                        <span
-                                                            class="text-muted">{{ __('dashboard.no_roles_assigned') }}</span>
-                                                    @endforelse
+                                            <div class="row">
+                                                <div class="col-6 col-md-6">
+                                                    <div class="detail-item mb-3">
+                                                        <label
+                                                            class="fw-bold text-muted">{{ __('dashboard.user_roles') }}:</label>
+                                                        <div class="mt-2">
+                                                            @forelse($user->roles as $role)
+                                                                <span
+                                                                    class="badge bg-primary me-2">{{ $role->name }}</span>
+                                                            @empty
+                                                                <span
+                                                                    class="text-muted">{{ __('dashboard.no_roles_assigned') }}</span>
+                                                            @endforelse
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6 col-md-6">
+                                                    <div class="detail-item mb-3">
+                                                        <label
+                                                            class="fw-bold text-muted">{{ __('dashboard.user_points') }}:</label>
+                                                        <span class="badge bg-primary me-2">{{ $user->points }}</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -363,12 +375,10 @@
 
                                                             @if ($session->started_at && $session->updated_at)
                                                                 @if ($hours > 0)
-
-
                                                                     @if ($seconds > 0)
-                                                                    <span style="font-size:0.6rem;">
-                                                                        {{ $seconds }}.
-                                                                    </span>
+                                                                        <span style="font-size:0.6rem;">
+                                                                            {{ $seconds }}.
+                                                                        </span>
                                                                     @endif
                                                                     @if ($minutes > 0)
                                                                         {{ $minutes }}:
@@ -376,11 +386,10 @@
                                                                     {{ $hours }}
                                                                     {{ __('dashboard.hour') }}
                                                                 @else
-
                                                                     @if ($seconds > 0)
-                                                                            <span style="font-size:0.6rem;">
-                                                                        {{ $seconds }}.
-                                                                    </span>
+                                                                        <span style="font-size:0.6rem;">
+                                                                            {{ $seconds }}.
+                                                                        </span>
                                                                     @endif
                                                                     {{ $minutes }}
                                                                     {{ __('dashboard.min') }}

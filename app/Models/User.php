@@ -59,6 +59,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'google_refresh_token',
         'google_token_expires_at',
         'email_verified_at',
+        'points',
     ];
 
     /**
@@ -147,5 +148,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function ratings()
     {
         return $this->hasMany(Rating::class);
+    }
+
+    public function userRewards()
+    {
+        return $this->hasMany(UserReward::class);
     }
 }

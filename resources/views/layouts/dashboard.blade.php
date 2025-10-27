@@ -75,6 +75,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/new.css?v='.config('app.version'))}}">
     <script src="chrome-extension://mooikfkahbdckldjjndioackbalphokd/assets/prompt.js"></script>
     @stack('styles')
+    @livewireStyles
 </head>
 
 <body class="rtl">
@@ -195,6 +196,62 @@
         <path id="SvgjsPath1004" d="M0 0 "></path>
     </svg>
     @stack('scripts')
+    @livewireScripts
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // === Desktop ===
+        const desktopBtn = document.getElementById("notifications-btn-desktop");
+        const desktopMenu = document.getElementById("notifications-menu-desktop");
+
+        if (desktopBtn && desktopMenu) {
+            desktopBtn.addEventListener("click", function(e) {
+                e.stopPropagation();
+                desktopMenu.style.display = (desktopMenu.style.display === "block") ? "none" : "block";
+            });
+
+            desktopMenu.addEventListener("click", function(e) {
+                e.stopPropagation();
+            });
+        }
+
+        // // === Mobile ===
+       const mobileBtn = document.getElementById("notifications-btn-mobile");
+            const mobileMenu = document.getElementById("notifications-menu-mobile");
+
+            console.log("Mobile Button:", mobileBtn);
+            console.log("Mobile Menu:", mobileMenu);
+
+            if (mobileBtn && mobileMenu) {
+                mobileBtn.onclick = function(e) {
+                    e.stopPropagation();
+                    const isOpen = mobileMenu.style.display === "block";
+                    console.log("Mobile Click - Open:", !isOpen);
+                    mobileMenu.style.display = isOpen ? "none" : "block";
+                };
+                mobileMenu.onclick = (e) => e.stopPropagation();
+            } else {
+                console.warn("Mobile elements not found");
+            }
+
+            // === إغلاق عند النقر خارج القوائم ===
+            document.addEventListener("click", function() {
+                if (desktopMenu) desktopMenu.style.display = "none";
+                if (mobileMenu) mobileMenu.style.display = "none";
+                console.log("Clicked outside - Closing all menus");
+            });
+        // }
+
+        // // تفعيل فوري
+        // initNotifications();
+
+        // // إعادة التفعيل بعد كل تحديث من Livewire
+        // document.addEventListener("livewire:load", initNotifications);
+        // document.addEventListener("livewire:update", initNotifications);
+
+        // // في حال تحديث جزئي
+        // window.addEventListener("load", initNotifications)
+    });
+</script>
 </body>
 
 </html>
