@@ -74,6 +74,14 @@ class BookingStatusUpdatedNotification extends Notification implements ShouldQue
             $message->line('سبب الرفض: ' . $this->booking->rejection_reason);
         } elseif ($this->action === 'cancel') {
             $message->line('سبب الإلغاء: ' . $this->booking->rejection_reason);
+        } elseif ($this->action === 'completed') {
+            $message->line('')
+                    ->line('مبروك! تم إكمال حجزك بنجاح.')
+                    ->line('تم إضافة **5 نقاط** إلى رصيدك كمكافأة على إتمام الحجز.')
+                    ->line('ساعدينا في تحسين الخدمة من خلال تقييم تجربتك:');
+
+            return $message->action('قيّم الصالون الآن', route('front.ratings.create', $this->booking->salon))
+                        ->line('شكرًا لاستخدامك منصتنا!');
         }
 
         return $message->action('عرض الحجوزات', url('/profile/bookings'))
@@ -113,7 +121,7 @@ class BookingStatusUpdatedNotification extends Notification implements ShouldQue
                 'color'   => 'secondary',
             ],
             'completed' => [
-                'title'   => 'تم إكمال حجزك',
+                'title'   => 'مبروك! اكتمل حجزك وإضافة 5 نقاط لرصيدك',
                 'icon'    => 'fa-check-double',
                 'color'   => 'info',
             ],
@@ -134,6 +142,8 @@ class BookingStatusUpdatedNotification extends Notification implements ShouldQue
         if ($this->action === 'modify') {
             $newTime = $this->booking->salon_proposed_datetime?->format('H:i') ?? 'غير محدد';
             $message .= "<br> اقتراح: {$newTime} | {$this->booking->salon_proposed_price} ريال";
+        }elseif ($this->action === 'completed') {
+        $message .= "<br> مبروك! تم إضافة <strong>5 نقاط</strong> إلى رصيدك.";
         }
 
         return [

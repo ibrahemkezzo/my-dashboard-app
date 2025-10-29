@@ -16,7 +16,6 @@
         </div>
         @auth
         <button
-
             class="salon-fa-vorite {{Auth::user()->favoriteSalons()->where('salon_id', $salon->id)->first() ? 'active' : '' }}"
             data-salon-id="{{ $salon->id }}" onclick="toggleFavorite({{ $salon->id }})">
             <i data-lucide="heart" ></i>
@@ -42,17 +41,18 @@
             <span>{{ $salon->city->name ?? ($salon->city_name ?? '-') }}</span>
         </div>
         <div class="salon-services">
-        @if (isset($salon->subServices))
-            @foreach ($salon->subServices->take(3) as $sub_service)
-                <span class="service-tag service-tag-salon two-words" data-text="{{ $sub_service->name }}">{{ implode(' ', array_slice(explode(' ', $sub_service->name), 0, 2)) }}</span>
-            @endforeach
-            @if ($salon->subServices->count() > 3)
-                <span class="service-tag service-tag-salon">+{{ $salon->subServices->count() - 3 }} المزيد</span>
-            @else
-                <br />
+            @if (isset($salon->subServices))
+                @foreach ($salon->subServices->take(3) as $sub_service)
+                    <span class="service-tag service-tag-salon two-words" data-text="{{ $sub_service->name }}">{{ implode(' ', array_slice(explode(' ', $sub_service->name), 0, 2)) }}</span>
+                @endforeach
+                @if ($salon->subServices->count() > 3)
+                    <span class="service-tag service-tag-salon">+{{ $salon->subServices->count() - 3 }} المزيد</span>
+                @else
+                    <br />
+                @endif
             @endif
-        @endif
-    </div>
+        </div>
+
         <div class="salon-price">
             @if ($salon->price_range)
                 @if ($salon->price_range['min'] == $salon->price_range['max'])
@@ -70,7 +70,7 @@
 </div>
 
 @push('styles')
-<style>
+    <style>
         .salon-services {
             display: inline-block;
             max-width: 300px; /* عرض ثابت */
@@ -88,11 +88,11 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        .service-tag-salon::after {
+        /* .service-tag-salon::after {
             content: "";
             display: inline-block;
             width: 0;
-        }
+        } */
 
         .service-tag.two-words {
             max-width: 100px; /* تحديد طول ثابت لكل تاج */
@@ -100,12 +100,12 @@
             text-overflow: ellipsis;
             display: inline-block;
         }
-        .service-tag-salon.two-words::after {
+        /* .service-tag-salon.two-words::after {
             content: attr(data-text);
             position: absolute;
             visibility: hidden;
             white-space: nowrap;
-        }
+        } */
         .service-tag-salon.two-words {
             display: inline-block;
             max-width: 100px; /* ضبط العرض حسب الحاجة */
