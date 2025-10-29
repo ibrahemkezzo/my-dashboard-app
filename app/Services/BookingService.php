@@ -7,11 +7,13 @@ use App\Models\Booking;
 use App\Models\User;
 use App\Models\Salon;
 use App\Models\SalonSubService;
+use App\Notifications\BookingStatusUpdatedNotification;
 use App\Repositories\BookingRepository;
 use App\Repositories\AppointmentRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Notification;
 
 class BookingService
 {
@@ -356,6 +358,7 @@ class BookingService
             ]);
 
             event(new BookingCompleted($booking));
+            Notification::send($booking->user, new BookingStatusUpdatedNotification($booking,'completed'));
             return $booking;
         });
     }

@@ -77,11 +77,9 @@
                         </div>
 
                     </div>
-                    <!-- Desktop Notifications -->
+
                     <!-- Points -->
-                    <div class="d-none d-lg-block">
-                        @livewire('frontend-notifications-dropdown', ['mode' => 'desktop'])
-                    </div>
+
                     <div class="d-none d-lg-block">
                         <div class="d-flex align-items-center bg-light rounded-pill px-3 py-2 shadow-sm"
                             style="border: 1px solid #e0c7d3; font-size: 0.9rem;">
@@ -91,6 +89,12 @@
                             </span>
                             <span class="text-muted small ms-1">نقطة</span>
                         </div>
+                    </div>
+                    
+                    <!-- Desktop Notifications -->
+
+                    <div class="d-none d-lg-block">
+                        @livewire('frontend-notifications-dropdown', ['mode' => 'desktop'])
                     </div>
                 @else
                     <a href="{{ route('login') }}" class="btn btn-ghost">
@@ -166,6 +170,9 @@
                             </ul>
                         </div>
                     </div>
+                    <div class="d-lg-none">
+                        @livewire('frontend-notifications-dropdown', ['mode' => 'mobile'])
+                    </div>
                     <div class="d-lg-none w-100">
                         <!-- Points -->
                         <div class="bg-light rounded p-3 mb-3 shadow-sm" style="border: 1px solid #e0c7d3;">
@@ -194,27 +201,26 @@
                                 <i class="fas fa-gift text-primary" style="font-size: 1.3rem;"></i>
                             </div>
                         </div>
-                        <div class="d-lg-none">
-                            @livewire('frontend-notifications-dropdown', ['mode' => 'mobile'])
-                        </div>
-                    @else
-                        <a href="{{ route('login') }}" class="btn btn-ghost">
-                            <i data-lucide="user"></i>
-                            تسجيل الدخول
-                        </a>
-                        <a href="{{ route('front.salons.create') }}" class="btn btn-primary">انضمي الينا الان</a>
-                    @endauth
-                </div>
-                <nav class="mobile-nav">
-                    <a href="{{ route('front.home') }}" class="nav-link">الرئيسية</a>
-                    <a href="{{ route('front.about-us') }}" class="nav-link">عن المنصة</a>
-                    <a href="{{ route('front.salons.list', ['hasOffers' => true]) }}" class="nav-link">مراكز
-                        التجميل</a>
-                    <a href="{{ route('front.faq') }}" class="nav-link">الأسئلة الشائعة</a>
-                </nav>
 
-
-
+                    </div>
+                @else
+                    <a href="{{ route('login') }}" class="btn btn-ghost">
+                        <i data-lucide="user"></i>
+                        تسجيل الدخول
+                    </a>
+                    <a href="{{ route('front.salons.create') }}" class="btn btn-primary">انضمي الينا الان</a>
+                @endauth
             </div>
+            <nav class="mobile-nav">
+                <a href="{{ route('front.home') }}" class="nav-link">الرئيسية</a>
+                <a href="{{ route('front.about-us') }}" class="nav-link">عن المنصة</a>
+                <a href="{{ route('front.salons.list', ['hasOffers' => true]) }}" class="nav-link">مراكز
+                    التجميل</a>
+                <a href="{{ route('front.faq') }}" class="nav-link">الأسئلة الشائعة</a>
+            </nav>
+
+
+
         </div>
+    </div>
 </header>
