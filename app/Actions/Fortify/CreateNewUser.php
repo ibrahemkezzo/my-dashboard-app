@@ -34,7 +34,7 @@ class CreateNewUser implements CreatesNewUsers
             'name' => $input['name'],
             'email' => $input['email'],
             'phone_number'=>$input['phone_number'],
-            'city_id' =>$input['city_id'],
+            'city_id' =>$input['city_id']  ?? null,
             'profile_photo_path' =>$input['profile_photo_path'] ?? null,
             'password' => Hash::make($input['password']),
         ]);
@@ -43,7 +43,8 @@ class CreateNewUser implements CreatesNewUsers
           // تخزين رسالة النجاح في الـ session
         session()->flash('message', [
             'type' => 'info',
-            'content' => 'تم إرسال رابط تأكيد البريد الإلكتروني إلى بريدك. يرجى التحقق من بريدك الإلكتروني.'
+            'content' => 'تم إرسال رابط تأكيد البريد الإلكتروني إلى بريدك. يرجى التحقق من بريدك الإلكتروني.',
+            'img' => asset('frontend/assets/img/welcome-register.png')
         ]);
 
         return $user;

@@ -24,6 +24,7 @@ use App\Http\Controllers\Frontend\FrontController;
 use App\Http\Controllers\Frontend\ProfileController;
 use App\Http\Controllers\Frontend\SalonController as FrontendSalonController;
 use App\Http\Controllers\Frontend\SalonManagerController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
@@ -53,10 +54,27 @@ use Illuminate\Support\Facades\Route;
 // });
 
 
-Route::get('/auth/google', [SocialAuthController::class, 'redirectToGoogle'])->name('auth.google');
-Route::get('/auth/google/callback', [SocialAuthController::class, 'handleGoogleCallback']);
+// Route::get('/auth/google', [SocialAuthController::class, 'redirectToGoogle'])->name('auth.google');
+// Route::get('/auth/google/callback', [SocialAuthController::class, 'handleGoogleCallback']);
 
 
+Route::prefix('auth')->name('auth.')->group(function () {
+    Route::get('/{provider}', [SocialAuthController::class, 'redirect'])
+        ->name('redirect')
+        ->where('provider', 'google|facebook|x');
+
+    Route::get('/{provider}/callback', [SocialAuthController::class, 'callback'])
+        ->name('callback')
+        ->where('provider', 'google|facebook|x');
+});
+
+// routes/web.php
+Route::get('/privacy/facebook-data-deletion', function () {
+    return response()->json([
+        'url' => 'https://glowzelle.com/privacy/delete-facebook-data',
+        'confirmation_code' => 'GDPR-'. Auth::user()?->id ?? 'DELETED'
+    ]);
+});
 Route::group([
     'middleware' => ['auth', 'role:super-admin'],
     'as'=>'dashboard.',  //pefor(pre) each name route

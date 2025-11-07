@@ -80,7 +80,7 @@ class BookingController extends Controller
 
             return redirect()->route('front.profile.bookings')->with('message', [
                 'type' => 'success',
-                'content' => __('تم إنشاء الحجز بنجاح مع ' . count($data['services']) . ' خدمة')
+                'content' => 'تم إنشاء الحجز بنجاح سيصلك ايميل في حال تاكيد الحجز من الصالون شكرا لاستخدامك منصتنا'
             ]);
         } catch (\Exception $e) {
             Log::error('Booking creation failed: ' . $e->getMessage());

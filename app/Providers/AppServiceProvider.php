@@ -52,7 +52,16 @@ class AppServiceProvider extends ServiceProvider
             );
         });
 
-        $this->app->bind(SocialAuthServiceInterface::class, GoogleAuthService::class);
+        $this->app->bind(\App\Contracts\SocialAuthServiceInterface::class, function ($app) {
+            $provider = request()->segment(2); // /auth/google → google
+
+            return match ($provider) {
+                'google'   => new \App\Services\GoogleAuthService(),
+                'facebook' => new \App\Services\FacebookAuthService(),
+                'x'        => new \App\Services\XAuthService(),
+                default    => throw new \InvalidArgumentException("Provider {$provider} not supported"),
+            };
+        });
 
     }
 
