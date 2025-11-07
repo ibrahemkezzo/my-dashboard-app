@@ -117,9 +117,8 @@ class UserService
                 'name' => trim($data['name']),
                 'email' => trim($data['email']),
                 'phone_number' => trim($data['phone_number']),
-                'city_id' => trim($data['city_id']),
+                'city_id' => $data['city_id'] ?? null,
             ];
-
             if (!empty($data['password'])) {
                 $userData['password'] = Hash::make($data['password']);
             }

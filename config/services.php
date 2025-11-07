@@ -41,4 +41,15 @@ return [
         'redirect' => env('GOOGLE_REDIRECT_URI'),
     ],
 
+    'facebook' => [
+    'client_id' => env('FACEBOOK_CLIENT_ID'),  // App ID من Facebook
+    'client_secret' => env('FACEBOOK_CLIENT_SECRET'),  // App Secret
+    'redirect' => env('FACEBOOK_REDIRECT'),  // مثل http://your-domain.com/auth/facebook/callback
+    ],
+
+    'x' => [  // أو 'twitter' إذا كنت تفضل الاسم القديم
+    'client_id' => env('X_CLIENT_ID'),
+    'client_secret' => env('X_CLIENT_SECRET'),
+    'redirect' => env('X_REDIRECT'),
+    ],
 ];

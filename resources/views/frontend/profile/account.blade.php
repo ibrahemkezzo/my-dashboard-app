@@ -90,21 +90,21 @@
                         <div class="col-md-4">
                             <div class="stat-card text-center p-3">
                                 <i class="fas fa-calendar-check fa-2x text-primary mb-2"></i>
-                                <h4 class="fw-bold">12</h4>
+                                <h4 class="fw-bold">{{$countBooking}}</h4>
                                 <p class="text-muted mb-0">إجمالي الحجوزات</p>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="stat-card text-center p-3">
                                 <i class="fas fa-heart fa-2x text-danger mb-2"></i>
-                                <h4 class="fw-bold">8</h4>
+                                <h4 class="fw-bold">{{$countFavorite}}</h4>
                                 <p class="text-muted mb-0">الصالونات المفضلة</p>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="stat-card text-center p-3">
                                 <i class="fas fa-star fa-2x text-warning mb-2"></i>
-                                <h4 class="fw-bold">7</h4>
+                                <h4 class="fw-bold">{{$countRating}}</h4>
                                 <p class="text-muted mb-0">عدد التقييمات</p>
                             </div>
                         </div>

@@ -2,42 +2,25 @@
 
 namespace App\Services;
 
-use App\Contracts\SocialAuthServiceInterface;
-use Laravel\Socialite\Facades\Socialite;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
-
-class GoogleAuthService implements SocialAuthServiceInterface
+class GoogleAuthService extends BaseSocialAuthService
 {
-    public function redirectToProvider(): \Illuminate\Http\RedirectResponse
+    public function __construct()
     {
-        return Socialite::driver('google')->redirect();
+        parent::__construct('google');
     }
 
-    public function handleProviderCallback(): User
+    protected function getUniqueIdentifier($socialUser): ?string
     {
-        Log::debug('Google User Data: ' . json_encode(Socialite::driver('google')->stateless()->user()));
-        $googleUser = Socialite::driver('google')->user();
-        // dd($googleUser);
-        $user = User::updateOrCreate(
-            ['email' => $googleUser->getEmail()],
-            [
-                'name' => $googleUser->getName(),
-                'google_id' => $googleUser->getId(),
-                'google_token' => $googleUser->token,
-                'google_refresh_token' => $googleUser->refreshToken,
-                'password' => bcrypt(Str::random(16)),
-                'email_verified_at' => now(),
-            ]
-        );
+        return $socialUser->getId();
+    }
 
-        Auth::login($user, true);
-        if (!$user->roles()->exists()) {
-            $user->assignRole('user');
-        }
+    protected function getEmail($socialUser): ?string
+    {
+        return $socialUser->getEmail();
+    }
 
-        return $user;
+    protected function getName($socialUser): string
+    {
+        return $socialUser->getName() ?? 'Google User';
     }
 }

@@ -29,8 +29,20 @@ class ProfileController extends Controller
     public function account()
     {
         $user = Auth::user();
-        // dd($user);
-        return view('frontend.profile.account', compact('user'));
+        // نحمّل العدّادات بكفاءة (مكالمات قاعدة بيانات محسّنة)
+        $user->loadCount([
+            'favoriteSalons as countFavorite',
+            'bookings as countBooking',
+            'ratings as countRating',
+        ]);
+
+        // نمرّر المتغيرات إلى الفيو
+        return view('frontend.profile.account', [
+            'user' => $user,
+            'countFavorite' => $user->countFavorite,
+            'countBooking'  => $user->countBooking,
+            'countRating'   => $user->countRating,
+        ]);
     }
     public function updateAccount(UpdateUserRequest $request, User $user)
     {

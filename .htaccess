@@ -1,0 +1,22 @@
+RewriteEngine On
+RewriteRule ^(.*)$ public/$1 [L]
+
+RewriteCond %{REQUEST_URI} !^/glowzelle/public/
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [F,L]
+
+<Files ".env">
+    Order allow,deny
+    Deny from all
+</Files>
+
+<FilesMatch "\.(env|php|config|log|yml|yaml|json|xml)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+<IfModule mod_authz_core.c>
+    <Directory ~ "app|bootstrap|config|database|storage|vendor">
+        Require all denied
+    </Directory>
+</IfModule>

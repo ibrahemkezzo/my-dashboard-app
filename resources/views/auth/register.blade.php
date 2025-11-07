@@ -3,7 +3,8 @@
 @section('title', 'إنشاء حساب | كوافيري | My Kawafir')
 
 @section('main')
-    @include('auth.auth', ['activeTab' => 'register'])
+    <livewire:unified-auth />
+    {{-- @include('auth.auth', ['activeTab' => 'register']) --}}
 @endsection
 
 
