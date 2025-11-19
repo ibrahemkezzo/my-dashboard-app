@@ -107,7 +107,107 @@
         // Initialize Lucide icons
         lucide.createIcons();
     </script>
+    @php
+        $whatsapp = \App\Models\Setting::where('key', 'number_settings')->first()?->value ?? '966501234567';
+        // $whatsapp = "580499243";
+        // تنظيف الرقم من كل شيء غير الأرقام
+    $clean = preg_replace('/[^0-9]/', '', $whatsapp);
 
+    // إزالة البادئة الخاطئة إذا وجدت (+966 أو 00966 أو 966)
+    if (str_starts_with($clean, '00')) {
+        $clean = substr($clean, 2);            // حذف 00 من البداية
+    } elseif (str_starts_with($clean, '0')) {
+        $clean = substr($clean, 1);            // حذف الصفر الأول فقط (لو كان سعودي محلي)
+    }
+    $message = urlencode('مرحباً، أحتاج مساعدة في ' . config('app.name'));
+        // إذا كنت تستخدم cache أو config أفضل، لكن هذا يكفي للتطوير
+    @endphp
+
+    @if ($whatsapp)
+        <a href="https://wa.me/{{ $clean }}?text={{ $message }}"
+            class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="تواصل معنا عبر واتساب">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+      <style>
+        .whatsapp-float {
+            position: fixed;
+            width: 68px;
+            height: 68px;
+            bottom: 90px;
+            right: 20px;           /* ← نقلناه لليمين */
+            left: auto;            /* إلغاء اليسار */
+            background-color: #25D366;
+            color: #FFF;
+            border-radius: 50%;    /* دائرة مثالية */
+            text-align: center;
+            font-size: 40px;       /* أكبر شوية وأجمل */
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+            z-index: 9999;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            border: 4px solid #fff;  /* إطار أبيض خفيف يخليها أجمل */
+        }
+
+        .whatsapp-float:hover {
+            transform: translateY(-5px) scale(1.1);
+            background-color: #128C7E;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        /* النبضة الخفيفة الجميلة */
+        .whatsapp-float::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            right: -8px;
+            bottom: -8px;
+            background-color: #25D366;
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: pulse 2.5s infinite;
+            z-index: -1;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.9);
+                opacity: 0.7;
+            }
+            70% {
+                transform: scale(1.25);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+        }
+
+        /* تحسين على الموبايل */
+        @media (max-width: 480px) {
+            .whatsapp-float {
+                width: 62px;
+                height: 62px;
+                font-size: 36px;
+                bottom: 85px;
+                right: 15px;
+            }
+        }
+
+        @media (max-width: 350px) {
+            .whatsapp-float {
+                width: 58px;
+                height: 58px;
+                font-size: 34px;
+                bottom: 80px;
+            }
+        }
+    </style>
+    @endif
 
 
     @stack('scripts')
@@ -132,22 +232,7 @@
         });
     });
 </script>
-{{-- <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const mobileBtnNotifications = document.getElementById("notifications-btn-mobile");
-        const mobileMenuNotifications = document.getElementById("notifications-menu-mobile");
 
-        mobileBtnNotifications.addEventListener("click", function(e) {
-            e.stopPropagation();
-            mobileMenuNotifications.style.display = (mobileMenu.style.display === "block") ? "none" : "block";
-        });
-
-        // إغلاق القائمة عند الضغط خارجها
-        document.addEventListener("click", function() {
-            mobileMenuNotifications.style.display = "none";
-        });
-    });
-</script> --}}
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const mobileBtn = document.getElementById("mobile-profile-btn");
@@ -185,43 +270,7 @@
         loader.style.display = "none";
     });
 </script>
-{{-- <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Desktop
-        const notifBtn = document.getElementById("notifications-btn");
-        const notifMenu = document.getElementById("notifications-menu");
 
-        if (notifBtn && notifMenu) {
-            notifBtn.addEventListener("click", function(e) {
-                e.stopPropagation();
-                notifMenu.style.display = (notifMenu.style.display === "block") ? "none" : "block";
-            });
-        }
-
-        // Mobile
-        const mobileNotifBtn = document.getElementById("mobile-notifications-btn");
-        if (mobileNotifBtn && notifMenu) {
-            mobileNotifBtn.addEventListener("click", function(e) {
-                e.stopPropagation();
-                notifMenu.style.display = (notifMenu.style.display === "block")
-
- ? "none" : "block";
-            });
-        }
-
-        // Close when clicking outside
-        document.addEventListener("click", function() {
-            if (notifMenu) notifMenu.style.display = "none";
-        });
-
-        // Prevent closing when clicking inside menu
-        if (notifMenu) {
-            notifMenu.addEventListener("click", function(e) {
-                e.stopPropagation();
-            });
-        }
-    });
-</script> --}}
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         // === Desktop ===
@@ -240,41 +289,31 @@
         }
 
         // // === Mobile ===
-       const mobileBtn = document.getElementById("notifications-btn-mobile");
-            const mobileMenu = document.getElementById("notifications-menu-mobile");
+        const mobileBtn = document.getElementById("notifications-btn-mobile");
+        const mobileMenu = document.getElementById("notifications-menu-mobile");
 
-            console.log("Mobile Button:", mobileBtn);
-            console.log("Mobile Menu:", mobileMenu);
+        console.log("Mobile Button:", mobileBtn);
+        console.log("Mobile Menu:", mobileMenu);
 
-            if (mobileBtn && mobileMenu) {
-                mobileBtn.onclick = function(e) {
-                    e.stopPropagation();
-                    const isOpen = mobileMenu.style.display === "block";
-                    console.log("Mobile Click - Open:", !isOpen);
-                    mobileMenu.style.display = isOpen ? "none" : "block";
-                };
-                mobileMenu.onclick = (e) => e.stopPropagation();
-            } else {
-                console.warn("Mobile elements not found");
-            }
+        if (mobileBtn && mobileMenu) {
+            mobileBtn.onclick = function(e) {
+                e.stopPropagation();
+                const isOpen = mobileMenu.style.display === "block";
+                console.log("Mobile Click - Open:", !isOpen);
+                mobileMenu.style.display = isOpen ? "none" : "block";
+            };
+            mobileMenu.onclick = (e) => e.stopPropagation();
+        } else {
+            console.warn("Mobile elements not found");
+        }
 
-            // === إغلاق عند النقر خارج القوائم ===
-            document.addEventListener("click", function() {
-                if (desktopMenu) desktopMenu.style.display = "none";
-                if (mobileMenu) mobileMenu.style.display = "none";
-                console.log("Clicked outside - Closing all menus");
-            });
-        // }
+        // === إغلاق عند النقر خارج القوائم ===
+        document.addEventListener("click", function() {
+            if (desktopMenu) desktopMenu.style.display = "none";
+            if (mobileMenu) mobileMenu.style.display = "none";
+            console.log("Clicked outside - Closing all menus");
+        });
 
-        // // تفعيل فوري
-        // initNotifications();
-
-        // // إعادة التفعيل بعد كل تحديث من Livewire
-        // document.addEventListener("livewire:load", initNotifications);
-        // document.addEventListener("livewire:update", initNotifications);
-
-        // // في حال تحديث جزئي
-        // window.addEventListener("load", initNotifications)
     });
 </script>
 

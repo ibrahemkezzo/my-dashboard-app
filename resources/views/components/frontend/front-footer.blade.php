@@ -76,12 +76,95 @@
             <!-- Cities & Social -->
             <div class="footer-section">
                 <h3 class="footer-section-title">المدن المتاحة</h3>
-                <ul class="footer-links">
-                    @foreach ($cities as $city)
-                        <li><a href="{{ route('front.salons.list', ['city_id' => $city->id]) }}"
-                                class="footer-link">{{ $city->name }}</a></li>
-                    @endforeach
-                </ul>
+                {{-- <ul class="footer-links d-flex flex-wrap gap-3 list-unstyled">
+                    @forelse ($cities as $index => $city)
+                        @if ($index < 9)
+                            <li>
+                                <a href="{{ route('front.salons.list', ['city_id' => $city->id]) }}"
+                                    class="footer-link text-decoration-none">
+                                    {{ $city->name }}
+                                </a>
+                            </li>
+                        @endif
+
+                        @if ($index == 9)
+                            @php
+                                $remaining = $cities->count() - 9;
+                            @endphp
+
+                            <li>
+                                <a href="#" class="footer-link text-decoration-none">
+                                    +{{ $remaining }} مدينة أخرى
+                                </a>
+                            </li>
+                        @endif
+                    @empty
+                        <li class="text-muted">لا توجد مدن متاحة حالياً</li>
+                    @endforelse
+                </ul> --}}
+
+                <div class="footer-cities-container">
+                    @php
+                        $visibleCities = $cities->take(10); // أول 10 مدن فقط
+                        $total = $cities->count();
+                        $remaining = $total - 10;
+                        $firstColumn = $visibleCities->take(5); // العمود الأيسر: أول 5
+                        $secondColumn = $visibleCities->skip(5)->take(5); // العمود الأيمن: التالية 5
+                    @endphp
+
+                    <div class="row g-4">
+                        <!-- العمود الأول -->
+                        <div class="col-12 col-md-6 col-lg-5">
+                            <ul class="footer-links list-unstyled mb-0">
+                                @foreach ($firstColumn as $city)
+                                    <li class="mb-2">
+                                        <a href="{{ route('front.salons.list', ['city_id' => $city->id]) }}"
+                                            class="footer-link ">
+                                            {{ $city->name }}
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+
+                        <!-- العمود الثاني -->
+                        <div class="col-12 col-md-6 col-lg-5">
+                            <ul class="footer-links list-unstyled mb-0">
+                                @foreach ($secondColumn as $city)
+                                    <li class="mb-2">
+                                        <a href="{{ route('front.salons.list', ['city_id' => $city->id]) }}"
+                                            class="footer-link">
+                                            {{ $city->name }}
+                                        </a>
+                                    </li>
+                                @endforeach
+
+                                {{-- +X مدينة أخرى في آخر العمود الثاني --}}
+
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                {{-- إذا كان عدد المدن أقل من أو يساوي 9، نعرض الجملة فقط بدون +X --}}
+
+                    @if ($remaining > 0)
+
+                            <a href="#"
+                                class="footer-link text-decoration-none">
+                                +{{ $remaining }} مدينة أخرى
+                            </a>
+
+                    @endif
+                    <p class="mt-3 mb-0 footer-link text-decoration-none">
+                        <i class="fas fa-map-marker-alt me-1"></i>
+                        نخدم جميع مدن ومحافظات المملكة العربية السعودية 🇸🇦
+                    </p>
+
+
+
 
                 <!-- Social Media -->
                 <div class="social-media">
@@ -114,3 +197,4 @@
         </div>
     </div>
 </footer>
+
