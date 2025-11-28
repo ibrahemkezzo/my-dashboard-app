@@ -121,8 +121,10 @@ class SalonController extends Controller
             'type' => 'error',
             'content' => __('حدث خطأ اثناء انشاء الصالون الرجاء المحاولة مرة اخرى')
         ]);
-        $subServices = SubService::with('service')->orderBy('name')->get();
-        $allServices = Service::all();
+
+        $defaultServices = $this->salonSubService->defaultSubServices();
+        $this->service->syncSubServices($salon, $defaultServices);
+
         return redirect()->route('front.salons.create.step2', $salon->id)
                          ->with('message', [
                             'type' => 'success',
@@ -141,16 +143,14 @@ class SalonController extends Controller
     public function storeStep2(StoreFrontSalonSubServiceRequest $request , Salon $salon)
     {
         // dd($request->all());
-          if($salon->owner->id != Auth::user()->id){
+        if($salon->owner->id != Auth::user()->id){
             return redirect()->back()->with('message', [
                             'type' => 'error',
                             'content' => __('لا يستطيع اضافة الخدمات سوى مالك المركز')
                         ]);
         }
         $validated = $request->validated();
-
-
-         $sync = $this->service->syncSubServices($salon,$validated['salon_services']);
+        $sync = $this->service->syncSubServices($salon,$validated['salon_services']);
         return redirect()->route('front.home')->with('message', ['type' => 'success', 'content' => __('تم تم اضافة الخدمات بنجاح')]);
     }
 

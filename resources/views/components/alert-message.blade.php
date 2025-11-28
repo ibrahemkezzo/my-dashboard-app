@@ -215,7 +215,7 @@
                             if (imageToast) imageToast.remove();
                             if (overlay) overlay.remove();
                         }, 900);
-                    }, 4000);
+                    }, 3000);
                 }
             });
         </script>

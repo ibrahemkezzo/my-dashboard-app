@@ -19,6 +19,7 @@ class StoreSubServiceRequest extends FormRequest
             'description' => 'nullable|string',
             // 'order' => 'nullable|integer|min:0',
             'status' => 'nullable|boolean',
+            'default' => 'nullable|boolean',
             // 'seo_meta' => 'nullable|array',
         ];
     }

@@ -941,4 +941,5 @@ return [
     'all_notifications' => 'All Notification',
     'no_notifications' => 'No Notifications',
     'view_details' => 'view Details',
+    'default' => 'default active'
 ];

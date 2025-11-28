@@ -61,6 +61,6 @@ class SalonRepository
 
     public function syncSubServices(Salon $salon, array $subServicesData)
     {
-        return $salon->subServices()->sync($subServicesData);
+        return $salon->subServices()->syncWithoutDetaching($subServicesData);
     }
 }

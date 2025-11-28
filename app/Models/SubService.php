@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class SubService extends Model
 {
     protected $fillable = [
-        'service_id', 'name', 'description', 'order', 'status', 'icon_or_image', 'seo_meta',
+        'service_id', 'name', 'description', 'order', 'status', 'icon_or_image', 'seo_meta', 'default'
     ];
 
     protected $casts = [

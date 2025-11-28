@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Facades\Media;
 use App\Models\Salon;
 use App\Models\SalonSubService;
+use App\Models\SubService;
 use App\Repositories\SalonSubServiceRepository;
 use Illuminate\Http\UploadedFile;
 
@@ -91,15 +92,17 @@ class SalonSubServiceService
         Media::updateMedia($file, $mediaId, 'salons/services');
     }
 
-    public function validateSubServiceData(array $data): array
+    public function defaultSubServices(): array
     {
-        return [
-            'price' => $data['price'] ?? 0,
-            'duration' => $data['duration'] ?? 0,
-            'materials_used' => $data['materials_used'] ?? null,
-            'requirements' => $data['requirements'] ?? null,
-            'special_notes' => $data['special_notes'] ?? null,
-            'status' => $data['status'] ?? true,
-        ];
+        return SubService::where('default', true)
+            ->pluck('id')
+            ->map(fn($id) => [
+                'sub_service_id' => (string)$id,
+                'price'          => '100',
+                'max_price'      => '2000',
+                'duration'       => '60',
+                'status'         => '1',
+            ])
+            ->toArray();
     }
-} 
+}

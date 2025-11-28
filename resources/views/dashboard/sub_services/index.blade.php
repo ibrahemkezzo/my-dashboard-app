@@ -119,6 +119,7 @@
                                 <th>{{ __('dashboard.service') }}</th>
                                 {{-- <th>{{ __('dashboard.order') }}</th> --}}
                                 <th>{{ __('dashboard.status') }}</th>
+                                <th>{{ __('dashboard.default') }}</th>
                                 {{-- <th>{{ __('dashboard.icon_or_image') }}</th> --}}
                                 <th>{{ __('dashboard.actions') }}</th>
                             </tr>
@@ -132,6 +133,13 @@
                                     {{-- <td>{{ $subService->order }}</td> --}}
                                     <td>
                                         @if($subService->status)
+                                            <span class="badge bg-success">{{ __('dashboard.active') }}</span>
+                                        @else
+                                            <span class="badge bg-danger">{{ __('dashboard.inactive') }}</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($subService->default)
                                             <span class="badge bg-success">{{ __('dashboard.active') }}</span>
                                         @else
                                             <span class="badge bg-danger">{{ __('dashboard.inactive') }}</span>

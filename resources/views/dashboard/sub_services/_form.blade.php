@@ -21,7 +21,14 @@
     </div>
 </div>
 <div class="row mb-3">
-    <div class="col-md-12">
+     <div class="col-md-4">
+        <label for="default" class="form-label">{{ __('dashboard.default') }}</label>
+        <select name="default" id="default" class="form-control">
+            <option value="1" {{ old('default', $subService->default ?? 0) == 1 ? 'selected' : '' }}>{{ __('dashboard.active') }}</option>
+            <option value="0" {{ old('default', $subService->default ?? 0) == 0 ? 'selected' : '' }}>{{ __('dashboard.inactive') }}</option>
+        </select>
+    </div>
+    <div class="col-md-8">
         <label for="description" class="form-label">{{ __('dashboard.description') }}</label>
         <textarea class="form-control" id="description" name="description">{{ old('description', $subService->description ?? '') }}</textarea>
     </div>
