@@ -14,7 +14,7 @@
                     <div class="mb-4">
                         @foreach ([
                             // ['name' => 'Apple', 'icon' => 'apple-logo.png', 'text' => 'تسجيل الدخول عبر Apple', 'route' => '#'],
-                            ['name' => 'Facebook', 'icon' => 'facebook-logo.png', 'text' => 'تسجيل الدخول عبر Facebook', 'route' => route('auth.redirect', 'facebook')],
+                            // ['name' => 'Facebook', 'icon' => 'facebook-logo.png', 'text' => 'تسجيل الدخول عبر Facebook', 'route' => route('auth.redirect', 'facebook')],
                             ['name' => 'Google', 'icon' => 'google-logo.png', 'text' => 'تسجيل الدخول باستخدام جوجل', 'route' => route('auth.redirect', 'google')],
                             ['name' => 'X', 'icon' => 'x-logo.png', 'text' => 'تسجيل الدخول عبر X', 'route' => route('auth.redirect', 'x')]
                             ] as $social)
@@ -43,8 +43,8 @@
                     </div>
 
                     <!-- خط فاصل -->
-                    <div class="divider mb-4">
-                        <span>أو</span>
+                    <div class="text-center auth-title mb-4">
+                        <span>لتسجيل الدخول أو انشاء حساب</span>
                     </div>
 
                     <!-- خطوة 1: البريد الإلكتروني -->

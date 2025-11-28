@@ -97,7 +97,7 @@
                 @else
                     <a href="{{ route('login') }}" class="btn btn-ghost">
                         <i data-lucide="user"></i>
-                        تسجيل الدخول
+                        تسجيل الدخول / التسجيل
                     </a>
                     <a href="{{ route('front.salons.create') }}" class="btn btn-primary">انضمي الينا الان</a>
                 @endauth
@@ -204,7 +204,7 @@
                 @else
                     <a href="{{ route('login') }}" class="btn btn-ghost">
                         <i data-lucide="user"></i>
-                        تسجيل الدخول
+                        تسجيل الدخول / التسجيل
                     </a>
                     <a href="{{ route('front.salons.create') }}" class="btn btn-primary">انضمي الينا الان</a>
                 @endauth
