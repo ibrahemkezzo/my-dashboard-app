@@ -954,4 +954,5 @@ return [
     'all_notifications' => 'جميع الإشعارات',
     'no_notifications' => 'لا توجد إشعارات',
     'view_details' => 'عرض التفاصيل',
+    'default' => 'ضبط كخدمة افتراضية'
 ];

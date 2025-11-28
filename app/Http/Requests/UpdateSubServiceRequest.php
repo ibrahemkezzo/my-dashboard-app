@@ -19,8 +19,9 @@ class UpdateSubServiceRequest extends FormRequest
             'description' => 'nullable|string',
             'order' => 'nullable|integer|min:0',
             'status' => 'nullable|boolean',
+            'default' => 'nullable|boolean',
             'icon_or_image' => 'nullable|image|max:2048',
             'seo_meta' => 'nullable|array',
         ];
     }
-} 
+}

@@ -126,8 +126,12 @@
                     @foreach ($servicesToShow as $index => $service)
                         <div class="category-card">
                             <div class="category-icon {{ $icons[$index % count($icons)] }}">
-                                <img src="{{ asset($service->media[0]->url) }}" style="height: 50px; width: 50px"
-                                    alt="Service Image" />
+                                {{-- @dd($service->media) --}}
+                               <img src="{{ $service->media->first()?->url
+                                    ? asset($service->media->first()->url)
+                                    : asset('frontend/assets/img/Icon-1.png') }}"
+                                    class="w-12 h-12 object-cover rounded"
+                                    alt="{{ $service->name }}" />
                             </div>
                             <h3 class="category-title">{{ $service->name }}</h3>
                             <p class="category-description">{{ $service->short_description }}</p>

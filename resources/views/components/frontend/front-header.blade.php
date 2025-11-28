@@ -20,9 +20,7 @@
             <div class="auth-buttons-desktop">
                 @auth
                     <div class="d-flex align-items-center">
-                        @if (
-                            !Auth::user()->hasVerifiedEmail() ||
-                                (Auth::user()->hasRole('salon-manager') && Auth::user()->salon->sub_services_count == 0))
+                        @if (Auth::user()->hasRole('salon-manager') && Auth::user()->salon->sub_services_count == 0)
                             <a href="{{ route('verification.notice') }}" title="يرجى تأكيد بريدك الإلكتروني" class="mt-2">
                                 <i class="fas fa-exclamation-circle"
                                     style=" color: #87365b; font-size: 1.5rem; margin-left: 0.5rem;"></i>
@@ -90,7 +88,7 @@
                             <span class="text-muted small ms-1">نقطة</span>
                         </div>
                     </div>
-                    
+
                     <!-- Desktop Notifications -->
 
                     <div class="d-none d-lg-block">
@@ -99,7 +97,7 @@
                 @else
                     <a href="{{ route('login') }}" class="btn btn-ghost">
                         <i data-lucide="user"></i>
-                        تسجيل الدخول
+                        تسجيل الدخول / التسجيل
                     </a>
                     <a href="{{ route('front.salons.create') }}" class="btn btn-primary">انضمي الينا الان</a>
                 @endauth
@@ -206,7 +204,7 @@
                 @else
                     <a href="{{ route('login') }}" class="btn btn-ghost">
                         <i data-lucide="user"></i>
-                        تسجيل الدخول
+                        تسجيل الدخول / التسجيل
                     </a>
                     <a href="{{ route('front.salons.create') }}" class="btn btn-primary">انضمي الينا الان</a>
                 @endauth
