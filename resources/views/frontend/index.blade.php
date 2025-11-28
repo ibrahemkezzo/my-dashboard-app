@@ -130,7 +130,7 @@
                                <img src="{{ $service->media->first()?->url
                                     ? asset($service->media->first()->url)
                                     : asset('frontend/assets/img/Icon-1.png') }}"
-                                    class="w-12 h-12 object-cover rounded"
+                                    style="height: 50px; width: 50px"
                                     alt="{{ $service->name }}" />
                             </div>
                             <h3 class="category-title">{{ $service->name }}</h3>
