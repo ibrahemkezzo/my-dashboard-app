@@ -40,6 +40,15 @@
                         <i data-lucide="map-pin"></i>
                         <span>{{ $settings['site_title'] }}</span>
                     </div>
+                    <div class="contact-item d-flex flex-column align-items-start text-end">
+                        <img src="{{ asset('frontend/assets/img/Logo_Ministry_of_Commerce.svg') }}" class="mb-3"
+                            style="min-width:120px; max-width: 180px;" alt="وزارة التجارة">
+
+                        <p class="mb-2">الرقم الموحد للمنشأه : <span>1111184535</span></p>
+                        <p class="mb-2">الرقم الموحد للسجل التجاري : <span>7051733553</span></p>
+                        <p class="mb-2">الرقم المميز : <span>3142449397</span></p>
+                        <p class="mb-0">رقم الشهادة : <span>100251150643226</span></p>
+                    </div>
                 </div>
             </div>
             <!-- Quick Links -->
@@ -150,18 +159,15 @@
 
                 {{-- إذا كان عدد المدن أقل من أو يساوي 9، نعرض الجملة فقط بدون +X --}}
 
-                    @if ($remaining > 0)
-
-                            <a href="#"
-                                class="footer-link text-decoration-none">
-                                +{{ $remaining }} مدينة أخرى
-                            </a>
-
-                    @endif
-                    <p class="mt-3 mb-0 footer-link text-decoration-none">
-                        <i class="fas fa-map-marker-alt me-1"></i>
-                        نخدم جميع مدن ومحافظات المملكة العربية السعودية 🇸🇦
-                    </p>
+                @if ($remaining > 0)
+                    <a href="#" class="footer-link text-decoration-none">
+                        +{{ $remaining }} مدينة أخرى
+                    </a>
+                @endif
+                <p class="mt-3 mb-0 footer-link text-decoration-none">
+                    <i class="fas fa-map-marker-alt me-1"></i>
+                    نخدم جميع مدن ومحافظات المملكة العربية السعودية 🇸🇦
+                </p>
 
 
 
@@ -197,4 +203,3 @@
         </div>
     </div>
 </footer>
-
