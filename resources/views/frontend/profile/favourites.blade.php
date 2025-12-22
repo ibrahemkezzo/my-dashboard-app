@@ -1,6 +1,6 @@
 @extends('layouts.frontend')
 
-@section('title',config('app.name') . ' | '.config('app.name_ar').'منصة حجز خدمات التجميل | ')
+@section('title',config('app.name') . ' | ' .config('app.name_ar') .'  منصة حجز خدمات التجميل | ')
 
 @section('main')
 <main class="main-content">

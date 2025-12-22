@@ -4,13 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title')</title>
-    <meta name="description" content="منصة حجز خدمات التجميل - احجزي موعدك مع أفضل صالونات التجميل ومراكز العناية">
+    <title>@yield('title', 'Glowzelle | حجز صالونات التجميل والعناية في السعودية')</title>
+    <meta name="description" content="Glowzelle هي منصتك الأولى لحجز مواعيد صالونات التجميل في السعودية. اكتشفي أفضل مراكز العناية، قارني الأسعار، واحجزي موعدك القادم بضغطة زر.">
+    <meta name="keywords" content="حجز صالونات، صالونات تجميل السعودية، مشغل نسائي، مكياج، عناية بالشعر، Glowzelle">
     <meta name="author" content="{{ config('app.name') }}">
 
     <!-- Icons -->
-    <link href="{{ asset('frontend/assets/img/icons/favicon.png') }}" rel="icon">
-    <link href="{{ asset('frontend/assets/img/icons/apple-touch-icon.png') }}" rel="apple-touch-icon">
+    {{-- <link href="{{ asset('frontend/assets/img/icons/favicon.png') }}" rel="icon">
+    <link href="{{ asset('frontend/assets/img/icons/apple-touch-icon.png') }}" rel="apple-touch-icon"> --}}
+
+    <link rel="icon" type="image/png" href="{{ asset('frontend/assets/img/icons/favicon_glow.png') }}">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('frontend/assets/img/icons/favicon_glow.png') }}">
+
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('frontend/assets/img/icons/favicon_glow.png') }}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('frontend/assets/img/icons/favicon_glow.png') }}">
+
+    <meta property="og:title" content="Glowzelle - جمالك يبدأ بضغطة زر">
+    <meta property="og:image" content="{{ asset('frontend/assets/img/icons/favicon_glow.png') }}">
+    <meta property="og:type" content="website">
 
     <!-- IBM Plex Arabic Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -128,7 +140,7 @@
             class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="تواصل معنا عبر واتساب">
             <i class="fab fa-whatsapp"></i>
         </a>
-      <style>
+    <style>
         .whatsapp-float {
             position: fixed;
             width: 68px;

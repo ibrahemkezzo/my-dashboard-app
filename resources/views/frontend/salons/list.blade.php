@@ -1,6 +1,6 @@
 @extends('layouts.frontend')
 
-@section('title',config('app.name') . ' | '.config('app.name_ar').'منصة حجز خدمات التجميل | ')
+@section('title',config('app.name') . ' | ' .config('app.name_ar') .'  منصة حجز خدمات التجميل | ')
 
 @section('main')
     <main class="hairdressers-page">
@@ -47,7 +47,7 @@
                                                     </button>
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="col-6 col-lg-6 col-md-4">
                                                 <label class="form-label fw-semibold">النوع</label>
                                                 <select class="form-select no-hover-effects" id="type">
