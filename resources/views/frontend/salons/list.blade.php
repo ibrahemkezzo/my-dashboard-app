@@ -141,17 +141,17 @@
                     <div class="col-lg-4 order-2">
                         <div class="sidebar">
                             <!-- Map -->
-                            <div class="sidebar-section">
+                            <div class="sidebar-section" style="height: 475px; width:425px;">
                                 <h5 class="fw-semibold mb-3">عرض على الخريطة</h5>
                                 {{-- <h5 class="fw-semibold mb-3">الموقع</h5> --}}
-                                <div class="map-container">
-                                    <div class="map-container" style="height: 350px">
+
+                                    <div class="map-container" style="height: 400px;">
                                         <div class="form-group">
-                                            <div id="map" style="height:300px; width:350px"></div>
+                                            <div id="map" style="height: 400px; width:400px;"></div>
                                         </div>
 
                                     </div>
-                                </div>
+
                             </div>
                             {{-- <div class="row mb-3">
                             <div class="form-group">
@@ -209,15 +209,9 @@
             locationIcon: "{{asset('frontend/assets/img/location.png')}}"
         };
     </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&callback=initMap"></script>
 @endpush
-@push('scripts')
-    <script>
 
-    </script>
-    <script
-        src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&callback=initMap"
-        async defer></script>
-@endpush
 @push('styles')
     <style>
         #map {
@@ -245,6 +239,7 @@
         #place-autocomplete-card {
             background-color: #fff;
             border-radius: 5px;
+            width: 175px;
             box-shadow: rgba(189, 174, 174, 0.35) 0px 5px 15px;
             margin: 10px;
             padding: 5px;

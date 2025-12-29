@@ -296,7 +296,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-    function initMap() {
+    window.initMap = function() {
         const filters = getFilters();
         const params = new URLSearchParams(filters);
         const urlParams = new URLSearchParams(window.location.search);
@@ -323,8 +323,69 @@ document.addEventListener('DOMContentLoaded', function () {
         // Initialize the map
         const map = new google.maps.Map(document.getElementById('map'), {
             center: { lat: centerLat, lng: centerLng },
-            zoom: 12
+            zoom: 12,
+            mapTypeControl: false,
+            mapTypeControlOptions: {
+                style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+                position: google.maps.ControlPosition.TOP_LEFT
+            }
         });
+
+        // Detect if small screen (e.g., mobile < 500px) and not in fullscreen
+        const isSmallScreen = () => window.innerWidth < 500 && !document.fullscreenElement;
+
+        // Add My Location button
+        const locationButton = document.createElement('button');
+        let buttonSize = isSmallScreen() ? '30px' : '40px';
+        let iconSize = isSmallScreen() ? '18px' : '24px';
+        locationButton.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" width="${iconSize}" height="${iconSize}">
+                <path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3c-.46-4.17-3.77-7.48-7.94-7.94V1h-2v2.06C6.83 3.52 3.52 6.83 3.06 11H1v2h2.06c.46 4.17 3.77 7.48 7.94 7.94V23h2v-2.06c4.17-.46 7.48-3.77 7.94-7.94H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/>
+            </svg>
+        `;
+        locationButton.title = 'تحديد موقعي';
+        locationButton.classList.add('custom-map-control-button');
+        locationButton.style.border = 'none';
+        locationButton.style.padding = isSmallScreen() ? '6px' : '8px';
+        locationButton.style.borderRadius = '50%';
+        locationButton.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.2)';
+        locationButton.style.cursor = 'pointer';
+        locationButton.style.margin = isSmallScreen() ? '5px' : '10px';
+        locationButton.style.transition = 'background-color 0.3s ease, transform 0.3s ease';
+        locationButton.style.display = 'flex';
+        locationButton.style.alignItems = 'center';
+        locationButton.style.justifyContent = 'center';
+        locationButton.style.width = buttonSize;
+        locationButton.style.height = buttonSize;
+        locationButton.addEventListener('mouseover', () => {
+            locationButton.style.transform = 'scale(1.1)';
+        });
+        locationButton.addEventListener('mouseout', () => {
+            locationButton.style.transform = 'scale(1)';
+        });
+        map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(locationButton);
+
+        locationButton.addEventListener('click', () => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const pos = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude,
+                        };
+                        map.setCenter(pos);
+                        map.setZoom(15);
+                    },
+                    () => {
+                        alert('خطأ في الحصول على الموقع.');
+                    }
+                );
+            } else {
+                alert('المتصفح لا يدعم تحديد الموقع.');
+            }
+        });
+
+        let currentInfoWindow = null;
 
         // Fetch salons based on filters
         fetch('/salons/list?' + params.toString(), { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
@@ -336,6 +397,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Create a marker for each salon
                 salons.forEach(salon => {
                     if (salon.latitude && salon.longitude) {
+                        const markerIconSize = isSmallScreen() ? new google.maps.Size(30, 30) : new google.maps.Size(40, 40);
+                        const markerAnchor = isSmallScreen() ? new google.maps.Point(15, 30) : new google.maps.Point(15, 30);
                         const marker = new google.maps.Marker({
                             position: {
                                 lat: parseFloat(salon.latitude),
@@ -344,78 +407,55 @@ document.addEventListener('DOMContentLoaded', function () {
                             map: map,
                             icon: {
                                 url: locationIcon,
-                                scaledSize: new google.maps.Size(40, 40),
+                                scaledSize: markerIconSize,
                                 origin: new google.maps.Point(0, 0),
-                                anchor: new google.maps.Point(15, 30)
+                                anchor: markerAnchor
                             },
                             title: salon.name
                         });
 
                         const salonShowUrl = window.routes && window.routes.salonShow ? window.routes.salonShow.replace(':id', salon.id) : '#';
                         const statusText = salon.is_open
-                            ? '<span style="color: gren;">مفتوح</span>'
+                            ? '<span style="color: green;">مفتوح</span>'
                             : '<span style="color: red;">مغلق</span>';
 
+                        const infoWindowMinWidth = isSmallScreen() ? '250px' : '300px';
                         const infoWindow = new google.maps.InfoWindow({
-                            minWidth: "300px",
+                            minWidth: infoWindowMinWidth,
                             content: `
-                                <div style="background-color: #fff; padding: 10px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); position: relative; padding-top: 0;">
+                                <div style="background-color: #fff; padding: 10px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); position: relative; padding-top: 0; max-width: ${infoWindowMinWidth};">
                                     <div style="display: flex; align-items: center; padding: 5px 0;">
                                         <img src="${salon.cover_image_url ?? 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400'}"
                                              alt="${salon.name}"
-                                             style="width: 80px; height: 80px; object-fit: cover; border-radius: 5px; margin-right: 15px;">
-                                        <div style="flex-grow: 1; padding-right: 20px;">
-                                            <h4 style="margin: 0; color: #f56476; font-size: 16px; display: flex; align-items: center; justify-content: space-between;">
+                                             style="width: ${isSmallScreen() ? '60px' : '80px'}; height: ${isSmallScreen() ? '60px' : '80px'}; object-fit: cover; border-radius: 5px; margin-right: 10px;">
+                                        <div style="flex-grow: 1; padding-right: 10px;">
+                                            <h4 style="margin: 0; color: #87365b; font-size: ${isSmallScreen() ? '14px' : '16px'}; display: flex; align-items: center; justify-content: space-between;">
                                                 ${salon.name}
                                             </h4>
-                                            <p style="margin: 8px 0; color: #666; padding-left: 5px;">الحالة: ${statusText}</p>
+                                            <p style="margin: 5px 0; color: #666; padding-left: 5px; font-size: ${isSmallScreen() ? '12px' : '14px'};">الحالة: ${statusText}</p>
                                         </div>
                                     </div>
-                                    <a href="${salonShowUrl}" style="display: inline-block; margin-top: 10px; padding: 5px 15px; background-color: #f56476; color: #fff; text-decoration: none; border-radius: 5px; font-size: 14px;">عرض التفاصيل</a>
+                                    <a href="${salonShowUrl}" style="display: inline-block; margin-top: 5px; padding: 5px 15px; background-color: #87365b; color: #fff; text-decoration: none; border-radius: 5px; font-size: 14px;">عرض التفاصيل</a>
                                 </div>
                             `
                         });
 
-                        // Track hover state
-                        // let isHovered = false;
-
                         // Show info window on marker mouseover
                         marker.addListener('mouseover', () => {
+                            if (currentInfoWindow) {
+                                currentInfoWindow.close();
+                            }
                             infoWindow.open(map, marker);
-                            // isHovered = true;
+                            currentInfoWindow = infoWindow;
                         });
 
-                        // Hide info window on mouseout from marker and info window
-                        marker.addListener('mouseout', () => {
-                            infoWindow.close();
-                            // setTimeout(() => {
-                            //     if (!isHovered) {
-                            //     }
-                            // }); // Small delay to allow transition to info window
-                        });
-
-                        // Handle info window hover
-                        // infoWindow.addListener('domready', () => {
-                        //     const iwContainer = document.querySelector('.gm-style-iw');
-                        //     if (iwContainer) {
-                        //         iwContainer.addEventListener('mouseover', () => {
-                        //             isHovered = true;
-                        //         });
-                        //         iwContainer.addEventListener('mouseout', () => {
-                        //             isHovered = false;
-                        //             setTimeout(() => {
-                        //                 if (!isHovered) {
-                        //                     infoWindow.close();
-                        //                 }
-                        //             }); // Delay to prevent flicker
-                        //         });
-
-                        //     }
-                        // });
-
-                        // Redirect to salon show page on marker click
+                        // Open info window on marker click and keep it open
                         marker.addListener('click', () => {
-                            window.location.href = salonShowUrl;
+                            if (currentInfoWindow) {
+                                currentInfoWindow.close();
+                            }
+                            infoWindow.open(map, marker);
+                            currentInfoWindow = infoWindow;
                         });
 
                         markers.push(marker);
@@ -443,7 +483,15 @@ document.addEventListener('DOMContentLoaded', function () {
         const input = document.createElement('input');
         input.id = 'place-autocomplete-card';
         input.className = 'place-autocomplete-card';
-        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+        input.style.width =  '250px';
+        input.style.height =  '40px';
+        input.style.padding = isSmallScreen() ? '6px' : '8px';
+        input.style.fontSize = isSmallScreen() ? '12px' : '14px';
+        input.style.margin = isSmallScreen() ? '5px' : '10px';
+        input.style.borderRadius = '10px';
+        input.style.border = '1px solid #ccc';
+        input.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+        map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
         const autocomplete = new google.maps.places.Autocomplete(input);
         autocomplete.bindTo('bounds', map);
 
@@ -465,6 +513,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.getElementById('longitude').value = place.geometry.location.lng();
             }
         });
+
     }
 
     // Initialize Lucide icons

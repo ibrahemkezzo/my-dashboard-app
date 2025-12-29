@@ -234,11 +234,11 @@
             <!-- Sidebar -->
             <div class="col-lg-4">
                 <!-- Map -->
-                <div class="sidebar-section mb-4">
+                <div class="sidebar-section mb-4" style="height: 475px; width:425px;">
                     <h5 class="fw-semibold mb-3">الموقع</h5>
-                    <div class="map-container" style="height: 350px">
+                    <div class="map-container" style="height: 400px;">
                         <div class="form-group">
-                            <div id="map" style="height:350px; width:350px"></div>
+                            <div id="map" style="height: 400px; width:400px;"></div>
                         </div>
 
                     </div>

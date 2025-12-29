@@ -491,99 +491,173 @@ is-invalid
 @endpush
 @push('scripts')
     <script>
-        function initMap() {
-            // الحصول على إحداثيات المدينة إذا كانت موجودة، وإلا استخدام إحداثيات السعودية
+        window.initMap = function() {
             var salonLat = {{ $salon->latitude ?? '24.7135517' }};
             var salonLng = {{ $salon->longitude ?? '46.6752957' }};
 
-            // إنشاء الخريطة مع مركز في إحداثيات المدينة أو السعودية
             var map = new google.maps.Map(document.getElementById('map'), {
-                center: {
-                    lat: salonLat,
-                    lng: salonLng
-                },
-                zoom: 12
+                center: { lat: salonLat, lng: salonLng },
+                zoom: 12,
+                zoomControl: true,
+                mapTypeControl: true,
+                streetViewControl: true,
+                fullscreenControl: true,
+
+                // === التحسينات الرئيسية للسلاسة والأداء ===
+                gestureHandling: 'greedy',        // يسمح بالتمرير باللمس دون الحاجة للنقر مرتين (مهم جدًا على الموبايل)
+                clickableIcons: false,            // يمنع النقر على أيقونات جوجل (مثل الأعمال) لتحسين الأداء
+                disableDoubleClickZoom: true,     // نمنع التكبير بالنقر المزدوج لأننا نستخدمه لوضع الدبوس
+                keyboardShortcuts: false,         // إيقاف اختصارات الكيبورد غير الضرورية
+                restriction: null,                // لا قيود على الحركة
+                styles: [                         // أسلوب بسيط لتقليل العناصر الثقيلة بصريًا (اختياري لكن يساعد)
+                    { featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }] },
+                    { featureType: "transit", stylers: [{ visibility: "off" }] }
+                ],
+
+                // تحسين الأداء والرسوم المتحركة
+                // هذه الخيارات تجعل الحركة أكثر سلاسة خاصة على الموبايل والأجهزة الضعيفة
+                panControl: false,
+                scaleControl: true,
+                rotateControl: false
             });
 
-            // إضافة دبوس (Marker) قابل للسحب في موقع المدينة أو السعودية
             var marker = new google.maps.Marker({
-                position: {
-                    lat: salonLat,
-                    lng: salonLng
-                },
+                position: { lat: salonLat, lng: salonLng },
                 map: map,
-                draggable: true
+                draggable: true,
+                animation: google.maps.Animation.DROP
             });
 
-            // تحديث الإحداثيات عند سحب الدبوس
-            google.maps.event.addListener(marker, 'dragend', function(event) {
-                document.getElementById('latitude').value = event.latLng.lat();
-                document.getElementById('longitude').value = event.latLng.lng();
+            function updateMarkerPosition(latLng) {
+                marker.setPosition(latLng);
+                document.getElementById('latitude').value = latLng.lat();
+                document.getElementById('longitude').value = latLng.lng();
+            }
+
+            // سحب الدبوس
+            marker.addListener('dragend', function(event) {
+                updateMarkerPosition(event.latLng);
             });
 
-            // البحث عن العناوين باستخدام Places Autocomplete
+            // نقر مزدوج أو ضغط مطوّل → وضع الدبوس دون تمركز
+            map.addListener('dblclick', function(event) {
+                updateMarkerPosition(event.latLng);
+            });
+
+            // ضغط مطوّل على الموبايل
+            var longPressTimer;
+            map.addListener('mousedown', function(e) {
+                longPressTimer = setTimeout(() => updateMarkerPosition(e.latLng), 800);
+            });
+            map.addListener('mouseup', () => clearTimeout(longPressTimer));
+            map.addListener('mousemove', () => clearTimeout(longPressTimer));
+
+            map.addListener('touchstart', function(e) {
+                var touch = e.touches[0];
+                var latLng = map.getProjection().fromPointToLatLng(
+                    new google.maps.Point(touch.clientX, touch.clientY)
+                );
+                longPressTimer = setTimeout(() => updateMarkerPosition(latLng), 800);
+            });
+            map.addListener('touchend', () => clearTimeout(longPressTimer));
+            map.addListener('touchmove', () => clearTimeout(longPressTimer));
+
+            // زر تحديد الموقع الحالي
+            var locationButton = document.createElement('button');
+            locationButton.type = 'button';
+            locationButton.title = 'تحديد موقعي الحالي';
+            locationButton.className = 'custom-map-control-button';
+            locationButton.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24px" height="24px" fill="#1a73e8">
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                </svg>
+            `;
+            Object.assign(locationButton.style, {
+                backgroundColor: 'white',
+                border: 'none',
+                borderRadius: '50%',
+                boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
+                cursor: 'pointer',
+                padding: '10px',
+                margin: '10px'
+            });
+            map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(locationButton);
+
+            locationButton.addEventListener('click', function() {
+                if (navigator.geolocation) {
+                    locationButton.disabled = true;
+                    locationButton.style.opacity = '0.6';
+                    navigator.geolocation.getCurrentPosition(
+                        pos => {
+                            var position = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+                            map.setCenter(position);
+                            map.setZoom(15);
+                            updateMarkerPosition(position);
+                            locationButton.disabled = false;
+                            locationButton.style.opacity = '1';
+                        },
+                        () => {
+                            alert('تعذر تحديد موقعك. تأكد من تفعيل خدمة الموقع.');
+                            locationButton.disabled = false;
+                            locationButton.style.opacity = '1';
+                        }
+                    );
+                } else {
+                    alert('المتصفح لا يدعم تحديد الموقع.');
+                }
+            });
+
+            // Places Autocomplete
             var input = document.createElement('input');
             input.id = 'place-autocomplete-card';
-            input.className = 'place-autocomplete-card';
+            input.placeholder = 'ابحث عن عنوان أو مكان...';
+            Object.assign(input.style, {
+                backgroundColor: '#fff',
+                borderRadius: '24px',
+                boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
+                margin: '10px',
+                padding: '8px 16px',
+                fontFamily: 'Roboto, Arial, sans-serif',
+                fontSize: '15px',
+                width: '300px',
+                maxWidth: '90%',
+                border: 'none',
+                outline: 'none'
+            });
             map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
             var autocomplete = new google.maps.places.Autocomplete(input);
             autocomplete.bindTo('bounds', map);
-
             autocomplete.addListener('place_changed', function() {
                 var place = autocomplete.getPlace();
                 if (place.geometry) {
                     map.setCenter(place.geometry.location);
-                    marker.setPosition(place.geometry.location);
-                    document.getElementById('latitude').value = place.geometry.location.lat();
-                    document.getElementById('longitude').value = place.geometry.location.lng();
+                    map.setZoom(15);
+                    updateMarkerPosition(place.geometry.location);
                 }
             });
-        }
+        };
     </script>
-    <script
-        src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&callback=initMap"
-        async defer></script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&callback=initMap"></script>
 @endpush
+
 @push('styles')
     <style>
         #map {
             height: 100%;
-        }
-
-        .custom-map-control-button {
-            background-color: #fff;
-            border: 0;
-            border-radius: 2px;
-            box-shadow: 0 1px 4px -1px rgba(242, 237, 237, 0.3);
-            margin: 10px;
-            padding: 0 0.5em;
-            font: 400 18px Roboto, Arial, sans-serif;
-            overflow: hidden;
-            height: 40px;
-            cursor: pointer;
+            min-height: 400px;
+            border-radius: 8px;
         }
 
         .custom-map-control-button:hover {
-            background: rgb(235, 235, 235);
+            background-color: #f1f1f1;
         }
 
-        #place-autocomplete-card {
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: rgba(189, 174, 174, 0.35) 0px 5px 15px;
-            margin: 10px;
-            padding: 5px;
-            font-family: Roboto, sans-serif;
-            font-size: large;
-            font-weight: bold;
-        }
-
-        gmp-place-autocomplete {
-            width: 300px;
-        }
-
-        #infowindow-content .title {
-            font-weight: bold;
+        @media (max-width: 576px) {
+            #place-autocomplete-card {
+                width: calc(100% - 40px);
+            }
         }
     </style>
 @endpush
