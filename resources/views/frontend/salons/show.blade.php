@@ -36,7 +36,7 @@
                                 </div>
                             @endif
 
-                            <h1 class="h3 fw-bold text-dark mb-0 salon-name text-nowrap title">
+                            <h1 class="h3 fw-bold text-dark mb-0 salon-name title">
                                 {{ $salon->name }}
                             </h1>
                         </div>

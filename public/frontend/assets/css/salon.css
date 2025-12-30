@@ -448,7 +448,6 @@ gmp-place-autocomplete {
 
 /* منع الاسم من الانكسار لسطر جديد */
 .salon-name {
-    white-space: nowrap;
     /* هذا يمنع الاسم من التقطع */
     overflow: hidden;
     text-overflow: ellipsis;
