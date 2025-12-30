@@ -657,7 +657,7 @@ a {
 
 .salon-image-container {
     position: relative;
-    aspect-ratio: 4 / 3;
+    /* aspect-ratio: 4 / 3; */
     overflow: hidden;
 }
 
@@ -1582,7 +1582,7 @@ a {
     }
 
     .salons-grid {
-        grid-template-columns: 1fr 1fr 1fr 1fr;
+        /* grid-template-columns: 1fr 1fr 1fr 1fr; */
     }
 
     .steps-grid {

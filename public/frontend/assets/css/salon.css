@@ -1,0 +1,496 @@
+.social {
+    color: #000;
+}
+
+.social:hover {
+    color: #F56476;
+}
+
+/*
+            .btn-icon-outline.active {
+                transform: translateY(0);
+                box-shadow: 0 2px 6px rgba(245, 100, 118, 0.2);
+            } */
+
+.btn-icon-outline.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 4px 12px rgba(245, 100, 118, 0.3);
+}
+
+.btn-icon-outline.active:hover {
+    background: white;
+    color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(245, 100, 118, 0.3);
+}
+
+.share-menu {
+    position: absolute;
+    z-index: 1000;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+}
+
+.share-menu-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.share-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    border-radius: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.share-option:hover {
+    background: #f0f0f0;
+}
+
+.share-option i {
+    font-size: 18px;
+}
+
+/* تنسيق أقسام الخدمات في نافذة الحجز */
+.service-section {
+    border-bottom: 1px solid var(--gray-300);
+    /* حدود سفلية لفصل الأقسام */
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    background-color: rgba(245, 100, 118, 0.05);
+    /* خلفية خفيفة لتحسين الوضوح */
+    border-radius: 0.5rem;
+    /* زوايا مستديرة */
+    padding: 1rem;
+}
+
+.service-section:last-child {
+    border-bottom: none;
+    /* إزالة الحدود لآخر قسم */
+}
+
+.service-section h6 {
+    color: var(--primary);
+    /* لون العنوان بلون الثيم الأساسي */
+    margin-bottom: 0.75rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    /* مسافة بين الأيقونة والنص إذا تم إضافة أيقونة */
+}
+
+.form-check {
+    margin-bottom: 0.5rem;
+    padding-right: 1.5rem;
+    /* مسافة للتأكد من محاذاة الـ checkbox */
+}
+
+.form-check-label {
+    color: var(--text);
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+}
+
+.form-check-input {
+    margin-top: 0.3rem;
+    border-color: var(--gray-400);
+}
+
+.form-check-input:checked {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.form-check-label:hover {
+    color: var(--primary-border);
+    /* تغيير لون النص عند التمرير */
+}
+
+@media (max-width: 576px) {
+    .service-section {
+        padding: 0.75rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .service-section h6 {
+        font-size: 1rem;
+    }
+
+    .form-check-label {
+        font-size: 0.875rem;
+    }
+
+    .modal-body {
+        padding: 1rem;
+    }
+
+    .modal-footer .btn {
+        font-size: 0.875rem;
+        padding: 0.5rem 1rem;
+    }
+}
+
+#map {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #dee2e6;
+    border-radius: 8px;
+}
+
+
+.custom-map-control-button {
+    background-color: #fff;
+    border: 0;
+    border-radius: 2px;
+    box-shadow: 0 1px 4px -1px rgba(242, 237, 237, 0.3);
+    margin: 10px;
+    padding: 0 0.5em;
+    font: 400 18px Roboto, Arial, sans-serif;
+    overflow: hidden;
+    height: 40px;
+    cursor: pointer;
+}
+
+.custom-map-control-button:hover {
+    background: rgb(235, 235, 235);
+}
+
+#place-autocomplete-card {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: rgba(189, 174, 174, 0.35) 0px 5px 15px;
+    margin: 10px;
+    padding: 5px;
+    font-family: Roboto, sans-serif;
+    font-size: large;
+    font-weight: bold;
+}
+
+gmp-place-autocomplete {
+    width: 300px;
+}
+
+/* #infowindow-content .title {
+            font-weight: bold;
+        } */
+
+.sidebar-section-map {
+    height: 30rem;
+}
+
+.sidebar-section {
+    width: 30rem;
+}
+
+.map-container {
+    height: 25rem;
+}
+
+#map {
+    height: 25rem;
+    width: 27rem;
+}
+
+@media(max-width:1250px) {
+    .sidebar-section-map {
+        height: 30rem;
+    }
+
+    .sidebar-section {
+        width: 27rem;
+    }
+
+    .map-container {
+        height: 25rem;
+    }
+
+    #map {
+        height: 25rem;
+        width: 26rem;
+    }
+}
+
+@media(max-width:1050px) {
+    .sidebar-section-map {
+        height: 27rem;
+    }
+
+    .sidebar-section {
+        width: 24rem;
+    }
+
+    .map-container {
+        height: 22rem;
+    }
+
+    #map {
+        height: 22rem;
+        width: 23rem;
+    }
+}
+
+@media(max-width:950px) {
+    .sidebar-section-map {
+        height: 27rem;
+    }
+
+    .sidebar-section {
+        width: 21rem;
+    }
+
+    .map-container {
+        height: 22rem;
+    }
+
+    #map {
+        height: 22rem;
+        width: 20rem;
+    }
+}
+
+@media(max-width:850px) {
+    .sidebar-section-map {
+        height: 30rem;
+    }
+
+    .sidebar-section {
+        width: 19rem;
+    }
+
+    .map-container {
+        height: 25rem;
+    }
+
+    #map {
+        height: 25rem;
+        width: 18rem;
+    }
+}
+
+@media(max-width:768px) {
+    .sidebar {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .sidebar-section-map {
+        height: 30rem;
+    }
+
+    .sidebar-section {
+        width: 40rem;
+    }
+
+    .map-container {
+        height: 25rem;
+    }
+
+    #map {
+        height: 25rem;
+        width: 38rem;
+    }
+}
+
+@media(max-width:650px) {
+
+    .sidebar-section-map {
+        height: 30rem;
+    }
+
+    .sidebar-section {
+        width: 35rem;
+    }
+
+    .map-container {
+        height: 25rem;
+    }
+
+    #map {
+        height: 25rem;
+        width: 33rem;
+    }
+}
+
+@media(max-width:555px) {
+
+    .sidebar-section-map {
+        height: 30rem;
+    }
+
+    .sidebar-section {
+        width: 27rem;
+    }
+
+    .map-container {
+        height: 25rem;
+    }
+
+    #map {
+        height: 25rem;
+        width: 25rem;
+    }
+}
+
+@media(max-width:425px) {
+
+    .sidebar-section-map {
+        height: 30rem;
+    }
+
+    .sidebar-section {
+        width: 24rem;
+    }
+
+    .map-container {
+        height: 25rem;
+    }
+
+    #map {
+        height: 25rem;
+        width: 22rem;
+    }
+}
+
+@media(max-width:380px) {
+
+    .sidebar-section-map {
+        height: 30rem;
+    }
+
+    .sidebar-section {
+        width: 20rem;
+    }
+
+    .map-container {
+        height: 25rem;
+    }
+
+    #map {
+        height: 25rem;
+        width: 19rem;
+    }
+}
+
+@media(max-width:315px) {
+
+    .sidebar-section-map {
+        height: 30rem;
+    }
+
+    .sidebar-section {
+        width: 17rem;
+    }
+
+    .map-container {
+        height: 25rem;
+    }
+
+    #map {
+        height: 25rem;
+        width: 16rem;
+    }
+}
+
+@media(max-width:270px) {
+
+    .sidebar-section-map {
+        height: 30rem;
+    }
+
+    .sidebar-section {
+        width: 15rem;
+    }
+
+    .map-container {
+        height: 25rem;
+    }
+
+    #map {
+        height: 25rem;
+        width: 14rem;
+    }
+}
+
+.working-hours-section .border {
+    transition: all 0.3s ease;
+    border-color: #eee !important;
+}
+
+.working-hours-section .border:hover {
+    border-color: var(--primary) !important;
+    background-color: #fff !important;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 400px) {
+    .working-hours-section .d-flex {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 10px;
+    }
+}
+
+/* منع الاسم من الانكسار لسطر جديد */
+.salon-name {
+    white-space: nowrap;
+    /* هذا يمنع الاسم من التقطع */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* يضع ثلاث نقاط إذا كان الاسم طويلاً جداً على الشاشات الصغيرة جداً */
+    max-width: 250px;
+    /* يمكنك تعديله حسب الحاجة */
+}
+
+/* تنسيق المسافات بين اللوجو والاسم بناءً على اتجاه اللغة */
+.salon-logo {
+    margin-left: 1rem;
+    margin-right: 0;
+}
+
+/* تنسيق الأزرار الدائرية (المفضلة والمشاركة) */
+.btn-icon {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    padding: 0;
+}
+
+/* تحسينات الجوال */
+@media (max-width: 576px) {
+    .header-container {
+        flex-direction: column;
+        /* جعل العناصر فوق بعضها في الجوال */
+        align-items: flex-start !important;
+    }
+
+    .buttons-group {
+        width: 100%;
+        /* تمدد الأزرار لتأخذ كامل العرض في الجوال */
+        justify-content: space-between;
+    }
+
+    .salon-name {
+        font-size: 1.25rem;
+        /* تصغير الخط قليلاً في الجوال ليتناسب مع المساحة */
+        max-width: 180px;
+    }
+}

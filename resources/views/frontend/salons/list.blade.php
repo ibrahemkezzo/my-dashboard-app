@@ -1,6 +1,6 @@
 @extends('layouts.frontend')
 
-@section('title',config('app.name') . ' | ' .config('app.name_ar') .'  منصة حجز خدمات التجميل | ')
+@section('title', config('app.name') . ' | ' . config('app.name_ar') . ' منصة حجز خدمات التجميل | ')
 
 @section('main')
     <main class="hairdressers-page">
@@ -141,16 +141,16 @@
                     <div class="col-lg-4 order-2">
                         <div class="sidebar">
                             <!-- Map -->
-                            <div class="sidebar-section" style="height: 475px; width:425px;">
+                            <div class="sidebar-section" style="">
                                 <h5 class="fw-semibold mb-3">عرض على الخريطة</h5>
                                 {{-- <h5 class="fw-semibold mb-3">الموقع</h5> --}}
 
-                                    <div class="map-container" style="height: 400px;">
-                                        <div class="form-group">
-                                            <div id="map" style="height: 400px; width:400px;"></div>
-                                        </div>
-
+                                <div class="map-container" style="">
+                                    <div class="form-group">
+                                        <div id="map" style=""></div>
                                     </div>
+
+                                </div>
 
                             </div>
                             {{-- <div class="row mb-3">
@@ -195,7 +195,7 @@
 @endsection
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('frontend/assets/css/list.css?v='.config('app.version')) }}">
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/list.css?v=' . config('app.version')) }}">
 @endpush
 
 @push('scripts')
@@ -206,25 +206,23 @@
         // تعريف المسار في Blade
         window.routes = {
             salonShow: "{{ route('front.salons.show', ':id') }}",
-            locationIcon: "{{asset('frontend/assets/img/location.png')}}"
+            locationIcon: "{{ asset('frontend/assets/img/location.png') }}"
         };
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&callback=initMap"></script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&callback=initMap">
+    </script>
 @endpush
 
 @push('styles')
-    <style>
-        #map {
-            height: 100%;
-        }
+ <style>
 
         .custom-map-control-button {
             background-color: #fff;
             border: 0;
             border-radius: 2px;
             box-shadow: 0 1px 4px -1px rgba(242, 237, 237, 0.3);
-            margin: 10px
-            margin-top: 40px;
+            margin: 10px margin-top: 40px;
             padding: 0 0.5em;
             font: 400 18px Roboto, Arial, sans-serif;
             overflow: hidden;
@@ -255,9 +253,9 @@
         #infowindow-content .title {
             font-weight: bold;
         }
+
         option:disabled {
             color: #6c757d;
         }
     </style>
 @endpush
-

@@ -1,6 +1,6 @@
 @extends('layouts.frontend')
 
-@section('title',config('app.name') . ' | ' .config('app.name_ar') .'  منصة حجز خدمات التجميل | ')
+@section('title', config('app.name') . ' | ' . config('app.name_ar') . ' منصة حجز خدمات التجميل | ')
 
 @section('main')
     <!-- Breadcrumb -->
@@ -20,44 +20,58 @@
     <div class="container my-5">
         <div class="row">
             <!-- Main Content -->
-            <div class="col-lg-8">
+            <div class="col-lg-7 col-md-7">
                 <!-- Salon Header -->
 
                 <div class="salon-profile-header mb-4">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <h1 class="h2 fw-bold text-dark title">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4 header-container">
+
+                        <div class="d-flex align-items-center flex-shrink-0 salon-brand">
                             @if ($salon->logo)
-                                <img src="{{ $salon->logo_url }}" alt="logo" class="me-3 ms-3"
-                                    style="width:60px;height:60px;object-fit:cover;border-radius:50%;">
+                                <img src="{{ $salon->logo_url }}" alt="logo" class="salon-logo"
+                                    style="width:60px; height:60px; object-fit:cover; border-radius:50%;">
                             @else
-
-                                    <i class="fa fa-building text-muted" ></i>
-
+                                <div class="logo-placeholder me-3 ms-3">
+                                    <i class="fa fa-building text-muted fa-2x"></i>
+                                </div>
                             @endif
-                            {{ $salon->name }}
 
-                        </h1>
-                        <div class="d-flex gap-2">
-                            <div class="text-center">
-                                <button class="btn btn-primary px-5" id="bookNowBtn" data-bs-toggle="modal"
-                                    data-bs-target="#bookingModal">
-                                    <i class="fas fa-calendar-check me-2"></i>احجز الآن
+                            <h1 class="h3 fw-bold text-dark mb-0 salon-name text-nowrap title">
+                                {{ $salon->name }}
+                            </h1>
+                        </div>
+
+                        <div class="d-flex align-items-center gap-2 buttons-group">
+                            <button class="btn btn-primary px-4 py-2 fw-bold shadow-sm flex-grow-1" id="bookNowBtn"
+                                data-bs-toggle="modal" data-bs-target="#bookingModal">
+                                <i class="fas fa-calendar-check me-2"></i>
+                                <span class="btn-text">احجز الآن</span>
+                            </button>
+
+                            <div class="d-flex gap-2">
+                                {{-- @auth
+                                    <button
+                                        class="btn btn-outline-danger btn-icon {{ Auth::user()->favoriteSalons()->where('salon_id', $salon->id)->first() ? 'active' : '' }}"
+                                        data-salon-id="{{ $salon->id }}" onclick="toggleFavorite({{ $salon->id }})"
+                                        title="المفضلة">
+                                        <i class="far fa-heart"></i>
+                                    </button>
+                                @endauth
+
+                                <button class="btn btn-outline-secondary btn-icon" id="shareBtn" title="مشاركة الرابط">
+                                    <i class="fas fa-share"></i>
+                                </button> --}}
+                                @auth
+                                    <button
+                                        class="btn-icon-outline {{ Auth::user()->favoriteSalons()->where('salon_id', $salon->id)->first() ? 'active' : '' }}"
+                                        data-salon-id="{{ $salon->id }}" onclick="toggleFavorite({{ $salon->id }})">
+                                        <i class="far fa-heart"></i>
+                                    </button>
+                                @endauth
+                                <button class="btn-icon-outline" id="shareBtn" title="مشاركة الرابط">
+                                    <i class="fas fa-share"></i>
                                 </button>
                             </div>
-
-                            {{-- <button class="btn-icon-outline" id="favoriteBtn" title="إضافة للمفضلة">
-                                <i class="far fa-heart"></i>
-                            </button> --}}
-                            @auth
-                                <button
-                                    class="btn-icon-outline {{ Auth::user()->favoriteSalons()->where('salon_id', $salon->id)->first() ? 'active' : '' }}"
-                                    data-salon-id="{{ $salon->id }}" onclick="toggleFavorite({{ $salon->id }})">
-                                    <i class="far fa-heart"></i>
-                                </button>
-                            @endauth
-                            <button class="btn-icon-outline" id="shareBtn" title="مشاركة الرابط">
-                                <i class="fas fa-share"></i>
-                            </button>
                         </div>
                     </div>
 
@@ -96,8 +110,8 @@
                     <div id="salonCarousel" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-inner">
                             <div class="carousel-item active">
-                                <img src="{{ $salon->cover_image_url ?? "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400" }}" class="d-block w-100 salon-gallery-image"
-                                    alt="صالون 1">
+                                <img src="{{ $salon->cover_image_url ?? 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400' }}"
+                                    class="d-block w-100 salon-gallery-image" alt="صالون 1">
                             </div>
                             @foreach ($salon->media as $photo)
                                 <div class="carousel-item">
@@ -124,36 +138,52 @@
                         {{ $salon->description }}
                     </p>
                     @if ($salon->working_hours)
-                        <div class="mt-3">
-                            <h3 class="h5 fw-semibold mb-3">أوقات الدوام</h3>
-                            <div class="row">
+                        <div class="mt-4 working-hours-section">
+                            <h3 class="h5 fw-bold mb-4 d-flex align-items-center">
+                                <i class="bi bi-clock-history me-2 ms-3"></i> أوقات الدوام
+                            </h3>
+
+                            <div class="row g-3">
                                 @foreach ($salon->working_hours as $day => $times)
-                                    <div class="col-md-6 mt-3 row">
-                                        <strong class="col-md-3 ms-2">{{ __('dashboard.' . $day) }} : </strong>
-                                        @if (isset($times['closed']) && $times['closed'])
-                                            <span class="col-md-3 badge bg-danger me-2">مغلق</span>
-                                        @else
-                                            @php
-                                                try {
-                                                    $open = \Carbon\Carbon::createFromFormat('H:i', $times['open']);
-                                                    $close = \Carbon\Carbon::createFromFormat('H:i', $times['close']);
-                                                    $formattedTime =
-                                                        'من ' .
-                                                        $open->format('h:i') .
-                                                        ' ' .
-                                                        ($open->format('A') == 'AM' ? 'صباحًا' : 'مساءً') .
-                                                        ' إلى ' .
-                                                        $close->format('h:i') .
-                                                        ' ' .
-                                                        ($close->format('A') == 'AM' ? 'صباحًا' : 'مساءً');
-                                                } catch (\Exception $e) {
-                                                    $formattedTime = 'وقت غير صالح';
-                                                }
-                                            @endphp
-                                            <span class="col-md-8">
-                                                {{ $formattedTime }}
+                                    <div class="col-lg-6 col-md-12 col-12">
+                                        <div
+                                            class="d-flex justify-content-between align-items-center p-3 border rounded-3 bg-light shadow-sm">
+                                            <span class="fw-bold text-dark">
+                                                <i class="bi bi-calendar-check me-1 text-secondary"></i>
+                                                {{ __('dashboard.' . $day) }}
                                             </span>
-                                        @endif
+
+                                            @if (isset($times['closed']) && $times['closed'])
+                                                <span
+                                                    class="badge bg-danger-subtle text-danger px-3 py-2 rounded-pill">مغلق</span>
+                                            @else
+                                                @php
+                                                    try {
+                                                        $open = \Carbon\Carbon::createFromFormat('H:i', $times['open']);
+                                                        $close = \Carbon\Carbon::createFromFormat(
+                                                            'H:i',
+                                                            $times['close'],
+                                                        );
+
+                                                        $formattedOpen =
+                                                            $open->format('h:i') .
+                                                            ($open->format('A') == 'AM' ? ' صباحاً' : ' مساءً');
+                                                        $formattedClose =
+                                                            $close->format('h:i') .
+                                                            ($close->format('A') == 'AM' ? ' صباحاً' : ' مساءً');
+                                                    } catch (\Exception $e) {
+                                                        $formattedOpen = '---';
+                                                    }
+                                                @endphp
+                                                <div class="text-muted small">
+                                                    <span
+                                                        class="d-inline-block title fw-semibold">{{ $formattedOpen }}</span>
+                                                    <span class="mx-1">-</span>
+                                                    <span
+                                                        class="d-inline-block title fw-semibold">{{ $formattedClose }}</span>
+                                                </div>
+                                            @endif
+                                        </div>
                                     </div>
                                 @endforeach
                             </div>
@@ -232,161 +262,165 @@
             </div>
 
             <!-- Sidebar -->
-            <div class="col-lg-4">
-                <!-- Map -->
-                <div class="sidebar-section mb-4" style="height: 475px; width:425px;">
-                    <h5 class="fw-semibold mb-3">الموقع</h5>
-                    <div class="map-container" style="height: 400px;">
-                        <div class="form-group">
-                            <div id="map" style="height: 400px; width:400px;"></div>
-                        </div>
+            <div class="col-lg-5 col-md-5">
+                <div class="sidebar">
 
-                    </div>
-                </div>
 
-                <!-- Quality Metrics -->
-                <div class="sidebar-section mb-4">
-                    <h5 class="fw-semibold mb-3">تقييم الخدمات</h5>
-                    <div class="quality-metric mb-3">
-                        <div class="d-flex justify-content-between mb-1">
-                            <span class="text-sm">جودة الخدمة</span>
-                            <span class="text-sm fw-semibold">95%</span>
-                        </div>
-                        <div class="progress">
-                            <div class="progress-bar bg-success" style="width: 95%"></div>
-                        </div>
-                    </div>
-                    <div class="quality-metric mb-3">
-                        <div class="d-flex justify-content-between mb-1">
-                            <span class="text-sm">أداء الموظفات</span>
-                            <span class="text-sm fw-semibold">92%</span>
-                        </div>
-                        <div class="progress">
-                            <div class="progress-bar bg-info" style="width: 92%"></div>
-                        </div>
-                    </div>
-                    <div class="quality-metric">
-                        <div class="d-flex justify-content-between mb-1">
-                            <span class="text-sm">الراحة والنظافة</span>
-                            <span class="text-sm fw-semibold">98%</span>
-                        </div>
-                        <div class="progress">
-                            <div class="progress-bar" style="width: 98%; background-color: #87365b;"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="sidebar-section mb-4">
-                    <div class="form-section">
-                        <h5 class="fw-semibold mb-3">
-                            <i class="fas fa-star ms-2" style="color: #87365b"></i>المميزات المتوفرة
-                        </h5>
-                        <div class="row">
-                            @if (isset($salon->features['parking']))
-                                <div class="quality-metric col-md-6 mb-3">
-                                    <i style="color: #6c757d" class="fas fa-car ms-2"></i>
-                                    <span>موقف سيارات</span>
-                                </div>
-                            @endif
-                            @if (isset($salon->features['wifi']))
-                                <div class="quality-metric col-md-6 mb-3">
-                                    <i style="color: #6c757d" class="fas fa-wifi ms-2"></i>
-                                    <span>واي فاي مجاني</span>
-                                </div>
-                            @endif
-                            @if (isset($salon->features['ac']))
-                                <div class="quality-metric col-md-6 mb-3">
-                                    <i style="color: #6c757d" class="fas fa-snowflake ms-2"></i>
-                                    <span>تكييف</span>
-                                </div>
-                            @endif
-                            @if (isset($salon->features['waiting-area']))
-                                <div class="quality-metric col-md-6 mb-3">
-                                    <i style="color: #6c757d" class="fas fa-couch ms-2"></i>
-                                    <span>منطقة انتظار</span>
-                                </div>
-                            @endif
-                            @if (isset($salon->features['refreshments']))
-                                <div class="quality-metric col-md-6 mb-3">
-                                    <i style="color: #6c757d" class="fas fa-coffee ms-2"></i>
-                                    <span>مشروبات مجانية</span>
-                                </div>
-                            @endif
-                            @if (isset($salon->features['child-care']))
-                                <div class="quality-metric col-md-6 mb-3">
-                                    <i style="color: #6c757d" class="fas fa-baby ms-2"></i>
-                                    <span>رعاية أطفال</span>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-                <div class="sidebar-section mb-4">
-                    <div class="form-section">
-                        <h5 class="fw-semibold mb-3">
-                            <i class="fas fa-star ms-2" style="color: #87365b"></i>روابط التواصل الاجتماعي
-                        </h5>
-                        <div class="row" dir="ltr">
-                            @if (isset($salon->social_links['instagram']))
-                                <div class="quality-metric col-md-6 mb-3">
-                                    <a href="{{ $salon->social_links['instagram'] }}" class="social">
-                                        <i class="fab fa-instagram me-3"></i>
-                                        <span>instagram</span>
-                                    </a>
-                                </div>
-                            @endif
-                            @if (isset($salon->social_links['facebook']))
-                                <div class="quality-metric col-md-6 mb-3">
-                                    <a href="{{ $salon->social_links['facebook'] }}" class="social">
-                                        <i class="fab fa-facebook me-2"></i>
-                                        <span>facebook</span>
-                                    </a>
-                                </div>
-                            @endif
+                    <!-- Map -->
+                    <div class="sidebar-section-map sidebar-section  mb-4" style="">
+                        <h5 class="fw-semibold mb-3">الموقع</h5>
+                        <div class="map-container" style="">
+                            <div class="form-group">
+                                <div id="map" style=";"></div>
+                            </div>
 
-                            @if (isset($salon->social_links['snapchat']))
-                                <div class="quality-metric col-md-6 mb-3">
-                                    <a href="{{ $salon->social_links['snapchat'] }}" class="social">
-                                        <i class="fab fa-snapchat me-3"></i>
-                                        <span>snapchat</span>
-                                    </a>
-                                </div>
-                            @endif
-                            @if (isset($salon->social_links['tiktok']))
-                                <div class="quality-metric col-md-6 mb-3">
-                                    <a href="{{ $salon->social_links['tiktok'] }}" class="social">
-                                        <i class="fab fa-tiktok me-3"></i>
-                                        <span>tiktok</span>
-                                    </a>
-                                </div>
-                            @endif
-
-                            @if (isset($salon->social_links['youtube']))
-                                <div class="quality-metric col-md-6 mb-3">
-                                    <a href="{{ $salon->social_links['youtube'] }}" class="social">
-                                        <i class="fab fa-youtube me-3"></i>
-                                        <span>youtube</span>
-                                    </a>
-                                </div>
-                            @endif
-                            @if (isset($salon->social_links['twitter']))
-                                <div class="quality-metric col-md-6 mb-3">
-                                    <a href="{{ $salon->social_links['twitter'] }}" class="social">
-                                        <i class="fab fa-twitter me-2"></i>
-                                        <span>(X)_twitter</span>
-                                    </a>
-                                </div>
-                            @endif
                         </div>
-                        <div class="row" dir="ltr">
-                            <div class="quality-metric col-md-3 "></div>
-                            @if (isset($salon->phone))
-                                <div class="quality-metric col-md-8 ">
-                                    <div>
-                                        <i class="fa fa-phone me-2"></i>
-                                        <span>{{ $salon->phone }}</span>
+                    </div>
+
+                    <!-- Quality Metrics -->
+                    <div class="sidebar-section mb-4">
+                        <h5 class="fw-semibold mb-3">تقييم الخدمات</h5>
+                        <div class="quality-metric mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="text-sm">جودة الخدمة</span>
+                                <span class="text-sm fw-semibold">95%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-success" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        <div class="quality-metric mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="text-sm">أداء الموظفات</span>
+                                <span class="text-sm fw-semibold">92%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-info" style="width: 92%"></div>
+                            </div>
+                        </div>
+                        <div class="quality-metric">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="text-sm">الراحة والنظافة</span>
+                                <span class="text-sm fw-semibold">98%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 98%; background-color: #87365b;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sidebar-section mb-4">
+                        <div class="form-section">
+                            <h5 class="fw-semibold mb-3">
+                                <i class="fas fa-star ms-2" style="color: #87365b"></i>المميزات المتوفرة
+                            </h5>
+                            <div class="row">
+                                @if (isset($salon->features['parking']))
+                                    <div class="quality-metric col-md-6 mb-3">
+                                        <i style="color: #6c757d" class="fas fa-car ms-2"></i>
+                                        <span>موقف سيارات</span>
                                     </div>
-                                </div>
-                            @endif
+                                @endif
+                                @if (isset($salon->features['wifi']))
+                                    <div class="quality-metric col-md-6 mb-3">
+                                        <i style="color: #6c757d" class="fas fa-wifi ms-2"></i>
+                                        <span>واي فاي مجاني</span>
+                                    </div>
+                                @endif
+                                @if (isset($salon->features['ac']))
+                                    <div class="quality-metric col-md-6 mb-3">
+                                        <i style="color: #6c757d" class="fas fa-snowflake ms-2"></i>
+                                        <span>تكييف</span>
+                                    </div>
+                                @endif
+                                @if (isset($salon->features['waiting-area']))
+                                    <div class="quality-metric col-md-6 mb-3">
+                                        <i style="color: #6c757d" class="fas fa-couch ms-2"></i>
+                                        <span>منطقة انتظار</span>
+                                    </div>
+                                @endif
+                                @if (isset($salon->features['refreshments']))
+                                    <div class="quality-metric col-md-6 mb-3">
+                                        <i style="color: #6c757d" class="fas fa-coffee ms-2"></i>
+                                        <span>مشروبات مجانية</span>
+                                    </div>
+                                @endif
+                                @if (isset($salon->features['child-care']))
+                                    <div class="quality-metric col-md-6 mb-3">
+                                        <i style="color: #6c757d" class="fas fa-baby ms-2"></i>
+                                        <span>رعاية أطفال</span>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sidebar-section mb-4">
+                        <div class="form-section">
+                            <h5 class="fw-semibold mb-3">
+                                <i class="fas fa-star ms-2" style="color: #87365b"></i>روابط التواصل الاجتماعي
+                            </h5>
+                            <div class="row" dir="ltr">
+                                @if (isset($salon->social_links['instagram']))
+                                    <div class="quality-metric col-md-6 mb-3">
+                                        <a href="{{ $salon->social_links['instagram'] }}" class="social">
+                                            <i class="fab fa-instagram me-3"></i>
+                                            <span>instagram</span>
+                                        </a>
+                                    </div>
+                                @endif
+                                @if (isset($salon->social_links['facebook']))
+                                    <div class="quality-metric col-md-6 mb-3">
+                                        <a href="{{ $salon->social_links['facebook'] }}" class="social">
+                                            <i class="fab fa-facebook me-2"></i>
+                                            <span>facebook</span>
+                                        </a>
+                                    </div>
+                                @endif
+
+                                @if (isset($salon->social_links['snapchat']))
+                                    <div class="quality-metric col-md-6 mb-3">
+                                        <a href="{{ $salon->social_links['snapchat'] }}" class="social">
+                                            <i class="fab fa-snapchat me-3"></i>
+                                            <span>snapchat</span>
+                                        </a>
+                                    </div>
+                                @endif
+                                @if (isset($salon->social_links['tiktok']))
+                                    <div class="quality-metric col-md-6 mb-3">
+                                        <a href="{{ $salon->social_links['tiktok'] }}" class="social">
+                                            <i class="fab fa-tiktok me-3"></i>
+                                            <span>tiktok</span>
+                                        </a>
+                                    </div>
+                                @endif
+
+                                @if (isset($salon->social_links['youtube']))
+                                    <div class="quality-metric col-md-6 mb-3">
+                                        <a href="{{ $salon->social_links['youtube'] }}" class="social">
+                                            <i class="fab fa-youtube me-3"></i>
+                                            <span>youtube</span>
+                                        </a>
+                                    </div>
+                                @endif
+                                @if (isset($salon->social_links['twitter']))
+                                    <div class="quality-metric col-md-6 mb-3">
+                                        <a href="{{ $salon->social_links['twitter'] }}" class="social">
+                                            <i class="fab fa-twitter me-2"></i>
+                                            <span>(X)_twitter</span>
+                                        </a>
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="row" dir="ltr">
+                                <div class="quality-metric col-md-3 "></div>
+                                @if (isset($salon->phone))
+                                    <div class="quality-metric col-md-8 ">
+                                        <div>
+                                            <i class="fa fa-phone me-2"></i>
+                                            <span>{{ $salon->phone }}</span>
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -459,148 +493,11 @@
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/pages-styles.css?v=' . config('app.version')) }}">
+    <link rel="stylesheet" href="{{ asset('frontend/assets/css/salon.css?v=' . config('app.version')) }}">
 
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        .social {
-            color: #000;
-        }
-
-        .social:hover {
-            color: #F56476;
-        }
-
-        /*
-        .btn-icon-outline.active {
-            transform: translateY(0);
-            box-shadow: 0 2px 6px rgba(245, 100, 118, 0.2);
-        } */
-
-        .btn-icon-outline.active {
-            background: #F56476;
-            color: white;
-            box-shadow: 0 4px 12px rgba(245, 100, 118, 0.3);
-        }
-
-        .btn-icon-outline.active:hover {
-            background: white;
-            color: #F56476;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(245, 100, 118, 0.3);
-        }
-
-        .share-menu {
-            position: absolute;
-            z-index: 1000;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-            padding: 10px;
-        }
-
-        .share-menu-content {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .share-option {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 12px;
-            color: #333;
-            text-decoration: none;
-            font-size: 14px;
-            border-radius: 4px;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .share-option:hover {
-            background: #f0f0f0;
-        }
-
-        .share-option i {
-            font-size: 18px;
-        }
-    </style>
-    <style>
-        /* تنسيق أقسام الخدمات في نافذة الحجز */
-        .service-section {
-            border-bottom: 1px solid var(--gray-300); /* حدود سفلية لفصل الأقسام */
-            padding-bottom: 1rem;
-            margin-bottom: 1rem;
-            background-color: rgba(245, 100, 118, 0.05); /* خلفية خفيفة لتحسين الوضوح */
-            border-radius: 0.5rem; /* زوايا مستديرة */
-            padding: 1rem;
-        }
-
-        .service-section:last-child {
-            border-bottom: none; /* إزالة الحدود لآخر قسم */
-        }
-
-        .service-section h6 {
-            color: var(--primary); /* لون العنوان بلون الثيم الأساسي */
-            margin-bottom: 0.75rem;
-            font-size: 1.1rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem; /* مسافة بين الأيقونة والنص إذا تم إضافة أيقونة */
-        }
-
-        .form-check {
-            margin-bottom: 0.5rem;
-            padding-right: 1.5rem; /* مسافة للتأكد من محاذاة الـ checkbox */
-        }
-
-        .form-check-label {
-            color: var(--text);
-            font-size: 0.95rem;
-            transition: color 0.3s ease;
-        }
-
-        .form-check-input {
-            margin-top: 0.3rem;
-            border-color: var(--gray-400);
-        }
-
-        .form-check-input:checked {
-            background-color: var(--primary);
-            border-color: var(--primary);
-        }
-
-        .form-check-label:hover {
-            color: var(--primary-border); /* تغيير لون النص عند التمرير */
-        }
-        @media (max-width: 576px) {
-            .service-section {
-                padding: 0.75rem;
-                margin-bottom: 0.75rem;
-            }
-
-            .service-section h6 {
-                font-size: 1rem;
-            }
-
-            .form-check-label {
-                font-size: 0.875rem;
-            }
-
-            .modal-body {
-                padding: 1rem;
-            }
-
-            .modal-footer .btn {
-                font-size: 0.875rem;
-                padding: 0.5rem 1rem;
-            }
-        }
-    </style>
 @endpush
 
 @push('scripts')
@@ -813,54 +710,6 @@
     </script>
     <script
         src="https://maps.googleapis.com/maps/api/js?key={{ env('GOOGLE_MAPS_API_KEY') }}&libraries=places&callback=initMap"
-        async defer></script>
-@endpush
-@push('styles')
-    <style>
-        #map {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border: 2px dashed #dee2e6;
-            border-radius: 8px;
-        }
-
-
-        .custom-map-control-button {
-            background-color: #fff;
-            border: 0;
-            border-radius: 2px;
-            box-shadow: 0 1px 4px -1px rgba(242, 237, 237, 0.3);
-            margin: 10px;
-            padding: 0 0.5em;
-            font: 400 18px Roboto, Arial, sans-serif;
-            overflow: hidden;
-            height: 40px;
-            cursor: pointer;
-        }
-
-        .custom-map-control-button:hover {
-            background: rgb(235, 235, 235);
-        }
-
-        #place-autocomplete-card {
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: rgba(189, 174, 174, 0.35) 0px 5px 15px;
-            margin: 10px;
-            padding: 5px;
-            font-family: Roboto, sans-serif;
-            font-size: large;
-            font-weight: bold;
-        }
-
-        gmp-place-autocomplete {
-            width: 300px;
-        }
-
-        /* #infowindow-content .title {
-                                        font-weight: bold;
-                                    } */
-    </style>
+        >
+    </script>
 @endpush

@@ -499,7 +499,7 @@ is-invalid
                 center: { lat: salonLat, lng: salonLng },
                 zoom: 12,
                 zoomControl: true,
-                mapTypeControl: true,
+                mapTypeControl: false,
                 streetViewControl: true,
                 fullscreenControl: true,
 
