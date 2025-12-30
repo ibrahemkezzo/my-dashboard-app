@@ -1,5 +1,4 @@
 {{-- @dump(Auth::user()->favoriteSalons()->where('salon_id', $salon->id)->first() != null) --}}
-
 <div class="salon-card">
     <div class="salon-image-container">
         <img src="{{ $salon->cover_image_url }}" alt="{{ $salon->name }}" class="salon-image">

@@ -351,3 +351,33 @@
 <script src="{{ asset('frontend/assets/js/pages-scripts2.js') }}"></script>
 
 @endpush
+
+@push('styles')
+<style>
+
+@media (min-width: 1024px) {
+    .salons-grid {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+    .categories-grid {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+}
+@media (max-width: 1024px) {
+    .salons-grid {
+        grid-template-columns: 1fr 1fr ;
+    }
+    .categories-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+@media (max-width: 600px) {
+    .salons-grid {
+        grid-template-columns: 1fr;
+    }
+    .categories-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+@endpush
