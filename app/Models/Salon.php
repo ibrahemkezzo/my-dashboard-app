@@ -14,7 +14,7 @@ class Salon extends Model
         'name', 'description', 'address', 'phone', 'email', 'owner_id', 'city_id',
         'status', 'working_hours', 'rating', 'logo', 'cover_image', 'social_links', 'seo_meta','features' ,'type',
         'longitude','latitude',
-        'license_document','license_start_date', 'license_end_date', 'hasOffer', 'offer','is_promoted'
+        'license_document','license_start_date', 'license_end_date', 'hasOffer', 'offer','is_promoted','is_active'
     ];
 
     protected $casts = [
@@ -84,6 +84,73 @@ class Salon extends Model
         return $this->hasMany(Rating::class);
     }
 
+    public function subscription()
+    {
+        return $this->hasOne(Subscription::class);
+    }
+
+    /**
+     * Scope a query to only include active salons.
+     * يتم استدعاؤه عن طريق: Salon::isActive()
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeIsActive($query)
+    {
+        return $query->where('status', true)
+                     ->where('is_active', true);
+    }
+
+    /**
+     * عدد الأيام المتبقية على انتهاء الاشتراك
+     * إرجاع null إذا ما في اشتراك أو end_date غير موجود
+     */
+    public function getRemainingDaysAttribute(): ?int
+    {
+        if (!$this->subscription || !$this->subscription->end_date) {
+            return null;
+        }
+
+        $endDate = Carbon::parse($this->subscription->end_date);
+        $now = Carbon::now();
+
+        if ($endDate->isPast()) {
+            return 0; // أو -ve إذا بدك، لكن 0 أوضح
+        }
+
+        return (int) $now->diffInDays($endDate, false); // false = لا يرجع قيمة سالبة
+    }
+
+    /**
+     * هل الاشتراك قريب من الانتهاء؟ (5 أيام أو أقل)
+     */
+    public function getIsSubscriptionExpiringSoonAttribute(): bool
+    {
+        $days = $this->remaining_days;
+
+        return $days !== null && $days <= 5 && $days >= 0;
+    }
+
+    /**
+     * هل الاشتراك منتهي فعليًا؟
+     */
+    public function getIsSubscriptionExpiredAttribute(): bool
+    {
+        return $this->subscription
+            && $this->subscription->end_date
+            && Carbon::parse($this->subscription->end_date)->isPast();
+    }
+
+    /**
+     * هل الصالون لديه اشتراك نشط حاليًا؟
+     */
+    public function getHasActiveSubscriptionAttribute(): bool
+    {
+        return $this->subscription
+            && $this->subscription->status === 'active'
+            && !$this->is_subscription_expired;
+    }
     /**
      * Accessor to check if the salon is favorited by the current user.
      *

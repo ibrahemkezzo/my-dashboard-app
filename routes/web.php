@@ -8,15 +8,18 @@ use App\Http\Controllers\Dashboard\AppointmentController;
 use App\Http\Controllers\Dashboard\BookingController;
 use App\Http\Controllers\Dashboard\CityController;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\RatingController;
 use App\Http\Controllers\Dashboard\ReportsController;
-use App\Http\Controllers\Dashboard\SettingsController;
-use App\Http\Controllers\Dashboard\VisitTimeController;
-use App\Http\Controllers\Dashboard\SubServiceController;
+use App\Http\Controllers\Dashboard\RewardController;
 use App\Http\Controllers\Dashboard\SalonController;
 use App\Http\Controllers\Dashboard\SalonSubServiceController;
-use App\Http\Controllers\Dashboard\RatingController;
-use App\Http\Controllers\Dashboard\RewardController;
+use App\Http\Controllers\Dashboard\SettingsController;
+use App\Http\Controllers\Dashboard\SubscriptionController;
+use App\Http\Controllers\Frontend\SubscriptionUserController;
+use App\Http\Controllers\Dashboard\SubscriptionPlanController;
+use App\Http\Controllers\Dashboard\SubServiceController;
 use App\Http\Controllers\Dashboard\UserRewardController;
+use App\Http\Controllers\Dashboard\VisitTimeController;
 use App\Http\Controllers\Files\FileManagerController;
 use App\Http\Controllers\Files\MediaController;
 use App\Http\Controllers\Frontend\BookingController as FrontendBookingController;
@@ -45,9 +48,7 @@ use Illuminate\Support\Facades\Route;
 //     })->name('dashboard');
 // });
 
-
-
-//route for dashboard
+// route for dashboard
 
 // Route::middleware(['auth'])->group(function () {
 
@@ -72,29 +73,29 @@ Route::prefix('auth')->name('auth.')->group(function () {
 Route::get('/privacy/facebook-data-deletion', function () {
     return response()->json([
         'url' => 'https://glowzelle.com/privacy/delete-facebook-data',
-        'confirmation_code' => 'GDPR-'. Auth::user()?->id ?? 'DELETED'
+        'confirmation_code' => 'GDPR-'.Auth::user()?->id ?? 'DELETED',
     ]);
 });
 Route::group([
     'middleware' => ['auth', 'role:super-admin'],
-    'as'=>'dashboard.',  //pefor(pre) each name route
-    'prefix'=>'dashboard', //pefor(pre) each path route
-],function () {
+    'as' => 'dashboard.',  // pefor(pre) each name route
+    'prefix' => 'dashboard', // pefor(pre) each path route
+], function () {
 
-    //route for dashboard main page
+    // route for dashboard main page
 
-    Route::get('/',[DashboardController::class,'index'])->name('index');
+    Route::get('/', [DashboardController::class, 'index'])->name('index');
 
     // route for roles
 
     Route::resource('roles', RoleController::class);
     Route::post('roles/{id}/permissions', [RoleController::class, 'assignPermissions'])->name('roles.assign-permissions');
 
-    //route for permissions
+    // route for permissions
 
     Route::resource('permissions', PermissionController::class);
 
-    //route for manage users
+    // route for manage users
 
     Route::get('users/export', [UserController::class, 'export'])->name('users.export');
     Route::resource('users', UserController::class);
@@ -102,7 +103,7 @@ Route::group([
     Route::post('users/{user}/roles', [UserController::class, 'assignRoles'])->name('users.assign-roles');
     Route::patch('users/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggleStatus');
 
-    //route for file manager
+    // route for file manager
 
     Route::post('media/single', [MediaController::class, 'storeSingle'])->name('media.storeSingle');
     Route::post('media/multiple', [MediaController::class, 'storeMultiple'])->name('media.storeMultiple');
@@ -112,7 +113,7 @@ Route::group([
     Route::delete('file-manager/{media}', [FileManagerController::class, 'destroy'])->name('file-manager.destroy');
     Route::get('file-manager/folder/{folder}', [FileManagerController::class, 'showFolder'])->name('file-manager.folder');
 
-    //route for settings website
+    // route for settings website
 
     Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
     Route::post('settings/general', [SettingsController::class, 'updateGeneral'])->name('settings.updateGeneral');
@@ -125,7 +126,7 @@ Route::group([
     Route::post('settings/privacy', [SettingsController::class, 'updatePrivacySettings'])->name('settings.updatePrivacy');
     Route::post('settings/terms', [SettingsController::class, 'updateTermsSettings'])->name('settings.updateTerms');
 
-    //route for reportes and analystic
+    // route for reportes and analystic
 
     Route::post('/visits/time', [VisitTimeController::class, 'updateTime'])->name('visits.time');
     Route::get('/reports', [ReportsController::class, 'index'])->name('reports');
@@ -140,9 +141,9 @@ Route::group([
     // Salons CRUD
     Route::resource('salons', SalonController::class);
     Route::group([
-        'as'=>'salons.',  //pefor(pre) each name route
-        'prefix'=>'salons', //pefor(pre) each path route
-    ],function () {
+        'as' => 'salons.',  // pefor(pre) each name route
+        'prefix' => 'salons', // pefor(pre) each path route
+    ], function () {
         Route::get('create/step1', [SalonController::class, 'createStep1'])->name('create.step1');
         Route::post('create/step1', [SalonController::class, 'storeStep1'])->name('store.step1');
         Route::post('create/step2/{salon}', [SalonController::class, 'storeStep2'])->name('store.step2');
@@ -152,7 +153,7 @@ Route::group([
     });
 
     // Bookings CRUD
-    Route::resource('bookings',BookingController::class);
+    Route::resource('bookings', BookingController::class);
     Route::get('bookings/{booking}/salon-confirm', [BookingController::class, 'salonConfirmForm'])->name('bookings.salon-confirm-form');
     Route::post('bookings/{booking}/salon-confirm', [BookingController::class, 'salonConfirm'])->name('bookings.salon-confirm');
     Route::get('bookings/{booking}/user-confirm', [BookingController::class, 'userConfirmForm'])->name('bookings.user-confirm-form');
@@ -182,7 +183,7 @@ Route::group([
     // Routes rewards control
     Route::resource('rewards', RewardController::class)->except(['show']); // يشمل index, create, store, edit, update, destroy
 
-    //control points
+    // control points
     Route::get('rewards/points/edit', [RewardController::class, 'editPoints'])->name('rewards.edit_points');
     Route::post('rewards/points/update', [RewardController::class, 'updatePoints'])->name('rewards.update_points');
 
@@ -192,24 +193,32 @@ Route::group([
     Route::get('user-rewards', [UserRewardController::class, 'index'])->name('user-rewards.index');
     Route::put('user-rewards/{userReward}/status', [UserRewardController::class, 'updateStatus'])->name('user-rewards.update_status');
 
+    // Route For plans subssicription
+    Route::resource('subscription-plans', SubscriptionPlanController::class)
+        ->except(['show']);
+    Route::get('subscriptions', [SubscriptionController::class, 'index'])->name('subscriptions.index');
+    Route::get('subscriptions/{salon}/assign', [SubscriptionController::class, 'assignForm'])->name('subscriptions.assign-form');
+    Route::post('subscriptions/{salon}/assign', [SubscriptionController::class, 'assign'])->name('subscriptions.assign');
+    Route::post('subscriptions/{subscription}/suspend', [SubscriptionController::class, 'suspend'])->name('subscriptions.suspend');
+    Route::post('subscriptions/{subscription}/update-end-date', [SubscriptionController::class, 'updateEndDate'])->name('subscriptions.update-end-date');
+    Route::get('subscriptions/{salon}/history', [SubscriptionController::class, 'history'])->name('subscriptions.history');
+    Route::post('subscriptions/{subscription}/activate', [SubscriptionController::class, 'activate'])->name('subscriptions.activate');
+
 });
-
-
-
 
 // route for front website
 
 Route::group([
     'middleware' => ['trackable'],
-    'as'=>'front.',  //pefor(pre) each name route
-],function () {
+    'as' => 'front.',  // pefor(pre) each name route
+], function () {
 
-    Route::get('/',[FrontController::class,'index'])->name('home');
+    Route::get('/', [FrontController::class, 'index'])->name('home');
     // Rating routes
     Route::group([
         'prefix' => 'ratings/',
         'as' => 'ratings.',
-        'middleware' => 'auth'
+        'middleware' => 'auth',
     ], function () {
         Route::get('create/{salon}', [App\Http\Controllers\Frontend\RatingController::class, 'create'])->name('create');
         Route::post('store/{salon}', [App\Http\Controllers\Frontend\RatingController::class, 'store'])->name('store');
@@ -218,11 +227,11 @@ Route::group([
     });
 
     Route::get('salons/{salon}/ratings', [App\Http\Controllers\Frontend\RatingController::class, 'salonRatings'])->name('salons.ratings');
-    //salons
+    // salons
     Route::group([
         'prefix' => 'salons/',
-        'as'=>'salons.',  //pefor(pre) each name route
-    ],function () {
+        'as' => 'salons.',  // pefor(pre) each name route
+    ], function () {
         Route::get('list', [FrontendSalonController::class, 'list'])->name('list');
         Route::get('show/{salon}', [FrontendSalonController::class, 'show'])->name('show');
         Route::get('filters', [FrontendSalonController::class, 'filters'])->name('filters');
@@ -232,36 +241,35 @@ Route::group([
         Route::get('create/step2/{salon}', [FrontendSalonController::class, 'createStep2'])->name('create.step2');
         Route::post('create/step2/{salon}', [FrontendSalonController::class, 'storeStep2'])->name('store.step2');
     });
-    //profile
+    // profile
     Route::group([
         'prefix' => 'profile/',
-        'as'=>'profile.',  //pefor(pre) each name route
-        'middleware'=>'auth'
-    ],function () {
-        Route::get('account',[ProfileController::class,'account'])->name('account');
-        Route::put('account/{user}',[ProfileController::class,'updateAccount'])->name('update');
-        Route::get('favourites',[ProfileController::class,'favourites'])->name('favourites');
+        'as' => 'profile.',  // pefor(pre) each name route
+        'middleware' => 'auth',
+    ], function () {
+        Route::get('account', [ProfileController::class, 'account'])->name('account');
+        Route::put('account/{user}', [ProfileController::class, 'updateAccount'])->name('update');
+        Route::get('favourites', [ProfileController::class, 'favourites'])->name('favourites');
         Route::post('favorite/toggle', [ProfileController::class, 'toggleFavorite'])->name('toggleFavorite');
-    //     Route::get('/notifications', NotificationsList::class)
-    // ->name('notifications');
+        //     Route::get('/notifications', NotificationsList::class)
+        // ->name('notifications');
         Route::group([
             // 'middleware'=>'verified'
-            ],function () {
-                Route::get('bookings',[FrontendBookingController::class,'bookings'])->name('bookings');
-                Route::post('bookings/create',[FrontendBookingController::class,'store'])->name('bookings.create');
-                Route::post('bookings/cancel/{booking}',[FrontendBookingController::class,'cancel'])->name('bookings.cancel');
-                Route::post('bookings/edit/{booking}',[FrontendBookingController::class,'store'])->name('bookings.edit');
-                Route::post('bookings/confirm/{booking}',[FrontendBookingController::class,'confirm'])->name('bookings.confirm');
-                Route::post('bookings/completed/{booking}',[FrontendBookingController::class,'completed'])->name('bookings.completed');
-            });
-
+        ], function () {
+            Route::get('bookings', [FrontendBookingController::class, 'bookings'])->name('bookings');
+            Route::post('bookings/create', [FrontendBookingController::class, 'store'])->name('bookings.create');
+            Route::post('bookings/cancel/{booking}', [FrontendBookingController::class, 'cancel'])->name('bookings.cancel');
+            Route::post('bookings/edit/{booking}', [FrontendBookingController::class, 'store'])->name('bookings.edit');
+            Route::post('bookings/confirm/{booking}', [FrontendBookingController::class, 'confirm'])->name('bookings.confirm');
+            Route::post('bookings/completed/{booking}', [FrontendBookingController::class, 'completed'])->name('bookings.completed');
+        });
 
         // Salon management routes
         Route::group([
             'prefix' => 'salon/manager/',
-            'as'=>'salon.manager',  //pefor(pre) each name route
+            'as' => 'salon.manager',  // pefor(pre) each name route
             // 'middleware'=>'verified',
-        ],function () {
+        ], function () {
             Route::get('', [SalonManagerController::class, 'index']);
             Route::post('update', [SalonManagerController::class, 'updateInfo'])->name('.updateInfo');
             Route::post('services/add', [SalonManagerController::class, 'addService'])->name('.addService');
@@ -280,11 +288,21 @@ Route::group([
             Route::post('services/{subServiceId}/images/add', [SalonManagerController::class, 'addServiceImage'])->name('.services.images.add');
             Route::post('services/{subServiceId}/images/{media}/delete', [SalonManagerController::class, 'deleteServiceImage'])->name('.services.images.delete');
         });
+
     });
-    //pages
-    Route::get('/about-us',[FrontController::class,'aboutUs'])->name('about-us');
-    Route::get('/faq',[FrontController::class,'faq'])->name('faq');
-    Route::get('/privacy',[FrontController::class,'privacy'])->name('privacy');
-    Route::get('/terms',[FrontController::class,'terms'])->name('terms');
+    // pages
+    Route::get('/about-us', [FrontController::class, 'aboutUs'])->name('about-us');
+    Route::get('/faq', [FrontController::class, 'faq'])->name('faq');
+    Route::get('/privacy', [FrontController::class, 'privacy'])->name('privacy');
+    Route::get('/terms',[FrontController::class, 'terms'])->name('terms');
+    // Route::get('subscriptions/create', [SubscriptionUserController::class, 'create'])->name('subscriptions.create');
+    // Route::post('subscriptions', [SubscriptionUserController::class, 'store'])->name('subscriptions.store');
+    // Route::get('subscriptions/{subscription}/renew', [SubscriptionUserController::class, 'renew'])->name('subscriptions.renew');
+    // Route::post('subscriptions/{subscription}/renew', [SubscriptionUserController::class, 'processRenew'])->name('subscriptions.process_renew');
+    Route::get('subscriptions/create', [SubscriptionUserController::class, 'create'])->name('subscriptions.create');
+    Route::get('subscriptions/payment/{plan}', [SubscriptionUserController::class, 'payment'])->name('subscriptions.payment');
+    Route::get('subscriptions/callback', [SubscriptionUserController::class, 'callback'])->name('subscriptions.callback');
+    Route::post('moyasar/webhook', [SubscriptionUserController::class, 'webhook'])->name('moyasar.webhook');
+    Route::get('subscriptions/renew/{subscription}', [SubscriptionUserController::class, 'renew'])->name('subscriptions.renew');
 });
 

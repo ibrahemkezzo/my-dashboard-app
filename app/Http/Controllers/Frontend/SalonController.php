@@ -33,18 +33,12 @@ class SalonController extends Controller
         $this->middleware(['auth'])->only(['create','storeStep2','storeStep1']);
     }
 
-
-    public function index()
-    {
-        return view('frontend.salons.create_step1');
-    }
-
     /**
      * List salons with filters for AJAX/API or SSR fallback.
      */
     public function list(Request $request)
     {
-        $query = Salon::where('status',true)
+        $query = Salon::isActive()
         ->whereHas('subServices')
         ->with(['owner', 'city', 'subServices']);
         $filter = new SalonFilter($request);
@@ -67,6 +61,10 @@ class SalonController extends Controller
             return response()->json([
                 'salons' => $salons->items(),
                 'pagination' => (string) $salons->links(),
+                'total' => $salons->total(), // إجمالي كل النتائج في كل الصفحات
+                'count' => $salons->count(), // عدد النتائج في الصفحة الحالية
+                'per_page' => $salons->perPage(),
+                'current_page' => $salons->currentPage(),
             ]);
         }
 
@@ -151,7 +149,7 @@ class SalonController extends Controller
         }
         $validated = $request->validated();
         $sync = $this->service->syncSubServices($salon,$validated['salon_services']);
-        return redirect()->route('front.home')->with('message', ['type' => 'success', 'content' => __('تم تم اضافة الخدمات بنجاح')]);
+        return redirect()->route('front.home')->with('message', ['type' => 'success', 'content' => __('تم انشاء الصالون بنجاح استمتعي بالفترة المجانية')]);
     }
 
     public function show(Salon $salon)

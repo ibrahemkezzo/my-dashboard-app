@@ -50,7 +50,7 @@
                                         </option>
                                     @endforeach
                                 </select> --}}
-                                <x-form.city-select name="city_id" class="search-select no-hover-effects @error('city_id') is-invalid @enderror" />
+                                <x-form.city-select name="city_id" class="search-select no-hover-effects" />
                                     @error('city_id')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror

@@ -1,4 +1,6 @@
-<select name="{{ $name }}" id="{{ $name }}" class="{{ $class ?? 'form-select' }}">
+<select name="{{ $name }}" id="{{ $name }}" class="@error('city_id')
+                                                            is-invalid
+                                                            @enderror {{ $class ?? 'form-select' }}">
     <option value="">{{ __('dashboard.select_city') }}</option>
     @foreach($cities as $city)
         <option value="{{ $city->id }}"
