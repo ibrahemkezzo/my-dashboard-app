@@ -16,20 +16,31 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
     // Setup event listeners for all filters and sort controls (with null checks)
+    // متغير لتخزين الصفحة الحالية
+    let currentPage = 1;
+
+    // 1. تعديل Event Listeners لتعيد البحث من الصفحة الأولى عند تغيير الفلتر
     const searchInput = document.getElementById('searchInput');
-    if (searchInput) searchInput.addEventListener('input', () => { fetchAndRenderSalons(); initMap(); });
+    if (searchInput) searchInput.addEventListener('input', () => { resetFiltersAndFetch(); });
+
     const searchButton = document.getElementById('searchButton');
-    if (searchButton) searchButton.addEventListener('click', () => { fetchAndRenderSalons(); initMap(); });
+    if (searchButton) searchButton.addEventListener('click', () => { resetFiltersAndFetch(); });
+
     const type = document.getElementById('type');
-    if (type) type.addEventListener('change', () => { fetchAndRenderSalons(); initMap(); });
+    if (type) type.addEventListener('change', () => { resetFiltersAndFetch(); });
+
     const serviceType = document.getElementById('serviceType');
-    if (serviceType) serviceType.addEventListener('change', () => { fetchAndRenderSalons(); initMap(); });
+    if (serviceType) serviceType.addEventListener('change', () => { resetFiltersAndFetch(); });
+
     const city = document.getElementById('city');
-    if (city) city.addEventListener('change', () => { fetchAndRenderSalons(); initMap(); });
+    if (city) city.addEventListener('change', () => { resetFiltersAndFetch(); });
+
     const priceFilter = document.getElementById('priceFilter');
-    if (priceFilter) priceFilter.addEventListener('change', () => { fetchAndRenderSalons(); initMap(); });
+    if (priceFilter) priceFilter.addEventListener('change', () => { resetFiltersAndFetch(); });
+
     const hasOffers = document.getElementById('hasOffers');
-    if (hasOffers) hasOffers.addEventListener('change', () => { fetchAndRenderSalons(); initMap(); });
+    if (hasOffers) hasOffers.addEventListener('change', () => { resetFiltersAndFetch(); });
+
     const sortBy = document.getElementById('sortBy');
     if (sortBy) {
         sortBy.innerHTML = `
@@ -37,7 +48,14 @@ document.addEventListener('DOMContentLoaded', function () {
             <option value="lowest-price">الأسعار الأقل</option>
             <option value="highest-price">الأسعار الأعلى</option>
         `;
-        sortBy.addEventListener('change', () => { fetchAndRenderSalons(); initMap(); });
+        sortBy.addEventListener('change', () => { resetFiltersAndFetch(); });
+    }
+
+    // دالة مساعدة لإعادة تعيين الصفحة إلى 1 عند تغيير الفلاتر
+    function resetFiltersAndFetch() {
+        currentPage = 1; // إعادة تعيين للصفحة الأولى
+        fetchAndRenderSalons(currentPage);
+        initMap(); // تحديث الخريطة
     }
 
     function populateFilterDropdowns(data) {
@@ -50,10 +68,10 @@ document.addEventListener('DOMContentLoaded', function () {
         // type
         const type = document.getElementById('type');
         if (type) {
-            type.innerHTML = '<option value="">جميع الانواع</option>'+
-            '<option value="cosmetic_clinic">عيادة تجميل</option>'+
-            '<option value="beauty_center">مركز معتمد</option>'+
-            '<option value="home_salon">صالون منزلي</option>';
+            type.innerHTML = '<option value="">جميع الانواع</option>' +
+                '<option value="cosmetic_clinic">عيادة تجميل</option>' +
+                '<option value="beauty_center">مركز معتمد</option>' +
+                '<option value="home_salon">صالون منزلي</option>';
         }
         // Cities
         const city = document.getElementById('city');
@@ -173,9 +191,14 @@ document.addEventListener('DOMContentLoaded', function () {
         };
     }
 
-    function fetchAndRenderSalons() {
+    function fetchAndRenderSalons(page = 1) {
+        currentPage = page; // تحديث الصفحة الحالية
         const filters = getFilters();
         const params = new URLSearchParams(filters);
+
+        // إضافة رقم الصفحة للبارامترات
+        params.set('page', page);
+
         const urlParams = new URLSearchParams(window.location.search);
         urlParams.forEach((value, key) => {
             if (!params.has(key)) {
@@ -187,12 +210,51 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(res => res.json())
             .then(data => {
                 renderSalons(data.salons);
+                renderPagination(data.pagination);
+
                 const resultsCount = document.getElementById('resultsCount');
-                if (resultsCount) resultsCount.textContent = data.salons.length;
+                if (resultsCount) {
+                    // حساب مدى النتائج الحالية (مثلاً من 1 إلى 12)
+                    const from = (data.current_page - 1) * data.per_page + 1;
+                    const to = from + data.count - 1;
+                    const total = data.total;
+
+                    if (total > 0) {
+                        resultsCount.innerHTML = ` <b> ${to} </b> من أصل <b> ${total} </b> صالون متاح`;
+                    } else {
+                        resultsCount.textContent = 'لا توجد نتائج';
+                    }
+                }
             })
             .catch(error => {
                 console.error('Error fetching salons:', error);
             });
+    }
+    function renderPagination(paginationHtml) {
+        const paginationContainer = document.getElementById('paginationContainer');
+        if (!paginationContainer) return;
+
+        paginationContainer.innerHTML = paginationHtml;
+
+        // منع إعادة تحميل الصفحة عند الضغط على الروابط
+        const links = paginationContainer.querySelectorAll('a');
+        links.forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                // استخراج رقم الصفحة من الرابط
+                const url = new URL(this.href);
+                const page = url.searchParams.get('page');
+
+                if (page) {
+                    fetchAndRenderSalons(page);
+                    // تمرير سلس للأعلى عند الانتقال لصفحة جديدة
+                    document.getElementById('salonsGrid').scrollIntoView({ behavior: 'smooth' });
+                    // تحديث الخريطة لتعرض بيانات الصفحة الجديدة (اختياري)
+                    // initMap();
+                }
+            });
+        });
     }
 
     function renderSalons(salons) {
@@ -296,7 +358,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-    window.initMap = function() {
+    window.initMap = function () {
         const filters = getFilters();
         const params = new URLSearchParams(filters);
         const urlParams = new URLSearchParams(window.location.search);
@@ -483,8 +545,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const input = document.createElement('input');
         input.id = 'place-autocomplete-card';
         input.className = 'place-autocomplete-card';
-        input.style.width =  '250px';
-        input.style.height =  '40px';
+        input.style.width = '250px';
+        input.style.height = '40px';
         input.style.padding = isSmallScreen() ? '6px' : '8px';
         input.style.fontSize = isSmallScreen() ? '12px' : '14px';
         input.style.margin = isSmallScreen() ? '5px' : '10px';

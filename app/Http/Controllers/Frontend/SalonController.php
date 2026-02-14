@@ -13,6 +13,7 @@ use App\Models\Service;
 use App\Models\SubService;
 use App\Models\User;
 use App\Services\SalonSubServiceService;
+use App\Services\SubscriptionService;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -24,19 +25,15 @@ class SalonController extends Controller
 
     protected $service;
     protected $salonSubService;
+    protected $subscriptionService;
 
-    public function __construct(SalonService $service,SalonSubServiceService $salonSubService)
+    public function __construct(SalonService $service,SalonSubServiceService $salonSubService,SubscriptionService $subscriptionService)
     {
 
         $this->service = $service;
         $this->salonSubService = $salonSubService;
+        $this->subscriptionService = $subscriptionService;
         $this->middleware(['auth'])->only(['create','storeStep2','storeStep1']);
-    }
-
-
-    public function index()
-    {
-        return view('frontend.salons.create_step1');
     }
 
     /**
@@ -44,7 +41,7 @@ class SalonController extends Controller
      */
     public function list(Request $request)
     {
-        $query = Salon::where('status',true)
+        $query = Salon::isActive()
         ->whereHas('subServices')
         ->with(['owner', 'city', 'subServices']);
         $filter = new SalonFilter($request);
@@ -67,6 +64,10 @@ class SalonController extends Controller
             return response()->json([
                 'salons' => $salons->items(),
                 'pagination' => (string) $salons->links(),
+                'total' => $salons->total(), // إجمالي كل النتائج في كل الصفحات
+                'count' => $salons->count(), // عدد النتائج في الصفحة الحالية
+                'per_page' => $salons->perPage(),
+                'current_page' => $salons->currentPage(),
             ]);
         }
 
@@ -121,7 +122,17 @@ class SalonController extends Controller
             'type' => 'error',
             'content' => __('حدث خطأ اثناء انشاء الصالون الرجاء المحاولة مرة اخرى')
         ]);
+        try {
+            // نبحث عن أول خطة سعرها 0 (الخطة المجانية)
+            $freePlan = \App\Models\SubscriptionPlan::where('price', '<=', 0)->first();
 
+            if ($freePlan) {
+                $this->subscriptionService->assignOrRenewManual($salon, $freePlan, 0, 'إسناد آلي عند التسجيل (فترة تجريبية)');
+            }
+        } catch (\Exception $e) {
+            // نسجل الخطأ ولكن لا نوقف عملية التسجيل لضمان استمرارية المستخدم
+            \Illuminate\Support\Facades\Log::error('Failed to assign free plan to salon: ' . $salon->id . ' Error: ' . $e->getMessage());
+        }
         $defaultServices = $this->salonSubService->defaultSubServices();
         $this->service->syncSubServices($salon, $defaultServices);
 
@@ -151,7 +162,7 @@ class SalonController extends Controller
         }
         $validated = $request->validated();
         $sync = $this->service->syncSubServices($salon,$validated['salon_services']);
-        return redirect()->route('front.home')->with('message', ['type' => 'success', 'content' => __('تم تم اضافة الخدمات بنجاح')]);
+        return redirect()->route('front.home')->with('message', ['type' => 'success', 'content' => __('تم انشاء الصالون بنجاح استمتعي بالفترة المجانية')]);
     }
 
     public function show(Salon $salon)

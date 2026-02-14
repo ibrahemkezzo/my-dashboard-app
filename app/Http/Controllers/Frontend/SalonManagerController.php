@@ -10,6 +10,7 @@ use App\Notifications\BookingStatusUpdatedNotification;
 use App\Services\SalonService;
 use App\Services\SalonSubServiceService;
 use App\Services\BookingService;
+use App\Services\SubscriptionService;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,26 +22,29 @@ class SalonManagerController extends Controller
     protected $salonService;
     protected $salonSubServiceService;
     protected $bookingService;
+    protected $subscriptionService;
 
-    public function __construct(SalonService $salonService, SalonSubServiceService $salonSubServiceService, BookingService $bookingService)
+    public function __construct(SalonService $salonService, SalonSubServiceService $salonSubServiceService, BookingService $bookingService,SubscriptionService $subscriptionService)
     {
         $this->middleware(['auth']);
         $this->salonService = $salonService;
         $this->salonSubServiceService = $salonSubServiceService;
         $this->bookingService = $bookingService;
+        $this->subscriptionService = $subscriptionService;
     }
 
     // Main manager page (tabs)
     public function index(Request $request)
     {
         $user = Auth::user();
-        $salon = $user->salon;
+        $salon = $user->salon()->with(['subscription.plan', 'city', 'owner'])->first();
         if (!$salon) abort(404);
         $tab = $request->get('tab', 'info');
         $statistics = $this->bookingService->getStatistics(['salon_id' => $salon->id]);
         $bookings = $this->bookingService->getBySalon($salon, 100, []);
         $services = $salon->subServices()->with('service')->get();
-        return view('frontend.salons.manager.index', compact('salon', 'tab', 'statistics', 'bookings', 'services'));
+        $visibleHistory = $this->subscriptionService->getVisibleHistory($salon);
+        return view('frontend.salons.manager.index', compact('salon', 'tab', 'statistics', 'bookings', 'services','visibleHistory'));
     }
 
     // Update salon info
