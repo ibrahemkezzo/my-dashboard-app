@@ -1,6 +1,6 @@
 @extends('layouts.frontend')
 
-@section('title',config('app.name') . ' | ' .config('app.name_ar') .'  منصة حجز خدمات التجميل | ')
+@section('title', config('app.name') . ' | ' . config('app.name_ar') . ' منصة حجز خدمات التجميل | ')
 
 @section('main')
     <main class="main-content">
@@ -8,6 +8,19 @@
             <div class="page-header">
                 <h1 class="page-title">إدارة الصالون</h1>
                 <p class="page-subtitle">تحكم كامل في بيانات الصالون، الخدمات، الصور، والحجوزات</p>
+                @if (Auth::user()->salon->is_subscription_expiring_soon && !Auth::user()->salon->is_subscription_expired)
+                    <i class="fas fa-exclamation-circle" style=" color: #87365b; margin-left: 0.5rem; "></i>
+                    <span style="color: #87365b; padding:7px; border:1px solid #87365b;" class="rounded">
+                        يجب تجديد الاشتراك (باقي {{ Auth::user()->salon->remaining_days }} يوم حتى انتهاء الاشتراك الحالي)
+                    </span>
+                @endif
+                @if (!Auth::user()->salon->has_active_subscription || Auth::user()->salon->is_subscription_expired)
+                    <i class="fas fa-exclamation-circle" style=" color: red; margin-left: 0.5rem;"></i>
+                    <span style="color: red; padding:7px; border:1px solid red;" class="rounded">
+                        الرجاء الاشتراك الان (لن يتم عرض اي من خدماتك للمستخدمين و لن تتلقي اي حجوزات جديدة )
+                    </span>
+                @endif
+
             </div>
             <div class="card tab2-card">
                 <div class="card-body">
@@ -30,6 +43,14 @@
                         <li class="nav-item">
                             <a class="nav-link{{ $tab == 'bookings' ? ' active' : '' }}" href="?tab=bookings">الحجوزات</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link{{ $tab == 'subscription' ? ' active' : '' }}" href="?tab=subscription">
+                                الاشتراك الحالي
+                                @if (Auth::user()->salon->is_subscription_expiring_soon)
+                                    <span class="badge bg-danger ms-1">!</span>
+                                @endif
+                            </a>
+                        </li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane fade{{ $tab == 'info' ? ' show active' : '' }}" id="info">
@@ -51,6 +72,9 @@
                                 'statistics' => $statistics,
                             ])
                         </div>
+                        <div class="tab-pane fade{{ $tab == 'subscription' ? ' show active' : '' }}" id="subscription">
+                            @include('frontend.salons.manager._subscription_details', ['salon' => $salon])
+                        </div>
                     </div>
                 </div>
             </div>
@@ -61,9 +85,9 @@
 @push('styles')
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/pages-styles2.css?v=1.0.1') }}">
     <style>
-    .no-wrap-date {
-        white-space: nowrap;
-    }
+        .no-wrap-date {
+            white-space: nowrap;
+        }
     </style>
 @endpush
 

@@ -12,6 +12,7 @@ use App\Services\GoogleAuthService;
 use App\Services\MediaService;
 use App\Services\SettingsService;
 use App\Services\VisitAnalyticsService;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -63,6 +64,9 @@ class AppServiceProvider extends ServiceProvider
             };
         });
 
+        $this->app->bind(\App\Contracts\SubscriptionRepositoryInterface::class, \App\Repositories\SubscriptionRepository::class);
+        $this->app->bind(\App\Contracts\PaymentGatewayInterface::class, \App\Services\MoyasarGateway::class);
+
     }
 
     /**
@@ -70,6 +74,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Paginator::useBootstrap();
     }
 }

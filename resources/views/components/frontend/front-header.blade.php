@@ -20,7 +20,7 @@
             <div class="auth-buttons-desktop">
                 @auth
                     <div class="d-flex align-items-center">
-                        @if (Auth::user()->hasRole('salon-manager') && Auth::user()->salon->sub_services_count == 0)
+                        @if (Auth::user()->hasRole('salon-manager') && (Auth::user()->salon->sub_services_count == 0 || !Auth::user()->salon->has_active_subscription || Auth::user()->salon->is_subscription_expiring_soon || Auth::user()->salon->is_subscription_expired))
                             <a href="{{ route('verification.notice') }}" title="يرجى تأكيد بريدك الإلكتروني" class="mt-2">
                                 <i class="fas fa-exclamation-circle"
                                     style=" color: #87365b; font-size: 1.5rem; margin-left: 0.5rem;"></i>
@@ -55,6 +55,26 @@
                                             إدارة الصالون
                                         </a>
                                     </li>
+                                    <!-- رابط التجديد: يظهر فقط إذا الاشتراك قريب من الانتهاء أو منتهي -->
+                                    @if (Auth::user()->salon &&
+                                            (Auth::user()->salon->is_subscription_expiring_soon || Auth::user()->salon->is_subscription_expired))
+                                        <li class="text-danger fw-bold">
+                                            <a
+                                                href="{{ route('front.subscriptions.create', Auth::user()->salon->subscription) }}">
+                                                <i class="fas fa-exclamation-circle"
+                                                style=" color: #87365b; margin-left: 0.5rem;"></i>
+                                                تجديد الاشتراك (باقي {{ Auth::user()->salon->remaining_days }} يوم)
+                                            </a>
+                                        </li>
+                                    @elseif (Auth::user()->salon && !Auth::user()->salon->has_active_subscription)
+                                        <li class="text-warning">
+                                            <a href="{{ route('front.subscriptions.create') }}">
+                                                <i class="fas fa-exclamation-circle"
+                                                style=" color: #87365b; margin-left: 0.5rem;"></i>
+                                                اشتركي الآن
+                                            </a>
+                                        </li>
+                                    @endif
                                 @endrole
                                 @role(['super-admin'])
                                     <li><a href="{{ route('dashboard.index') }}">لوحة التحكم</a></li>
@@ -62,6 +82,7 @@
                                 @role('user')
                                     <li><a href="{{ route('front.salons.create') }}">انضمي كخبيرة تجميل</a></li>
                                 @endrole
+
                                 <li class="divider"></li>
                                 <li>
                                     <a href="#"
@@ -145,7 +166,8 @@
 
                                 @role(['salon-manager'])
                                     @if (Auth::user()->salon && Auth::user()->salon->sub_services_count == 0)
-                                        <i class="fas fa-exclamation-circle" style=" color: #87365b; margin-left: 0.5rem;"></i>
+                                        <i class="fas fa-exclamation-circle"
+                                            style=" color: #87365b; margin-left: 0.5rem;"></i>
                                     @endif
                                     <li><a href="{{ route('front.profile.salon.manager') }}">إدارة الصالون</a></li>
                                 @endrole

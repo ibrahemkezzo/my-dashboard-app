@@ -941,5 +941,15 @@ return [
     'all_notifications' => 'All Notification',
     'no_notifications' => 'No Notifications',
     'view_details' => 'view Details',
-    'default' => 'default active'
+    'default' => 'default active',
+
+    // Subscriptions (الكلمات الجديدة المضافة)
+    'subscriptions' => 'Subscriptions',
+    'subscription-plans' => 'Subscription Plans',
+    'create_subscription_plan' => 'Create Subscription Plan',
+    'edit_subscription_plan' => 'Edit Subscription Plan',
+    'no_records_found' => 'no records found',
+    'are_you_sure_delete' => 'Are You sure delete',
+    'duration_days' => 'Duration Days',
+    'price' => 'price',
 ];

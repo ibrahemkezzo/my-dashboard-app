@@ -1,5 +1,6 @@
 # Version Project
-"version": "1.4.2"
+"version": "2.0.0"
+
 # SalonBooking Platform
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -16,7 +17,7 @@ SalonBooking is a comprehensive web platform designed for booking appointments a
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Usage](#usage)
-- [Contributing](#contributing)
+- [Changelog](#changelog)
 - [License](#license)
 - [Contact](#contact)
 
@@ -24,199 +25,124 @@ SalonBooking is a comprehensive web platform designed for booking appointments a
 
 SalonBooking revolutionizes the beauty industry by connecting customers with salons through an easy-to-use online booking system. Key highlights include:
 
-- **Admin Control Panel**: Full management of users, salons, bookings, and site content.
+- **Admin Control Panel**: Full management of users, salons, bookings, subscriptions, and site content.
 - **Customer Features**: Search, filter, book appointments, view maps, and rate salons.
-- **Salon Owner Features**: Profile management, service listings, booking handling, and updates.
-- **Responsive Design**: Optimized for desktops, tablets, and mobiles.
-- **Email Notifications**: Automated alerts for booking statuses to customers and salon owners.
-
-The platform adheres to SOLID principles, clean code standards, and input validation for enhanced security and maintainability.
+- **Salon Owner Features**: Profile management, service listings, booking handling, and subscription tracking.
+- **Automated Billing**: Integrated subscription plans with automated trial periods for new partners.
 
 ## Features
 
 ### Admin Dashboard
 - Comprehensive control over registered salons, users, bookings, available cities, and services.
-- Management of site pages including support, terms of service, privacy policy, and site policies.
+- **Subscription Management**: Create plans, manage salon statuses, and adjust expiration dates manually.
 - Advanced reporting with filters:
   - User visits, devices, countries.
   - Salon and user activity.
-  - Booking statistics and analytics.
-- Built using Laravel Blade templates with modern development practices, SOLID principles, clean code, and input validation for security.
+  - Revenue tracking and subscription analytics.
 
 ### Frontend Interfaces
-- **Elegant and Responsive Design**: Intuitive UI/UX adaptable to all devices (mobile, tablet, laptop, and various screen sizes).
 - **User Types**:
-  - **Customers (Regular Users)**:
-    - Browse and search for beauty salons.
-    - Flexible filtering by location, price, services, and features.
-    - Book appointments seamlessly.
-    - Integrated Google Maps for easy salon navigation.
-    - Rating system for salons to share experiences.
-  - **Salon Owners**:
-    - Create and manage salon accounts.
-    - Customize salon profiles and list services.
-    - Receive and manage bookings (accept, reject, cancel).
-    - Add new services, update prices, and edit existing offerings.
-    - User-friendly dashboards with attractive designs for smooth operations.
+  - **Customers**: Browse salons, filter by location/price, book appointments, and integrated Google Maps.
+  - **Salon Owners**: Manage salon profiles, customize services, and handle bookings (Accept/Reject).
+- **Subscription Dashboard**: Dedicated section for owners to track their plan, view remaining trial days, and upgrade via secure payment gateways.
 
 ### Additional Capabilities
-- **Email Notification System**: Sends updates on booking statuses to customers and new booking alerts to salon owners.
+- **Subscription & Billing System**: 
+  - **Automated Free Trial**: New salons automatically receive a trial plan assigned instantly upon registration.
+  - **Payment Gateway**: Secure online renewals via **Moyasar Integration**.
+  - **Transparent History**: Owners view financial logs while internal admin adjustments remain hidden.
+- **Email Notification System**: Automated updates for booking statuses and subscription reminders.
 - **Security and Validation**: All inputs are validated to prevent vulnerabilities.
 
 ## Technologies Used
 
-- **Backend**: Laravel (latest version), PHP 8.2+
-- **Frontend**: Blade templating, HTML5, CSS3, JavaScript (with responsive frameworks like Bootstrap or Tailwind CSS)
-- **Database**: MySQL/PostgreSQL (configurable via Laravel)
+- **Backend**: Laravel 12.x, PHP 8.2+
+- **Frontend**: Blade templating, Livewire (for real-time components), Tailwind CSS/Bootstrap.
+- **Database**: MySQL/PostgreSQL (configurable via Laravel).
 - **Integrations**:
-  - Google Maps API for location services.
+  - **Moyasar API** for payment processing.
+  - **Google Maps API** for location services.
   - Email services (e.g., Mailgun, SMTP via Laravel Mail).
-- **Development Practices**: SOLID principles, Clean Code, MVC architecture, Validation rules.
-- **Tools**: Git for version control, Composer for dependency management.
+- **Architecture**: SOLID Principles, Clean Code, MVC, Service-Repository Pattern.
 
 ## Installation
 
-To set up the project locally, follow these steps:
 
-### Prerequisites
-- PHP >= 8.2
-- Composer
-- Node.js and NPM (for frontend assets)
-- MySQL or PostgreSQL database
-- Git
 
-### Steps
-1. Clone the repository:
-   ```
-   git clone https://github.com/yourusername/salonbooking.git
-   cd salonbooking
-   ```
 
-2. Install PHP dependencies:
-   ```
-   composer install
-   ```
+1. Install PHP dependencies:
+```bash
+composer install
 
-3. Install frontend dependencies (if applicable):
-   ```
-   npm install
-   npm run dev  # or npm run build for production
-   ```
+```
 
-4. Copy the environment file and configure:
-   ```
-   cp .env.example .env
-   ```
-   Edit `.env` with your database credentials, email settings, Google Maps API key, etc.
 
-5. Generate application key:
-   ```
-   php artisan key:generate
-   ```
+2. Install frontend dependencies:
+```bash
+npm install && npm run dev
 
-6. Run migrations and seed the database:
-   ```
-   php artisan migrate --seed
-   ```
+```
 
-7. Start the development server:
-   ```
-   php artisan serve
-   ```
-   Access the platform at `http://localhost:8000`.
 
-For production deployment, refer to Laravel's [deployment guide](https://laravel.com/docs/deployment).
+3. Configure Environment:
+```bash
+cp .env.example .env
+# Update DB_*, MOYASAR_*, and GOOGLE_MAPS_API_KEY
 
-## Configuration
+```
 
-- **Database**: Configure in `.env` (e.g., `DB_CONNECTION=mysql`, `DB_HOST=127.0.0.1`).
-- **Email**: Set up mail driver in `.env` (e.g., `MAIL_MAILER=smtp`, `MAIL_HOST=smtp.mailgun.org`).
-- **Google Maps**: Add `GOOGLE_MAPS_API_KEY` in `.env`.
-- **Queueing**: For email notifications, run `php artisan queue:work`.
+
+4. Setup Database & Key:
+```bash
+php artisan key:generate
+php artisan migrate --seed
+
+```
+
+
+5. Start Server:
+```bash
+php artisan serve
+
+```
+
+
 
 ## Usage
 
-- **Admin Access**: Login at `/admin` with seeded credentials (e.g., admin@example.com).
-- **Customer Registration**: Sign up as a regular user to browse and book.
-- **Salon Owner Registration**: Sign up as a salon owner to manage your profile.
-- **Testing Emails**: Use tools like Mailtrap for development.
+* **Admin Access**: Login at `/admin` with seeded credentials.
+* **Salon Registration**: New salons are automatically placed on a trial plan after Step 1 of registration.
+* **Subscription Tracking**: Owners can monitor their status and history through the dedicated "Subscriptions" tab in their profile.
 
-For detailed API endpoints (if applicable), check the `routes/api.php` file.
+## Changelog
 
-## Contributing
+### v2.0.0 (February 2026) — Subscriptions & Automated Onboarding
 
-We welcome contributions! Please follow these steps:
-1. Fork the repository.
-2. Create a feature branch: `git checkout -b feature/YourFeature`.
-3. Commit your changes: `git commit -m 'Add YourFeature'`.
-4. Push to the branch: `git push origin feature/YourFeature`.
-5. Open a Pull Request.
+* **feat**: Implemented automatic free trial assignment during the salon registration wizard (`storeStep1`).
+* **feat**: Integrated **Moyasar Payment Gateway** for online plan renewals and automated callback handling.
+* **refactor**: Centralized billing and history logic in `SubscriptionService` to decouple business logic from Controllers.
+* **fix**: Enhanced subscription history visibility to filter out administrative manual date adjustments from user-facing views.
+* **ux**: Added dynamic subscription widgets showing "Joining Gift" status and trial period countdowns.
+* **perf**: Automated salon deactivation/activation based on real-time subscription expiry checks.
 
-Ensure code follows SOLID and clean code principles. Run tests with `php artisan test`.
+### v1.5.0 — Rewards, Points, and Notifications
 
-## License
+* **Points System**: Earn points automatically on completed bookings.
+* **Livewire Notifications**: Real-time dropdowns for booking updates and rewards in Dashboard & Frontend.
+* **Booking Logic**: Enhanced `canBeCompleted()` validation based on appointment time.
+* **UX**: Custom 419 error page and responsive Sidebar updates.
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+### v1.4.0 (October 2025)
+
+* Multi-service booking support in a single appointment.
+* Added price range filtering (min/max) for salon listings.
+* Improved salon creation and service assignment workflow.
+
+---
+
 
 ## Contact
 
-For questions or support, reach out to [your.email@example.com](mailto:your.email@example.com) or open an issue on GitHub.
+For support or questions, reach out to [ibrahemkezzo.w@gmail.com](mailto:ibrahemkezzo.w@gmail.com).
 
-Thank you for using SalonBooking! 🚀
-
-## v1.3.0 - 2025-09-24
-- Redesigned website with new color scheme and Google login fixes.
-- Updated visual identity including logo and icons.
-
-## Version 1.4.0 (October 2, 2025)
-
-    New Features:
-
-    Book multiple services in a single salon appointment.
-    Added min_price and max_price for salon services.
-    Improved salon creation and service assignment.
-    Updated booking modal and hero section designs for better responsiveness.
-
-
-    Bug Fixes:
-
-    Fixed issues in service handling and data validation.
-    Optimized frontend performance.
-
-## New Features (v1.5) — Rewards, Points, and Database Notifications
-
-### 1. **Points & Rewards System**
-- **Earn points automatically** on completed bookings.
-- **Admin dashboard** to create, edit, and delete rewards.
-- **User reward tracking** with statuses: `pending`, `claimed`, `expired`.
-- Auto-notification when enough points are earned.
-
-### 2. **Database Notifications with Livewire**
-- Real-time **notification dropdowns** in:
-  - Dashboard (for admins)
-  - Frontend (for users)
-- Supported events:
-  - Booking status updates
-  - Reward grants
-  - Email verification
-  - New salon requests
-
-### 3. **Booking Logic Enhancements**
-- `canBeCompleted()`: Only allowed **after appointment end time**.
-- Supports salon-proposed datetime and duration.
-- Multi-service booking support.
-
-### 4. **UX Improvements**
-- **Custom 419 error page** with login button.
-- **Livewire-powered notification dropdowns** with color-coded icons.
-- Updated sidebar, translations, and responsive styles.
-
-### 5. **Tech Stack**
-| Feature | Technology |
-|--------|------------|
-| Notifications | Laravel Notifications (`database`) |
-| Dropdowns | **Livewire** |
-| Points Logic | `Booking` → `User` → `UserReward` |
-| Rewards | `Reward`, `UserReward`, `RewardService` |
-| Time Validation | Carbon + Accessors |
 

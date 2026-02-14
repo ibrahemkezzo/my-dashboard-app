@@ -118,8 +118,8 @@
         <section class="results-section py-2">
             <div class="container">
                 <div class="results-info">
-                    <span class="fw-semibold">النتائج المتاحة: <span id="resultsCount" class="text-danger">12</span>
-                        صالون</span>
+                    <span class="fw-semibold">النتائج المتاحة: <span id="resultsCount" class="">12</span>
+                        </span>
                 </div>
             </div>
         </section>
@@ -135,6 +135,7 @@
                                 @include('components.frontend.salon-card', ['salon' => $salon])
                             @endforeach
                         </div>
+                        <div id="paginationContainer" class="mt-4"></div>
                     </div>
 
                     <!-- Sidebar - Second on mobile -->
@@ -215,8 +216,7 @@
 @endpush
 
 @push('styles')
- <style>
-
+    <style>
         .custom-map-control-button {
             background-color: #fff;
             border: 0;
@@ -256,6 +256,97 @@
 
         option:disabled {
             color: #6c757d;
+        }
+
+        /* حاوية الباجينيشن لضمان التوسط */
+        #paginationContainer {
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            direction: ltr;
+            /* نجعل الاتجاه يسار-يمين لتظهر الأرقام بشكل صحيح */
+        }
+
+        /* تنسيق القائمة */
+        .pagination {
+            display: flex;
+            padding-left: 0;
+            list-style: none;
+            gap: 8px;
+            /* مسافة بين الأزرار */
+            align-items: center;
+        }
+
+        /* تنسيق الروابط والأزرار */
+        .page-item .page-link {
+            position: relative;
+            display: block;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            /* لون النص العادي */
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            /* حواف دائرية ناعمة */
+            text-decoration: none;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+        }
+
+        /* تأثير عند مرور الماوس */
+        .page-item .page-link:hover {
+            color: #87365b;
+            /* اللون الأساسي للموقع */
+            background-color: #fcf4f7;
+            /* خلفية وردية فاتحة جداً */
+            border-color: #87365b;
+            transform: translateY(-2px);
+            /* حركة بسيطة للأعلى */
+            box-shadow: 0 4px 6px rgba(135, 54, 91, 0.15);
+            z-index: 2;
+        }
+
+        /* الصفحة الحالية (النشطة) */
+        .page-item.active .page-link {
+            z-index: 3;
+            color: #fff;
+            background-color: #87365b;
+            /* اللون الأساسي */
+            border-color: #87365b;
+            box-shadow: 0 4px 8px rgba(135, 54, 91, 0.3);
+        }
+
+        /* حالة التعطيل (مثل زر السابق في الصفحة الأولى) */
+        .page-item.disabled .page-link {
+            color: #ccc;
+            pointer-events: none;
+            background-color: #f9f9f9;
+            border-color: #eee;
+        }
+
+        /* إخفاء الأزرار الزائدة في الموبايل ليبقى الشكل جميلاً */
+        @media (max-width: 576px) {
+            .page-link {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+        }
+        #resultsCount {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 20px;
+            padding: 10px 15px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        #resultsCount b {
+            font-size: 17px;
+            color: #87365b;
+            padding: 0px 5px;
         }
     </style>
 @endpush

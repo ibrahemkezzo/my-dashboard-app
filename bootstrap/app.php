@@ -25,6 +25,10 @@ return Application::configure(basePath: dirname(__DIR__))
             'permission' => PermissionMiddleware::class,
             'role_or_permission' => RoleOrPermissionMiddleware::class,
             'trackable' => TrackVisitMiddleware::class,
+            'check.subscription' => \App\Http\Middleware\CheckSubscription::class,
+        ]);
+        $middleware->validateCsrfTokens(except: [
+        'moyasar/webhook', // استثناء رابط الويب هوك
         ]);
 
     })
