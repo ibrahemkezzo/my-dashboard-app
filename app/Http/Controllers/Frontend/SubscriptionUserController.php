@@ -32,112 +32,87 @@ class SubscriptionUserController extends Controller
         return view('frontend.subscriptions.create', compact('plans'));
     }
 
+    /**
+     * بدء عملية الدفع
+     */
     public function payment(Request $request, SubscriptionPlan $plan)
     {
         $salon = Auth::user()->salon;
 
         try {
-            // نضع البارامترات الضرورية في رابط العودة لنستلمها لاحقاً
-            // ميسر ستقوم بإضافة ?id=INVOICE_ID&status=PAID لهذا الرابط عند العودة
+            // نرسل فقط رابط الكولباك الأساسي، البيانات ستُحفظ في الـ Metadata
             $callbackUrl = route('front.subscriptions.callback');
 
+            // السيرفس تتكفل بإنشاء السجل المحلي والاتصال بميسر
             $invoiceResult = $this->service->initiatePayment($salon, $plan, $callbackUrl);
 
-            if (empty($invoiceResult['url'])) {
-                throw new Exception('Moyasar did not return a payment URL');
-            }
-
-            // توجيه المستخدم لصفحة ميسر الآمنة
             return redirect()->away($invoiceResult['url']);
         } catch (Exception $e) {
-            Log::error('Payment Init Error', ['msg' => $e->getMessage()]);
             return redirect()->back()->with('message', [
                 'type'    => 'error',
-                'content' => 'حدث خطأ في الاتصال ببوابة الدفع. يرجى المحاولة مرة أخرى.'
+                'content' => 'حدث خطأ أثناء الاتصال ببوابة الدفع: ' . $e->getMessage()
             ]);
         }
     }
 
-    // دالة العودة والتحقق (قلب الأمان)
-public function callback(Request $request)
-{
-    // ميسر ترسل البيانات في الـ URL Query String
-    $invoiceId = $request->query('id');
-    $status = $request->query('status');
-
-    // البيانات التي أضفتها أنت يدوياً في رابط الـ callback
-    $salonId = $request->query('salon_id');
-    $planId = $request->query('plan_id');
-
-    // تسجيل البيانات للتأكد من وصولها (للـ Debug فقط)
-    Log::info('Moyasar Callback Received', [
-        'invoice_id' => $invoiceId,
-        'status' => $status,
-        'salon_id' => $salonId,
-        'request' => $request->all()
-    ]);
-
-    if (!$invoiceId || $status !== 'paid') {
-        Log::warning('Moyasar payment failed or cancelled', [
-            'id' => $invoiceId,
-            'status' => $status
+    /**
+     * صفحة العودة (Callback)
+     */
+    public function callback(Request $request)
+    {
+        // نستقبل فقط معرف الفاتورة، باقي التفاصيل تأتي من السيرفس
+        $paymentRef = $request->query('payment_ref');
+        // تسجيل البيانات للتأكد من وصولها (للـ Debug فقط)
+        Log::info('Moyasar Callback Received', [
+            'request' => $request->all()
         ]);
-        return redirect()->route('front.profile.salon.manager')->with('message', [
+
+        if (!$paymentRef) {
+            return redirect()->route('front.profile.salon.manager')->with('message', [
                 'type'    => 'error',
-                'content' => 'عملية الدفع لم تكتمل. يرجى المحاولة مرة أخرى.'
+                'content' => 'رابط العودة غير صالح.'
             ]);
-    }
+        }
 
-    try {
-        // التحقق من الفاتورة عبر API ميسر (أهم خطوة أمان)
-        $invoiceData = $this->paymentGateway->fetchInvoice($invoiceId);
+        // استدعاء السيرفس لمعالجة التحقق والتحديث
+        $result = $this->service->handlePaymentCallback($paymentRef);
 
-        if ($invoiceData['status'] === 'paid') {
-            $salon = \App\Models\Salon::findOrFail($salonId);
-            $plan = \App\Models\SubscriptionPlan::findOrFail($planId);
-
-            // جلب أول عملية دفع ناجحة من مصفوفة المدفوعات داخل الفاتورة
-            $paymentId = $invoiceData['payments'][0]['id'] ?? $invoiceId;
-
-            // تفعيل الاشتراك
-            $this->service->confirmPaymentAndUpdateSubscription($paymentId, $salon, $plan);
-
+        if ($result['success']) {
             return redirect()->route('front.profile.salon.manager')->with('message', [
                 'type'    => 'success',
-                'content' => 'تم تفعيل الاشتراك بنجاح!'
+                'content' => $result['message']
+            ]);
+        } else {
+            return redirect()->route('front.profile.salon.manager')->with('message', [
+                'type'    => 'error',
+                'content' => $result['message']
             ]);
         }
-
-        return redirect()->route('front.profile.salon.manager')->with('message', [
-                'type'    => 'error',
-                'content' => 'حدث خطأ أثناء معالجة الاشتراك. تواصل مع الدعم.'
-            ]);
-
-    } catch (Exception $e) {
-        Log::error('Callback Error', ['msg' => $e->getMessage()]);
-        return redirect()->route('front.profile.salon.manager')->with('message', [
-                'type'    => 'error',
-                'content' => 'حدث خطأ أثناء معالجة الاشتراك. تواصل مع الدعم.'
-            ]);
     }
-}
+
 
     public function webhook(Request $request)
     {
+        Log::info('--- Webhook Handling Started ---', ['request' => $request->all()]);
+        // 1. التحقق من التوقيع الرقمي (الأمان)
         $payload = $this->paymentGateway->verifyWebhook($request);
 
         if (!$payload) {
-            return response('Invalid signature', 403);
+            Log::error('Moyasar Webhook: Invalid Signature');
+            return response()->json(['message' => 'Invalid Signature'], 403);
         }
 
-        // معالجة async (مثل paid بعد 3DS)
-        if ($payload['status'] === 'paid') {
-            // جلب salon و plan من metadata أو DB
-            // هنا افترض metadata في createPayment
-            // $this->service->confirmPaymentAndUpdateSubscription($payload['id'], $salon, $plan);
+        // 2. معالجة الدفع الناجح
+        if ($payload['event'] === 'invoice.paid') {
+            $invoiceId = $payload['data']['id'];
+
+            Log::info('Moyasar Webhook Received: Invoice Paid', ['invoice_id' => $invoiceId]);
+
+            // استدعاء السيرفس لتحديث حالة الاشتراك
+            $this->service->handlePaymentCallback($invoiceId);
         }
 
-        return response('OK', 200);
+        return response()->json(['status' => 'success']);
     }
 
     // renew و processRenew مشابه، مع redirect إلى payment route

@@ -23,7 +23,7 @@ return new class extends Migration
                   ->onDelete('set null'); // لو حذف الخطة، يصير null (آمن)
             $table->date('start_date');
             $table->date('end_date')->nullable(); // nullable للـ indefinite أو trial بدون نهاية ثابتة
-            $table->string('status', 20)->default('trial'); // trial, active, expired, suspended
+            $table->string('status', 20)->nullable(); // trial, active, expired, suspended
             $table->string('payment_token')->nullable(); // لـ Moyasar token
             $table->date('trial_end_date')->nullable(); // إذا بدك تفصل trial_end عن end_date
             $table->timestamps();

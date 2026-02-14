@@ -21,8 +21,8 @@ class SubscriptionRepository implements SubscriptionRepositoryInterface
 
     public function findNeedingReminders(): Collection
     {
-        return Subscription::where('status', 'active')
-            ->whereRaw('DATEDIFF(end_date, NOW()) = 5')
+        return Subscription::whereIn('status', ['active', 'trial'])
+            ->whereRaw('DATEDIFF(end_date, NOW()) <= 5')
             ->get();
     }
 

@@ -31,161 +31,177 @@ class SubscriptionService
         $this->paymentGateway = $paymentGateway;
     }
 
-    // إنشاء دفع جديد (يعيد رابط الدفع المستضاف)
+// ==========================================
+    // 1. منطق الدفع الإلكتروني (تم تحديثه)
+    // ==========================================
+
+    /**
+     * إنشاء سجل دفع محلي وطلب فاتورة من بوابة الدفع
+     */
     public function initiatePayment(Salon $salon, SubscriptionPlan $plan, string $callbackUrl): array
     {
+        Log::info('--- Start Initiate Payment Process ---', [
+            'salon_id' => $salon->id,
+            'plan_id' => $plan->id
+        ]);
+
         if ($plan->price <= 0) {
+            Log::warning('Attempted to initiate payment for a free plan', ['plan_id' => $plan->id]);
             throw new Exception('Cannot initiate payment for free plan');
         }
 
-        $paymentData = [
-            'amount' => $plan->price * 100, // تحويل للهللة
-            'currency' => 'SAR',
-            'description' => 'اشتراك صالون ' . $salon->name . ' - خطة ' . $plan->name,
-            'callback_url' => $callbackUrl, // سيتم تمرير البارامترات لاحقاً في الكونترولر إذا لزم
-            'metadata' => [
-                'salon_id' => $salon->id,
-                'plan_id' => $plan->id,
-            ],
-        ];
+        $subscription = $this->getOrCreateCurrentSubscription($salon);
 
-        // نستخدم دالة الفاتورة الجديدة
-        return $this->paymentGateway->createInvoice($paymentData);
-    }
-
-    // تأكيد الدفع وتحديث الاشتراك (يُستدعى من callback أو webhook)
-    public function confirmPaymentAndUpdateSubscription(string $paymentId, Salon $salon, SubscriptionPlan $plan): Subscription
-    {
-        return DB::transaction(function () use ($paymentId, $salon, $plan) {
-            $paymentResult = $this->paymentGateway->fetchPayment($paymentId);
-
-            if ($paymentResult['status'] !== 'paid') {
-                Log::warning('Payment not paid', ['payment_id' => $paymentId, 'status' => $paymentResult['status']]);
-                throw new Exception('Payment not completed');
-            }
-
-            $subscription = $this->getOrCreateCurrentSubscription($salon);
-
-            $subscription->subscription_plan_id = $plan->id;
-            $subscription->end_date = $subscription->end_date
-                ? $subscription->end_date->addDays($plan->duration_days)
-                : Carbon::now()->addDays($plan->duration_days);
-            $subscription->status = 'active';
-            $subscription->save();
-
-            // سجل الدفع
-            $subscription->payments()->create([
-                'payment_id' => $paymentResult['id'],
-                'amount' => $plan->price,
-                'status' => 'paid',
-                'method' => 'online',
-                'gateway_response' => $paymentResult,
+        return DB::transaction(function () use ($salon, $plan, $subscription, $callbackUrl) {
+            // 1. إنشاء سجل الدفع المحلي
+            $localPayment = Payment::create([
+                'salon_id'        => $salon->id,
+                'subscription_id' => $subscription->id,
+                'amount'          => $plan->price,
+                'currency'        => 'SAR',
+                'gateway'         => 'moyasar',
+                'status'          => 'pending',
             ]);
 
-            // حفظ توكن إذا موجود (للتجديد السريع)
-            if (isset($paymentResult['source']['token'])) {
-                $subscription->payment_token = encrypt($paymentResult['source']['token']);
-                $subscription->save();
-            }
-
-            // تسجيل في التاريخ
-            $this->logHistory($subscription, $plan, $plan->price, 'online', 'Subscribed/Renewed via Moyasar');
-
-            Log::info('Subscription updated after successful payment', [
-                'salon_id' => $salon->id,
-                'payment_id' => $paymentId,
+            Log::info('Local payment record created', [
+                'payment_id' => $localPayment->id,
+                'reference' => $localPayment->payment_reference
             ]);
 
-            return $subscription;
+            // 2. تجهيز الرابط والبيانات
+            $separator = str_contains($callbackUrl, '?') ? '&' : '?';
+            $finalCallbackUrl = $callbackUrl . $separator . 'payment_ref=' . $localPayment->payment_reference;
+
+            $paymentData = [
+                'amount'       => $plan->price * 100,
+                'currency'     => 'SAR',
+                'description'  => "اشتراك صالون {$salon->name} - خطة {$plan->name}",
+                'callback_url' => $finalCallbackUrl,
+                'metadata'     => [
+                    'local_payment_id' => $localPayment->id,
+                    'payment_ref'      => $localPayment->payment_reference,
+                    'plan_id'          => $plan->id,
+                ],
+            ];
+
+            try {
+                Log::info('Sending request to Moyasar Gateway', ['payload' => $paymentData]);
+
+                $invoiceResult = $this->paymentGateway->createInvoice($paymentData);
+
+                Log::info('Moyasar Invoice created successfully', ['invoice_id' => $invoiceResult['id']]);
+
+                // 3. تحديث السجل المحلي بالـ Invoice ID
+                $localPayment->update([
+                    'gateway_transaction_id' => $invoiceResult['id'],
+                    'gateway_response'       => $invoiceResult
+                ]);
+
+                return $invoiceResult;
+            } catch (Exception $e) {
+                Log::error('Failed to create Moyasar Invoice', [
+                    'payment_id' => $localPayment->id,
+                    'error' => $e->getMessage()
+                ]);
+                throw $e;
+            }
         });
     }
 
-    // دفع إلكتروني - اشتراك جديد أو تجديد
-    // public function subscribeOrRenewOnline(Salon $salon, SubscriptionPlan $plan, Request $request): Subscription
-    // {
-    //     if ($plan->price <= 0) {
-    //         throw new Exception('Cannot subscribe online to free plan');
-    //     }
+    /**
+     * معالجة العودة من بوابة الدفع وتفعيل الاشتراك
+     */
+    public function handlePaymentCallback(string $paymentRef): array
+    {
+        Log::info('--- Callback Handling Started ---', ['payment_ref' => $paymentRef]);
 
-    //     return DB::transaction(function () use ($salon, $plan, $request) {
-    //         $subscription = $this->getOrCreateCurrentSubscription($salon);
+        try {
+            $payment = Payment::where('payment_reference', $paymentRef)->first();
 
-    //         // معالجة الدفع أولاً
-    //         $paymentResult = $this->processOnlinePayment($subscription, $request, $plan);
+            if (!$payment) {
+                Log::error('Payment reference not found in database', ['payment_ref' => $paymentRef]);
+                throw new Exception("Local payment record not found for ref: {$paymentRef}");
+            }
 
-    //         Log::info('Moyasar payment successful', [
-    //             'salon_id' => $salon->id,
-    //             'plan_id' => $plan->id,
-    //             'payment_id' => $paymentResult['id'],
-    //             'amount' => $paymentResult['amount'] / 100,
-    //         ]);
+            return DB::transaction(function () use ($payment) {
+                $payment->lockForUpdate();
 
-    //         // فقط بعد نجاح الدفع، حدث الاشتراك
-    //         $subscription->subscription_plan_id = $plan->id;
-    //         $subscription->end_date = $subscription->end_date
-    //             ? $subscription->end_date->addDays($plan->duration_days)
-    //             : Carbon::now()->addDays($plan->duration_days);
-    //         $subscription->status = 'active';
-    //         $subscription->save();
+                if ($payment->status === 'completed') {
+                    Log::info('Payment already processed and completed', ['payment_id' => $payment->id]);
+                    return ['success' => true, 'message' => 'تم تفعيل الاشتراك بنجاح!'];
+                }
 
-    //         // سجل الدفع في DB
-    //         $subscription->payments()->create([
-    //             'payment_id' => $paymentResult['id'],
-    //             'amount' => $plan->price,
-    //             'status' => 'paid',
-    //             'method' => 'online',
-    //             'gateway_response' => $paymentResult, // كامل الـ response للـ debug
-    //         ]);
+                Log::info('Fetching invoice status from Moyasar', ['invoice_id' => $payment->gateway_transaction_id]);
 
-    //         // حفظ التوكن إذا موجود
-    //         if (isset($paymentResult['token'])) {
-    //             $subscription->payment_token = encrypt($paymentResult['token']);
-    //             $subscription->save();
-    //         }
+                $invoiceData = $this->paymentGateway->fetchInvoice($payment->gateway_transaction_id);
 
-    //         // تسجيل في التاريخ
-    //         $this->logHistory($subscription, $plan, $plan->price, 'online', 'Subscribed/Renewed online via Moyasar');
+                Log::info('Moyasar Invoice Status Received', [
+                    'invoice_id' => $invoiceData['id'],
+                    'status' => $invoiceData['status'],
+                    'invoice' => $invoiceData
+                ]);
 
-    //         return $subscription;
-    //     });
-    // }
+                if ($invoiceData['status'] === 'paid') {
+                    $payment->markAsCompleted($invoiceData['id'], $invoiceData);
 
-    // protected function processOnlinePayment(Subscription $subscription, Request $request, SubscriptionPlan $plan): array
-    // {
-    //     $paymentData = [
-    //         'amount' => $plan->price * 100,
-    //         'currency' => 'SAR',
-    //         'description' => 'Subscription for salon ' . $subscription->salon->name,
-    //     ];
+                    $planId = $invoiceData['metadata']['plan_id'] ?? $payment->subscription->subscription_plan_id;
+                    $plan = SubscriptionPlan::findOrFail($planId);
 
-    //     if (config('services.moyasar.enable_tokenization') && $subscription->payment_token && !$request->has('new_card')) {
-    //         $paymentData['source'] = [
-    //             'type' => 'token',
-    //             'token' => decrypt($subscription->payment_token),
-    //         ];
-    //     } else {
-    //         $paymentData['source'] = $request->input('source');
-    //     }
+                    $this->activatePaidSubscription($payment->salon, $plan, $payment);
 
-    //     Log::info('Initiating Moyasar payment', [
-    //         'salon_id' => $subscription->salon_id,
-    //         'plan_id' => $plan->id,
-    //         'amount' => $plan->price,
-    //         'source_type' => $paymentData['source']['type'] ?? 'new_card',
-    //     ]);
+                    Log::info('Subscription successfully activated via Callback/Webhook', [
+                        'salon_id' => $payment->salon_id,
+                        'payment_id' => $payment->id
+                    ]);
 
-    //     $payment = $this->paymentGateway->createInvoice($paymentData);
+                    return ['success' => true, 'message' => 'تم تفعيل الاشتراك بنجاح!'];
+                }
 
-    //     if ($payment['status'] !== 'paid') {
-    //         Log::error('Moyasar payment failed', [
-    //             'salon_id' => $subscription->salon_id,
-    //             'response' => $payment,
-    //         ]);
-    //         throw new Exception('Payment failed: ' . ($payment['message'] ?? 'Unknown error'));
-    //     }
+                Log::warning('Payment failed or not paid yet', [
+                    'invoice_id' => $invoiceData['id'],
+                    'status' => $invoiceData['status']
+                ]);
 
-    //     return $payment;
-    // }
+                $payment->markAsFailed($invoiceData['message'] ?? 'Payment Failed', $invoiceData);
+                return ['success' => false, 'message' => 'عملية الدفع لم تكتمل.'];
+            });
+        } catch (Exception $e) {
+            Log::error('Critical error in handlePaymentCallback', [
+                'payment_ref' => $paymentRef,
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return ['success' => false, 'message' => 'حدث خطأ أثناء معالجة الطلب.'];
+        }
+    }
+
+    /**
+     * تفعيل الاشتراك الفعلي وتحديث بيانات الصالون
+     */
+    protected function activatePaidSubscription(Salon $salon, SubscriptionPlan $plan, Payment $payment): void
+    {
+        $subscription = $this->getOrCreateCurrentSubscription($salon);
+
+        $newEndDate = ($subscription->end_date && $subscription->end_date->isFuture())
+            ? $subscription->end_date->addDays($plan->duration_days)
+            : Carbon::now()->addDays($plan->duration_days);
+
+        $subscription->update([
+            'subscription_plan_id' => $plan->id,
+            'status'               => 'active',
+            'end_date'             => $newEndDate,
+        ]);
+
+        $salon->update(['is_active' => true]);
+
+        $this->logHistory($subscription, $plan, $payment->amount, 'online', "تجديد عبر ميسر (مرجع: {$payment->payment_reference})");
+
+        Log::info('ActivatePaidSubscription: Subscription and Salon updated', [
+            'salon_id' => $salon->id,
+            'new_end_date' => $newEndDate->toDateTimeString()
+        ]);
+    }
+
 
     // دفع يدوي - اسناد أو تجديد
     public function assignOrRenewManual(Salon $salon, SubscriptionPlan $plan, ?float $paidAmount = null, ?string $note = ''): Subscription
@@ -207,6 +223,7 @@ class SubscriptionService
         if (!$isFreeTrial) {
             $subscription->payments()->create([
                 'payment_id' => 'manual_' . uniqid(),
+                'salon_id' => $salon->id,
                 'amount' => $paidAmount ?? $plan->price,
                 'status' => 'paid',
                 'method' => 'cash',
@@ -289,17 +306,35 @@ class SubscriptionService
     public function updateEndDate(Subscription $subscription, Carbon $newEndDate): void
     {
         $oldEndDate = $subscription->end_date;
+        $isPast = $newEndDate->isPast();
 
+        // 1. تحديث التاريخ
         $subscription->end_date = $newEndDate;
-        $subscription->status = $newEndDate->isPast() ? 'expired' : 'active';
-        $subscription->save();
 
-        if ($newEndDate->isPast()) {
-            $subscription->salon->is_active = false;
-            $subscription->salon->save();
+        // 2. تحديد الحالة بناءً على التاريخ ونوع الخطة
+        if ($isPast) {
+            $subscription->status = 'expired';
+        } else {
+            // إذا كان سعر الخطة 0 أو غير محددة (خطة تجريبية)، نضع الحالة trial، وإلا active
+            $isFree = optional($subscription->plan)->price <= 0;
+            $subscription->status = $isFree ? 'trial' : 'active';
         }
 
-        $this->logHistory($subscription, $subscription->plan, 0, 'manual', "End date updated from {$oldEndDate?->format('Y-m-d')} to {$newEndDate->format('Y-m-d')}");
+        $subscription->save();
+
+        // 3. تحديث حالة الصالون (تنشيط أو تعطيل)
+        $subscription->salon->update([
+            'is_active' => !$isPast
+        ]);
+
+        // 4. تسجيل العملية في السجل
+        $this->logHistory(
+            $subscription,
+            $subscription->plan,
+            0,
+            'manual',
+            "تعديل تاريخ الانتهاء من " . ($oldEndDate?->format('Y-m-d') ?: 'N/A') . " إلى {$newEndDate->format('Y-m-d')} (الحالة: {$subscription->status})"
+        );
     }
 
     public function getSubscriptions(Request $request): LengthAwarePaginator
@@ -322,11 +357,11 @@ class SubscriptionService
         };
         $end = Carbon::now();
 
-        $revenue = Payment::where('status', 'paid')
+        $revenue = Payment::where('status', 'completed')
             ->whereBetween('created_at', [$start, $end])
             ->sum('amount');
 
-        $paid = Payment::where('status', 'paid')
+        $paid = Payment::where('status', 'completed')
             ->whereBetween('created_at', [$start, $end])
             ->count();
 
@@ -337,23 +372,28 @@ class SubscriptionService
 
         $subscribed = Salon::whereHas('subscription', function ($q) {
             $q->where('status', 'active')
-                ->whereHas('plan', fn($pq) => $pq->where('price', '>', 0));
+                ->orWhere('status', 'trial');
         })->count();
 
         return compact('revenue', 'paid', 'trial', 'subscribed');
     }
 
-    public function sendRenewalReminders(): void
+    public function sendRenewalReminders(): Collection
     {
-        $subscriptions = $this->repository->findNeedingReminders(); // قبل 5 أيام
-
-        foreach ($subscriptions as $subscription) {
-            $subscription->salon->notify(new RenewalReminderNotification($subscription));
-        }
+        return $this->repository->findNeedingReminders(); // قبل 5 أيام
     }
 
     public function findExpired(): Collection
     {
         return $this->repository->findExpired();
+    }
+
+    public function getVisibleHistory(Salon $salon, int $limit = 10)
+    {
+        return $salon->subscription->histories()
+            ->whereIn('payment_method', ['online', 'cash', 'free_trial'])
+            ->latest()
+            ->take($limit)
+            ->get();
     }
 }

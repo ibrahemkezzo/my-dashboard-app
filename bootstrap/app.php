@@ -27,6 +27,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'trackable' => TrackVisitMiddleware::class,
             'check.subscription' => \App\Http\Middleware\CheckSubscription::class,
         ]);
+        $middleware->validateCsrfTokens(except: [
+        'moyasar/webhook', // استثناء رابط الويب هوك
+        ]);
 
     })
     ->withExceptions(function (Exceptions $exceptions): void {

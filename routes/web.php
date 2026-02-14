@@ -73,7 +73,7 @@ Route::prefix('auth')->name('auth.')->group(function () {
 Route::get('/privacy/facebook-data-deletion', function () {
     return response()->json([
         'url' => 'https://glowzelle.com/privacy/delete-facebook-data',
-        'confirmation_code' => 'GDPR-'.Auth::user()?->id ?? 'DELETED',
+        'confirmation_code' => 'GDPR-' . Auth::user()?->id ?? 'DELETED',
     ]);
 });
 Route::group([
@@ -203,7 +203,6 @@ Route::group([
     Route::post('subscriptions/{subscription}/update-end-date', [SubscriptionController::class, 'updateEndDate'])->name('subscriptions.update-end-date');
     Route::get('subscriptions/{salon}/history', [SubscriptionController::class, 'history'])->name('subscriptions.history');
     Route::post('subscriptions/{subscription}/activate', [SubscriptionController::class, 'activate'])->name('subscriptions.activate');
-
 });
 
 // route for front website
@@ -288,21 +287,34 @@ Route::group([
             Route::post('services/{subServiceId}/images/add', [SalonManagerController::class, 'addServiceImage'])->name('.services.images.add');
             Route::post('services/{subServiceId}/images/{media}/delete', [SalonManagerController::class, 'deleteServiceImage'])->name('.services.images.delete');
         });
-
     });
     // pages
     Route::get('/about-us', [FrontController::class, 'aboutUs'])->name('about-us');
     Route::get('/faq', [FrontController::class, 'faq'])->name('faq');
     Route::get('/privacy', [FrontController::class, 'privacy'])->name('privacy');
-    Route::get('/terms',[FrontController::class, 'terms'])->name('terms');
+    Route::get('/terms', [FrontController::class, 'terms'])->name('terms');
     // Route::get('subscriptions/create', [SubscriptionUserController::class, 'create'])->name('subscriptions.create');
     // Route::post('subscriptions', [SubscriptionUserController::class, 'store'])->name('subscriptions.store');
     // Route::get('subscriptions/{subscription}/renew', [SubscriptionUserController::class, 'renew'])->name('subscriptions.renew');
     // Route::post('subscriptions/{subscription}/renew', [SubscriptionUserController::class, 'processRenew'])->name('subscriptions.process_renew');
-    Route::get('subscriptions/create', [SubscriptionUserController::class, 'create'])->name('subscriptions.create');
-    Route::get('subscriptions/payment/{plan}', [SubscriptionUserController::class, 'payment'])->name('subscriptions.payment');
-    Route::get('subscriptions/callback', [SubscriptionUserController::class, 'callback'])->name('subscriptions.callback');
-    Route::post('moyasar/webhook', [SubscriptionUserController::class, 'webhook'])->name('moyasar.webhook');
-    Route::get('subscriptions/renew/{subscription}', [SubscriptionUserController::class, 'renew'])->name('subscriptions.renew');
-});
+    Route::group(['middleware' => ['auth']], function () {
+        // عرض الخطط
+        Route::get('subscriptions/create', [SubscriptionUserController::class, 'create'])
+            ->name('subscriptions.create');
 
+        // بدء عملية الدفع (توجيه لميسر)
+        Route::get('subscriptions/payment/{plan}', [SubscriptionUserController::class, 'payment'])
+            ->name('subscriptions.payment');
+
+        // رابط العودة بعد الدفع (Success/Cancel Page)
+        // ملاحظة: جعلناه GET لأن العميل يعود عبر المتصفح
+        Route::get('subscriptions/callback', [SubscriptionUserController::class, 'callback'])
+            ->name('subscriptions.callback');
+        // Route::get('subscriptions/webhook', [SubscriptionUserController::class, 'webhook'])
+        //     ->name('subscriptions.webhook');
+
+        // تجديد اشتراك موجود
+        Route::get('subscriptions/renew/{subscription}', [SubscriptionUserController::class, 'renew'])
+            ->name('subscriptions.renew');
+    });
+});

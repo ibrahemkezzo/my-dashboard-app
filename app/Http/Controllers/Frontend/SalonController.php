@@ -13,6 +13,7 @@ use App\Models\Service;
 use App\Models\SubService;
 use App\Models\User;
 use App\Services\SalonSubServiceService;
+use App\Services\SubscriptionService;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -24,12 +25,14 @@ class SalonController extends Controller
 
     protected $service;
     protected $salonSubService;
+    protected $subscriptionService;
 
-    public function __construct(SalonService $service,SalonSubServiceService $salonSubService)
+    public function __construct(SalonService $service,SalonSubServiceService $salonSubService,SubscriptionService $subscriptionService)
     {
 
         $this->service = $service;
         $this->salonSubService = $salonSubService;
+        $this->subscriptionService = $subscriptionService;
         $this->middleware(['auth'])->only(['create','storeStep2','storeStep1']);
     }
 
@@ -119,7 +122,17 @@ class SalonController extends Controller
             'type' => 'error',
             'content' => __('حدث خطأ اثناء انشاء الصالون الرجاء المحاولة مرة اخرى')
         ]);
+        try {
+            // نبحث عن أول خطة سعرها 0 (الخطة المجانية)
+            $freePlan = \App\Models\SubscriptionPlan::where('price', '<=', 0)->first();
 
+            if ($freePlan) {
+                $this->subscriptionService->assignOrRenewManual($salon, $freePlan, 0, 'إسناد آلي عند التسجيل (فترة تجريبية)');
+            }
+        } catch (\Exception $e) {
+            // نسجل الخطأ ولكن لا نوقف عملية التسجيل لضمان استمرارية المستخدم
+            \Illuminate\Support\Facades\Log::error('Failed to assign free plan to salon: ' . $salon->id . ' Error: ' . $e->getMessage());
+        }
         $defaultServices = $this->salonSubService->defaultSubServices();
         $this->service->syncSubServices($salon, $defaultServices);
 

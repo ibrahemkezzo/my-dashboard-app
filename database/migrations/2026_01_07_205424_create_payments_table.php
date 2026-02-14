@@ -12,25 +12,34 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('payments', function (Blueprint $table) {
-$table->id();
-            $table->foreignId('subscription_id')
-                  ->constrained('subscriptions')
-                  ->onDelete('cascade'); // حذف الدفعات إذا حذف الاشتراك
-            $table->string('payment_id')->unique(); // معرف الدفع من البوابة أو manual_...
-            $table->decimal('amount', 12, 2); // 12,2 أفضل للمبالغ الكبيرة + دعم فواصل
-            $table->string('currency', 3)->default('SAR'); // عملة افتراضية SAR
-            $table->string('status')->default('pending'); // pending, paid, failed, refunded
-            $table->string('method')->nullable(); // cash, card, online, manual
-            $table->text('note')->nullable(); // ملاحظات (مثل سبب الفشل أو تفاصيل كاش)
-            $table->timestamp('paid_at')->nullable(); // تاريخ الدفع الناجح
-            $table->json('gateway_response')->nullable(); // تخزين response كامل من Moyasar للـ debug
-            $table->timestamps();
+            $table->id();
 
-            // Indexes للأداء
-            $table->index('subscription_id');
-            $table->index('status');
-            $table->index('paid_at');
-            $table->index('payment_id');
+            // الربط بالصالون والاشتراك
+            $table->foreignId('salon_id')->constrained('salons')->cascadeOnDelete();
+            $table->foreignId('subscription_id')->constrained('subscriptions')->cascadeOnDelete();
+
+            // المراجع (References)
+            $table->string('payment_reference')->unique()->comment('Our internal unique reference');
+            $table->string('gateway_transaction_id')->nullable()->index()->comment('External ID from Moyasar/Payment Gateway');
+
+            // تفاصيل المبلغ والعملة
+            $table->decimal('amount', 12, 2);
+            $table->string('currency', 3)->default('SAR');
+
+            // الحالة والبوابة المستخدمة
+            $table->string('status')->default('pending')->index(); // pending, completed, failed, refunded
+            $table->string('gateway')->default('moyasar'); // moyasar, manual, tap, etc.
+            $table->string('method')->nullable(); // visa, mada, applepay, cash
+
+            // اللوغات والردود التقنية
+            $table->json('gateway_response')->nullable(); // Full JSON response for debugging
+            $table->text('failure_reason')->nullable(); // In case of rejection
+            $table->text('note')->nullable(); // Internal notes
+
+            // التواريخ
+            $table->timestamp('paid_at')->nullable()->index(); // When it was actually paid
+            $table->timestamp('processed_at')->nullable(); // Technical process completion time
+            $table->timestamps();
         });
     }
 

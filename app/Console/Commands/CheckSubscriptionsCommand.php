@@ -2,26 +2,17 @@
 
 namespace App\Console\Commands;
 
+use App\Notifications\RenewalReminderNotification;
 use App\Notifications\SubscriptionExpiredNotification;
 use App\Services\SubscriptionService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Log;
 
 class CheckSubscriptionsCommand extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'subscriptions:check';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Check expired subscriptions, suspend salons, and send reminders/emails';
+    protected $description = 'Check expired subscriptions, suspend salons, and send reminders';
 
     protected $service;
 
@@ -31,28 +22,63 @@ class CheckSubscriptionsCommand extends Command
         $this->service = $service;
     }
 
-    /**
-     * Execute the console command.
-     */
-public function handle(): int
+    public function handle(): int
     {
+        Log::info('--- [Subscription Cron: Started] ---');
         $this->info('Starting subscriptions check...');
 
-        // 1. إرسال تذكيرات للاشتراكات اللي رح تنتهي قريبًا (مثل قبل 5 أيام)
-        $this->service->sendRenewalReminders();
+        try {
+            // 1. مرحلة التذكيرات
+            Log::info('Step 1: Processing renewal reminders...');
+            $subscriptionReminders = $this->service->sendRenewalReminders();
 
-        // 2. الاشتراكات المنتهية: إيقاف الصالون + إرسال إيميل انتهاء
-        $expired = $this->service->findExpired(); // من Repository
+            if ($subscriptionReminders->isEmpty()) {
+                Log::info('No subscriptions found for renewal reminders.');
+            } else {
+                foreach ($subscriptionReminders as $subscription) {
+                    $owner = $subscription->salon->owner;
+                    Notification::send($owner, new RenewalReminderNotification($subscription));
 
-        foreach ($expired as $subscription) {
-            // إيقاف الاشتراك والصالون
-            $this->service->expired($subscription); // أو ميثود منفصل لـ expire
+                    Log::info("Reminder sent to Salon: [{$subscription->salon->name}], Owner Email: [{$owner->email}]");
+                    $this->line("Sent reminder to: {$subscription->salon->name}");
+                }
+            }
 
-            // إرسال إيميل انتهاء
-            Notification::send($subscription->salon->owner, new SubscriptionExpiredNotification($subscription));
+            // 2. مرحلة الاشتراكات المنتهية
+            Log::info('Step 2: Processing expired subscriptions...');
+            $expired = $this->service->findExpired();
+
+            if ($expired->isEmpty()) {
+                Log::info('No expired subscriptions found.');
+            } else {
+                foreach ($expired as $subscription) {
+                    // إيقاف الاشتراك والصالون
+                    $this->service->expired($subscription);
+
+                    $owner = $subscription->salon->owner;
+                    Notification::send($owner, new SubscriptionExpiredNotification($subscription));
+
+                    Log::warning("Subscription EXPIRED and Salon DEACTIVATED: [{$subscription->salon->name}], ID: [{$subscription->id}]");
+                    $this->warn("Deactivated: {$subscription->salon->name}");
+                }
+            }
+
+            Log::info('--- [Subscription Cron: Completed Successfully] ---', [
+                'reminders_count' => $subscriptionReminders->count(),
+                'expired_count' => $expired->count()
+            ]);
+
+            $this->info('Done!');
+
+        } catch (\Exception $e) {
+            Log::error('--- [Subscription Cron: FAILED] ---', [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine()
+            ]);
+            $this->error('An error occurred during the check. Check logs for details.');
+            return self::FAILURE;
         }
-
-        $this->info('Subscriptions check completed. Processed ' . $expired->count() . ' expired subscriptions.');
 
         return self::SUCCESS;
     }

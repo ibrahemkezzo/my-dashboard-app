@@ -148,8 +148,8 @@ class Salon extends Model
     public function getHasActiveSubscriptionAttribute(): bool
     {
         return $this->subscription
-            && $this->subscription->status === 'active'
-            && !$this->is_subscription_expired;
+        && !$this->is_subscription_expired
+        && in_array(strtolower($this->subscription->status), ['active', 'trial']);
     }
     /**
      * Accessor to check if the salon is favorited by the current user.

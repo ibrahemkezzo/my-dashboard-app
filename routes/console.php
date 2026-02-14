@@ -11,7 +11,7 @@ Artisan::command('inspire', function () {
 
 // Schedule::job(new SendRenewalRemindersJob())->daily();
 Schedule::command('subscriptions:check')
-         ->dailyAt('00:01') // يوميًا الساعة 00:01
-        // ->everyMinute()
+        //  ->dailyAt('00:01') // يوميًا الساعة 00:01
+        ->everyMinute()
          ->withoutOverlapping()
          ->runInBackground();

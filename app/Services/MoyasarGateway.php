@@ -8,7 +8,6 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 
 class MoyasarGateway implements PaymentGatewayInterface
 {
@@ -19,8 +18,9 @@ class MoyasarGateway implements PaymentGatewayInterface
     public function __construct()
     {
         $this->secretKey = config('services.moyasar.secret_key');
+
         if (!$this->secretKey) {
-            throw new Exception('Moyasar secret key not configured');
+            throw new Exception('Moyasar secret key not configured in services.php');
         }
 
         $this->client = new Client([
@@ -34,80 +34,87 @@ class MoyasarGateway implements PaymentGatewayInterface
         ]);
     }
 
-    // app/Services/MoyasarGateway.php
-
+    /**
+     * إنشاء فاتورة (Invoice) في ميسر
+     * الفاتورة تدعم مدى، فيزا، ماستركارد، و Apple Pay تلقائياً
+     */
     public function createInvoice(array $data): array
     {
         try {
-            // 1. التأكد من المبلغ بالهللة (Integer)
-            $amount = (int) round($data['amount']);
-
-            // 2. تجهيز البيانات الخاصة بالفاتورة
             $payload = [
-                'amount'       => $amount,
-                'currency'     => 'SAR',
+                'amount'       => (int) round($data['amount']), // المبلغ بالهللة
+                'currency'     => $data['currency'] ?? 'SAR',
                 'description'  => $data['description'],
-                'callback_url' => $data['callback_url'], // الرابط الذي سيعود له العميل
-                'back_url'     => $data['callback_url'],
+                'callback_url' => $data['callback_url'],
+                'back_url'     => $data['callback_url'], // للعودة عند الإلغاء
                 'metadata'     => $data['metadata'] ?? [],
             ];
 
-            Log::info('Creating Moyasar Invoice', ['payload' => $payload]);
+            Log::info('Moyasar: Requesting Invoice creation', ['metadata' => $payload['metadata']]);
 
-            // 3. الطلب إلى رابط Invoices
             $response = $this->client->post('invoices', [
                 'json' => $payload,
             ]);
 
             $result = json_decode($response->getBody()->getContents(), true);
 
-            Log::info('Moyasar Invoice created', [
-                'invoice_id' => $result['id'] ?? null,
-                'url'        => $result['url'] ?? null // هذا الرابط هو الأهم
-            ]);
+            if (isset($result['id'])) {
+                Log::info('Moyasar: Invoice created successfully', ['id' => $result['id']]);
+            }
 
             return $result;
+
         } catch (GuzzleException $e) {
-            $responseBody = $e->getMessage() ? $e->getMessage() : null;
-            Log::error('Moyasar Invoice creation failed', [
-                'error' => $e->getMessage(),
-                'response' => $responseBody,
+            $errorBody =  $e->getMessage();
+            Log::error('Moyasar: Invoice creation failed', [
+                'error' => $errorBody
             ]);
-            throw new Exception('Failed to create invoice: ' . ($responseBody ?? $e->getMessage()));
+            throw new Exception('عذراً، تعذر الاتصال ببوابة الدفع حالياً.');
         }
     }
 
+    /**
+     * جلب بيانات الفاتورة للتحقق منها (الخطوة الأهم في الأمان)
+     */
     public function fetchInvoice(string $invoiceId): array
     {
         try {
+            Log::debug("Moyasar: Fetching invoice data for ID: {$invoiceId}");
+
             $response = $this->client->get("invoices/{$invoiceId}");
+
             return json_decode($response->getBody()->getContents(), true);
+
         } catch (GuzzleException $e) {
-            Log::error('Moyasar fetch invoice failed', ['id' => $invoiceId]);
-            throw new Exception('Failed to verify invoice');
+            Log::error("Moyasar: Failed to fetch invoice {$invoiceId}", [
+                'message' => $e->getMessage()
+            ]);
+            throw new Exception('تعذر التحقق من حالة الفاتورة من بوابة ميسر.');
         }
     }
 
+    /**
+     * التحقق من صحة طلبات الـ Webhook (التوقيع الرقمي)
+     */
     public function verifyWebhook(Request $request): ?array
     {
         $webhookSecret = config('services.moyasar.webhook_secret');
-        if (!$webhookSecret) {
-            Log::warning('Moyasar webhook secret not configured');
-            return null;
-        }
-
         $signature = $request->header('Moyasar-Signature');
         $payload = $request->getContent();
 
-        $computedSignature = hash_hmac('sha256', $payload, $webhookSecret);
-
-        if (!hash_equals($computedSignature, $signature)) {
-            Log::warning('Invalid Moyasar webhook signature', ['received' => $signature]);
+        if (!$webhookSecret || !$signature) {
+            Log::warning('Moyasar Webhook: Missing secret or signature header',['request'=>$request->all()]);
             return null;
         }
 
-        Log::info('Moyasar webhook verified');
+        // حساب التوقيع ومقارنته (HMAC SHA256)
+        $computedSignature = hash_hmac('sha256', $payload, $webhookSecret);
 
-        return $request->json()->all();
+        if (!hash_equals($computedSignature, $signature)) {
+            Log::error('Moyasar Webhook: Invalid signature detected');
+            return null;
+        }
+
+        return json_decode($payload, true);
     }
 }

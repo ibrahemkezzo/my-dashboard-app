@@ -4,7 +4,6 @@ namespace App\Notifications;
 
 use App\Models\Subscription;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -24,12 +23,11 @@ class RenewalReminderNotification extends Notification
 
     /**
      * Get the notification's delivery channels.
-     *
-     * @return array<int, string>
      */
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        // نرسل عبر البريد الإلكتروني ونخزن التنبيه في قاعدة البيانات ليظهر في لوحة التحكم
+        return ['mail', 'database'];
     }
 
     /**
@@ -37,22 +35,32 @@ class RenewalReminderNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
+        $salonName = $this->subscription->salon->name;
+        $endDate = $this->subscription->end_date->format('Y-m-d');
+        $daysRemaining =(int) now()->diffInDays($this->subscription->end_date);
+
         return (new MailMessage)
-            ->subject('تذكير بتجديد الاشتراك')
-            ->line('اشتراكك في المنصة ينتهي في ' . $this->subscription->end_date->format('Y-m-d') . '.')
-            ->action('تجديد الاشتراك', route('subscriptions.renew', $this->subscription->id))
-            ->line('شكراً لاستخدامك المنصة!');
+            ->subject('تذكير: اشتراك صالون ' . $salonName . ' قارب على الانتهاء')
+            ->greeting('أهلاً بكِ شريكتنا المبدعة في Glowzelle،')
+            ->line('نتمنى أن تكون رحلتكِ معنا مثمرة ومليئة بالنجاحات.')
+            ->line('نود تذكيركِ بأن اشتراك صالونكِ الحالي سينتهي قريباً بتاريخ:')
+            ->line('🗓️ **' . $endDate . '** (متبقي ' . $daysRemaining . ' أيام فقط)')
+            ->line('لضمان استمرار استقبال حجوزات عميلاتكِ دون انقطاع، وللحفاظ على سير العمل في الصالون بكل سلاسة، ندعوكِ لتجديد اشتراككِ الآن.')
+            ->action('تجديد الاشتراك الآن', route('front.subscriptions.create'))
+            ->line('بقاء صالونكِ متصلاً معنا يسعدنا دائماً، ونحن هنا لدعم نمو أعمالكِ باستمرار.')
+            ->line('شكراً لثقتكِ الدائمة بنا!');
     }
 
     /**
      * Get the array representation of the notification.
-     *
-     * @return array<string, mixed>
      */
     public function toArray(object $notifiable): array
     {
         return [
-            //
+            'title' => 'اقترب موعد انتهاء الاشتراك',
+            'message' => 'اشتراك صالونكم ينتهي في ' . $this->subscription->end_date->format('Y-m-d'),
+            'salon_id' => $this->subscription->salon_id,
+            'action_url' => route('front.subscriptions.create'),
         ];
     }
 }

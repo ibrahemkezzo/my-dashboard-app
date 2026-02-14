@@ -21,8 +21,10 @@ class SubscriptionController extends Controller
 
     public function index(Request $request)
     {
+    
         $salons = $this->service->getSubscriptions($request);
         $statistics = $this->service->getStatistics($request);
+        // dd($statistics);
         $filters = $request->only(['search', 'status', 'period']);
 
         return view('dashboard.subscriptions.index', compact('salons', 'statistics', 'filters'));

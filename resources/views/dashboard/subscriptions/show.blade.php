@@ -82,8 +82,8 @@
                                     <td>{{ $payment->created_at->format('d/m/Y H:i') }}</td>
                                     <td>{{ number_format($payment->amount, 2) }} ريال</td>
                                     <td>{{ $payment->method ?? 'غير محدد' }}</td>
-                                    <td>{{ $payment->payment_id }}</td>
-                                    <td>{{ $payment->note ?? '-' }}</td>
+                                    <td>{{ $payment->payment_reference }}</td>
+                                    <td>{{ $payment->failure_reason ? $payment->failure_reason : $payment->note ?? '-' }}</td>
                                 </tr>
                             @empty
                                 <tr>
