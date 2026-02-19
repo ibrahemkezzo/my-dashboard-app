@@ -189,6 +189,18 @@
                 </div>
             </div>
         </div>
+        <div class="footer-payments-container text-center py-4">
+    <div class="container">
+        <div class="d-flex justify-content-center align-items-center flex-wrap gap-2 payment-badges">
+            <span class="payment-badge"><img src="{{ asset('frontend/assets/img/icons/Mada_Logo.svg.png') }}" alt="Mada"></span>
+            <span class="payment-badge"><img src="{{ asset('frontend/assets/img/icons/Visa_logo.svg.png') }}" alt="Visa"></span>
+            <span class="payment-badge"><img src="{{ asset('frontend/assets/img/icons/MasterCard_logo.svg.png') }}" alt="MasterCard"></span>
+            <span class="payment-badge"><img src="{{ asset('frontend/assets/img/icons/Apple_Pay_logo.svg.png') }}" alt="Apple Pay"></span>
+            <span class="payment-badge"><img src="{{ asset('frontend/assets/img/icons/Samsung_Pay_icon.svg.png') }}" alt="Samsung Pay"></span>
+
+        </div>
+    </div>
+</div>
         <!-- Bottom Bar -->
         <div class="footer-bottom">
             <div class="footer-bottom-content">

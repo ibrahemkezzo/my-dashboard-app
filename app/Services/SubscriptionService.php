@@ -225,7 +225,7 @@ class SubscriptionService
                 'payment_id' => 'manual_' . uniqid(),
                 'salon_id' => $salon->id,
                 'amount' => $paidAmount ?? $plan->price,
-                'status' => 'paid',
+                'status' => 'completed',
                 'method' => 'cash',
                 'note' => $note,
             ]);
