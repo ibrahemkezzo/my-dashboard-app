@@ -91,6 +91,44 @@
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
     </style>
+    <style>
+.footer-payments-container {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 20px;
+}
+
+.payment-badges {
+    direction: ltr; /* لضمان ترتيب الشعارات من اليسار لليمين */
+}
+
+.payment-badge {
+    background-color: #fff; /* خلفية بيضاء للشعار */
+    padding: 5px 10px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 50px;
+    height: 32px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.payment-badge img {
+    height: 18px; /* حجم موحد للشعارات */
+    width: auto;
+    object-fit: contain;
+}
+
+/* تنسيق خاص لتابي وتمارا ليتناسب مع ألوانهم */
+.tabby-bg { background-color: #39FF14 !important; } /* أخضر تابي */
+.tamara-bg { background-color: #FFD200 !important; } /* أصفر تمارا */
+
+/* تأثير عند تمرير الماوس */
+.payment-badge:hover {
+    transform: translateY(-2px);
+    transition: transform 0.3s ease;
+}
+</style>
     @livewireStyles
 </head>
 
